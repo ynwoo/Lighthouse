@@ -12,6 +12,7 @@ export default function Navbar() {
       }}
     >
       <Link to="/"> NavBar </Link>
+      <Link to="/user"> User </Link>
 
       <div
         style={{

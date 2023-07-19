@@ -1,6 +1,6 @@
 import React from 'react'
-import SideComponent from '../components/Utils/SideComponent'
 import TempDetail from '../components/Study/TempDetail'
+import TempSide from '../components/Study/TempSide'
 
 export default function TempDetailPage() {
   let stat = 1
@@ -13,7 +13,9 @@ export default function TempDetailPage() {
         marginTop: '-4px',
       }}
     >
-      <SideComponent />
+      <TempSide />
+
+      {/* stat에 따라 다르게 랜더링 해주는 컴포넌트 */}
       <TempDetail stat={stat} />
     </div>
   )

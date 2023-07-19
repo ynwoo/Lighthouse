@@ -16,9 +16,11 @@ export default function TempDetail(props) {
         }}
       >
         <h3>TempDetail - before{props.stat}</h3>
-        <TempInfo />
-        <TempMember />
-        <TempQnA />
+        <div className="flex">
+          <TempInfo />
+          <TempMember />
+          <TempQnA />
+        </div>
       </div>
     )
   } else if (props.stat === 1) {
@@ -31,10 +33,12 @@ export default function TempDetail(props) {
         }}
       >
         <h3>TempDetail - ing{props.stat}</h3>
-        <TempInfo />
-        <TempMember />
-        <TempQnA />
-        <TempRecord />
+        <div className="flex">
+          <TempInfo />
+          <TempMember />
+          <TempQnA />
+          <TempRecord />
+        </div>
       </div>
     )
   } else {
@@ -47,11 +51,13 @@ export default function TempDetail(props) {
         }}
       >
         <h3>TempDetail - End{props.stat}</h3>
-        <TempInfo />
-        <TempMember />
-        <TempQnA />
-        <TempRecord />
-        <TempReview />
+        <div className="flex">
+          <TempInfo />
+          <TempMember />
+          <TempQnA />
+          <TempRecord />
+          <TempReview />
+        </div>
       </div>
     )
   }
