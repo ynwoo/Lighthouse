@@ -15,6 +15,36 @@ CREATE SCHEMA IF NOT EXISTS `s09p12a409` DEFAULT CHARACTER SET utf8mb3 ;
 USE `s09p12a409` ;
 
 -- -----------------------------------------------------
+-- Table `s09p12a409`.`sido`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `s09p12a409`.`sido` ;
+
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`sido` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `created_at` DATETIME NOT NULL DEFAULT NOW(),
+  `is_vaild` TINYINT NULL DEFAULT 1,
+  `name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `s09p12a409`.`gugun`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `s09p12a409`.`gugun` ;
+
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`gugun` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `created_at` DATETIME NOT NULL DEFAULT NOW(),
+  `is_vaild` TINYINT NULL DEFAULT 1,
+  `name` VARCHAR(45) NOT NULL,
+  `sido_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `gugun_sido_id_fk_idx` (`sido_id` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `s09p12a409`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `s09p12a409`.`user` ;
@@ -29,10 +59,13 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`user` (
   `nickname` VARCHAR(45) NULL DEFAULT NULL,
   `profile_img_url` VARCHAR(128) NULL DEFAULT NULL,
   `age` INT NULL DEFAULT NULL,
-  `address` VARCHAR(1024) NULL DEFAULT NULL,
+  `sido_id` INT NULL DEFAULT NULL,
+  `gugun_id` INT NULL,
   `phone_number` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(1024) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  INDEX `user_sido_id_fk_idx` (`sido_id` ASC) VISIBLE,
+  INDEX `user_gugun_id_fk_idx` (`gugun_id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -375,6 +408,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studytime` (
   `is_valid` TINYINT NOT NULL,
   `study_id` INT NOT NULL,
   `study_date` DATETIME NOT NULL,
+  `duration` INT NULL,
   `type` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `studytime_study_id_fk_idx` (`study_id` ASC) VISIBLE)
