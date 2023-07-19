@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Navbar() {
   return (
     <div
@@ -9,7 +11,8 @@ export default function Navbar() {
         justifyContent: 'space-between',
       }}
     >
-      NavBar
+      <Link to="/"> NavBar </Link>
+
       <div
         style={{
           margin: '5px',
