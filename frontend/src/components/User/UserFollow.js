@@ -11,7 +11,7 @@ export default function UserFollow() {
   }
 
   return (
-    <div>
+    <div className="comp">
       <h3>UserFollow</h3>
       <span className="comp" onClick={showFollowing}>
         following

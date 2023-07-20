@@ -1,10 +1,10 @@
 import './App.css'
-import MainPage from './Pages/MainPage'
-import TempDetailPage from './Pages/TempDetailPage'
-import UserPage from './Pages/UserPage'
-import Footer from './components/Utils/Footer/Footer'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
+import Footer from './components/Utils/Footer/Footer'
+import MainPage from './Routes/MainPage'
+import TempDetailPage from './Routes/TempDetailPage'
+import UserPage from './Routes/UserPage'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
@@ -20,8 +20,8 @@ function App() {
         <WaveComponent />
         <Routes>
           <Route exact path="/" element={<MainPage />} />
-          <Route path="/temp" element={<TempDetailPage />} />
-          <Route path="/user" element={<UserPage />} />
+          <Route path="/temp/:id" element={<TempDetailPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
         </Routes>
       </BrowserRouter>
       <Footer />
