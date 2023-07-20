@@ -23,7 +23,5 @@ public class StudyTag {
     @NonNull
     private int tagId;
 
-    public void changeIsValidFalse() {
-        this.isValid = 0;
-    }
+    public void changeIsValidFalse() { this.isValid = 0; }
 }
