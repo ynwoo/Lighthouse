@@ -39,8 +39,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`gugun` (
   `is_vaild` TINYINT NULL DEFAULT 1,
   `name` VARCHAR(45) NOT NULL,
   `sido_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `gugun_sido_id_fk_idx` (`sido_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
@@ -63,9 +62,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`user` (
   `gugun_id` INT NULL,
   `phone_number` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(1024) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `user_sido_id_fk_idx` (`sido_id` ASC) VISIBLE,
-  INDEX `user_gugun_id_fk_idx` (`gugun_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -83,9 +80,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`alertqueue` (
   `consumer_id` INT NULL DEFAULT NULL,
   `message` VARCHAR(1024) NULL DEFAULT NULL,
   `type` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `alertqueue_user_producer_id_fk_idx` (`producer_id` ASC) VISIBLE,
-  INDEX `alertqueue_user_consumer_id_fk_idx` (`consumer_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -147,9 +142,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`bookmark` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `user_id` INT NOT NULL,
   `study_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `bookmark_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `bookmark_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -165,9 +158,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`follow` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `follower_id` INT NOT NULL,
   `followee_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `follow_user_follower_id_fk_idx` (`follower_id` ASC) VISIBLE,
-  INDEX `follow_user_followee_id_fk_idx` (`followee_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -197,9 +188,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`usertag` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `user_id` INT NOT NULL,
   `tag_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `usertag_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `usertag_tag_id_fk_idx` (`tag_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -215,9 +204,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`like` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `user_id` INT NOT NULL,
   `study_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `like_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `like_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -235,8 +222,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`message` (
   `user_id` INT NOT NULL,
   `content` VARCHAR(1024) NULL DEFAULT NULL,
   `file_url` VARCHAR(128) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `message_user_id_idx` (`user_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -256,9 +242,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`participationhistory` (
   `joined_at` DATETIME NULL DEFAULT NULL,
   `leaved_at` DATETIME NULL DEFAULT NULL,
   `status` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `participationhistory_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `participationhistory_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -281,8 +265,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`session` (
   `comment` VARCHAR(128) NULL DEFAULT NULL,
   `status` TINYINT NULL DEFAULT NULL,
   `seq_num` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `session_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -299,9 +282,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`sessioncheck` (
   `user_id` INT NOT NULL,
   `session_id` INT NOT NULL,
   `content` VARCHAR(1024) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `sessioncheck_session_id_fk_idx` (`session_id` ASC) VISIBLE,
-  INDEX `sessioncheck_user_id_fk_idx` (`user_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -319,9 +300,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studyeval` (
   `study_id` INT NOT NULL,
   `comment` VARCHAR(128) NULL DEFAULT NULL,
   `score` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `studyeval_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `studyeval_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -339,8 +318,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studymaterial` (
   `type` INT NOT NULL,
   `content` VARCHAR(1024) NULL DEFAULT NULL,
   `file_url` VARCHAR(100) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `studynaterial_study_id_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -372,9 +350,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studynoticecheck` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `user_id` INT NOT NULL,
   `study_notice_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `studynoticecheck_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `studynoticecheck_studynotice_id_fk_idx` (`study_notice_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -390,9 +366,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studytag` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `study_id` INT NOT NULL,
   `tag_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `studytag_study_id_fk_idx` (`study_id` ASC) VISIBLE,
-  INDEX `studytag_tag_id_fk_idx` (`tag_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -410,8 +384,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`studytime` (
   `study_date` DATETIME NOT NULL,
   `duration` INT NULL,
   `type` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `studytime_study_id_fk_idx` (`study_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
@@ -427,9 +400,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`userbadge` (
   `is_valid` TINYINT NOT NULL DEFAULT '1',
   `user_id` INT NOT NULL,
   `badge_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `userbadge_user_id_fk_idx` (`user_id` ASC) VISIBLE,
-  INDEX `userbadge_badge_id_fk_idx` (`badge_id` ASC) VISIBLE)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
