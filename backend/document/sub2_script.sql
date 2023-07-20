@@ -68,11 +68,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`alertqueue`
+-- Table `s09p12a409`.`alert_queue`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`alertqueue` ;
+DROP TABLE IF EXISTS `s09p12a409`.`alert_queue` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`alertqueue` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`alert_queue` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -178,11 +178,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`usertag`
+-- Table `s09p12a409`.`user_tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`usertag` ;
+DROP TABLE IF EXISTS `s09p12a409`.`user_tag` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`usertag` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`user_tag` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -228,11 +228,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`participationhistory`
+-- Table `s09p12a409`.`participation_history`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`participationhistory` ;
+DROP TABLE IF EXISTS `s09p12a409`.`participation_history` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`participationhistory` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`participation_history` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -271,11 +271,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`sessioncheck`
+-- Table `s09p12a409`.`session_check`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`sessioncheck` ;
+DROP TABLE IF EXISTS `s09p12a409`.`session_check` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`sessioncheck` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`session_check` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -288,11 +288,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studyeval`
+-- Table `s09p12a409`.`study_eval`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studyeval` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_eval` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studyeval` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_eval` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -306,11 +306,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studymaterial`
+-- Table `s09p12a409`.`study_material`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studymaterial` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_material` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studymaterial` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_material` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -324,11 +324,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studynotice`
+-- Table `s09p12a409`.`study_notice`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studynotice` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_notice` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studynotice` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_notice` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -340,11 +340,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studynoticecheck`
+-- Table `s09p12a409`.`study_notice_check`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studynoticecheck` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_notice_check` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studynoticecheck` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_notice_check` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -356,11 +356,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studytag`
+-- Table `s09p12a409`.`study_tag`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studytag` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_tag` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studytag` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_tag` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -372,11 +372,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`studytime`
+-- Table `s09p12a409`.`study_time`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`studytime` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_time` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`studytime` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_time` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL,
@@ -390,11 +390,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`userbadge`
+-- Table `s09p12a409`.`user_badge`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`userbadge` ;
+DROP TABLE IF EXISTS `s09p12a409`.`user_badge` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`userbadge` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`user_badge` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
@@ -406,11 +406,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`usereval`
+-- Table `s09p12a409`.`user_eval`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`usereval` ;
+DROP TABLE IF EXISTS `s09p12a409`.`user_eval` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`usereval` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`user_eval` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
