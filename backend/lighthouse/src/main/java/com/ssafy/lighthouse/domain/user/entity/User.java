@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(of = {"id", "name", "nickname"})
 public class User {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String password;
 	private String name;
@@ -24,7 +24,22 @@ public class User {
 
 	private String profileImgUrl;
 	private int age;
-	private String address;
+	private int sidoId;
+	private int gugunId;
 	private String phoneNumber;
 	private String description;
+
+	public User(String password, String name, String email, String nickname, String profileImgUrl, int age,
+		int sidoId, int gugunId, String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
 }
