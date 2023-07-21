@@ -1,13 +1,21 @@
 pipeline {
     agent any
     stages {
-        stage("Compile") {
+        stage("Checkout") {
             steps {
-                   sh "./gradlew compileJava"
+                git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'develop'
+
             }
         }
 
-	stage("Test") {
+        stage("Compile") {
+            steps {
+                sh "cd backend/develop"
+                sh "./gradlew compileJava"
+            }
+        }
+
+	    stage("Test") {
             steps {
                 echo 'build done safely !!!'
             }
