@@ -10,7 +10,7 @@ pipeline {
 
         stage("Compile") {
             steps {
-                sh "cd backend/develop"
+                sh "cd backend/lighthouse"
                 sh "./gradlew compileJava"
             }
         }
