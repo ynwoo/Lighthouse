@@ -6,7 +6,6 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "bookmark")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +23,7 @@ public class Bookmark {
     @NonNull
     private int userId;
 
-    public void changeIsValidFalse() {
+    public void remove() {
         this.isValid = 0;
     }
 }

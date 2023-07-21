@@ -5,13 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "like")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Like {
+public class StudyLike {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(insertable = false)
@@ -23,7 +22,7 @@ public class Like {
     @NonNull
     private int userId;
 
-    public void changeIsValidFalse() {
+    public void remove() {
         this.isValid = 0;
     }
 }
