@@ -15,16 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.lighthouse.domain.study.entity.StudyNotice;
 
 @SpringBootTest
-@ActiveProfiles("local")
-@Transactional
 public class StudyNoticeRepositoryTest {
 	@Autowired
 	StudyNoticeRepository studyNoticeRepository;
-
-	@After
-	public void cleanup() {
-		studyNoticeRepository.deleteAll();
-	}
 
 	@Test
 	public void saveTest() {
@@ -36,9 +29,9 @@ public class StudyNoticeRepositoryTest {
 		
 		//저장
 		studyNoticeRepository.save(studyNotice);
-		
+		System.out.println(studyNotice);
 		//조회
-		StudyNotice entity = studyNoticeRepository.findById(1).get();
+		StudyNotice entity = studyNoticeRepository.findById(7).get();
 		assertThat(entity.getStudyId()).isEqualTo(1);
 		assertThat(entity.getContent()).isEqualTo("test notice content");
 
