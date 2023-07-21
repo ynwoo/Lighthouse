@@ -6,7 +6,8 @@ pipeline {
                    sh "./gradlew compileJava"
             }
         }
-        stage("Test") {
+        
+	stage("Test") {
             steps {
                 echo 'build done safely !!!'
             }
