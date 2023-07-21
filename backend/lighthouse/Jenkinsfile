@@ -12,6 +12,7 @@ node {
         dir ('backend') {
             dir ('lighthouse') {
                 sh "pwd"
+                sh "ls"
                 sh "chmod +x gradlew"
                 sh "./gradlew compileJava"
             }
