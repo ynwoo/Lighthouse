@@ -1,25 +1,26 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class StudyNoticeCheck {
-	@Id
-	@GeneratedValue
-	private Integer id;
-	private String createdAt;
-	private Integer isValid;
+public class StudyNoticeCheck extends BaseEntity {
 	private int userId;
 	private int studyNoticeId;
+
+	@Builder
+	public StudyNoticeCheck(int userId, int studyNoticeId) {
+		this.userId = userId;
+		this.studyNoticeId = studyNoticeId;
+	}
 }

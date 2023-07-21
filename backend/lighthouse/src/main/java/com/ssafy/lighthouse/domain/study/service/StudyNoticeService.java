@@ -7,8 +7,9 @@ import com.ssafy.lighthouse.domain.study.entity.StudyNotice;
 
 public interface StudyNoticeService {
 	List<StudyNotice> findAllByStudyId(int studyId);
-	int create(StudyNoticeDto studyNotice);
-	int update(int id, StudyNoticeDto studyNotice);
-	int remove(int id);
+	int createNotice(StudyNoticeDto.StudyNoticeReq dto);
+	int updateNotice(int id, StudyNoticeDto.StudyNoticeReq dto);
+	int removeNotice(int id);
+	int createNoticeCheck(StudyNoticeDto.StudyNoticeCheckReq dto);
 	StudyNotice findById(int id);
 }

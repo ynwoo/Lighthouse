@@ -23,12 +23,12 @@ public class StudyNoticeServiceTest {
 
 	@Test
 	public void createTest() {
-		StudyNoticeDto dto = StudyNoticeDto.builder()
+		StudyNoticeDto.StudyNoticeReq dto = StudyNoticeDto.StudyNoticeReq.builder()
 			.studyId(1)
 			.content("test content2")
 			.build();
 
-		studyNoticeService.create(dto);
+		studyNoticeService.createNotice(dto);
 		List<StudyNotice> studyNotices = studyNoticeService.findAllByStudyId(1);
 		assertEquals(4, studyNotices.size());
 	}
@@ -36,23 +36,23 @@ public class StudyNoticeServiceTest {
 	@Test
 	public void updateTest() {
 		final String newContent = "updated test content";
-		StudyNoticeDto dto = StudyNoticeDto.builder()
+		StudyNoticeDto.StudyNoticeReq dto = StudyNoticeDto.StudyNoticeReq.builder()
 			.studyId(1)
 			.content(newContent)
 			.build();
 
-		studyNoticeService.update(7, dto);
+		studyNoticeService.updateNotice(7, dto);
 		assertEquals(studyNoticeService.findById(7).getContent(), newContent);
 	}
 
 	@Test
 	public void removeTest() {
-		StudyNoticeDto dto = StudyNoticeDto.builder()
+		StudyNoticeDto.StudyNoticeReq dto = StudyNoticeDto.StudyNoticeReq.builder()
 			.studyId(1)
 			.content("test content2")
 			.build();
 
-		studyNoticeService.remove(7);
+		studyNoticeService.removeNotice(7);
 		List<StudyNotice> studyNotices = studyNoticeService.findAllByStudyId(1);
 		assertEquals(3, studyNotices.size());
 	}
