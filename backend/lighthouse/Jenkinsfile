@@ -8,6 +8,8 @@ node {
     stage('Build') {
         sh "echo start building ,,"
         sh "cd backend/lighthouse"
+        sh "ls"
+        sh "pwd"
         sh "./gradlew compileJava"
         sh "echo build finished"
     }
