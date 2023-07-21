@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 
 export default function MainPage() {
+  console.log(useContext)
   return (
     <div
       style={{
