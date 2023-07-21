@@ -1,29 +1,13 @@
-pipeline {
-    agent any
-    stages {
-        stage("Checkout") {
-            steps {
-                echo "git checkout start"
-                git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'develop'
-                echo "git checkout success !!"
-            }
-        }
+node {
+    stage('Ready') {
+        sh "echo Ready"
+    }
 
-        stage("Compile") {
-            steps {
-                echo "compile start !!!"
-                echo "change directory to backend project"
-                sh "cd backend/lighthouse"
+    stage('Build') {
+        sh "echo 'Build Jar'"
+    }
 
-                echo "compile start"
-                sh "./gradlew compileJava"
-            }
-        }
-
-	    stage("Test") {
-            steps {
-                echo 'build done safely !!!'
-            }
-        }
+    stage('Deploy') {
+        sh "echo 'Deploy AWS'"
     }
 }
