@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.lighthouse.domain.study.dto.StudyNoticeDto;
-import com.ssafy.lighthouse.domain.study.repository.StudyNoticeRepository;
+import com.ssafy.lighthouse.domain.study.service.StudyNoticeService;
 
 import lombok.AllArgsConstructor;
 
@@ -21,17 +21,20 @@ public class StudyNoticeController extends HttpServlet {
 
 	private static final String SUCCESS= "success";
 
+	private StudyNoticeService studyNoticeService;
+
 	@PostMapping
-	public ResponseEntity<String> addNotice(@RequestBody StudyNoticeDto studyNotice) {
+	public ResponseEntity<String> createNotice(@RequestBody StudyNoticeDto studyNotice) {
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@PutMapping
-	public ResponseEntity<String> modifyNotice(@RequestBody StudyNoticeDto studyNotice) {
+	public ResponseEntity<String> updateNotice(@RequestBody StudyNoticeDto studyNotice) {
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+
 	@DeleteMapping
-	public ResponseEntity<String> deleteNotice(@RequestBody StudyNoticeDto studyNotice) {
+	public ResponseEntity<String> removeNotice(@RequestBody StudyNoticeDto studyNotice) {
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 }

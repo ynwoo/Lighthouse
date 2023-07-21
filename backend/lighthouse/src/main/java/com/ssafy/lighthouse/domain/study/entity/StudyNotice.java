@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +20,17 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StudyNotice {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	@Column(insertable = false)
-	private String createdAt;
-	@Column(insertable = false)
-	private int isValid;
+public class StudyNotice extends BaseEntity {
 	private int studyId;
 	private String content;
 
 	@Builder
 	public StudyNotice(int studyId, String content) {
+		this.studyId = studyId;
+		this.content = content;
+	}
+
+	public void update(int studyId, String content) {
 		this.studyId = studyId;
 		this.content = content;
 	}
