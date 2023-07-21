@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "studytag")
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,5 +22,7 @@ public class StudyTag {
     @NonNull
     private int tagId;
 
-    public void changeIsValidFalse() { this.isValid = 0; }
+    public void remove() {
+        this.isValid = 0;
+    }
 }
