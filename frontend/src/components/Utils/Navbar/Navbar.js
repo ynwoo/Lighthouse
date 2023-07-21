@@ -4,9 +4,9 @@ export default function Navbar() {
   return (
     <div
       style={{
-        backgroundColor: '#74a3ff',
-        height: '80px',
-        fontSize: '50px',
+        backgroundColor: '#E1EBFF',
+        height: '35px',
+        fontSize: '20px',
         display: 'flex',
         justifyContent: 'space-between',
       }}

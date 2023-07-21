@@ -1,6 +1,9 @@
 import React from 'react'
-import SideComponent from '../components/Utils/SideComponent'
-import MainComponent from '../components/Utils/MainComponent'
+// import SideComponent from '../components/Utils/SideComponent'
+// import MainComponent from '../components/Utils/MainComponent'
+import { Button, Col, Row } from 'antd'
+
+
 
 export default function MainPage() {
   return (
@@ -12,8 +15,42 @@ export default function MainPage() {
         marginTop: '-4px',
       }}
     >
-      <SideComponent />
-      <MainComponent />
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'Column',
+        }}
+      >
+
+        <Row>
+          <Col span={21} push={20}>
+            큰칸
+          </Col>
+          <Col span={3} pull={20}>
+            <div
+              style={{
+                marginTop: '10px',
+
+              }}>
+              <Button type="primary" style={{ width: '150px' }}>LOGIN</Button>
+            </div>
+            <div
+              style={{
+                marginTop: '10px',
+              }}>
+              <Button type="primary" style={{ width: '150px' }} danger>
+                SIGNUP
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </div>
+
+
+
+      {/* <SideComponent />
+      <MainComponent /> */}
     </div>
   )
 }

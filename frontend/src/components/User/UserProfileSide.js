@@ -31,7 +31,6 @@ export default function UserProfileSide() {
           <button type="submit" onClick={SignInAction}>
             {btnState}
           </button>
-          <button type="submit">SignUp</button>
         </div>
       </div>
     )

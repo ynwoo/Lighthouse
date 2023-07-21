@@ -9,8 +9,8 @@ export default function WaveComponent() {
         alt="엑박"
         style={{
           // width: '450x',
-          height: '300px',
-          marginBottom: '-100px',
+          height: '180px',
+          marginBottom: '-50px',
           display: 'flex',
         }}
       />

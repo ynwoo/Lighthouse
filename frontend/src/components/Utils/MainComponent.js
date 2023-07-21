@@ -8,7 +8,7 @@ export default function MainComponent() {
     <div
       className="comp"
       style={{
-        width: '800px',
+        width: '70%',
         height: '800px',
       }}
     >
