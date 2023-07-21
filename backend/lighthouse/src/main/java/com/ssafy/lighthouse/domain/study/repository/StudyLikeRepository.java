@@ -1,9 +1,7 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
-import com.ssafy.lighthouse.domain.study.entity.Bookmark;
 import com.ssafy.lighthouse.domain.study.entity.StudyLike;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,5 +12,5 @@ public interface StudyLikeRepository extends JpaRepository<StudyLike, Integer> {
 
     // remove -> find로 찾아와서 isValid 0으로 변경
     @Query("select sl from StudyLike sl where sl.studyId = :studyId and sl.userId = :userId and sl.isValid = 1")
-    Optional<Bookmark> find(@Param("studyId") int studyId, @Param("userId") int userId);
+    Optional<StudyLike> find(@Param("studyId") int studyId, @Param("userId") int userId);
 }
