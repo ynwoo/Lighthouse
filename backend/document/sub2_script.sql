@@ -194,11 +194,11 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `s09p12a409`.`like`
+-- Table `s09p12a409`.`study_like`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `s09p12a409`.`like` ;
+DROP TABLE IF EXISTS `s09p12a409`.`study_like` ;
 
-CREATE TABLE IF NOT EXISTS `s09p12a409`.`like` (
+CREATE TABLE IF NOT EXISTS `s09p12a409`.`study_like` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_valid` TINYINT NOT NULL DEFAULT '1',
