@@ -1,13 +1,18 @@
 node {
-    stage('Ready') {
-        sh "echo Ready"
+    stage('Checkout') {
+        sh "echo start checkout"
+        git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'develop'
+        sh "echo checkout done"
     }
 
     stage('Build') {
-        sh "echo 'Build Jar'"
+        sh "echo start building ,,"
+        sh "cd backend/lighthouse"
+        sh "./gradlew compileJava"
+        sh "echo build finished"
     }
 
     stage('Deploy') {
-        sh "echo 'Deploy AWS'"
+        sh "echo deployment not yet determined"
     }
 }
