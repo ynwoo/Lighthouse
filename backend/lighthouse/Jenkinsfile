@@ -3,14 +3,19 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
+                echo "git checkout start"
                 git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'develop'
-
+                echo "git checkout success !!"
             }
         }
 
         stage("Compile") {
             steps {
+                echo "compile start !!!"
+                echo "change directory to backend project"
                 sh "cd backend/lighthouse"
+
+                echo "compile start"
                 sh "./gradlew compileJava"
             }
         }
