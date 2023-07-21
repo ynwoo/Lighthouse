@@ -7,8 +7,8 @@ export default function SearchComponent() {
   return (
     <>
       <span>search </span>
-      <input type="text" onChange={textChange}></input>
-      <button>🔍</button>
+      <input type="text" onChange={textChange} />
+      <button type="submit">🔍</button>
       <hr />
     </>
   )

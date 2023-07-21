@@ -5,8 +5,13 @@ import TempQnA from './TempQnA'
 import TempRecord from './TempRecord'
 import TempReview from './TempReview'
 
-export default function TempDetail(props) {
-  if (props.stat === 0) {
+// 템플릿 상세
+
+export default function TempDetail({ stat }) {
+  console.log(stat)
+  // 상위 컴포넌트에서 stat을 props로 받아오는데
+  // 그것에 따라서 보여주는 컨텐츠가 다름
+  if (stat === 0) {
     return (
       <div
         className="comp"
@@ -15,50 +20,50 @@ export default function TempDetail(props) {
           height: '800px',
         }}
       >
-        <h3>TempDetail - before{props.stat}</h3>
+        <h3>TempDetail - before</h3>
         <div className="flex">
           <TempInfo />
           <TempMember />
           <TempQnA />
-        </div>
-      </div>
-    )
-  } else if (props.stat === 1) {
-    return (
-      <div
-        className="comp"
-        style={{
-          width: '800px',
-          height: '800px',
-        }}
-      >
-        <h3>TempDetail - ing{props.stat}</h3>
-        <div className="flex">
-          <TempInfo />
-          <TempMember />
-          <TempQnA />
-          <TempRecord />
-        </div>
-      </div>
-    )
-  } else {
-    return (
-      <div
-        className="comp"
-        style={{
-          width: '800px',
-          height: '800px',
-        }}
-      >
-        <h3>TempDetail - End{props.stat}</h3>
-        <div className="flex">
-          <TempInfo />
-          <TempMember />
-          <TempQnA />
-          <TempRecord />
-          <TempReview />
         </div>
       </div>
     )
   }
+  if (stat === 1) {
+    return (
+      <div
+        className="comp"
+        style={{
+          width: '800px',
+          height: '800px',
+        }}
+      >
+        <h3>TempDetail - ing</h3>
+        <div className="flex">
+          <TempInfo />
+          <TempMember />
+          <TempQnA />
+          <TempRecord />
+        </div>
+      </div>
+    )
+  }
+  return (
+    <div
+      className="comp"
+      style={{
+        width: '800px',
+        height: '800px',
+      }}
+    >
+      <h3>TempDetail - End</h3>
+      <div className="flex">
+        <TempInfo />
+        <TempMember />
+        <TempQnA />
+        <TempRecord />
+        <TempReview />
+      </div>
+    </div>
+  )
 }

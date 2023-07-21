@@ -12,15 +12,15 @@ export default function Navbar() {
       }}
     >
       <Link to="/"> NavBar </Link>
-      <Link to="/user"> User </Link>
+      <Link to="/user/fromNavbar"> User </Link>
 
       <div
         style={{
           margin: '5px',
         }}
       >
-        <button>SignIn</button>
-        <button>Signout</button>
+        <button type="submit">SignIn</button>
+        <button type="submit">Signout</button>
       </div>
     </div>
   )

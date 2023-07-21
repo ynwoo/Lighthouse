@@ -1,6 +1,5 @@
 import React from 'react'
 import UserProfile from '../components/User/UserProfile'
-import TempDetail from '../components/Study/TempDetail'
 
 export default function UserPage() {
   return (
@@ -13,7 +12,6 @@ export default function UserPage() {
       }}
     >
       <UserProfile />
-      <TempDetail />
     </div>
   )
 }

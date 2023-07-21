@@ -3,7 +3,7 @@ import TempDetail from '../components/Study/TempDetail'
 import TempSide from '../components/Study/TempSide'
 
 export default function TempDetailPage() {
-  let stat = 1
+  const stat = 1
   return (
     <div
       style={{

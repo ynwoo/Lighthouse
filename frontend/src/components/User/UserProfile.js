@@ -1,28 +1,17 @@
 import React from 'react'
-import profilePic from '../../logo.svg'
-import UserFollow from './UserFollow'
+
+// 크게 보는 프로필
 
 export default function UserProfile() {
   return (
     <div
       className="comp"
       style={{
-        width: '300px',
-        height: '800px',
+        width: '80%',
+        height: '500px',
       }}
     >
       <h3>UserProfile</h3>
-      <div
-        className="flex"
-        style={{
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <img src={profilePic}></img>
-        <h4>Name</h4>
-        <UserFollow />
-      </div>
     </div>
   )
 }

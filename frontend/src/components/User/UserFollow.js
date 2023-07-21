@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+// 유저의 팔로우 컴포넌트
+
 export default function UserFollow() {
   const [btnState, setBtn] = useState('following')
 

@@ -16,13 +16,13 @@ export default function MainComponent() {
       <h3>MainComponent</h3>
 
       <div>
-        <button>갖가지</button>
-        <button>카테고리를</button>
-        <button>지닌</button>
-        <button>버튼들</button>
-        <button>물론</button>
-        <button>기능은</button>
-        <button>없어요</button>
+        <button type="submit">갖가지</button>
+        <button type="submit">카테고리를</button>
+        <button type="submit">지닌</button>
+        <button type="submit">버튼들</button>
+        <button type="submit">물론</button>
+        <button type="submit">기능은</button>
+        <button type="submit">없어요</button>
       </div>
 
       <hr />
@@ -46,7 +46,7 @@ export default function MainComponent() {
             margin: '25px 0',
           }}
         >
-          {Array(4, 7).fill(<TempCard key={i} />)}
+          {Array([3, 4, 5]).fill(<TempCard key={i} />)}
         </div>
       </div>
     </div>

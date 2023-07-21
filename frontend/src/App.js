@@ -1,11 +1,11 @@
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import Footer from './components/Utils/Footer/Footer'
 import MainPage from './Routes/MainPage'
 import TempDetailPage from './Routes/TempDetailPage'
 import UserPage from './Routes/UserPage'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import SignInSide from '../User/SignInSide'
+import UserProfile from '../User/UserProfileSide'
 
 export default function SideComponent() {
   return (
@@ -11,7 +11,7 @@ export default function SideComponent() {
       }}
     >
       <h3>SideComponent</h3>
-      <SignInSide />
+      <UserProfile />
     </div>
   )
 }
