@@ -4,22 +4,26 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.lighthouse.domain.user.entity.User;
 
 @SpringBootTest
-@ActiveProfiles("local")
 @Transactional
-	// @Rollback(false)
+	// @Rollback(value = false)
 class UserRepositoryTest {
 	@Autowired
 	UserRepository userRepository;
+
+	@PersistenceContext
+	EntityManager em;
 
 	@Test
 	public void testCreateUser() {
@@ -29,12 +33,15 @@ class UserRepositoryTest {
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		User savedUser = userRepository.save(user);
+		em.flush();
+		em.clear();
 
-		User findUser = userRepository.findById(savedUser.getId()).get();
+		User findedUser = userRepository.findById(savedUser.getId()).get();
 
-		assertThat(findUser.getId()).isEqualTo(user.getId());
-		assertThat(findUser.getName()).isEqualTo(user.getName());
-		assertThat(findUser).isEqualTo(user);
+		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
+		assertThat(findedUser.getName()).isEqualTo(savedUser.getName());
+
+		findedUser.remove();
 	}
 
 	@Test
@@ -47,28 +54,27 @@ class UserRepositoryTest {
 		// Create
 		User savedUser = userRepository.save(user);
 
+		em.flush();
+		em.clear();
+
 		// Retrieve
-		User findUser = userRepository.findById(savedUser.getId()).get();
-		assertThat(findUser).isEqualTo(user);
+		User findedUser = userRepository.findById(savedUser.getId()).get();
+		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 
-		// Update
-		findUser.setNickname("new철수야");
-		userRepository.save(findUser);
+		// Update : 닉네임 업데이트
+		findedUser.updateUserInfo(findedUser.getPassword(), findedUser.getName(),
+			"new철수야", findedUser.getProfileImgUrl(), findedUser.getAge(),
+			findedUser.getSidoId(), findedUser.getGugunId(), findedUser.getPhoneNumber(), findedUser.getDescription());
 
-		User updatedUser = userRepository.findById(findUser.getId()).get();
-		assertThat(updatedUser.getNickname()).isEqualTo(findUser.getNickname());
-
-		// List
-		List<User> users = userRepository.findAll();
-		assertThat(users.size()).isEqualTo(3);
-
-		// Count
-		long count = userRepository.count();
-		assertThat(count).isEqualTo(3);
+		User updatedUser = userRepository.findById(findedUser.getId()).get();
+		assertThat(updatedUser.getNickname()).isEqualTo("new철수야");
 
 		// Delete
-		userRepository.delete(findUser);
-		long deletedCount = userRepository.count();
-		assertThat(deletedCount).isEqualTo(2);
+		User deleteUser = userRepository.findById(updatedUser.getId()).get();
+		deleteUser.remove();
+
+		// List
+		List<User> validUsers = userRepository.findByIsValid(1);
+		assertThat(validUsers.size()).isEqualTo(0);
 	}
 }
