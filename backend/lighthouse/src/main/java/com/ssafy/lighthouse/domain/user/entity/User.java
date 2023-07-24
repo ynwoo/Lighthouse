@@ -1,5 +1,8 @@
 package com.ssafy.lighthouse.domain.user.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
@@ -26,6 +29,9 @@ public class User extends BaseEntity {
 	private int gugunId;
 	private String phoneNumber;
 	private String description;
+
+	// @OneToMany()
+	// List<UserTag> userTags = new ArrayList<>();
 
 	public User(String password, String name, String email, String nickname,
 		String profileImgUrl, int age, int sidoId, int gugunId,
