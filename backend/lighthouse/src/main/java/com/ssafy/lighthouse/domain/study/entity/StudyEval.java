@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,15 +9,8 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @RequiredArgsConstructor
-public class StudyEval {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(insertable = false)
-    private String createdAt;
-    @Column(insertable = false)
-    private int isValid;
+public class StudyEval extends BaseEntity {
     @NonNull
     private int studyId;
     @NonNull
@@ -25,8 +19,4 @@ public class StudyEval {
     private String comment;
     @NonNull
     private int score;
-
-    public void remove() {
-        this.isValid = 0;
-    }
 }
