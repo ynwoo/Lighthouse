@@ -21,6 +21,10 @@ node {
         sh "echo build finished"
     }
 
+    stage ('unit test') {
+
+    }
+
     stage('Deploy') {
         sh "echo deployment not yet determined"
     }
