@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface StudyRepository extends JpaRepository<Study, Integer> {
+public interface StudyRepository extends JpaRepository<Study, Integer>, StudyRepositoryCustom {
     // 조건별로 동적 쿼리 필요 -> 추후 querydsl 적용
     @Override
     @EntityGraph(attributePaths = {"studyTags"})
