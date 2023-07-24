@@ -2,21 +2,19 @@ package com.ssafy.lighthouse.domain.user.entity;
 
 import javax.persistence.*;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id", "name", "nickname"})
-public class User {
-	@Id
-	@GeneratedValue
-	private Integer id;
+@ToString(callSuper = true)
+public class User extends BaseEntity {
+
 	private String password;
 	private String name;
 	private String email;
@@ -24,7 +22,37 @@ public class User {
 
 	private String profileImgUrl;
 	private int age;
-	private String address;
+	private int sidoId;
+	private int gugunId;
 	private String phoneNumber;
 	private String description;
+
+	public User(String password, String name, String email, String nickname,
+		String profileImgUrl, int age, int sidoId, int gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
+
+	public void updateUserInfo(String password, String name, String nickname,
+		String profileImgUrl, int age, int sidoId, int gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
 }
