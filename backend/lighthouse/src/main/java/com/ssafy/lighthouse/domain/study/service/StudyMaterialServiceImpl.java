@@ -33,7 +33,7 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	@Override
 	public int updateMaterial(final int id, final StudyMaterialDto.StudyMaterialReq dto) {
 		StudyMaterial studyMaterial = findById(id);
-		studyMaterial.update(dto.getStudyId(), dto.getType(), dto.getContent(), dto.getFileUrl());
+		studyMaterial.update(dto.getStudyId(), dto.getSessionId(), dto.getType(), dto.getContent(), dto.getFileUrl());
 		return id;
 	}
 

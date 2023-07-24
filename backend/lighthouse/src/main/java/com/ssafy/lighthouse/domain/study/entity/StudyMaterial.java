@@ -16,20 +16,23 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyMaterial extends BaseEntity {
 	private int studyId;
+	private int sessionId;
 	private int type;
 	private String content;
 	private String fileUrl;
 
 	@Builder
-	public StudyMaterial(int studyId, int type, String content, String fileUrl) {
+	public StudyMaterial(int studyId, int sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;
+		this.sessionId = sessionId;
 		this.type = type;
 		this.content = content;
 		this.fileUrl = fileUrl;
 	}
 
-	public void update(int studyId, int type, String content, String fileUrl) {
+	public void update(int studyId, int sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;
+		this.sessionId = sessionId;
 		this.type = type;
 		this.content = content;
 		this.fileUrl = fileUrl;
