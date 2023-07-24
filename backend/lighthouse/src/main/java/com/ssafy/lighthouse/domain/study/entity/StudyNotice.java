@@ -1,12 +1,11 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 
@@ -23,6 +22,10 @@ import lombok.ToString;
 public class StudyNotice extends BaseEntity {
 	private int studyId;
 	private String content;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "studyNoticeId")
+	private List<StudyNoticeCheck> studyNoticeChecks;
 
 	@Builder
 	public StudyNotice(int studyId, String content) {

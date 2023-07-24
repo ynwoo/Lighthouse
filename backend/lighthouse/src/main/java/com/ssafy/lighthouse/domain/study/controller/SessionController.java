@@ -43,4 +43,10 @@ public class SessionController extends HttpServlet {
 		sessionService.removeSession(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+
+	@PostMapping("/check")
+	public ResponseEntity<String> createSessionCheck(@RequestBody SessionDto.SessionCheckReq dto) {
+		sessionService.createSessionCheck(dto);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
 }

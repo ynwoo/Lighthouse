@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.study.entity.Session;
+import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,6 +44,29 @@ public class SessionDto {
 				.comment(comment)
 				.status(status)
 				.seqNum(seqNum)
+				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SessionCheckReq {
+		private int userId;
+		private int sessionId;
+		private String content;
+
+		@Builder
+		public SessionCheckReq(int userId, int sessionId, String content) {
+			this.userId = userId;
+			this.sessionId = sessionId;
+			this.content = content;
+		}
+
+		public SessionCheck toEntity() {
+			return SessionCheck.builder()
+				.userId(userId)
+				.sessionId(sessionId)
+				.content(content)
 				.build();
 		}
 	}

@@ -33,6 +33,10 @@ public class Session extends BaseEntity {
 	@JoinColumn(name = "sessionId")
 	private List<StudyMaterial> studyMaterials;
 
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "sessionId")
+	private List<SessionCheck> sessionChecks;
+
 	@Builder
 	public Session(String startedAt, String endedAt, int studyId, String title, String description,
 		String comment, int status, int seqNum) {

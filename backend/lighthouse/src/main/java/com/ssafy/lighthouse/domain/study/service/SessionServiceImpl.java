@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.lighthouse.domain.study.dto.SessionDto;
 import com.ssafy.lighthouse.domain.study.entity.Session;
+import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
 import com.ssafy.lighthouse.domain.study.exception.SessionNotFoundException;
+import com.ssafy.lighthouse.domain.study.repository.SessionCheckRepository;
 import com.ssafy.lighthouse.domain.study.repository.SessionRepository;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.AllArgsConstructor;
 @Transactional
 public class SessionServiceImpl implements SessionService {
 	private SessionRepository sessionRepository;
+	private SessionCheckRepository sessionCheckRepository;
 
 	@Override
 	public List<Session> findAllByStudyId(int studyId) {
@@ -43,6 +46,12 @@ public class SessionServiceImpl implements SessionService {
 		Session studySession = findById(id);
 		studySession.remove();
 		return id;
+	}
+
+	@Override
+	public int createSessionCheck(SessionDto.SessionCheckReq dto) {
+		SessionCheck entity = sessionCheckRepository.save(dto.toEntity());
+		return entity.getId();
 	}
 
 	@Override
