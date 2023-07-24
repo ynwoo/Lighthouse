@@ -1,22 +1,22 @@
-package com.ssafy.lighthouse.domain.study.entity;
+package com.ssafy.lighthouse.domain.study.dto;
 
-import com.ssafy.lighthouse.domain.common.BaseEntity;
+
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
+import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.study.entity.StudyEval;
+import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Study extends BaseEntity {
+@NoArgsConstructor
+public class StudyDto {
     private String title;
     private String description;
     private int hit;
@@ -30,14 +30,14 @@ public class Study extends BaseEntity {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
+    private Study original;
+    private User leader;
+    private Sido sido;
+    private Gugun gugun;
+    private Set<StudyTag> studyTags;
+    private Set<StudyEval> studyEvals;
 
-    // test용
-    public Study(String title) {
-        this.title = title;
-    }
-
-    // study 복제용 constructor
-    public Study(Study study) {
+    public StudyDto(Study study) {
         this.title = study.getTitle();
         this.description = study.getDescription();
         this.hit = study.getHit();
@@ -53,33 +53,9 @@ public class Study extends BaseEntity {
         this.bookmarkCnt = study.getBookmarkCnt();
         this.original = study.getOriginal();
         this.leader = study.getLeader();
-//        this.sido = sido;
-//        this.gugun = gugun;
-        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
-        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
+        this.sido = study.getSido();
+        this.gugun = study.getGugun();
+        this.studyTags = study.getStudyTags();
+        this.studyEvals = study.getStudyEvals();
     }
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "originalId")
-    private Study original;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leaderId")
-    private User leader;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sidoId")
-    private Sido sido;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gugunId")
-    private Gugun gugun;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
-    private Set<StudyTag> studyTags;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
-    private Set<StudyEval> studyEvals;
 }
