@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +15,20 @@ import com.ssafy.lighthouse.domain.user.service.UserService;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-	private UserService userService;
 
-	@Autowired
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
+    private UserService userService;
 
-	@GetMapping("/mypage/{userId}")
-	public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable int userId) {
-		UserMyPageDto userMyPageDto = userService.getMyPageUser(userId);
-		return new ResponseEntity<>(userMyPageDto, HttpStatus.OK);
-	}
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/mypage/{userId}")
+    public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable int userId) {
+        // 전체 Tag 목록도 불러와야함
+        List<String> tags = userService.getKeywordsByUserId(userId);
+        System.out.println(tags.toString());
+        UserMyPageDto userMyPageDto = userService.getMyPageUser(userId);
+        return new ResponseEntity<>(userMyPageDto, HttpStatus.OK);
+    }
 }
