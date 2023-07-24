@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @MappedSuperclass
