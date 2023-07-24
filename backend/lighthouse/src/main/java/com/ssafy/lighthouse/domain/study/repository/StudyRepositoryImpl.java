@@ -6,7 +6,9 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
+import com.ssafy.lighthouse.domain.study.entity.QStudy;
 import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.user.entity.QUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyEval.studyEval;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
+import static com.ssafy.lighthouse.domain.user.entity.QUser.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -24,9 +27,12 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
     @Override
     public List<Study> findAllByStudySearchOption(StudySearchOption options) {
+        QStudy original = new QStudy("original");
         List<Study> studyList = jpaQueryFactory
                 .select(study)
                 .from(study)
+                .leftJoin(study.original, original).fetchJoin()
+                .leftJoin(study.leader, user).fetchJoin()
                 .leftJoin(study.studyEvals, studyEval).fetchJoin()
                 .leftJoin(study.studyTags, studyTag).fetchJoin()
                 .where(

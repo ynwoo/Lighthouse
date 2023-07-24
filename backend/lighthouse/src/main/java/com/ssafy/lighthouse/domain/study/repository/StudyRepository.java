@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<Study, Integer>, StudyRepositoryCustom {
     // 상세 정보 조회 (복제, 상세정보)
-    @EntityGraph(attributePaths = {"leader", "studyTags", "studyEvals"})
+    @EntityGraph(attributePaths = {"original", "leader", "sido", "gugun", "studyTags", "studyEvals"})
     @Query("select s from Study s where s.id = :id and s.isValid = 1")
     Optional<Study> findDetailById(@Param("id") int id);
 
