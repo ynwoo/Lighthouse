@@ -43,4 +43,10 @@ public class StudyNoticeController extends HttpServlet {
 		studyNoticeService.removeNotice(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
+
+	@PostMapping("/check")
+	public ResponseEntity<String> createNoticeCheck(@RequestBody StudyNoticeDto.StudyNoticeCheckReq dto) {
+		studyNoticeService.createNoticeCheck(dto);
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	}
 }
