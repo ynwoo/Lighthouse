@@ -1,9 +1,8 @@
 package com.ssafy.lighthouse.domain.study.service;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
-import java.util.Set;
-
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +19,10 @@ public class SessionServiceTest {
 	private SessionService sessionService;
 
 	@Test
-	public void findById() {
-		Session session = sessionService.findById(1);
-		Set<StudyMaterial> materials = session.getStudyMaterials();
+	public void findByStudyId() {
+		List<Session> sessions = sessionService.findAllByStudyId(1);
+		List<StudyMaterial> materials = sessions.get(0).getStudyMaterials();
 		log.debug("-----------materials: {}", materials);
-		assertEquals(3, materials.size());
+		Assertions.assertEquals(3, materials.size());
 	}
 }
