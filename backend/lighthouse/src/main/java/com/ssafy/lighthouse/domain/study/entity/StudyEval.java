@@ -19,4 +19,11 @@ public class StudyEval extends BaseEntity {
     private String comment;
     @NonNull
     private int score;
+
+    public StudyEval(StudyEval studyEval) {
+        this.studyId = studyEval.getStudyId();
+        this.userId = studyEval.getUserId();
+        this.comment = studyEval.getComment();
+        this.score = studyEval.getScore();
+    }
 }
