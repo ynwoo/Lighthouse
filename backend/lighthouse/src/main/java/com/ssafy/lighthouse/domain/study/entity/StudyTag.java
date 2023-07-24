@@ -15,4 +15,9 @@ public class StudyTag extends BaseEntity {
     private int studyId;
     @NonNull
     private int tagId;
+
+    public StudyTag(StudyTag studyTag) {
+        this.studyId = studyTag.getStudyId();
+        this.tagId = studyTag.getTagId();
+    }
 }
