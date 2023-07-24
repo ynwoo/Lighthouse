@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class StudyEval {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Study {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
