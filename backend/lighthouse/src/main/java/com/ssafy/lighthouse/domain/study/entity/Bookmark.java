@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
-public class Bookmark {
+public class Bookmark implements BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(insertable = false)

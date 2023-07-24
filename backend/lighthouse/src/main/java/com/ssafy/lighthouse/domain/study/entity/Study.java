@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
+import com.ssafy.lighthouse.domain.user.entity.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class Study {
     private int minMember;
     private int currentMember;
     private int isOnline;
-    private int like_cnt;
+    private int likeCnt;
     private int bookmarkCnt;
     
     // test용
@@ -37,8 +38,9 @@ public class Study {
         this.title = title;
     }
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    private User leader;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private User leader;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
