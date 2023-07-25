@@ -8,7 +8,7 @@ public interface PlaceService {
 
     List<SidoDto> getAllSido();
 
-    Map<Integer, String> convertDtoListToMap(List<SidoDto> sidoList);
+    Map<Long, String> convertDtoListToMap(List<SidoDto> sidoList);
 
-    Map<Integer, String> getAllGugunBySidoId(Integer sidoId);
+    Map<Long, String> getAllGugunBySidoId(Long sidoId);
 }

@@ -14,4 +14,11 @@ public class StudyTagDto {
         this.studyId = studyTag.getStudyId();
         this.tagId = studyTag.getTagId();
     }
+
+    public StudyTag toEntity() {
+        return StudyTag.builder()
+                .studyId(this.studyId)
+                .tagId(this.tagId)
+                .build();
+    }
 }
