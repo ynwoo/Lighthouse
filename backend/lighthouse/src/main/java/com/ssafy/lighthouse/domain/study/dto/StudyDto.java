@@ -41,6 +41,9 @@ public class StudyDto {
     private Set<StudyEval> studyEvals;
 
     public StudyDto(Study study) {
+        this.id = study.getId();
+        this.createdAt = study.getCreatedAt();
+        this.isValid = study.getIsValid();
         this.title = study.getTitle();
         this.description = study.getDescription();
         this.hit = study.getHit();

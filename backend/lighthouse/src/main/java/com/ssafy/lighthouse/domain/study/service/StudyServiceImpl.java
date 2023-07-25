@@ -22,7 +22,8 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
-        return studyRepository.findAllByStudySearchOption(options);
+//        return studyRepository.findAllByStudySearchOption(options);
+        return null;
     }
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.

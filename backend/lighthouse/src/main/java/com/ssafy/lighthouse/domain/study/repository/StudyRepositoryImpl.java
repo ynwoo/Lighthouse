@@ -32,7 +32,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
+    public List<Study> findAllByStudySearchOption(StudySearchOption options) {
         QStudy original = new QStudy("original");
         List<Study> studyList = jpaQueryFactory
                 .select(study)
@@ -51,8 +51,8 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .limit(options.getLimit())
                 .fetch();
         ;
-
-        return studyList.stream().map(StudyDto::new).collect(Collectors.toList());
+        return studyList;
+//        return studyList.stream().map(StudyDto::new).collect(Collectors.toList());
     }
 
     // 스터디 온라인 / 오프라인
