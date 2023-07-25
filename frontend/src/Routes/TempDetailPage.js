@@ -1,9 +1,14 @@
 import React from 'react'
-import TempDetail from '../components/Study/TempDetail'
-import TempSide from '../components/Study/TempSide'
+import { Tabs } from 'antd'
+// import TempDetail from '../components/Study/TempDetail'
+import SideComponent from '../components/Utils/SideComponent'
+
+const onChange = (key) => {
+  console.log(key);
+};
 
 export default function TempDetailPage() {
-  const stat = 1
+  // const stat = 1
   return (
     <div
       style={{
@@ -13,10 +18,26 @@ export default function TempDetailPage() {
         marginTop: '-4px',
       }}
     >
-      <TempSide />
+      <div>
+        <SideComponent />
+      </div>
+      <Tabs
+        onChange={onChange}
+        type="card"
+        items={new Array(3).fill(null).map((_, i) => {
+          const id = String(i + 1);
+          return {
+            label: `Tab ${id}`,
+            key: id,
+            children: `Content of Tab Pane ${id}`,
+          };
+        })}
+      />
+
+
 
       {/* stat에 따라 다르게 랜더링 해주는 컴포넌트 */}
-      <TempDetail stat={stat} />
+      {/* <TempDetail stat={stat} /> */}
     </div>
   )
 }

@@ -38,7 +38,9 @@ export default function App() {
           <Tabs.TabPane tab={
             <Link to={item.linkTo}>{item.label}</Link>
           } key={item.key} />
+
         ))}
+
       </div>
     </div >
   )

@@ -15,9 +15,19 @@ const onFinishFailed = (errorInfo) => {
 
 
 function SignIn() {
-  return <div>
+  return <div style={{
+    display: 'flex', justifyContent: 'center', margin: '10px',
+    marginLeft: '20px',
+    // border: '1px solid',
+    padding: '20px',
+    borderRadius: '20px',
+    backgroundColor: 'transparent',
+    // backgroundColor: 'white',
+    // margin: '0px',
+
+  }}>
     <Layout>
-      <Content style={{ border: '1px solid', margin: '100px' }}>
+      <Content style={{ margin: '0px', backgroundColor: 'white', }}>
         <Form
           name="basic"
           labelCol={{
@@ -28,6 +38,7 @@ function SignIn() {
           }}
           style={{
             maxWidth: 600,
+            backgroundColor: 'transparent',
           }}
           initialValues={{
             remember: true,
@@ -58,6 +69,10 @@ function SignIn() {
                 message: 'Please input your password!',
               },
             ]}
+            style={{
+              maxWidth: 600,
+              backgroundColor: 'transparent',
+            }}
           >
             <Input.Password />
           </Form.Item>
@@ -81,7 +96,13 @@ function SignIn() {
           >
             <Link to='/'>
               <Button type="primary" htmlType="submit">
-                Submit
+                SUBMIT
+              </Button>
+            </Link>
+
+            <Link to='/signup'>
+              <Button type="primary" htmlType="submit" danger>
+                SIGNUP
               </Button>
             </Link>
           </Form.Item>
