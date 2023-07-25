@@ -3,15 +3,15 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
-import com.ssafy.lighthouse.domain.common.entity.Gugun;
-import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.study.entity.StudyEval;
-import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -37,8 +37,8 @@ public class StudyDto {
     private User leader;
     private SidoDto sido;
     private GugunDto gugun;
-    private Set<StudyTag> studyTags;
-    private Set<StudyEval> studyEvals;
+    private List<StudyTagDto> studyTags;
+    private List<StudyEvalDto> studyEvals;
 
     public StudyDto(Study study) {
         this.id = study.getId();
@@ -57,11 +57,33 @@ public class StudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
-//        this.original = new StudyDto(study.getOriginal());
+        this.original = study.getOriginal() == null ? null : new StudyDto(study.getOriginal());
         this.leader = study.getLeader();
-//        this.sido = new SidoDto(study.getSido());
-//        this.gugun = new GugunDto(study.getGugun());
-        this.studyTags = study.getStudyTags();
-        this.studyEvals = study.getStudyEvals();
+        this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
+        this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
+        this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
+        this.studyEvals = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
+    }
+
+    public Study toEntity() {
+        return Study.builder()
+                .title(this.title)
+                .description(this.description)
+                .hit(this.hit)
+                .rule(this.rule)
+                .startedAt(this.startedAt)
+                .endedAt(this.endedAt)
+                .recruitFinishedAt(this.recruitFinishedAt)
+                .maxMember(this.maxMember)
+                .minMember(this.minMember)
+                .currentMember(this.currentMember)
+                .isOnline(this.isOnline)
+                .likeCnt(this.likeCnt)
+                .bookmarkCnt(this.bookmarkCnt)
+                .original(this.original.toEntity())
+//                .leader(this.leader.toEntity())
+                .studyTags(this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()))
+                .studyEvals(this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()))
+                .build();
     }
 }
