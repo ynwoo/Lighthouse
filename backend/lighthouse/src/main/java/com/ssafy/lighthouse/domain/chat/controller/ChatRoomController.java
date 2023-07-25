@@ -20,8 +20,8 @@ public class ChatRoomController {
     private final ChatRepository repository;
 
     // 채팅 리스트 확인
-    // "/" 요청 -> 전체 리스트 담아서 return
-    @GetMapping("/")
+    // 전체 리스트 담아서 return
+    @GetMapping("/chat/roomlist")
     public String ChatRoomList(Model model) {
         model.addAttribute("list", repository.findAllRoom());
         log.debug("show all chat room list : {}", repository.findAllRoom());
