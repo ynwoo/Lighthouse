@@ -2,37 +2,38 @@ package com.ssafy.lighthouse.domain.user.service;
 
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import java.util.List;
 
 public interface UserService {
 
-	void addUser(UserMyPageDto userMyPageDto);
+    void addUser(UserMyPageDto userMyPageDto);
 
-	UserMyPageDto loginUser(String userEmail, String userPwd);
+    UserMyPageDto loginUser(String userEmail, String userPwd);
 
-    List<String> getKeywordsByUserId(Long userId);
-	void saveRefreshToken(Long userId, String refreshToken) throws Exception;
+    UserMyPageDto getUserByEmail(String userEmail);
 
-	Object getRefreshToken(Long userId) throws Exception;
+    // List<String> getKeywordsByUserId(Long userId);
+    void saveRefreshToken(Long userId, String refreshToken) throws Exception;
 
-	void deleRefreshToken(Long userId) throws Exception;
+    Object getRefreshToken(Long userId) throws Exception;
 
-	UserMyPageDto getMyPageUser(Long userId);
+    void deleRefreshToken(Long userId) throws Exception;
 
-	// List<String> getKeywordsByUserId(Long userId);
+    UserMyPageDto getMyPageUser(Long userId);
 
-	default UserMyPageDto entityToDto(User userEntity) {
-		UserMyPageDto dto = UserMyPageDto.builder()
-			.name(userEntity.getName())
-			.email(userEntity.getEmail())
-			.nickname(userEntity.getNickname())
-			.profileImgUrl(userEntity.getProfileImgUrl())
-			.age(userEntity.getAge())
-			.sidoId(userEntity.getSidoId())
-			.gugunId(userEntity.getGugunId())
-			.phoneNumber(userEntity.getPhoneNumber())
-			.description(userEntity.getDescription())
-			.build();
-		return dto;
-	}
+    // List<String> getKeywordsByUserId(Long userId);
+
+    default UserMyPageDto entityToDto(User userEntity) {
+        UserMyPageDto dto = UserMyPageDto.builder()
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .nickname(userEntity.getNickname())
+                .profileImgUrl(userEntity.getProfileImgUrl())
+                .age(userEntity.getAge())
+                .sidoId(userEntity.getSidoId())
+                .gugunId(userEntity.getGugunId())
+                .phoneNumber(userEntity.getPhoneNumber())
+                .description(userEntity.getDescription())
+                .build();
+        return dto;
+    }
 }
