@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 @Data
 @Service
-public class chatService {
+public class ChatService {
 
     private final ObjectMapper mapper;
     private Map<String, ChatRoom> chatRooms;
@@ -41,6 +41,8 @@ public class chatService {
                 .roomId(id)
                 .name(name)
                 .build();
+        chatRooms.put(id, room);
+
         return room;
     }
 
