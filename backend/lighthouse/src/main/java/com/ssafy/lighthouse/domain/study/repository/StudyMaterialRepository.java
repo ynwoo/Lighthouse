@@ -10,8 +10,8 @@ import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 
 public interface StudyMaterialRepository extends JpaRepository<StudyMaterial, Integer> {
 	@Query(value = "SELECT sm FROM StudyMaterial sm WHERE  sm.isValid = 1 AND sm.studyId = :studyId")
-	List<StudyMaterial> findByStudyId(@Param("studyId") int studyId);
+	List<StudyMaterial> findByStudyId(@Param("studyId") Long studyId);
 
 	@Query(value = "SELECT sm FROM StudyMaterial sm WHERE  sm.isValid = 1 AND sm.sessionId = :sessionId")
-	List<StudyMaterial> findBySessionId(@Param("sessionId") int sessionId);
+	List<StudyMaterial> findBySessionId(@Param("sessionId") Long sessionId);
 }

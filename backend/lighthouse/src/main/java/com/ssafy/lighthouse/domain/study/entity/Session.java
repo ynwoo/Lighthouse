@@ -17,7 +17,7 @@ import lombok.ToString;
 public class Session extends BaseEntity {
 	private String startedAt;
 	private String endedAt;
-	private int studyId;
+	private Long studyId;
 	private String title;
 	private String description;
 	private String comment;
@@ -25,7 +25,7 @@ public class Session extends BaseEntity {
 	private int seqNum;
 
 	@Builder
-	public Session(String startedAt, String endedAt, int studyId, String title, String description,
+	public Session(String startedAt, String endedAt, Long studyId, String title, String description,
 		String comment, int status, int seqNum) {
 		this.startedAt = startedAt;
 		this.endedAt = endedAt;
@@ -37,7 +37,7 @@ public class Session extends BaseEntity {
 		this.seqNum = seqNum;
 	}
 
-	public void update(String startedAt, String endedAt, int studyId, String title, String description,
+	public void update(String startedAt, String endedAt, Long studyId, String title, String description,
 		String comment, int status, int seqNum) {
 		this.startedAt = startedAt;
 		this.endedAt = endedAt;

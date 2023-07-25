@@ -32,14 +32,14 @@ public class SessionController extends HttpServlet {
 	}
 
 	@PutMapping("/{session-id}")
-	public ResponseEntity<String> updateSession(@PathVariable("session-id") final int id,
+	public ResponseEntity<String> updateSession(@PathVariable("session-id") final Long id,
 												@RequestBody SessionDto.SessionReq dto) {
 		sessionService.updateSession(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{session-id}")
-	public ResponseEntity<String> removeSession(@PathVariable("session-id") final int id) {
+	public ResponseEntity<String> removeSession(@PathVariable("session-id") final Long id) {
 		sessionService.removeSession(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}

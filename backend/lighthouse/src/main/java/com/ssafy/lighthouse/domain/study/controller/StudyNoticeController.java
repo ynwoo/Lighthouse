@@ -32,14 +32,14 @@ public class StudyNoticeController extends HttpServlet {
 	}
 
 	@PutMapping("/{study-notice-id}")
-	public ResponseEntity<String> updateNotice(@PathVariable("study-notice-id") final int id,
+	public ResponseEntity<String> updateNotice(@PathVariable("study-notice-id") final Long id,
 												@RequestBody StudyNoticeDto.StudyNoticeReq dto) {
 		studyNoticeService.updateNotice(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{study-notice-id}")
-	public ResponseEntity<String> removeNotice(@PathVariable("study-notice-id") final int id) {
+	public ResponseEntity<String> removeNotice(@PathVariable("study-notice-id") final Long id) {
 		studyNoticeService.removeNotice(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
