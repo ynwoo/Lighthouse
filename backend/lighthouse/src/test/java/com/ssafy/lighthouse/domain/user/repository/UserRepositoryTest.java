@@ -29,7 +29,7 @@ class UserRepositoryTest {
 	public void testCreateUser() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		User savedUser = userRepository.save(user);
@@ -48,7 +48,7 @@ class UserRepositoryTest {
 	public void testUserCRUD() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		// Create
