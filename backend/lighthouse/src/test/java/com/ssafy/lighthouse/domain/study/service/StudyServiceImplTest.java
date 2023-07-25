@@ -29,7 +29,7 @@ class StudyServiceImplTest {
 
     @Test
     public void createById() {
-        Optional<Study> result = studyRepository.findDetailById(140);
+        Optional<Study> result = studyRepository.findDetailById(140L);
         log.debug("service - findDetailById : {}", result);
         Study study = result.orElseThrow(StudyNotFoundException::new);
         Study newStudy = new Study(study);

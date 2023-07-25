@@ -29,14 +29,14 @@ class UserRepositoryTest {
 	public void testCreateUser() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		User savedUser = userRepository.save(user);
 		em.flush();
 		em.clear();
 
-		User findedUser = userRepository.findById(savedUser.getId()).get();
+		User findedUser = userRepository.findById(savedUser.getId().intValue()).get();
 
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 		assertThat(findedUser.getName()).isEqualTo(savedUser.getName());
@@ -48,7 +48,7 @@ class UserRepositoryTest {
 	public void testUserCRUD() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		// Create
@@ -58,7 +58,7 @@ class UserRepositoryTest {
 		em.clear();
 
 		// Retrieve
-		User findedUser = userRepository.findById(savedUser.getId()).get();
+		User findedUser = userRepository.findById(savedUser.getId().intValue()).get();
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 
 		// Update : 닉네임 업데이트
@@ -66,11 +66,11 @@ class UserRepositoryTest {
 			"new철수야", findedUser.getProfileImgUrl(), findedUser.getAge(),
 			findedUser.getSidoId(), findedUser.getGugunId(), findedUser.getPhoneNumber(), findedUser.getDescription());
 
-		User updatedUser = userRepository.findById(findedUser.getId()).get();
+		User updatedUser = userRepository.findById(findedUser.getId().intValue()).get();
 		assertThat(updatedUser.getNickname()).isEqualTo("new철수야");
 
 		// Delete
-		User deleteUser = userRepository.findById(updatedUser.getId()).get();
+		User deleteUser = userRepository.findById(updatedUser.getId().intValue()).get();
 		deleteUser.remove();
 
 		// List

@@ -19,7 +19,7 @@ class StudyLikeRepositoryTest {
 
     @Test
     public void likeTest() {
-        StudyLike save = studyLikeRepository.save(new StudyLike(1, 1));
+        StudyLike save = studyLikeRepository.save(new StudyLike(1L, 1L));
 
 //        int update = studyLikeRepository.update(1, 1);
 //

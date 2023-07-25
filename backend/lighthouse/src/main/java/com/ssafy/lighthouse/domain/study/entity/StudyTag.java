@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor // test용
 public class StudyTag extends BaseEntity {
     private Long studyId;
     @OneToOne(fetch = FetchType.LAZY)
