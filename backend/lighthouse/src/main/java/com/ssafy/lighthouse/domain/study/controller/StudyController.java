@@ -30,7 +30,7 @@ public class StudyController {
 
     // 상세 조회
     @GetMapping("/{study-id}")
-    public ResponseEntity<?> findDetailById(@PathVariable(name = "study-id") int studyId) {
+    public ResponseEntity<?> findDetailById(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         StudyDto result = studyService.findDetailById(studyId);
         return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
@@ -38,7 +38,7 @@ public class StudyController {
 
     // 템플릿 복제
     @PostMapping("/{study-id}")
-    public ResponseEntity<?> createStudyById(@PathVariable(name = "study-id") int studyId) {
+    public ResponseEntity<?> createStudyById(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         StudyDto result = studyService.createById(studyId);
         return new ResponseEntity<StudyDto>(result, HttpStatus.OK);

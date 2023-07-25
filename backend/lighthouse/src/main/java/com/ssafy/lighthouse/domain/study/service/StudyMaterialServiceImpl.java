@@ -20,33 +20,33 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	private StudyMaterialRepository studyMaterialRepository;
 
 	@Override
-	public List<StudyMaterial> findAllByStudyId(int studyId) {
+	public List<StudyMaterial> findAllByStudyId(Long studyId) {
 		return studyMaterialRepository.findByStudyId(studyId);
 	}
 
 	@Override
-	public int createMaterial(final StudyMaterialDto.StudyMaterialReq dto) {
+	public Long createMaterial(final StudyMaterialDto.StudyMaterialReq dto) {
 		StudyMaterial entity = studyMaterialRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public int updateMaterial(final int id, final StudyMaterialDto.StudyMaterialReq dto) {
+	public Long updateMaterial(final Long id, final StudyMaterialDto.StudyMaterialReq dto) {
 		StudyMaterial studyMaterial = findById(id);
 		studyMaterial.update(dto.getStudyId(), dto.getSessionId(), dto.getType(), dto.getContent(), dto.getFileUrl());
 		return id;
 	}
 
 	@Override
-	public int removeMaterial(final int id) {
+	public Long removeMaterial(final Long id) {
 		StudyMaterial studyMaterial = findById(id);
 		studyMaterial.remove();
 		return id;
 	}
 
 	@Override
-	public StudyMaterial findById(final int id) {
-		final Optional<StudyMaterial> studyMaterial = studyMaterialRepository.findById(id);
+	public StudyMaterial findById(final Long id) {
+		final Optional<StudyMaterial> studyMaterial = studyMaterialRepository.findById(id.intValue());
 		studyMaterial.orElseThrow(() -> new StudyMaterialNotFoundException(id));
 		return studyMaterial.get();
 	}

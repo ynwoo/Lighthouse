@@ -1,22 +1,25 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 
+import com.ssafy.lighthouse.domain.common.dto.GugunDto;
+import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.entity.StudyEval;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class StudyDto {
+    private Long id;
+    private String createdAt;
+    private int isValid;
     private String title;
     private String description;
     private int hit;
@@ -30,14 +33,17 @@ public class StudyDto {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
-    private Study original;
+    private StudyDto original;
     private User leader;
-    private Sido sido;
-    private Gugun gugun;
+    private SidoDto sido;
+    private GugunDto gugun;
     private Set<StudyTag> studyTags;
     private Set<StudyEval> studyEvals;
 
     public StudyDto(Study study) {
+        this.id = study.getId();
+        this.createdAt = study.getCreatedAt();
+        this.isValid = study.getIsValid();
         this.title = study.getTitle();
         this.description = study.getDescription();
         this.hit = study.getHit();
@@ -51,10 +57,10 @@ public class StudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
-        this.original = study.getOriginal();
+//        this.original = new StudyDto(study.getOriginal());
         this.leader = study.getLeader();
-        this.sido = study.getSido();
-        this.gugun = study.getGugun();
+//        this.sido = new SidoDto(study.getSido());
+//        this.gugun = new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags();
         this.studyEvals = study.getStudyEvals();
     }

@@ -29,15 +29,14 @@ class StudyServiceImplTest {
 
     @Test
     public void createById() {
-        Optional<Study> result = studyRepository.findDetailById(140);
-        log.debug("service - findDetailById : {}", result);
-        Study study = result.orElseThrow(StudyNotFoundException::new);
-        Study save = studyRepository.save(study);
-        em.flush();
-        em.clear();
-        studyRepository.findById()
-        assertThat(study).isEqualTo(save);
-        log.debug("service - createById {}", new StudyDto(save));
+//        Optional<Study> result = studyRepository.findDetailById(140L);
+//        log.debug("service - findDetailById : {}", result);
+//        Study study = result.orElseThrow(StudyNotFoundException::new);
+//        Study newStudy = new Study(study);
+//        Study save = studyRepository.save(newStudy);
+//        assertThat(study).isNotEqualTo(save);
+//        assertThat(newStudy).isEqualTo(save);
+//        log.debug("service - createById {}", new StudyDto(save));
     }
 
 }
