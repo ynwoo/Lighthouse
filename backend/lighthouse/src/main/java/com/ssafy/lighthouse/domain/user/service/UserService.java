@@ -11,6 +11,8 @@ public interface UserService {
 
     UserMyPageDto getUserByEmail(String userEmail);
 
+    void updateUser(UserMyPageDto userMyPageDto);
+
     // List<String> getKeywordsByUserId(Long userId);
     void saveRefreshToken(Long userId, String refreshToken) throws Exception;
 

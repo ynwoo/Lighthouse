@@ -7,6 +7,7 @@ import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserTagRepository;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,21 @@ public class UserServiceImpl implements UserService {
         System.out.println(userEmail);
         System.out.println(userRepository.findByEmail(userEmail).toString());
         return UserMyPageDto.from(userRepository.findByEmail(userEmail));
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(UserMyPageDto userMyPageDto) {
+        System.out.println("업데이트 닉네임 : " + userMyPageDto.getNickname());
+        User foundUser = userRepository.findById(userMyPageDto.getId()).get();
+        System.out.println("찾은 유저 : " + foundUser);
+        // Update : 닉네임 업데이트
+        foundUser.updateUserInfo(userMyPageDto.getPassword(), userMyPageDto.getName(),
+                userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
+                userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
+                userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
+
+        System.out.println("업데이트 된 유저 : " + foundUser);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody UserMyPageDto userMyPageDto) {
+    public ResponseEntity<?> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
         userService.addUser(userMyPageDto);
         return new ResponseEntity<>("", HttpStatus.OK);
     }
@@ -76,6 +77,22 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+//    @GetMapping("/logout/{userid}")
+//    public ResponseEntity<?> logoutUser(@PathVariable("userid") String userid) {
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = HttpStatus.ACCEPTED;
+//        try {
+//            userService.deleRefreshToken(userid);
+//            resultMap.put("message", SUCCESS);
+//            status = HttpStatus.ACCEPTED;
+//        } catch (Exception e) {
+//            logger.error("로그아웃 실패 : {}", e);
+//            resultMap.put("message", e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
+
     @GetMapping("/mypage")
     public ResponseEntity<Map<String, Object>> getInfo(
             @RequestBody Map<String, String> param,
@@ -113,4 +130,15 @@ public class UserController {
     // 	UserMyPageDto userMyPageDto = userService.getMyPageUser(userId);
     // 	return new ResponseEntity<>(userMyPageDto, HttpStatus.OK);
     // }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updeateUser(@RequestBody UserMyPageDto userMyPageDto) {
+        System.out.println(userMyPageDto.toString());
+        try {
+            userService.updateUser(userMyPageDto);
+            return new ResponseEntity<String>("SUCCESS!!!", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("FAIL!!!", HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
 }
