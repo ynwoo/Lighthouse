@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.study.service;
 
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
+import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
 import com.ssafy.lighthouse.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,9 @@ public class StudyServiceImpl implements StudyService {
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
     public StudyDto findDetailById(Long studyId) {
-//        Optional<Study> result = studyRepository.findDetailById(studyId);
-//        log.debug("service - findDetailById : {}", result);
-//        return new StudyDto(result.orElseThrow(StudyNotFoundException::new));
-        Optional<StudyDto> result = studyRepository.findDetailById(studyId);
-        return result.orElseThrow(StudyNotFoundException::new);
+        Optional<Study> result = studyRepository.findDetailById(studyId);
+        log.debug("service - findDetailById : {}", result);
+        return new StudyDto(result.orElseThrow(StudyNotFoundException::new));
     }
 
     @Override
