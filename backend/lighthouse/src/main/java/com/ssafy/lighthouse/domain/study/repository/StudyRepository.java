@@ -15,10 +15,6 @@ public interface StudyRepository extends JpaRepository<Study, Integer>, StudyRep
     @Query("select s from Study s where s.id = :studyId and s.isValid = 1")
     Optional<Study> findDetailById(@Param("studyId") Long studyId);
 
-//    @EntityGraph(attributePaths = {"original", "leader", "sido", "gugun", "studyTags", "studyEvals"})
-//    @Query("select s from Study s where s.id = :studyId and s.isValid = 1")
-//    Optional<Study> findDetailById(@Param("studyId") int studyId);
-
     // 단순 조회 (공유, 삭제용)
     @Query("select s from Study s where s.id = :studyId and s.isValid = 1")
     Optional<Study> findById(@Param("studyId") Long studyId);

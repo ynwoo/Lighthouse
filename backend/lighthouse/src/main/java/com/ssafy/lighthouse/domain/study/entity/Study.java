@@ -37,27 +37,27 @@ public class Study extends BaseEntity {
     }
 
     // study 복제용 constructor
-    public Study(Study study) {
-        this.title = study.getTitle();
-        this.description = study.getDescription();
-        this.hit = study.getHit();
-        this.rule = study.getRule();
-        this.startedAt = study.getStartedAt();
-        this.endedAt = study.getEndedAt();
-        this.recruitFinishedAt = study.getRecruitFinishedAt();
-        this.maxMember = study.getMaxMember();
-        this.minMember = study.getMinMember();
-        this.currentMember = study.getCurrentMember();
-        this.isOnline = study.getIsOnline();
-        this.likeCnt = study.getLikeCnt();
-        this.bookmarkCnt = study.getBookmarkCnt();
-        this.original = study.getOriginal();
-        this.leader = study.getLeader();
-//        this.sido = sido;
-//        this.gugun = gugun;
-//        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
-//        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
-    }
+//    public Study(Study study) {
+//        this.title = study.getTitle();
+//        this.description = study.getDescription();
+//        this.hit = study.getHit();
+//        this.rule = study.getRule();
+//        this.startedAt = study.getStartedAt();
+//        this.endedAt = study.getEndedAt();
+//        this.recruitFinishedAt = study.getRecruitFinishedAt();
+//        this.maxMember = study.getMaxMember();
+//        this.minMember = study.getMinMember();
+//        this.currentMember = study.getCurrentMember();
+//        this.isOnline = study.getIsOnline();
+//        this.likeCnt = study.getLikeCnt();
+//        this.bookmarkCnt = study.getBookmarkCnt();
+//        this.original = study.getOriginal();
+//        this.leader = study.getLeader();
+////        this.sido = sido;
+////        this.gugun = gugun;
+////        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
+////        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
+//    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "originalId")
