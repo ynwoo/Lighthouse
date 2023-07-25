@@ -23,39 +23,39 @@ public class StudyNoticeServiceImpl implements StudyNoticeService {
 	private StudyNoticeCheckRepository studyNoticeCheckRepository;
 
 	@Override
-	public List<StudyNotice> findAllByStudyId(int studyId) {
+	public List<StudyNotice> findAllByStudyId(Long studyId) {
 		return studyNoticeRepository.findByStudyId(studyId);
 	}
 
 	@Override
-	public int createNotice(final StudyNoticeDto.StudyNoticeReq dto) {
+	public Long createNotice(final StudyNoticeDto.StudyNoticeReq dto) {
 		StudyNotice entity = studyNoticeRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public int updateNotice(final int id, final StudyNoticeDto.StudyNoticeReq dto) {
+	public Long updateNotice(final Long id, final StudyNoticeDto.StudyNoticeReq dto) {
 		StudyNotice studyNotice = findById(id);
 		studyNotice.update(dto.getStudyId(), dto.getContent());
 		return id;
 	}
 
 	@Override
-	public int removeNotice(final int id) {
+	public Long removeNotice(final Long id) {
 		StudyNotice studyNotice = findById(id);
 		studyNotice.remove();
 		return id;
 	}
 
 	@Override
-	public int createNoticeCheck(StudyNoticeDto.StudyNoticeCheckReq dto) {
+	public Long createNoticeCheck(StudyNoticeDto.StudyNoticeCheckReq dto) {
 		StudyNoticeCheck entity = studyNoticeCheckRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public StudyNotice findById(final int id) {
-		final Optional<StudyNotice> studyNotice = studyNoticeRepository.findById(id);
+	public StudyNotice findById(final Long id) {
+		final Optional<StudyNotice> studyNotice = studyNoticeRepository.findById(id.intValue());
 		studyNotice.orElseThrow(() -> new StudyNoticeNotFoundException(id));
 		return studyNotice.get();
 	}

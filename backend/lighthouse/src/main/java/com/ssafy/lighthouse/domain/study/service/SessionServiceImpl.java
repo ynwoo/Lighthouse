@@ -20,18 +20,18 @@ public class SessionServiceImpl implements SessionService {
 	private SessionRepository sessionRepository;
 
 	@Override
-	public List<Session> findAllByStudyId(int studyId) {
+	public List<Session> findAllByStudyId(Long studyId) {
 		return sessionRepository.findByStudyId(studyId);
 	}
 
 	@Override
-	public int createSession(final SessionDto.SessionReq dto) {
+	public Long createSession(final SessionDto.SessionReq dto) {
 		Session entity = sessionRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public int updateSession(final int id, final SessionDto.SessionReq dto) {
+	public Long updateSession(final Long id, final SessionDto.SessionReq dto) {
 		Session session = findById(id);
 		session.update(dto.getStartedAt(), dto.getEndedAt(), dto.getStudyId(), dto.getTitle(),
 			dto.getDescription(), dto.getComment(), dto.getStatus(), dto.getSeqNum());
@@ -39,15 +39,15 @@ public class SessionServiceImpl implements SessionService {
 	}
 
 	@Override
-	public int removeSession(final int id) {
+	public Long removeSession(final Long id) {
 		Session studySession = findById(id);
 		studySession.remove();
 		return id;
 	}
 
 	@Override
-	public Session findById(final int id) {
-		final Optional<Session> studySession = sessionRepository.findById(id);
+	public Session findById(final Long id) {
+		final Optional<Session> studySession = sessionRepository.findById(id.intValue());
 		studySession.orElseThrow(() -> new SessionNotFoundException(id));
 		return studySession.get();
 	}

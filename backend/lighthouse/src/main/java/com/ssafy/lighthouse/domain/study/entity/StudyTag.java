@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.entity.Tag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,15 +10,14 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class StudyTag extends BaseEntity {
-    @NonNull
-    private int studyId;
-    @NonNull
-    private int tagId;
+    private Long studyId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tagId")
+    private Tag tag;
 
     public StudyTag(StudyTag studyTag) {
         this.studyId = studyTag.getStudyId();
-        this.tagId = studyTag.getTagId();
+        this.tag = studyTag.getTag();
     }
 }

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface StudyService {
     List<StudyDto> findAllByStudySearchOption(StudySearchOption options);
-    StudyDto findDetailById(int studyId);
-    StudyDto createById(int studyId);
+    StudyDto findDetailById(Long studyId);
+    StudyDto createById(Long studyId);
 }
