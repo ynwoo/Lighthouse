@@ -30,13 +30,13 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public long createQna(QnaDto.QnaReq dto) {
+	public long createQna(QnaDto.Req dto) {
 		Qna entity = qnaRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public long updateQna(long id, QnaDto.QnaReq dto) {
+	public long updateQna(long id, QnaDto.Req dto) {
 		Qna qna = findById(id);
 		qna.update(dto.getUserId(), dto.getStudyId(), dto.getQuestion(), dto.getAnswer());
 		return id;
