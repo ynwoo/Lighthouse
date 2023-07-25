@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/mypage/{userId}")
-    public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable int userId) {
+    public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable Long userId) {
         // 전체 Tag 목록도 불러와야함
         List<String> tags = userService.getKeywordsByUserId(userId);
         System.out.println(tags.toString());

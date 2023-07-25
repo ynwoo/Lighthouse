@@ -36,7 +36,7 @@ class UserRepositoryTest {
 		em.flush();
 		em.clear();
 
-		User findedUser = userRepository.findById(savedUser.getId().intValue()).get();
+		User findedUser = userRepository.findById((long) savedUser.getId().intValue()).get();
 
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 		assertThat(findedUser.getName()).isEqualTo(savedUser.getName());
@@ -58,7 +58,7 @@ class UserRepositoryTest {
 		em.clear();
 
 		// Retrieve
-		User findedUser = userRepository.findById(savedUser.getId().intValue()).get();
+		User findedUser = userRepository.findById(savedUser.getId()).get();
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 
 		// Update : 닉네임 업데이트
@@ -66,11 +66,11 @@ class UserRepositoryTest {
 			"new철수야", findedUser.getProfileImgUrl(), findedUser.getAge(),
 			findedUser.getSidoId(), findedUser.getGugunId(), findedUser.getPhoneNumber(), findedUser.getDescription());
 
-		User updatedUser = userRepository.findById(findedUser.getId().intValue()).get();
+		User updatedUser = userRepository.findById(findedUser.getId()).get();
 		assertThat(updatedUser.getNickname()).isEqualTo("new철수야");
 
 		// Delete
-		User deleteUser = userRepository.findById(updatedUser.getId().intValue()).get();
+		User deleteUser = userRepository.findById(updatedUser.getId()).get();
 		deleteUser.remove();
 
 		// List
