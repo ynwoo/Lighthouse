@@ -50,6 +50,47 @@ public class SessionDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SessionRes {
+		private Long id;
+		private String createdAt;
+		private String startedAt;
+		private String endedAt;
+		private Long studyId;
+		private String title;
+		private String description;
+		private String comment;
+		private int status;
+		private int seqNum;
+
+		public SessionRes(Session session) {
+			this.id = session.getId();
+			this.createdAt = session.getCreatedAt();
+			this.startedAt = session.getStartedAt();
+			this.endedAt = session.getEndedAt();
+			this.studyId = session.getStudyId();
+			this.title = session.getTitle();
+			this.description = session.getDescription();
+			this.comment = session.getComment();
+			this.status = session.getStatus();
+			this.seqNum = session.getSeqNum();
+		}
+
+		public Session toEntity() {
+			return Session.builder()
+				.startedAt(startedAt)
+				.endedAt(endedAt)
+				.studyId(studyId)
+				.title(title)
+				.description(description)
+				.comment(comment)
+				.status(status)
+				.seqNum(seqNum)
+				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckReq {
 		private Long userId;
 		private Long sessionId;
