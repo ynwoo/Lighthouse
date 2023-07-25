@@ -51,7 +51,6 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .limit(options.getLimit())
                 .fetch();
         ;
-
         return studyList.stream().map(StudyDto::new).collect(Collectors.toList());
     }
 
