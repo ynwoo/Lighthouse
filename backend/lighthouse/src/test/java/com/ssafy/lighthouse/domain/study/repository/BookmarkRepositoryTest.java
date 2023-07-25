@@ -27,7 +27,7 @@ class BookmarkRepositoryTest {
 
     @Test
     public void bookmarkTest() {
-        Bookmark bookmark = new Bookmark(1,1);
+        Bookmark bookmark = new Bookmark(1L,1L);
 
         Bookmark save = bookmarkRepository.save(bookmark);
 //        List<Bookmark> findAll = bookmarkRepository.findAll();
@@ -38,14 +38,14 @@ class BookmarkRepositoryTest {
 
     @Test
     public void bookmarkSaveTest() {
-        Bookmark bookmark = new Bookmark(1,1);
+        Bookmark bookmark = new Bookmark(1L,1L);
 
         Bookmark save = bookmarkRepository.save(bookmark);
 
         em.flush();
         em.clear();
 
-        Optional<Bookmark> bookmark1 = bookmarkRepository.find(1, 1);
+        Optional<Bookmark> bookmark1 = bookmarkRepository.find(1L, 1L);
 
         log.debug("bookmark : {}", bookmark1.get());
         bookmark1.get().remove();

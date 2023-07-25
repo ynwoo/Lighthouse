@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
+import com.ssafy.lighthouse.domain.common.entity.Tag;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,10 +29,10 @@ class StudyTagRepositoryTest {
 
     @BeforeEach
     public void init() {
-        studyTagRepository.save(new StudyTag(1,1));
-        studyTagRepository.save(new StudyTag(2,2));
-        studyTagRepository.save(new StudyTag(3,3));
-        studyTagRepository.save(new StudyTag(4,4));
+        studyTagRepository.save(new StudyTag(1L, new Tag()));
+        studyTagRepository.save(new StudyTag(2L, new Tag()));
+        studyTagRepository.save(new StudyTag(3L, new Tag()));
+        studyTagRepository.save(new StudyTag(4L, new Tag()));
         em.flush();
         em.clear();
     }
@@ -46,6 +47,6 @@ class StudyTagRepositoryTest {
 
     @Test
     public void studyTagUpdateTest() {
-        Optional<StudyTag> studyTag = studyTagRepository.find(1, 1);
+        Optional<StudyTag> studyTag = studyTagRepository.find(1L, 1L);
     }
 }
