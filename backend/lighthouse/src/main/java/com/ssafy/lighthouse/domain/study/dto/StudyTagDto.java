@@ -11,10 +11,11 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class StudyTagDto {
     private Long studyId;
-    private TagDto tag;
+    private Long tagId;
+//    private TagDto tag;
 
     public StudyTagDto(StudyTag studyTag) {
         this.studyId = studyTag.getStudyId();
-        this.tag = new TagDto(studyTag.getTag());
+        this.tagId = studyTag.getTagId();
     }
 }
