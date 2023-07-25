@@ -4,10 +4,7 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     private String title;

@@ -22,14 +22,14 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
-//        return studyRepository.findAllByStudySearchOption(options);
-        return null;
+        return studyRepository.findAllByStudySearchOption(options);
     }
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
     public StudyDto findDetailById(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
+        log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
         return new StudyDto(result.orElseThrow(StudyNotFoundException::new));
     }

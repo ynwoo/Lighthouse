@@ -1,10 +1,7 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
 
-import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,7 +29,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Study> findAllByStudySearchOption(StudySearchOption options) {
+    public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
         QStudy original = new QStudy("original");
         List<Study> studyList = jpaQueryFactory
                 .select(study)
@@ -51,8 +48,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .limit(options.getLimit())
                 .fetch();
         ;
-        return studyList;
-//        return studyList.stream().map(StudyDto::new).collect(Collectors.toList());
+        return studyList.stream().map(StudyDto::new).collect(Collectors.toList());
     }
 
     // 스터디 온라인 / 오프라인
