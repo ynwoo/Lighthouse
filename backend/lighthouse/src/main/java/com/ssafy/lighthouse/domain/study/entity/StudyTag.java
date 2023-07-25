@@ -17,6 +17,6 @@ public class StudyTag extends BaseEntity {
 
     public StudyTag(StudyTag studyTag) {
         this.studyId = studyTag.getStudyId();
-        this.tagId = studyTag.getTagId();
+        this.tag = studyTag.getTag();
     }
 }
