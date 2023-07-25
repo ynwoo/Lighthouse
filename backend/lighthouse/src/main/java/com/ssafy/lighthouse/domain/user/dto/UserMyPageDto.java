@@ -16,15 +16,15 @@ public class UserMyPageDto {
 
 	private String profileImgUrl;
 	private int age;
-	private int sidoId;
-	private int gugunId;
+	private Long sidoId;
+	private Long gugunId;
 	private String phoneNumber;
 	private String description;
 	List<String> userTagList;
 
 	@Builder
 	public UserMyPageDto(String password, String name, String email, String nickname, String profileImgUrl, int age,
-		int sidoId, int gugunId, String phoneNumber, String description, List<String> userTagList) {
+						 Long sidoId, Long gugunId, String phoneNumber, String description, List<String> userTagList) {
 		this.password = password;
 		this.name = name;
 		this.email = email;

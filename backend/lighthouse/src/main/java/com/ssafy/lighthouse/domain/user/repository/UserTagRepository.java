@@ -8,7 +8,7 @@ import com.ssafy.lighthouse.domain.user.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserTagRepository extends JpaRepository<User, Integer> {
+public interface UserTagRepository extends JpaRepository<User, Long> {
 	List<User> findByIsValid(int isValid);
 
 	@Query("SELECT DISTINCT t.keyword FROM UserTag ut " +
