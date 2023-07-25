@@ -58,4 +58,16 @@ public class Study extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Set<StudyEval> studyEvals;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyNotice> studyNotices;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyMaterial> studyMaterials;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<Session> sessions;
 }

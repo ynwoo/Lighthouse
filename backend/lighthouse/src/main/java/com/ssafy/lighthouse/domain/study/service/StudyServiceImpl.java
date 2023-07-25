@@ -45,7 +45,8 @@ public class StudyServiceImpl implements StudyService {
         Optional<Study> findDetail = studyRepository.findDetailById(studyId);
         log.debug("service - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(StudyNotFoundException::new);
-        Study newStudy = new StudyDto(study).toEntity();
+        StudyDto studyDto = new StudyDto(study);
+        Study newStudy = studyDto.toEntity();
 
         // study 넣기
         studyRepository.save(newStudy);

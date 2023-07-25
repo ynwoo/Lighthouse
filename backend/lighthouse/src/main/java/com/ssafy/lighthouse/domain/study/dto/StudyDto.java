@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,8 +36,11 @@ public class StudyDto {
     private User leader;
     private SidoDto sido;
     private GugunDto gugun;
-    private List<StudyTagDto> studyTags;
-    private List<StudyEvalDto> studyEvals;
+    private List<StudyTagDto> studyTagDtos;
+    private List<StudyEvalDto> studyEvalDtos;
+    private List<StudyNoticeDto> studyNoticeDtos;
+    private List<StudyMaterialDto> studyMaterialDtos;
+    private List<SessionDto> sessionDtos;
 
     public StudyDto(Study study) {
         this.id = study.getId();
@@ -61,8 +63,11 @@ public class StudyDto {
         this.leader = study.getLeader();
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
-        this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
-        this.studyEvals = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
+        this.studyTagDtos = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
+        this.studyEvalDtos = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
+//        this.studyMaterialDtos = study.getStudyMaterial() == null ? null : study.getStudyMaterial().stream().map(StudyMaterialDto::new).collect(Collectors.toList());
+//        this.studyNoticeDtos = study.getStudyNotice() == null ? null : study.getStudyNotice().stream().map(StudyNoticeDto::new).collect(Collectors.toList());
+//        this.sessionDtos = study.getSession() == null ? null : study.getSession().stream().map(SessionDto::new).collect(Collectors.toList());
     }
 
     public Study toEntity() {
@@ -80,10 +85,13 @@ public class StudyDto {
                 .isOnline(this.isOnline)
                 .likeCnt(this.likeCnt)
                 .bookmarkCnt(this.bookmarkCnt)
-                .original(this.original.toEntity())
+                .original(this.original != null ? this.original.toEntity() : null)
 //                .leader(this.leader.toEntity())
-                .studyTags(this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()))
-                .studyEvals(this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()))
+                .studyTags(this.studyTagDtos != null ? this.studyTagDtos.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
+                .studyEvals(this.studyTagDtos != null ? this.studyEvalDtos.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
+//                .studyMaterials(this.studyMaterialDtos.stream().map(StudyMaterialDto::toEntity).collect(Collectors.toSet()))
+//                .studyNotices(this.studyNoticeDtos.stream().map(StudyNoticeDto::toEntity).collect(Collectors.toSet()))
+//                .sessions(this.sessionDtos.stream().map(SessionDto::toEntity).collect(Collectors.toSet()))
                 .build();
     }
 }
