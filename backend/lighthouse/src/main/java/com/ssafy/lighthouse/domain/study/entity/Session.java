@@ -1,6 +1,11 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 
@@ -23,6 +28,14 @@ public class Session extends BaseEntity {
 	private String comment;
 	private int status;
 	private int seqNum;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "sessionId")
+	private List<StudyMaterial> studyMaterials;
+
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "sessionId")
+	private List<SessionCheck> sessionChecks;
 
 	@Builder
 	public Session(String startedAt, String endedAt, Long studyId, String title, String description,
