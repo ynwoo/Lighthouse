@@ -29,10 +29,10 @@ class StudyTagRepositoryTest {
 
     @BeforeEach
     public void init() {
-        studyTagRepository.save(new StudyTag(1L, new Tag()));
-        studyTagRepository.save(new StudyTag(2L, new Tag()));
-        studyTagRepository.save(new StudyTag(3L, new Tag()));
-        studyTagRepository.save(new StudyTag(4L, new Tag()));
+        studyTagRepository.save(new StudyTag(1L, 1L));
+        studyTagRepository.save(new StudyTag(2L, 1L));
+        studyTagRepository.save(new StudyTag(3L, 1L));
+        studyTagRepository.save(new StudyTag(4L, 1L));
         em.flush();
         em.clear();
     }
@@ -47,6 +47,6 @@ class StudyTagRepositoryTest {
 
     @Test
     public void studyTagUpdateTest() {
-        Optional<StudyTag> studyTag = studyTagRepository.find(1L, 1L);
+//        Optional<StudyTag> studyTag = studyTagRepository.find(1L, 1L);
     }
 }

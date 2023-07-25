@@ -28,6 +28,7 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public StudyDto findDetailById(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
+        log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
         return new StudyDto(result.orElseThrow(StudyNotFoundException::new));
     }
