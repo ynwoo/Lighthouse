@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class SidoDto {
 
-    private Integer id;
+    private Long id;
     private String name;
 
-    public SidoDto(Integer id, String name) {
+    public SidoDto(Long id, String name) {
         this.id = id;
         this.name = name;
     }

@@ -22,15 +22,15 @@ public class PlaceController {
     }
 
     @GetMapping("/sido")
-    public ResponseEntity<Map<Integer, String>> getAllsido() {
+    public ResponseEntity<Map<Long, String>> getAllsido() {
         List<SidoDto> sidoList = placeService.getAllSido();
-        Map<Integer, String> sidoMap = placeService.convertDtoListToMap(sidoList);
+        Map<Long, String> sidoMap = placeService.convertDtoListToMap(sidoList);
         return ResponseEntity.ok(sidoMap);
     }
 
     @GetMapping("/gugun/{sidoId}")
-    public ResponseEntity<Map<Integer, String>> getAllGugunBySidoId(@PathVariable int sidoId) {
-        Map<Integer, String> gugunMap = placeService.getAllGugunBySidoId(sidoId);
+    public ResponseEntity<Map<Long, String>> getAllGugunBySidoId(@PathVariable Long sidoId) {
+        Map<Long, String> gugunMap = placeService.getAllGugunBySidoId(sidoId);
         return ResponseEntity.ok(gugunMap);
     }
 }
