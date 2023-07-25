@@ -12,7 +12,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 public class Bookmark extends BaseEntity {
     @NonNull
-    private int studyId;
+    private Long studyId;
     @NonNull
-    private int userId;
+    private Long userId;
 }
