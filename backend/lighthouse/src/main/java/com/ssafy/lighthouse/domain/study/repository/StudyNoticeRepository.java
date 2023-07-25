@@ -12,5 +12,5 @@ import com.ssafy.lighthouse.domain.study.entity.StudyNotice;
 public interface StudyNoticeRepository extends JpaRepository<StudyNotice, Integer> {
 	@EntityGraph(attributePaths = {"studyNoticeChecks"})
 	@Query(value = "SELECT sn FROM StudyNotice sn WHERE  sn.isValid = 1 AND sn.studyId = :studyId")
-	List<StudyNotice> findByStudyId(@Param("studyId") int studyId);
+	public List<StudyNotice> findByStudyId(@Param("studyId") Long studyId);
 }

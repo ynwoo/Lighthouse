@@ -15,12 +15,12 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class SessionCheck extends BaseEntity {
-	private int userId;
-	private int sessionId;
+	private Long userId;
+	private Long sessionId;
 	private String content;
 
 	@Builder
-	public SessionCheck(int userId, int sessionId, String content) {
+	public SessionCheck(Long userId, long sessionId, String content) {
 		this.userId = userId;
 		this.sessionId = sessionId;
 		this.content = content;

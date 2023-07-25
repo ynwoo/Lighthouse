@@ -32,14 +32,14 @@ public class StudyMaterialController extends HttpServlet {
 	}
 
 	@PutMapping("/{study-material-id}")
-	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final int id,
+	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
 												@RequestBody StudyMaterialDto.StudyMaterialReq dto) {
 		studyMaterialService.updateMaterial(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{study-material-id}")
-	public ResponseEntity<String> removeMaterial(@PathVariable("study-material-id") final int id) {
+	public ResponseEntity<String> removeMaterial(@PathVariable("study-material-id") final Long id) {
 		studyMaterialService.removeMaterial(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}

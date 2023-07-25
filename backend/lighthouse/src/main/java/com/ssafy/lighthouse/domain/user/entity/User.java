@@ -22,13 +22,13 @@ public class User extends BaseEntity {
 
 	private String profileImgUrl;
 	private int age;
-	private int sidoId;
-	private int gugunId;
+	private Long sidoId;
+	private Long gugunId;
 	private String phoneNumber;
 	private String description;
 
 	public User(String password, String name, String email, String nickname,
-		String profileImgUrl, int age, int sidoId, int gugunId,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
 		String phoneNumber, String description) {
 		this.password = password;
 		this.name = name;
@@ -43,7 +43,7 @@ public class User extends BaseEntity {
 	}
 
 	public void updateUserInfo(String password, String name, String nickname,
-		String profileImgUrl, int age, int sidoId, int gugunId,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
 		String phoneNumber, String description) {
 		this.password = password;
 		this.name = name;

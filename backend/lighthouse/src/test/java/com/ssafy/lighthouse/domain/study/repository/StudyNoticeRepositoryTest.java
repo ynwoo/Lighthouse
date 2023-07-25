@@ -23,7 +23,7 @@ public class StudyNoticeRepositoryTest {
 	public void saveTest() {
 		//생성
 		StudyNotice studyNotice = StudyNotice.builder()
-			.studyId(1)
+			.studyId(1L)
 			.content("test notice content")
 			.build();
 		

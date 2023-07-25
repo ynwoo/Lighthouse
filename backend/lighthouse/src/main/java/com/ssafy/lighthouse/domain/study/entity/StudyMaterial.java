@@ -15,14 +15,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyMaterial extends BaseEntity {
-	private int studyId;
-	private int sessionId;
+	private Long studyId;
+	private Long sessionId;
 	private int type;
 	private String content;
 	private String fileUrl;
 
 	@Builder
-	public StudyMaterial(int studyId, int sessionId, int type, String content, String fileUrl) {
+	public StudyMaterial(Long studyId, Long sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;
 		this.sessionId = sessionId;
 		this.type = type;
@@ -30,7 +30,7 @@ public class StudyMaterial extends BaseEntity {
 		this.fileUrl = fileUrl;
 	}
 
-	public void update(int studyId, int sessionId, int type, String content, String fileUrl) {
+	public void update(Long studyId, Long sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;
 		this.sessionId = sessionId;
 		this.type = type;

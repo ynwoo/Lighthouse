@@ -23,12 +23,12 @@ class StudyEvalRepositoryTest {
 
     @Test
     public void studyEvalTest() {
-        StudyEval save = studyEvalRepository.save(new StudyEval(1, 1, "", 1));
+        StudyEval save = studyEvalRepository.save(new StudyEval(1L, 1L, "", 1));
 
         em.flush();
         em.clear();
 
-        Optional<StudyEval> studyEval = studyEvalRepository.find(1, 1);
+        Optional<StudyEval> studyEval = studyEvalRepository.find(1L, 1L);
         studyEval.get().remove();
         log.debug("studyEval : {}", studyEval);
 

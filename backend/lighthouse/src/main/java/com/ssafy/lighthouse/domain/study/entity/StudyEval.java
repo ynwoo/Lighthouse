@@ -12,11 +12,18 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 public class StudyEval extends BaseEntity {
     @NonNull
-    private int studyId;
+    private Long studyId;
     @NonNull
-    private int userId;
+    private Long userId;
     @NonNull
     private String comment;
     @NonNull
     private int score;
+
+    public StudyEval(StudyEval studyEval) {
+        this.studyId = studyEval.getStudyId();
+        this.userId = studyEval.getUserId();
+        this.comment = studyEval.getComment();
+        this.score = studyEval.getScore();
+    }
 }
