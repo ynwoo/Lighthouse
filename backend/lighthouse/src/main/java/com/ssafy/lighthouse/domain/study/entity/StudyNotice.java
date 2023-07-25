@@ -21,16 +21,16 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyNotice extends BaseEntity {
-	private int studyId;
+	private Long studyId;
 	private String content;
 
 	@Builder
-	public StudyNotice(int studyId, String content) {
+	public StudyNotice(Long studyId, String content) {
 		this.studyId = studyId;
 		this.content = content;
 	}
 
-	public void update(int studyId, String content) {
+	public void update(Long studyId, String content) {
 		this.studyId = studyId;
 		this.content = content;
 	}

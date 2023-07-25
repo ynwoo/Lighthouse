@@ -12,7 +12,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Integer> {
     
     // remove -> find로 찾아와서 isValid 0으로 변경
     @Query("select bm from Bookmark bm where bm.studyId = :studyId and bm.userId = :userId and bm.isValid = 1")
-    Optional<Bookmark> find(@Param("studyId") int studyId, @Param("userId") int userId);
+    Optional<Bookmark> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 
     // update -> db에 직접 업데이트
 //    @Modifying(clearAutomatically = true)

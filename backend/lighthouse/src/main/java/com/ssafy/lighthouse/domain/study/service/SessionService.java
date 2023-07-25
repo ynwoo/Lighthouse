@@ -6,9 +6,9 @@ import com.ssafy.lighthouse.domain.study.dto.SessionDto;
 import com.ssafy.lighthouse.domain.study.entity.Session;
 
 public interface SessionService {
-	List<Session> findAllByStudyId(int studyId);
-	int createSession(SessionDto.SessionReq dto);
-	int updateSession(int id, SessionDto.SessionReq dto);
-	int removeSession(int id);
-	Session findById(int id);
+	List<Session> findAllByStudyId(Long studyId);
+	Long createSession(SessionDto.SessionReq dto);
+	Long updateSession(Long id, SessionDto.SessionReq dto);
+	Long removeSession(Long id);
+	Session findById(Long id);
 }

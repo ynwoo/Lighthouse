@@ -55,8 +55,8 @@ public class Study extends BaseEntity {
         this.leader = study.getLeader();
 //        this.sido = sido;
 //        this.gugun = gugun;
-        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
-        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
+//        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
+//        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
     }
 
     @OneToOne(fetch = FetchType.LAZY)

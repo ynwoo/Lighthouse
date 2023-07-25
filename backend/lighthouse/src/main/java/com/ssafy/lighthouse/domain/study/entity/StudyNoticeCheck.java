@@ -15,11 +15,11 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class StudyNoticeCheck extends BaseEntity {
-	private int userId;
-	private int studyNoticeId;
+	private Long userId;
+	private Long studyNoticeId;
 
 	@Builder
-	public StudyNoticeCheck(int userId, int studyNoticeId) {
+	public StudyNoticeCheck(Long userId, Long studyNoticeId) {
 		this.userId = userId;
 		this.studyNoticeId = studyNoticeId;
 	}

@@ -12,11 +12,11 @@ public class StudyNoticeDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeReq {
-		private int studyId;
+		private Long studyId;
 		private String content;
 
 		@Builder
-		public StudyNoticeReq(int studyId, String content) {
+		public StudyNoticeReq(Long studyId, String content) {
 			this.studyId = studyId;
 			this.content = content;
 		}
@@ -32,11 +32,11 @@ public class StudyNoticeDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeCheckReq {
-		private int userId;
-		private int studyNoticeId;
+		private Long userId;
+		private Long studyNoticeId;
 
 		@Builder
-		public StudyNoticeCheckReq(int userId, int studyNoticeId) {
+		public StudyNoticeCheckReq(Long userId, Long studyNoticeId) {
 			this.userId = userId;
 			this.studyNoticeId = studyNoticeId;
 		}

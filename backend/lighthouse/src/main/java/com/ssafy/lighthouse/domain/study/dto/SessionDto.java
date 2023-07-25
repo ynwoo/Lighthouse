@@ -13,7 +13,7 @@ public class SessionDto {
 	public static class SessionReq {
 		private String startedAt;
 		private String endedAt;
-		private int studyId;
+		private Long studyId;
 		private String title;
 		private String description;
 		private String comment;
@@ -21,7 +21,7 @@ public class SessionDto {
 		private int seqNum;
 
 		@Builder
-		public SessionReq(String startedAt, String endedAt, int studyId, String title, String description,
+		public SessionReq(String startedAt, String endedAt, Long studyId, String title, String description,
 			String comment, int status, int seqNum) {
 			this.startedAt = startedAt;
 			this.endedAt = endedAt;

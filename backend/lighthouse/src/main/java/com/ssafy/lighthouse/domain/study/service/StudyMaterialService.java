@@ -6,9 +6,9 @@ import com.ssafy.lighthouse.domain.study.dto.StudyMaterialDto;
 import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 
 public interface StudyMaterialService {
-	List<StudyMaterial> findAllByStudyId(int studyId);
-	int createMaterial(StudyMaterialDto.StudyMaterialReq dto);
-	int updateMaterial(int id, StudyMaterialDto.StudyMaterialReq dto);
-	int removeMaterial(int id);
-	StudyMaterial findById(int id);
+	List<StudyMaterial> findAllByStudyId(Long studyId);
+	Long createMaterial(StudyMaterialDto.StudyMaterialReq dto);
+	Long updateMaterial(Long id, StudyMaterialDto.StudyMaterialReq dto);
+	Long removeMaterial(Long id);
+	StudyMaterial findById(Long id);
 }

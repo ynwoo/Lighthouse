@@ -14,6 +14,6 @@ import javax.persistence.OneToOne;
 @Getter
 @NoArgsConstructor
 public class Gugun extends BaseEntity {
-    private int sidoId;
+    private Long sidoId;
     private String name;
 }
