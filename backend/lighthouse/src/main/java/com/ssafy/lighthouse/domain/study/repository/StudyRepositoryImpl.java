@@ -10,8 +10,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.entity.QStudy;
-import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.study.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +19,11 @@ import java.util.stream.Collectors;
 
 import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
+import static com.ssafy.lighthouse.domain.study.entity.QSession.session;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyEval.studyEval;
+import static com.ssafy.lighthouse.domain.study.entity.QStudyMaterial.studyMaterial;
+import static com.ssafy.lighthouse.domain.study.entity.QStudyNotice.studyNotice;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
 import static com.ssafy.lighthouse.domain.user.entity.QUser.user;
 
@@ -41,6 +43,9 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .leftJoin(study.leader, user).fetchJoin()
                 .leftJoin(study.studyEvals, studyEval).fetchJoin()
                 .leftJoin(study.studyTags, studyTag).fetchJoin()
+                .leftJoin(study.studyNotices, studyNotice).fetchJoin()
+                .leftJoin(study.studyMaterials, studyMaterial).fetchJoin()
+                .leftJoin(study.sessions, session).fetchJoin()
                 .leftJoin(study.sido, sido).fetchJoin()
                 .leftJoin(study.gugun, gugun).fetchJoin()
                 .where(
