@@ -34,7 +34,7 @@ public class StudyDto {
     private int likeCnt;
     private int bookmarkCnt;
     private StudyDto original;
-//    private UserDto leader;
+    private User leader;
     private SidoDto sido;
     private GugunDto gugun;
     private Set<StudyTag> studyTags;
@@ -55,7 +55,7 @@ public class StudyDto {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.original = new StudyDto(study.getOriginal());
-//        this.leader = study.getLeader();
+        this.leader = study.getLeader();
         this.sido = new SidoDto(study.getSido());
         this.gugun = new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags();
