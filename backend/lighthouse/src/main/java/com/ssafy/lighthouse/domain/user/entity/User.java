@@ -18,47 +18,44 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class User extends BaseEntity {
 
-    private String password;
-    private String name;
-    private String email;
-    private String nickname;
+	private String password;
+	private String name;
+	private String email;
+	private String nickname;
 
-    private String profileImgUrl;
-    private int age;
-    private int sidoId;
-    private int gugunId;
-    private String phoneNumber;
-    private String description;
+	private String profileImgUrl;
+	private int age;
+	private Long sidoId;
+	private Long gugunId;
+	private String phoneNumber;
+	private String description;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserTag> userTags = new HashSet<>();
+	public User(String password, String name, String email, String nickname,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
 
-    public User(String password, String name, String email, String nickname,
-            String profileImgUrl, int age, int sidoId, int gugunId,
-            String phoneNumber, String description) {
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-        this.age = age;
-        this.sidoId = sidoId;
-        this.gugunId = gugunId;
-        this.phoneNumber = phoneNumber;
-        this.description = description;
-    }
-
-    public void updateUserInfo(String password, String name, String nickname,
-            String profileImgUrl, int age, int sidoId, int gugunId,
-            String phoneNumber, String description) {
-        this.password = password;
-        this.name = name;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-        this.age = age;
-        this.sidoId = sidoId;
-        this.gugunId = gugunId;
-        this.phoneNumber = phoneNumber;
-        this.description = description;
-    }
+	public void updateUserInfo(String password, String name, String nickname,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
 }

@@ -12,5 +12,5 @@ public interface StudyLikeRepository extends JpaRepository<StudyLike, Integer> {
 
     // remove -> find로 찾아와서 isValid 0으로 변경
     @Query("select sl from StudyLike sl where sl.studyId = :studyId and sl.userId = :userId and sl.isValid = 1")
-    Optional<StudyLike> find(@Param("studyId") int studyId, @Param("userId") int userId);
+    Optional<StudyLike> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 }

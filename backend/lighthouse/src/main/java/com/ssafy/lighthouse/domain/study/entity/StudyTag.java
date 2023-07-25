@@ -1,5 +1,7 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.entity.Tag;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,21 +10,13 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class StudyTag {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(insertable = false)
-    private String createdAt;
-    @Column(insertable = false)
-    private int isValid;
-    @NonNull
-    private int studyId;
-    @NonNull
-    private int tagId;
+@AllArgsConstructor // test용
+public class StudyTag extends BaseEntity {
+    private Long studyId;
+    private Long tagId;
 
-    public void remove() {
-        this.isValid = 0;
+    public StudyTag(StudyTag studyTag) {
+        this.studyId = studyTag.getStudyId();
+        this.tagId = studyTag.getTagId();
     }
 }
