@@ -1,7 +1,7 @@
 node {
     stage('Checkout') {
         sh "echo start checkout"
-        git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'develop'
+        git url: 'https://a409:h9NAosdLaePBZytxr48f@lab.ssafy.com/s09-webmobile2-sub2/S09P12A409.git', branch: 'test3'
         sh "echo checkout done"
     }
 
