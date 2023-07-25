@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
+import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.extern.slf4j.Slf4j;
@@ -71,8 +72,8 @@ class StudyRepositoryTest {
         options.setLimit(4);
         options.setOffset(1);
 
-        List<Study> queryAll = studyRepository.findAllByStudySearchOption(options);
-        for (Study study : queryAll) {
+        List<StudyDto> queryAll = studyRepository.findAllByStudySearchOption(options);
+        for (StudyDto study : queryAll) {
             System.out.println("studyTitle = " + study.getTitle());
             System.out.println("studyCreatedAt = " + study.getCreatedAt());
         }
