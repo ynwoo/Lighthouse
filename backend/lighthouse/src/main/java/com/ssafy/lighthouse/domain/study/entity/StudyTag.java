@@ -13,9 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor // test용
 public class StudyTag extends BaseEntity {
     private Long studyId;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagId")
-    private Tag tag;
+    private Long tagId;
 
     public StudyTag(StudyTag studyTag) {
         this.studyId = studyTag.getStudyId();

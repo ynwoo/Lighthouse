@@ -34,13 +34,16 @@ public class StudyDto {
     private int likeCnt;
     private int bookmarkCnt;
     private StudyDto original;
-//    private UserDto leader;
+    private User leader;
     private SidoDto sido;
     private GugunDto gugun;
     private Set<StudyTag> studyTags;
     private Set<StudyEval> studyEvals;
 
     public StudyDto(Study study) {
+        this.id = study.getId();
+        this.createdAt = study.getCreatedAt();
+        this.isValid = study.getIsValid();
         this.title = study.getTitle();
         this.description = study.getDescription();
         this.hit = study.getHit();
@@ -54,10 +57,10 @@ public class StudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
-        this.original = new StudyDto(study.getOriginal());
-//        this.leader = study.getLeader();
-        this.sido = new SidoDto(study.getSido());
-        this.gugun = new GugunDto(study.getGugun());
+//        this.original = new StudyDto(study.getOriginal());
+        this.leader = study.getLeader();
+//        this.sido = new SidoDto(study.getSido());
+//        this.gugun = new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags();
         this.studyEvals = study.getStudyEvals();
     }
