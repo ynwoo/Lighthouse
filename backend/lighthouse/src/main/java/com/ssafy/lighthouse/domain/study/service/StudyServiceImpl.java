@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.study.service;
 
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
+import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
 import com.ssafy.lighthouse.domain.study.repository.StudyRepository;
 import lombok.RequiredArgsConstructor;

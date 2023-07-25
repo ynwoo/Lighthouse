@@ -1,5 +1,8 @@
 package com.ssafy.lighthouse.domain.user.entity;
 
+
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
