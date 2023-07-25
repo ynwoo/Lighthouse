@@ -2,7 +2,6 @@ package com.ssafy.lighthouse.domain.user.service;
 
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
-
 import java.util.List;
 
 public interface UserService {
@@ -11,6 +10,7 @@ public interface UserService {
 
 	UserMyPageDto loginUser(String userEmail, String userPwd);
 
+    List<String> getKeywordsByUserId(Long userId);
 	void saveRefreshToken(Long userId, String refreshToken) throws Exception;
 
 	Object getRefreshToken(Long userId) throws Exception;

@@ -36,7 +36,7 @@ class UserRepositoryTest {
 		em.flush();
 		em.clear();
 
-		User findedUser = userRepository.findById(savedUser.getId()).get();
+		User findedUser = userRepository.findById((long) savedUser.getId().intValue()).get();
 
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 		assertThat(findedUser.getName()).isEqualTo(savedUser.getName());

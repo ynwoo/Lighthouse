@@ -13,5 +13,5 @@ public interface StudyEvalRepository extends JpaRepository<StudyEval, Integer> {
 
     // remove -> find로 찾아와서 isValid 0으로 변경
     @Query("select se from StudyEval se where se.studyId = :studyId and se.userId = :userId and se.isValid = 1")
-    Optional<StudyEval> find(@Param("studyId") int studyId, @Param("userId") int userId);
+    Optional<StudyEval> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 }

@@ -24,38 +24,50 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class User extends BaseEntity {
 
-    private String password;
-    private String name;
-    private String email;
-    private String nickname;
+	private String password;
+	private String name;
+	private String email;
+	private String nickname;
 
-    private String profileImgUrl;
-    private int age;
-    private Long sidoId;
-    private Long gugunId;
-    private String phoneNumber;
-    private String description;
+	private String profileImgUrl;
+	private int age;
+	private Long sidoId;
+	private Long gugunId;
+	private String phoneNumber;
+	private String description;
     private String token;
     //@OneToMany(mappedBy = "user")
     //private List<UserTag> userTags = new ArrayList<>();
 
     @Builder
-    public User(String password, String name, String email, String nickname,
-            String profileImgUrl, int age, Long sidoId, Long gugunId,
-            String phoneNumber, String description) {
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-        this.age = age;
-        this.sidoId = sidoId;
-        this.gugunId = gugunId;
-        this.phoneNumber = phoneNumber;
-        this.description = description;
-        //this.userTags = userTags;
-    }
+	public User(String password, String name, String email, String nickname,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.email = email;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
 
+	public void updateUserInfo(String password, String name, String nickname,
+		String profileImgUrl, int age, Long sidoId, Long gugunId,
+		String phoneNumber, String description) {
+		this.password = password;
+		this.name = name;
+		this.nickname = nickname;
+		this.profileImgUrl = profileImgUrl;
+		this.age = age;
+		this.sidoId = sidoId;
+		this.gugunId = gugunId;
+		this.phoneNumber = phoneNumber;
+		this.description = description;
+	}
     public static User from(UserMyPageDto userMyPageDto) {
         return User.builder()
             .email(userMyPageDto.getEmail())
@@ -69,18 +81,5 @@ public class User extends BaseEntity {
             .description(userMyPageDto.getDescription())
             //.userTags(userMyPageDto.getUserTagList())
             .build();
-    }
-    public void updateUserInfo(String password, String name, String nickname,
-            String profileImgUrl, int age, Long sidoId, Long gugunId,
-            String phoneNumber, String description) {
-        this.password = password;
-        this.name = name;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-        this.age = age;
-        this.sidoId = sidoId;
-        this.gugunId = gugunId;
-        this.phoneNumber = phoneNumber;
-        this.description = description;
     }
 }

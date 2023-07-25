@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,5 +13,5 @@ public interface StudyTagRepository extends JpaRepository<StudyTag, Integer> {
 
     // remove -> find로 찾아와서 isValid 0으로 변경
     @Query("select st from StudyTag st where st.studyId = :studyId and st.tagId = :tagId and st.isValid = 1")
-    Optional<StudyTag> find(@Param("studyId") int studyId, @Param("tagId") int tagId);
+    Optional<StudyTag> find(@Param("studyId") Long studyId, @Param("tagId") Long tagId);
 }

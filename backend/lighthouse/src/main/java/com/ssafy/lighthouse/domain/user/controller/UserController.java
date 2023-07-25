@@ -46,6 +46,14 @@ public class UserController {
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
+    @GetMapping("/mypage/{userId}")
+    public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable Long userId) {
+        // 전체 Tag 목록도 불러와야함
+        List<String> tags = userService.getKeywordsByUserId(userId);
+        System.out.println(tags.toString());
+        UserMyPageDto userMyPageDto = userService.getMyPageUser(userId);
+        return new ResponseEntity<>(userMyPageDto, HttpStatus.OK);
+    }
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param) {
 		Map<String, Object> resultMap = new HashMap<>();

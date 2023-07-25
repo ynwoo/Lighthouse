@@ -31,7 +31,7 @@ public class UserMyPageDto {
 
 	@Builder
 	public UserMyPageDto(Long id, String password, String name, String email, String nickname, String profileImgUrl, int age,
-		Long sidoId, Long gugunId, String phoneNumber, String description, List<Long> userTagList) {
+			Long sidoId, Long gugunId, String phoneNumber, String description, List<Long> userTagList) {
 		this.id = id;
 		this.password = password;
 		this.name = name;
@@ -48,16 +48,16 @@ public class UserMyPageDto {
 
 	public static UserMyPageDto from(User user) {
 		return UserMyPageDto.builder()
-			.id(user.getId())
-			.name(user.getName())
-			.email(user.getEmail())
-			.nickname(user.getNickname())
-			.profileImgUrl(user.getProfileImgUrl())
-			.age(user.getAge())
-			.sidoId(user.getSidoId())
-			.gugunId(user.getGugunId())
-			.phoneNumber(user.getPhoneNumber())
-			.description(user.getDescription())
-			.build();
+				.id(user.getId())
+				.name(user.getName())
+				.email(user.getEmail())
+				.nickname(user.getNickname())
+				.profileImgUrl(user.getProfileImgUrl())
+				.age(user.getAge())
+				.sidoId(user.getSidoId())
+				.gugunId(user.getGugunId())
+				.phoneNumber(user.getPhoneNumber())
+				.description(user.getDescription())
+				.build();
 	}
 }

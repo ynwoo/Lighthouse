@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findByIsValid(int isValid);
 
+//	@Query("SELECT u FROM User u LEFT JOIN FETCH u.userTags ut LEFT JOIN FETCH ut.tag WHERE u.id = :userId")
+//	User findUserWithTags(@Param("userId") Long userId);
 	User findByEmail(String userEmail);
 
 	// @Query("SELECT u FROM User u LEFT JOIN FETCH u.userTags ut LEFT JOIN FETCH ut.tag WHERE u.id = :userId")
