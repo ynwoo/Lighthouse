@@ -1,11 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
-import com.ssafy.lighthouse.domain.common.BaseEntity;
-import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import lombok.*;
-
-import javax.persistence.Entity;
 
 @Getter
 @NoArgsConstructor

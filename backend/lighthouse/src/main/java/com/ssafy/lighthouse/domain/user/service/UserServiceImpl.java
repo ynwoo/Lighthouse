@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserMyPageDto getMyPageUser(Integer userId) {
+    public UserMyPageDto getMyPageUser(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(userId.toString())
         );
@@ -32,8 +32,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> getKeywordsByUserId(Integer userId) {
-        List<String> tags = userTagRepository.findDistinctTagByUserIdAndIsValidTrue(userId);
-        return tags;
+    public List<String> getKeywordsByUserId(Long userId) {
+//        List<String> tags = userTagRepository.findDistinctTagByUserIdAndIsValidTrue(userId);
+//        return tags;
+        return null;
     }
 }
