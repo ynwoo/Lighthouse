@@ -9,8 +9,9 @@ import javax.persistence.*;
 @Entity
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor // test용
 public class StudyTag extends BaseEntity {
     private Long studyId;
     private Long tagId;

@@ -8,11 +8,12 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     private String title;
@@ -33,29 +34,6 @@ public class Study extends BaseEntity {
     public Study(String title) {
         this.title = title;
     }
-
-    // study 복제용 constructor
-//    public Study(Study study) {
-//        this.title = study.getTitle();
-//        this.description = study.getDescription();
-//        this.hit = study.getHit();
-//        this.rule = study.getRule();
-//        this.startedAt = study.getStartedAt();
-//        this.endedAt = study.getEndedAt();
-//        this.recruitFinishedAt = study.getRecruitFinishedAt();
-//        this.maxMember = study.getMaxMember();
-//        this.minMember = study.getMinMember();
-//        this.currentMember = study.getCurrentMember();
-//        this.isOnline = study.getIsOnline();
-//        this.likeCnt = study.getLikeCnt();
-//        this.bookmarkCnt = study.getBookmarkCnt();
-//        this.original = study.getOriginal();
-//        this.leader = study.getLeader();
-////        this.sido = sido;
-////        this.gugun = gugun;
-////        this.studyTags = study.getStudyTags().stream().map(StudyTag::new).collect(Collectors.toSet());
-////        this.studyEvals = study.getStudyEvals().stream().map(StudyEval::new).collect(Collectors.toSet());
-//    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "originalId")
@@ -80,4 +58,16 @@ public class Study extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Set<StudyEval> studyEvals;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyNotice> studyNotices;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyMaterial> studyMaterials;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<Session> sessions;
 }

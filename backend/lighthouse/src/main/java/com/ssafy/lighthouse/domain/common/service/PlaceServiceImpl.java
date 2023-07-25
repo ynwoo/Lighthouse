@@ -27,8 +27,8 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Map<Integer, String> convertDtoListToMap(List<SidoDto> sidoList) {
-        Map<Integer, String> map = new LinkedHashMap<>();
+    public Map<Long, String> convertDtoListToMap(List<SidoDto> sidoList) {
+        Map<Long, String> map = new LinkedHashMap<>();
         for(SidoDto sidoDto : sidoList) {
             map.put(sidoDto.getId(), sidoDto.getName());
         }
@@ -36,11 +36,11 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    public Map<Integer, String> getAllGugunBySidoId(Integer sidoId) {
+    public Map<Long, String> getAllGugunBySidoId(Long sidoId) {
         List<Object[]> gugunByIdSidoOrderById = gugunRepository.findGugunByIdSidoOrderById(sidoId);
-        Map<Integer, String> map = new LinkedHashMap<>();
+        Map<Long, String> map = new LinkedHashMap<>();
         for(Object[] ob : gugunByIdSidoOrderById) {
-            map.put(Integer.parseInt(ob[0].toString()), ob[1].toString());
+            map.put(Long.parseLong(ob[0].toString()), ob[1].toString());
         }
         return map;
     }

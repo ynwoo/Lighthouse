@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface UserService {
 
-    UserMyPageDto getMyPageUser(Integer userId);
+    UserMyPageDto getMyPageUser(Long userId);
 
-    List<String> getKeywordsByUserId(Integer userId);
+    List<String> getKeywordsByUserId(Long userId);
 
     default UserMyPageDto entityToDto(User userEntity) {
         UserMyPageDto dto = UserMyPageDto.builder()
