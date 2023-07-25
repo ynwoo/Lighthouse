@@ -1,19 +1,25 @@
 package com.ssafy.lighthouse.domain.user.entity;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class User extends BaseEntity {
@@ -25,16 +31,17 @@ public class User extends BaseEntity {
 
     private String profileImgUrl;
     private int age;
-    private int sidoId;
-    private int gugunId;
+    private Long sidoId;
+    private Long gugunId;
     private String phoneNumber;
     private String description;
+    private String token;
+    //@OneToMany(mappedBy = "user")
+    //private List<UserTag> userTags = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserTag> userTags = new HashSet<>();
-
+    @Builder
     public User(String password, String name, String email, String nickname,
-            String profileImgUrl, int age, int sidoId, int gugunId,
+            String profileImgUrl, int age, Long sidoId, Long gugunId,
             String phoneNumber, String description) {
         this.password = password;
         this.name = name;
@@ -46,10 +53,25 @@ public class User extends BaseEntity {
         this.gugunId = gugunId;
         this.phoneNumber = phoneNumber;
         this.description = description;
+        //this.userTags = userTags;
     }
 
+    public static User from(UserMyPageDto userMyPageDto) {
+        return User.builder()
+            .email(userMyPageDto.getEmail())
+            .password(userMyPageDto.getPassword())
+            .name(userMyPageDto.getName())
+            .nickname(userMyPageDto.getNickname())
+            .age(userMyPageDto.getAge())
+            .sidoId(userMyPageDto.getSidoId())
+            .gugunId(userMyPageDto.getGugunId())
+            .phoneNumber(userMyPageDto.getPhoneNumber())
+            .description(userMyPageDto.getDescription())
+            //.userTags(userMyPageDto.getUserTagList())
+            .build();
+    }
     public void updateUserInfo(String password, String name, String nickname,
-            String profileImgUrl, int age, int sidoId, int gugunId,
+            String profileImgUrl, int age, Long sidoId, Long gugunId,
             String phoneNumber, String description) {
         this.password = password;
         this.name = name;
