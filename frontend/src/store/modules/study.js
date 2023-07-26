@@ -16,9 +16,9 @@ const studyState = { text: '' }
 const reducer = (state = studyState, action) => {
   switch (action.type) {
     case SEARCH:
-      return action.text
+      return action
     default:
-      return state.text
+      return state
   }
 }
 

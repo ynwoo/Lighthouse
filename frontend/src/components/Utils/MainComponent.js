@@ -4,6 +4,7 @@ import TempCard from '../Study/TempCard'
 import dummy from '../../db/data.json'
 
 function MainComponent({ text }) {
+  console.log(text)
   const filterdData = dummy.study_list.filter(item => item.title.includes(text))
 
   return (
@@ -21,10 +22,10 @@ function MainComponent({ text }) {
     </div>
   )
 }
-// store에서 prop 받아오기(얘가 있어야 store 가능)
+// store에서 prop 받아오기
 function mapStateToProps(state) {
-  return { text: state }
+  return { text: state.text }
 }
 
-// dispatch만 할 경우 앞에거 null로 하면 됨
+// 매개변수에는 props와 dispatch가 들어간다.
 export default connect(mapStateToProps)(MainComponent)

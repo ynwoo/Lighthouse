@@ -34,5 +34,14 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-no-bind': 'off',
     'default-param-last': 'off',
+    'no-use-before-define': [
+      'error',
+      {
+        functions: false,
+        classes: true,
+        variables: true,
+        allowNamedExports: false,
+      },
+    ],
   },
 }

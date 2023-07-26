@@ -15,7 +15,7 @@ function TempCard({ study }) {
   return (
     // Temp Detail로 보내주는 링크
     // 그냥 컴포넌트 자체가 하나의 링크라고 보면 됨
-    <Link to="/temp/{study.id}">
+    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
       <div>
         <Card
           style={{
