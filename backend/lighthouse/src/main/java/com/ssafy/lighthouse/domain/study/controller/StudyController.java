@@ -1,7 +1,9 @@
 package com.ssafy.lighthouse.domain.study.controller;
 
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
+import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
+import com.ssafy.lighthouse.domain.study.dto.StudyTagDto;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,32 +31,95 @@ public class StudyController {
 
     // 상세 조회
     @GetMapping("/{study-id}")
-    public ResponseEntity<?> findDetailById(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        StudyDto result = studyService.findDetailById(studyId);
+        StudyDto result = studyService.findDetailByStudyId(studyId);
         return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
     }
 
     // 템플릿 복제
     @PostMapping("/{study-id}")
-    public ResponseEntity<?> createStudyById(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        StudyDto result = studyService.createStudyById(studyId);
+        StudyDto result = studyService.createStudyByStudyId(studyId);
         return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
     }
 
     @PutMapping ("/{study-id}")
-    public ResponseEntity<?> shareStudyById(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> shareStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-//        studyService.shareStudyById(studyId);
+//        studyService.shareStudyByStudyId(studyId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     // 스터디 삭제
     @DeleteMapping("/{study-id}")
-    public ResponseEntity<?> removeStudyById(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        studyService.removeStudyById(studyId);
+        studyService.removeStudyByStudyId(studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @PostMapping("/like/{study-id}")
+    public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyService.createStudyLike(studyId, userId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/like/{study-id}")
+    public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyService.removeStudyLike(studyId, userId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @PostMapping("/bookmark/{study-id}")
+    public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyService.createStudyBookmark(studyId, userId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/bookmark/{study-id}")
+    public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyService.removeStudyBookmark(studyId, userId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @PostMapping("/tag")
+    public ResponseEntity<?> createStudyTag(@RequestBody StudyTagDto studyTagDto) {
+        log.debug("studyId : {}, tagId : {}", studyTagDto.getStudyId(), studyTagDto.getTagId());
+        studyService.createStudyTag(studyTagDto);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/tag/{study-id}/{tag-id}")
+    public ResponseEntity<?> removeStudyTag(@PathVariable(name = "study-id") Long studyId,
+                                            @PathVariable(name = "tag-id") Long tagId) {
+        studyService.removeStudyTag(studyId, tagId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @PostMapping("/eval")
+    public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyEvalDto.setUserId(userId);
+//        studyService.createStudyEval(studyEvalDto);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/eval/{study-id}")
+    public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId) {
+        // session에서 userId 가져오기
+//        log.debug("userId : {}", userId);
+//        studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
