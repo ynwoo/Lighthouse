@@ -24,6 +24,7 @@ public class StudyController {
     // 검색 옵션에 대한 전체 조회
     @GetMapping
     public ResponseEntity<?> findAllByStudySearchOption(StudySearchOption options) {
+        log.debug("options : {}", options);
         List<StudyDto> result = studyService.findAllByStudySearchOption(options);
         log.debug("findAllByStudySearchOption ---------- {}", result);
         return new ResponseEntity<List<StudyDto>>(result, HttpStatus.OK);

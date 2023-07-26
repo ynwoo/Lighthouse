@@ -1,6 +1,6 @@
 package com.ssafy.lighthouse.domain.study.service;
 
-import com.ssafy.lighthouse.domain.common.dto.ERROR;
+import com.ssafy.lighthouse.global.util.ERROR;
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;

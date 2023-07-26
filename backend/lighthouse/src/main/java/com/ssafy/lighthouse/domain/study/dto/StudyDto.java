@@ -35,7 +35,7 @@ public class StudyDto {
     private int likeCnt;
     private int bookmarkCnt;
     private StudyDto original;
-    private User leader;
+    private User leader;    // 수정 필요
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
