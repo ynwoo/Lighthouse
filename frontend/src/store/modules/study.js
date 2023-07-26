@@ -1,40 +1,32 @@
+import { legacy_createStore as createStore } from 'redux'
 // 이런 동작들이 있어요
-const ADD = 'ADD_STUDY'
-const DELETE = 'DELETE_STUDY'
+const SEARCH = 'SEARCH'
 
 // 이렇게 줄게요
-const addStudy = text => {
+const searchStudy = text => {
   return {
-    type: ADD,
-    payload: text,
-  }
-}
-const deleteStudy = id => {
-  return {
-    type: DELETE,
-    payload: id,
+    type: SEARCH,
+    text,
   }
 }
 
-const studyState = {}
+const studyState = { text: '' }
 
 // state의 내부를 조작하는 전반적인 로직 (reducer)
-const study = (action, state = studyState) => {
+const reducer = (state = studyState, action) => {
   switch (action.type) {
-    case ADD:
-      return [{ text: action.text, id: Date.now() }, ...state]
-
-    case DELETE:
-      return state.filter(toDo => toDo.id !== action.id)
+    case SEARCH:
+      return action
     default:
       return state
   }
 }
 
+const study = createStore(reducer)
+
 // 이걸로 불러주세요
 export const actionCreators = {
-  addStudy,
-  deleteStudy,
+  searchStudy,
 }
 
 export default study
