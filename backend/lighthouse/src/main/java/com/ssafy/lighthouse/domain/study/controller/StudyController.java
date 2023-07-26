@@ -1,9 +1,6 @@
 package com.ssafy.lighthouse.domain.study.controller;
 
-import com.ssafy.lighthouse.domain.study.dto.StudyDto;
-import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
-import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.dto.StudyTagDto;
+import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +21,10 @@ public class StudyController {
     // 검색 옵션에 대한 전체 조회
     @GetMapping
     public ResponseEntity<?> findAllByStudySearchOption(StudySearchOption options) {
-        List<StudyDto> result = studyService.findAllByStudySearchOption(options);
+        log.debug("options : {}", options);
+        List<SimpleStudyDto> result = studyService.findAllByStudySearchOption(options);
         log.debug("findAllByStudySearchOption ---------- {}", result);
-        return new ResponseEntity<List<StudyDto>>(result, HttpStatus.OK);
+        return new ResponseEntity<List<SimpleStudyDto>>(result, HttpStatus.OK);
     }
 
     // 상세 조회
