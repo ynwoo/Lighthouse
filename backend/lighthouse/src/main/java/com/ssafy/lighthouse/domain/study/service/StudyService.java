@@ -9,6 +9,7 @@ import java.util.List;
 public interface StudyService {
     List<StudyDto> findAllByStudySearchOption(StudySearchOption options);
     StudyDto findDetailById(Long studyId);
-    StudyDto createById(Long studyId);
-    void removeById(Long studyId);
+    StudyDto createStudyById(Long studyId);
+    void removeStudyById(Long studyId);
+    void shareStudyById(Long studyId);
 }

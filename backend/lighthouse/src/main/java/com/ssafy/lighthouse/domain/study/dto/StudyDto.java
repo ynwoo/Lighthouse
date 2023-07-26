@@ -43,6 +43,9 @@ public class StudyDto {
     private List<StudyMaterialDto> studyMaterialDtos;
     private List<SessionRes> sessionDtos;
 
+    public void share() {
+    }
+
     public StudyDto(Study study) {
         this.id = study.getId();
         this.createdAt = study.getCreatedAt();

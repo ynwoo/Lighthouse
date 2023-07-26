@@ -41,7 +41,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyDto createById(Long studyId) {
+    public StudyDto createStudyById(Long studyId) {
         Optional<Study> findDetail = studyRepository.findDetailById(studyId);
         log.debug("service - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(StudyNotFoundException::new);
@@ -72,9 +72,16 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void removeById(Long studyId) {
+    public void removeStudyById(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
         Study study = result.orElseThrow(StudyNotFoundException::new);
         study.remove();
+    }
+
+    @Override
+    public void shareStudyById(Long studyId) {
+        Optional<Study> result = studyRepository.findById(studyId);
+        Study study = result.orElseThrow(StudyNotFoundException::new);
+//        study.share();
     }
 }
