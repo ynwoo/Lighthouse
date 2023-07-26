@@ -26,7 +26,7 @@ module.exports = {
   },
   plugins: ['prettier'],
   rules: {
-    'prettier/prettier': [0, { endOfLine: 'auto' }],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/no-static-element-interactions': 0,
