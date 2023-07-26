@@ -1,19 +1,19 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
 
+import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.QBean;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.entity.QStudy;
-import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
@@ -28,13 +28,12 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
     @Override
     public List<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
-        QStudy original = new QStudy("original");
-        List<Study> studyList = jpaQueryFactory
-                .select(study)
+        return jpaQueryFactory
+                .select(Projections.constructor(SimpleStudyDto.class, study)).distinct()
                 .from(study)
-                .leftJoin(study.studyTags, studyTag).fetchJoin()
-                .leftJoin(study.sido, sido).fetchJoin()
-                .leftJoin(study.gugun, gugun).fetchJoin()
+                .leftJoin(study.studyTags, studyTag)
+                .leftJoin(study.sido, sido)
+                .leftJoin(study.gugun, gugun)
                 .where(
                         isOnline(options),
                         searchByKeyword(options))
@@ -42,8 +41,6 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .offset(options.getOffset())
                 .limit(options.getLimit())
                 .fetch();
-        ;
-        return studyList.stream().map(SimpleStudyDto::new).collect(Collectors.toList());
     }
 
     // 스터디 온라인 / 오프라인
