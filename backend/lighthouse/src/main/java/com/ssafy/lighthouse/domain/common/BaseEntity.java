@@ -23,6 +23,4 @@ public abstract class BaseEntity {
 	public void remove() {
 		this.isValid = 0;
 	}
-
-	public void resetId() {this.id = null;}
 }

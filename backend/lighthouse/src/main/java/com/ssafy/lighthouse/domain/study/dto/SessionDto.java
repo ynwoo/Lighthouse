@@ -74,6 +74,19 @@ public class SessionDto {
 			this.status = session.getStatus();
 			this.seqNum = session.getSeqNum();
 		}
+
+		public Session toEntity() {
+			return Session.builder()
+					.startedAt(startedAt)
+					.endedAt(endedAt)
+					.studyId(studyId)
+					.title(title)
+					.description(description)
+					.comment(comment)
+					.status(status)
+					.seqNum(seqNum)
+					.build();
+		}
 	}
 
 	@Getter
