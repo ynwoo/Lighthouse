@@ -1,4 +1,4 @@
-package com.ssafy.lighthouse.domain.common.dto;
+package com.ssafy.lighthouse.global.util;
 
 public class ERROR {
     public static final String CREATE = "create 오류";
