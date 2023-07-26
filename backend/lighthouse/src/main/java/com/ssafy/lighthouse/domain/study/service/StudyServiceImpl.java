@@ -1,13 +1,10 @@
 package com.ssafy.lighthouse.domain.study.service;
 
-import com.ssafy.lighthouse.domain.common.dto.ERROR;
-import com.ssafy.lighthouse.domain.study.dto.StudyDto;
-import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
-import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.dto.StudyTagDto;
+import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
+import com.ssafy.lighthouse.global.util.ERROR;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,7 +31,7 @@ public class StudyServiceImpl implements StudyService {
 
 
     @Override
-    public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
+    public List<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
         return studyRepository.findAllByStudySearchOption(options);
     }
 
