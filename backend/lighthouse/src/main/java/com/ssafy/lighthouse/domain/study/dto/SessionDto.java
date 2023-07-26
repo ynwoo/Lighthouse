@@ -74,19 +74,6 @@ public class SessionDto {
 			this.status = session.getStatus();
 			this.seqNum = session.getSeqNum();
 		}
-
-		public Session toEntity() {
-			return Session.builder()
-				.startedAt(startedAt)
-				.endedAt(endedAt)
-				.studyId(studyId)
-				.title(title)
-				.description(description)
-				.comment(comment)
-				.status(status)
-				.seqNum(seqNum)
-				.build();
-		}
 	}
 
 	@Getter
@@ -109,6 +96,24 @@ public class SessionDto {
 				.sessionId(sessionId)
 				.content(content)
 				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class SessionCheckRes {
+		private Long id;
+		private String createdAt;
+		private Long userId;
+		private Long sessionId;
+		private String content;
+
+		public SessionCheckRes(SessionCheck sessionCheck) {
+			this.id = sessionCheck.getId();
+			this.createdAt = sessionCheck.getCreatedAt();
+			this.userId = sessionCheck.getUserId();
+			this.sessionId = sessionCheck.getSessionId();
+			this.content = sessionCheck.getContent();
 		}
 	}
 }

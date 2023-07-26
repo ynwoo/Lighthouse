@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 public class QnaDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class QnaReq {
+	public static class Req {
 		private long userId;
 		private long studyId;
 		private String question;
 		private String answer;
 
 		@Builder
-		public QnaReq(long userId, long studyId, String question, String answer) {
+		public Req(long userId, long studyId, String question, String answer) {
 			this.userId = userId;
 			this.studyId = studyId;
 			this.question = question;
@@ -35,7 +35,7 @@ public class QnaDto {
 	}
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class QnaRes {
+	public static class Res {
 		private long id;
 		private String createdAt;
 		private long userId;
@@ -43,22 +43,13 @@ public class QnaDto {
 		private String question;
 		private String answer;
 
-		public QnaRes(Qna qna) {
+		public Res(Qna qna) {
 			this.id = qna.getId();
 			this.createdAt = qna.getCreatedAt();
 			this.userId = qna.getUserId();
 			this.studyId = qna.getStudyId();
 			this.question = qna.getQuestion();
 			this.answer = qna.getAnswer();
-		}
-
-		public Qna toEntity() {
-			return Qna.builder()
-				.userId(userId)
-				.studyId(studyId)
-				.question(question)
-				.answer(answer)
-				.build();
 		}
 	}
 }
