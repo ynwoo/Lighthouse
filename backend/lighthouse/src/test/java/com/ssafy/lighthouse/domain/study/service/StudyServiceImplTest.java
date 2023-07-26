@@ -40,7 +40,7 @@ class StudyServiceImplTest {
 
     @Test
     public void createById() {
-        StudyDto studyDto = studyService.createStudyById(224L);
+        StudyDto studyDto = studyService.createStudyByStudyId(224L);
         log.debug("service - createById {}", studyDto);
     }
 

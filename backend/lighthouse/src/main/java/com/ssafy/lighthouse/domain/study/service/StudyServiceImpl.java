@@ -1,9 +1,12 @@
 package com.ssafy.lighthouse.domain.study.service;
 
+import com.ssafy.lighthouse.domain.common.dto.ERROR;
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
+import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
+import com.ssafy.lighthouse.domain.study.dto.StudyTagDto;
+import com.ssafy.lighthouse.domain.study.entity.*;
+import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,11 @@ public class StudyServiceImpl implements StudyService {
     private final StudyMaterialRepository studyMaterialRepository;
     private final StudyNoticeRepository studyNoticeRepository;
     private final SessionRepository sessionRepository;
+    private final StudyLikeRepository studyLikeRepository;
+    private final BookmarkRepository bookmarkRepository;
+    private final StudyEvalRepository studyEvalRepository;
     private final EntityManager em;
+
 
     @Override
     public List<StudyDto> findAllByStudySearchOption(StudySearchOption options) {
@@ -33,7 +40,7 @@ public class StudyServiceImpl implements StudyService {
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
-    public StudyDto findDetailById(Long studyId) {
+    public StudyDto findDetailByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
@@ -41,7 +48,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public StudyDto createStudyById(Long studyId) {
+    public StudyDto createStudyByStudyId(Long studyId) {
         Optional<Study> findDetail = studyRepository.findDetailById(studyId);
         log.debug("service - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(StudyNotFoundException::new);
@@ -67,21 +74,81 @@ public class StudyServiceImpl implements StudyService {
         em.flush();
         em.clear();
 
-        Study result = studyRepository.findDetailById(id).orElseThrow(StudyNotFoundException::new);
+        Study result = studyRepository.findDetailById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         return new StudyDto(result);
     }
 
     @Override
-    public void removeStudyById(Long studyId) {
+    public void removeStudyByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
-        Study study = result.orElseThrow(StudyNotFoundException::new);
+        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.REMOVE));
         study.remove();
     }
 
     @Override
     public void shareStudyById(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
-        Study study = result.orElseThrow(StudyNotFoundException::new);
+        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
 //        study.share();
+    }
+
+    @Override
+    public void createStudyLike(Long studyId, Long userId) {
+        Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
+        if(result.isPresent()) {
+            throw new StudyLikeException(ERROR.CREATE);
+        }
+        studyLikeRepository.save(new StudyLike(studyId, userId));
+    }
+
+    @Override
+    public void removeStudyLike(Long studyId, Long userId) {
+        Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
+        result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+    }
+
+    @Override
+    public void createStudyBookmark(Long studyId, Long userId) {
+        Optional<Bookmark> result = bookmarkRepository.find(studyId, userId);
+        if(result.isPresent()) {
+            throw new BookmarkException(ERROR.CREATE);
+        }
+        bookmarkRepository.save(new Bookmark(studyId, userId));
+    }
+
+    @Override
+    public void removeStudyBookmark(Long studyId, Long userId) {
+        Optional<Bookmark> result = bookmarkRepository.find(studyId, userId);
+        result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+    }
+
+    @Override
+    public void createStudyEval(StudyEvalDto studyEvalDto) {
+        Optional<StudyEval> result = studyEvalRepository.find(studyEvalDto.getStudyId(), studyEvalDto.getUserId());
+        if(result.isPresent()) {
+            throw new StudyEvalException(ERROR.CREATE);
+        }
+        studyEvalRepository.save(studyEvalDto.toEntity());
+    }
+
+    @Override
+    public void removeStudyEval(Long studyId, Long userId) {
+        Optional<StudyEval> result = studyEvalRepository.find(studyId, userId);
+        result.orElseThrow(() -> new StudyEvalException(ERROR.REMOVE)).remove();
+    }
+
+    @Override
+    public void createStudyTag(StudyTagDto studyTagDto) {
+        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTagId());
+        if(result.isPresent()) {
+            throw new StudyTagException(ERROR.CREATE);
+        }
+        studyTagRepository.save(studyTagDto.toEntity());
+    }
+
+    @Override
+    public void removeStudyTag(Long studyId, Long tagId) {
+        Optional<StudyTag> result = studyTagRepository.find(studyId, tagId);
+        result.orElseThrow(() -> new StudyTagException(ERROR.REMOVE)).remove();
     }
 }
