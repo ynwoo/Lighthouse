@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -46,12 +47,13 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findDetailById(studyId);
-        log.debug("service - findDetailById : {}", findDetail);
+        Optional<Study> findDetail = studyRepository.findDetailShareById(studyId);
+        log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         study.resetId();
         studyRepository.save(study);
-        log.debug("service - studyId : {}", study.getId());
+        log.debug("service2 - studyId : {}", study.getId());
+        log.debug("service3 - studyTag : {}", study.getStudyTags().stream().map(StudyTag::getStudyId).collect(Collectors.toList()));
 //        StudyDto studyDto = new StudyDto(study);
 //        em.flush();
 //        em.clear();
@@ -74,7 +76,7 @@ public class StudyServiceImpl implements StudyService {
         em.flush();
         em.clear();
 
-        Study result = studyRepository.findDetailById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
+        Study result = studyRepository.findDetailShareById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         return new StudyDto(result);
     }
 
