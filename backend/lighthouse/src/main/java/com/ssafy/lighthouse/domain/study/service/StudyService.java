@@ -1,15 +1,12 @@
 package com.ssafy.lighthouse.domain.study.service;
 
-import com.ssafy.lighthouse.domain.study.dto.StudyDto;
-import com.ssafy.lighthouse.domain.study.dto.StudyEvalDto;
-import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.dto.StudyTagDto;
+import com.ssafy.lighthouse.domain.study.dto.*;
 
 import java.util.List;
 
 
 public interface StudyService {
-    List<StudyDto> findAllByStudySearchOption(StudySearchOption options);
+    List<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
     StudyDto findDetailByStudyId(Long studyId);
     StudyDto createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
