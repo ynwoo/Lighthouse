@@ -44,14 +44,14 @@ public class StudyServiceImpl implements StudyService {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
-        return new StudyDto(result.orElseThrow(StudyNotFoundException::new));
+        return new StudyDto(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
     }
 
     @Override
     public StudyDto createStudyByStudyId(Long studyId) {
         Optional<Study> findDetail = studyRepository.findDetailById(studyId);
         log.debug("service - findDetailById : {}", findDetail);
-        Study study = findDetail.orElseThrow(StudyNotFoundException::new);
+        Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         StudyDto studyDto = new StudyDto(study);
         em.flush();
         em.clear();
