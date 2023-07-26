@@ -19,7 +19,10 @@ function TempCard({ study }) {
     <Link to="/temp/{study.id}">
       <div>
         <Card
-          style={{ width: 300 }}
+          style={{
+            width: 300,
+            margin: '25px',
+          }}
           cover={
             <img
               alt="example"
@@ -36,7 +39,7 @@ function TempCard({ study }) {
             avatar={
               <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
             }
-            title="{study.title}"
+            title={study.title}
             description="{study.is_online ? '온라인' : '오프라인'} {study.current_member}/{study.max_member}\n작성시간: {study.created_at}\n모집 마감: {study.recruit_finished_at}\n{study.like_cnt}개의 따봉"
           />
         </Card>
