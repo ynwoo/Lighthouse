@@ -49,24 +49,27 @@ public class StudyServiceImpl implements StudyService {
         Optional<Study> findDetail = studyRepository.findDetailById(studyId);
         log.debug("service - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        StudyDto studyDto = new StudyDto(study);
-        em.flush();
-        em.clear();
-
-        Study newStudy = studyDto.toEntity();
-
-        // studyTag 넣기
-        studyTagRepository.saveAll(newStudy.getStudyTags());
-//        // studyMaterial 넣기
-//        studyMaterialRepository.saveAll(newStudy.getStudyMaterials());
-//        // studyNotice 넣기
-//        studyNoticeRepository.saveAll(newStudy.getStudyNotices());
-        // session 넣기
-        sessionRepository.saveAll(newStudy.getSessions());
-
-        // study 넣기
-        studyRepository.save(newStudy);
-        Long id = newStudy.getId();
+        study.resetId();
+        studyRepository.save(study);
+        log.debug("service - studyId : {}", study.getId());
+//        StudyDto studyDto = new StudyDto(study);
+//        em.flush();
+//        em.clear();
+//
+//        Study newStudy = studyDto.toEntity();
+//
+//        // studyTag 넣기
+//        studyTagRepository.saveAll(newStudy.getStudyTags());
+////        // studyMaterial 넣기
+////        studyMaterialRepository.saveAll(newStudy.getStudyMaterials());
+////        // studyNotice 넣기
+////        studyNoticeRepository.saveAll(newStudy.getStudyNotices());
+//        // session 넣기
+//        sessionRepository.saveAll(newStudy.getSessions());
+//
+//        // study 넣기
+//        studyRepository.save(newStudy);
+        Long id = study.getId();
 
         em.flush();
         em.clear();
@@ -74,6 +77,38 @@ public class StudyServiceImpl implements StudyService {
         Study result = studyRepository.findDetailById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         return new StudyDto(result);
     }
+
+//    @Override
+//    public StudyDto createStudyByStudyId(Long studyId) {
+//        Optional<Study> findDetail = studyRepository.findDetailById(studyId);
+//        log.debug("service - findDetailById : {}", findDetail);
+//        Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
+//
+//        StudyDto studyDto = new StudyDto(study);
+//        em.flush();
+//        em.clear();
+//
+//        Study newStudy = studyDto.toEntity();
+//
+//        // studyTag 넣기
+//        studyTagRepository.saveAll(newStudy.getStudyTags());
+////        // studyMaterial 넣기
+////        studyMaterialRepository.saveAll(newStudy.getStudyMaterials());
+////        // studyNotice 넣기
+////        studyNoticeRepository.saveAll(newStudy.getStudyNotices());
+//        // session 넣기
+//        sessionRepository.saveAll(newStudy.getSessions());
+//
+//        // study 넣기
+//        studyRepository.save(newStudy);
+//        Long id = newStudy.getId();
+//
+//        em.flush();
+//        em.clear();
+//
+//        Study result = studyRepository.findDetailById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
+//        return new StudyDto(result);
+//    }
 
     @Override
     public void removeStudyByStudyId(Long studyId) {
