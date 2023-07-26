@@ -36,6 +36,22 @@ export default function TempDetailPage() {
         />
         <TempDetail study={study} />
       </div>
+      <div className="tabs-container">
+        <Tabs
+          onChange={onChange}
+          type="card"
+          items={new Array(3).fill(null).map((_, i) => {
+            const id = String(i + 1)
+            return {
+              label: `Tab ${id}`,
+              key: id,
+              children: <TempDetail stat={id} />,
+            }
+          })}
+        />
+      </div>
+      {/* stat에 따라 다르게 랜더링 해주는 컴포넌트 */}
+      {/* <TempDetail stat={stat} /> */}
     </div>
   )
 }
