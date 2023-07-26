@@ -16,14 +16,16 @@ export default function MainComponent() {
       <SearchComponent />
       <h3>MainComponent</h3>
 
-      <div>
-        <button type="submit">갖가지</button>
-        <button type="submit">카테고리를</button>
-        <button type="submit">지닌</button>
-        <button type="submit">버튼들</button>
-        <button type="submit">물론</button>
-        <button type="submit">기능은</button>
-        <button type="submit">없어요</button>
+  return (
+    <div style={{
+      border: '1px solid', display: 'flex', margin: '10px',
+    }}>
+      <div style={{
+        border: '1px solid', color: 'black',
+        borderRadius: '10px', width: '200px', height: '200px',
+        backgroundColor: 'white', margin: '10px'
+      }}>
+        응애
       </div>
 
       <hr />
