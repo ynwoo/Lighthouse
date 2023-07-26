@@ -62,7 +62,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
-		return UserMyPageDto.from(userRepository.findByIdAndIsValid(userId, 1));
+		User user = userRepository.findByIdAndIsValid(userId, 1);
+		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
+		UserMyPageDto from = UserMyPageDto.from(user);
+
+		for(UserTag userTag : userTags) {
+			from.getUserTagList().add(userTag.getTagId());
+		}
+
+		return from;
 	}
 
 	@Transactional

@@ -18,4 +18,6 @@ public interface UserTagRepository extends JpaRepository<UserTag, Long> {
 	@Modifying
 	@Query("UPDATE UserTag ut SET ut.isValid = 0 WHERE ut.userId = :userId")
 	void updateIsValidToZeroByUserId(@Param("userId") Long userId);
+
+	List<UserTag> findByUserIdAndIsValid(Long userId, Integer isValid);
 }
