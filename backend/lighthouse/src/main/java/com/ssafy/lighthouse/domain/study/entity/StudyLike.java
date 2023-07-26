@@ -9,10 +9,8 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class StudyLike extends BaseEntity {
-    @NonNull
     private Long studyId;
-    @NonNull
     private Long userId;
 }
