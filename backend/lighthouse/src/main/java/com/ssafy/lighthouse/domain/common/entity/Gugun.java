@@ -1,7 +1,9 @@
 package com.ssafy.lighthouse.domain.common.entity;
 
+import javax.persistence.Entity;
+
 import com.ssafy.lighthouse.domain.common.BaseEntity;
-import lombok.AccessLevel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
