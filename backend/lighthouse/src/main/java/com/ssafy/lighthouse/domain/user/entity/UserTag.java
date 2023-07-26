@@ -7,8 +7,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,25 +18,34 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserTag extends BaseEntity {
-	//private int userId;
-	//private int tagId;
+	private Long userId;
+	private Long tagId;
 
-	@ManyToOne
-	@JsonIgnore
-	@JoinColumn(name = "user_id")
-	private User user;
+	// @ManyToOne
+	// @JsonIgnore
+	// @JoinColumn(name = "user_id")
+	// private User user;
+	//
+	// @ManyToOne
+	// @JsonIgnore
+	// @JoinColumn(name = "tag_id")
+	// private Tag tag;
 
-	@ManyToOne
-	@JsonIgnore
-	@JoinColumn(name = "tag_id")
-	private Tag tag;
-	public UserTag(int userId, int tagId) {
-		//this.userId = userId;
-		//this.tagId = tagId;
+	@Builder
+	public UserTag(Long userId, Long tagId) {
+		this.userId = userId;
+		this.tagId = tagId;
 	}
 
-	public void updateUserTagInfo(int userId, int tagId) {
-		//this.userId = userId;
-		//this.tagId = tagId;
+	public void updateUserTagInfo(Long userId, Long tagId) {
+		this.userId = userId;
+		this.tagId = tagId;
+	}
+
+	public static UserTag from(Long id, Long tagId) {
+		return UserTag.builder()
+			.userId(id)
+			.tagId(tagId)
+			.build();
 	}
 }

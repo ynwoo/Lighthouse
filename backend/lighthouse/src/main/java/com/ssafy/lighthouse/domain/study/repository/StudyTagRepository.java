@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface StudyTagRepository extends JpaRepository<StudyTag, Integer> {
+public interface StudyTagRepository extends JpaRepository<StudyTag, Long> {
     // insert는 기본 제공 save 사용
 
     // remove -> find로 찾아와서 isValid 0으로 변경

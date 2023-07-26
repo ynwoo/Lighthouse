@@ -55,7 +55,7 @@ public class StudyNoticeServiceImpl implements StudyNoticeService {
 
 	@Override
 	public StudyNotice findById(final Long id) {
-		final Optional<StudyNotice> studyNotice = studyNoticeRepository.findById(id.intValue());
+		final Optional<StudyNotice> studyNotice = studyNoticeRepository.findById(id);
 		studyNotice.orElseThrow(() -> new StudyNoticeNotFoundException(id));
 		return studyNotice.get();
 	}
