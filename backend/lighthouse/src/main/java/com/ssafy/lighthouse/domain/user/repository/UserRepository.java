@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	//	User findUserWithTags(@Param("userId") Long userId);
 	User findByEmailAndIsValid(String email, int isValid);
 
+	User findByIdAndIsValid(Long id, int isValid);
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE User u SET u.token = NULL WHERE u.id = :userId")

@@ -131,17 +131,19 @@ public class UserController {
 
 	@GetMapping("/mypage")
 	public ResponseEntity<Map<String, Object>> getInfo(
-		@RequestBody Map<String, String> param,
 		HttpServletRequest request) {
-		logger.debug("userEmail : {} ", param.get("userEmail"));
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
-		System.out.println(request.getHeader("access-token"));
-		if (jwtService.checkToken(request.getHeader("access-token"))) {
+
+		String token = request.getHeader("access-token");
+		if (jwtService.checkToken(token)) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
-				//				로그인 사용자 정보.
-				UserMyPageDto userMyPageDto = userService.getUserByEmail(param.get("userEmail"));
+				// 로그인 사용자 정보
+				Long idByToken = jwtService.getIdByToken(token);
+
+				UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
+
 				resultMap.put("userInfo", userMyPageDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -168,7 +170,7 @@ public class UserController {
 	// }
 
 	@PutMapping("/update")
-	public ResponseEntity<?> updeateUser(@RequestBody UserMyPageDto userMyPageDto) {
+	public ResponseEntity<?> updateUser(@RequestBody UserMyPageDto userMyPageDto) {
 		System.out.println(userMyPageDto.toString());
 		try {
 			userService.updateUser(userMyPageDto);
