@@ -3,6 +3,7 @@ import { Tabs } from 'antd'
 import TempDetail from '../components/Study/TempDetail'
 import SideComponent from '../components/Utils/SideComponent'
 import dummy from '../db/data.json'
+// import TempInfo from '../components/Study/TempInfo'
 
 const onChange = key => {
   console.log(key)
@@ -36,7 +37,7 @@ export default function TempDetailPage() {
         />
         <TempDetail study={study} />
       </div>
-      <div className="tabs-container">
+      {/* <div className="tabs-container">
         <Tabs
           onChange={onChange}
           type="card"
@@ -45,11 +46,11 @@ export default function TempDetailPage() {
             return {
               label: `Tab ${id}`,
               key: id,
-              children: <TempDetail stat={id} />,
+              children: '',
             }
           })}
         />
-      </div>
+      </div> */}
       {/* stat에 따라 다르게 랜더링 해주는 컴포넌트 */}
       {/* <TempDetail stat={stat} /> */}
     </div>

@@ -116,7 +116,7 @@ body {
   border: 1px solid;
   border-radius: 20px;
   width: 700px;
-  height: 60px;
+  height: 100%px;
   text-align: center;
   margin: 30px;
   background-color: #fff;
@@ -126,7 +126,7 @@ body {
   border: 1px solid;
   border-radius: 20px;
   width: 340px;
-  height: 60px;
+  height: 100%;
   text-align: center;
   margin-right: 10px;
   margin-left: 10px;
@@ -141,6 +141,28 @@ body {
 .temp_mini {
   /* display: flex; */
   width: 100%;
-  margin-top: 56px;
+  margin-top: 65px;
+  margin-bottom: 30px;
   text-align: right;
+}
+
+.t_mem_text {
+  display: flex;
+}
+
+.temp_detail4 {
+  border: 1px solid;
+  border-radius: 20px;
+  width: 220px;
+  height: 100%;
+  text-align: center;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 20px;
+  background-color: #fff;
+}
+
+.temp_detail4_1 {
+  display: flex;
+  justify-content: center;
 }
