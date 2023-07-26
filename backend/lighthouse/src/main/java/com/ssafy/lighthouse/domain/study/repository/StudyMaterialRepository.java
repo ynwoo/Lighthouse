@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 
-public interface StudyMaterialRepository extends JpaRepository<StudyMaterial, Integer> {
+public interface StudyMaterialRepository extends JpaRepository<StudyMaterial, Long> {
 	@Query(value = "SELECT sm FROM StudyMaterial sm WHERE  sm.isValid = 1 AND sm.studyId = :studyId")
 	List<StudyMaterial> findByStudyId(@Param("studyId") Long studyId);
 
