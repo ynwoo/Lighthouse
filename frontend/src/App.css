@@ -1,6 +1,6 @@
 body {
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
   background-color: transparent;
   height: 1000px;
 }
@@ -55,4 +55,92 @@ body {
   .content {
     height: 30vh;
   }
+}
+
+/* tab 컨테이너 */
+/* 스타일시트에 다음 CSS를 추가하세요. */
+.tabs-container {
+  width: 70%; /* 탭 컨테이너의 너비를 필요에 맞게 조정하세요. */
+  padding: 20px;
+  background-color: #ffffff00;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tabs-container .ant-tabs-tab {
+  background-color: #f0f2f500;
+  border-radius: 8px 8px 0 0;
+  margin-right: 4px;
+}
+
+.tabs-container .ant-tabs-tab-active {
+  background-color: #ffffff00;
+}
+
+/* 탭 옆에 사각형(또는 다른 모양) 스타일링 */
+.tabs-container::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 30px; /* 모양의 위치를 필요에 맞게 조정하세요. */
+  left: -10px; /* 모양의 위치를 필요에 맞게 조정하세요. */
+  width: 20px; /* 모양의 크기를 필요에 맞게 조정하세요. */
+  height: 60px; /* 모양의 크기를 필요에 맞게 조정하세요. */
+  background-color: rgba(
+    240,
+    242,
+    245,
+    0
+  ); /* 모양의 색상을 필요에 맞게 조정하세요. */
+  border-radius: 0 8px 8px 0; /* 모양의 테두리 반경을 필요에 맞게 조정하세요. */
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15); /* 모양에 그림자 추가 */
+}
+
+.temp_detail {
+  width: 1000px;
+}
+
+.temp_detail1 {
+  display: flex;
+  margin: 10px;
+  justify-content: center;
+  margin: 10px;
+}
+
+.temp_detail1_text {
+  margin-right: 10px;
+  margin: 10px;
+}
+
+.temp_detail2 {
+  border: 1px solid;
+  border-radius: 20px;
+  width: 700px;
+  height: 60px;
+  text-align: center;
+  margin: 30px;
+  background-color: #fff;
+}
+
+.temp_detail3 {
+  border: 1px solid;
+  border-radius: 20px;
+  width: 340px;
+  height: 60px;
+  text-align: center;
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: #fff;
+}
+
+.temp_detail3_1 {
+  display: flex;
+  justify-content: center;
+}
+
+.temp_mini {
+  /* display: flex; */
+  width: 100%;
+  margin-top: 56px;
+  text-align: right;
 }
