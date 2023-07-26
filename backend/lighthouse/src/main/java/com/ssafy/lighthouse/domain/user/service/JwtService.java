@@ -16,4 +16,6 @@ public interface JwtService {
 
 	boolean checkToken(String jwt);
 
+	Long getIdByToken(String jwt);
+
 }

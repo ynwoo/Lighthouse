@@ -117,6 +117,16 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
+	public Long getIdByToken(String jwt) {
+		Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
+
+		// userId 값 추출
+		Long userId = claims.getBody().get("userId", Long.class);
+		logger.debug("userId: {}", userId);
+		return userId;
+	}
+
+	@Override
 	public Map<String, Object> get(String key) {
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes())
 			.getRequest();

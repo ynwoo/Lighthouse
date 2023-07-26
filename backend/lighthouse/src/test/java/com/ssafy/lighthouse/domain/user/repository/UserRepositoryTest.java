@@ -77,7 +77,7 @@ class UserRepositoryTest {
 	@Test
 	public void testGetUserByEmail() {
 		String email = "ssafy@example.com";
-		System.out.println(userRepository.findByEmail(email).getId());
-		System.out.println(userRepository.findByEmail(email).getEmail());
+		System.out.println(userRepository.findByEmailAndIsValid(email, 1).getId());
+		System.out.println(userRepository.findByEmailAndIsValid(email, 1).getEmail());
 	}
 }

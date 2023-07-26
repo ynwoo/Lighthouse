@@ -13,6 +13,7 @@ public interface UserService {
 
     void updateUser(UserMyPageDto userMyPageDto);
 
+    void deleteUser(Long userId);
     // List<String> getKeywordsByUserId(Long userId);
     void saveRefreshToken(Long userId, String refreshToken) throws Exception;
 
