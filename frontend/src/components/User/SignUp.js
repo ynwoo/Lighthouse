@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   Button,
   Form,
@@ -8,12 +8,12 @@ import {
   Select,
   TreeSelect,
   Upload,
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
-// 
+} from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+//
 // const { useState } = React;
-const { TextArea } = Input;
-const { Option } = Select;
+const { TextArea } = Input
+const { Option } = Select
 // const { useState } = React;
 // const [size] = useState('large')
 const prefixSelector = (
@@ -21,32 +21,36 @@ const prefixSelector = (
     <Select
       style={{
         width: 70,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
       }}
     >
       <Option value="86">+86</Option>
       <Option value="87">+87</Option>
     </Select>
   </Form.Item>
-);
-const normFile = (e) => {
+)
+const normFile = e => {
   if (Array.isArray(e)) {
-    return e;
+    return e
   }
-  return e?.fileList;
-};
+  return e?.fileList
+}
 
 function FormDisabledDemo() {
   return (
-    <div style={{
-      display: 'flex', justifyContent: 'center',
-      width: '100%', margin: '10px',
-      marginLeft: '20px',
-      // border: '1px solid',
-      padding: '20px',
-      borderRadius: '20px',
-      backgroundColor: 'transparent',
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        width: '100%',
+        margin: '10px',
+        marginLeft: '20px',
+        // border: '1px solid',
+        padding: '20px',
+        borderRadius: '20px',
+        backgroundColor: 'transparent',
+      }}
+    >
       <Form
         labelCol={{
           span: 4,
@@ -57,7 +61,7 @@ function FormDisabledDemo() {
         layout="horizontal"
         style={{
           maxWidth: 1000,
-          backgroundColor: 'transparent'
+          backgroundColor: 'transparent',
         }}
       >
         <Form.Item
@@ -104,9 +108,11 @@ function FormDisabledDemo() {
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
+                  return Promise.resolve()
                 }
-                return Promise.reject(new Error('The new password that you entered do not match!'));
+                return Promise.reject(
+                  new Error('The new password that you entered do not match!'),
+                )
               },
             }),
           ]}
@@ -140,7 +146,11 @@ function FormDisabledDemo() {
           <InputNumber />
         </Form.Item>
 
-        <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile}>
+        <Form.Item
+          label="Upload"
+          valuePropName="fileList"
+          getValueFromEvent={normFile}
+        >
           <Upload action="/upload.do" listType="picture-card">
             <div>
               <PlusOutlined />
@@ -173,15 +183,11 @@ function FormDisabledDemo() {
           />
         </Form.Item>
 
-
         <Form.Item label="주소(시/도)">
           <Select>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
-
-
-
 
         <Form.Item label="주소(구/군)">
           <TreeSelect
@@ -207,21 +213,16 @@ function FormDisabledDemo() {
           style={{
             display: 'flex',
             justifyContent: 'right',
-            alignItems: 'right'
-          }}>
-
-          <Link to='/'>
-            <Button type="primary">
-              SUBMIT
-            </Button>
+            alignItems: 'right',
+          }}
+        >
+          <Link to="/">
+            <Button type="primary">SUBMIT</Button>
           </Link>
         </div>
-
-
-
-      </Form >
-    </div >
-  );
+      </Form>
+    </div>
+  )
 }
 
-export default FormDisabledDemo;
+export default FormDisabledDemo

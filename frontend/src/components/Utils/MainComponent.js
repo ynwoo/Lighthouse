@@ -15,35 +15,45 @@ export default function MainComponent() {
     >
       <SearchComponent />
       <h3>MainComponent</h3>
-
-  return (
-    <div style={{
-      border: '1px solid', display: 'flex', margin: '10px',
-    }}>
-      <div style={{
-        border: '1px solid', color: 'black',
-        borderRadius: '10px', width: '200px', height: '200px',
-        backgroundColor: 'white', margin: '10px'
-      }}>
-        응애
-      </div>
-
-      <hr />
-
-      <div>
+      return (
+      <div
+        style={{
+          border: '1px solid',
+          display: 'flex',
+          margin: '10px',
+        }}
+      >
         <div
-          className="flex"
           style={{
-            margin: '25px 0',
+            border: '1px solid',
+            color: 'black',
+            borderRadius: '10px',
+            width: '200px',
+            height: '200px',
+            backgroundColor: 'white',
+            margin: '10px',
           }}
         >
-          {/* 템플릿 3회 반복문 */}
-          {/* 실무 들어가면 배열 메서드 쓸 예정 */}
-          {/* 결국 데이터는 부모에 있기 때문에 */}
-          {/* 렌더링 이전에 배열 메서드(filter)를 통해 필터링을 하고 보여준다. */}
-          {filterdData.map(study => (
-            <TempCard study={study} key={study.id} />
-          ))}
+          응애
+        </div>
+
+        <hr />
+
+        <div>
+          <div
+            className="flex"
+            style={{
+              margin: '25px 0',
+            }}
+          >
+            {/* 템플릿 3회 반복문 */}
+            {/* 실무 들어가면 배열 메서드 쓸 예정 */}
+            {/* 결국 데이터는 부모에 있기 때문에 */}
+            {/* 렌더링 이전에 배열 메서드(filter)를 통해 필터링을 하고 보여준다. */}
+            {filterdData.map(study => (
+              <TempCard study={study} key={study.id} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

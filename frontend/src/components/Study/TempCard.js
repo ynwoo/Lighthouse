@@ -1,10 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { Avatar, Card } from 'antd';
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from '@ant-design/icons'
+import { Avatar, Card } from 'antd'
 
-const { Meta } = Card;
-
+const { Meta } = Card
 
 // 템플릿 카드
 
@@ -30,7 +33,9 @@ function TempCard({ study }) {
           ]}
         >
           <Meta
-            avatar={<Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />}
+            avatar={
+              <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
+            }
             title="{study.title}"
             description="{study.is_online ? '온라인' : '오프라인'} {study.current_member}/{study.max_member}\n작성시간: {study.created_at}\n모집 마감: {study.recruit_finished_at}\n{study.like_cnt}개의 따봉"
           />

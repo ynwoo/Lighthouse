@@ -1,12 +1,10 @@
 import React, { useContext } from 'react'
-import { Layout } from 'antd';
+import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 import SearchComponent from '../components/Utils/SearchComponent'
 
-const { Footer, Content } = Layout;
-
-
+const { Footer, Content } = Layout
 
 // 컨텐츠
 const contentStyle = {
@@ -15,16 +13,15 @@ const contentStyle = {
   lineHeight: '130%',
   color: '#fff',
   backgroundColor: 'transparent',
-  margin: '10px'
-};
-
+  margin: '10px',
+}
 
 // 푸터
 const footerStyle = {
   textAlign: 'center',
   color: '#fff',
   backgroundColor: '#7dbcea',
-};
+}
 
 // 내부 탭
 export default function MainPage() {
@@ -40,13 +37,18 @@ export default function MainPage() {
     >
       <Layout style={{ backgroundColor: 'transparent' }}>
         <Layout hasSider style={{ backgroundColor: 'transparent' }}>
-
           {/* 사이드바 */}
           <SideComponent />
 
           {/* 컨텐츠 */}
           <Content style={contentStyle}>
-            <div style={{ margin: '10px', backgroundColor: 'transparent', width: '100%' }}>
+            <div
+              style={{
+                margin: '10px',
+                backgroundColor: 'transparent',
+                width: '100%',
+              }}
+            >
               {/* 검색창 */}
               <SearchComponent />
             </div>
@@ -59,6 +61,6 @@ export default function MainPage() {
           &copy; Lighthouse {new Date().getFullYear()}
         </Footer>
       </Layout>
-    </div >
-  );
+    </div>
+  )
 }

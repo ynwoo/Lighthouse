@@ -1,14 +1,13 @@
 import React from 'react'
-import { Input, Select, Space } from 'antd';
+import { Input, Select, Space } from 'antd'
 
 // 검색창
-const { Search } = Input;
-const onSearch = (value) => console.log(value);
+const { Search } = Input
+const onSearch = value => console.log(value)
 // 지역
-const handleChange = (value) => {
-  console.log(`selected ${value}`);
-};
-
+const handleChange = value => {
+  console.log(`selected ${value}`)
+}
 
 export default function SearchComponent() {
   return (
@@ -17,8 +16,12 @@ export default function SearchComponent() {
       <div style={{ display: 'flex', width: '100%' }}>
         {/* 검색창 */}
         <div>
-          <Search placeholder="input search text"
-            onSearch={onSearch} enterButton style={{ width: '500px', margin: '10px' }} />
+          <Search
+            placeholder="input search text"
+            onSearch={onSearch}
+            enterButton
+            style={{ width: '500px', margin: '10px' }}
+          />
         </div>
         {/* 지역 */}
         <div>
@@ -27,7 +30,7 @@ export default function SearchComponent() {
               defaultValue="lucy"
               style={{
                 width: 120,
-                margin: '10px'
+                margin: '10px',
               }}
               onChange={handleChange}
               options={[
@@ -54,7 +57,7 @@ export default function SearchComponent() {
               defaultValue="lucy"
               style={{
                 width: 120,
-                margin: '10px'
+                margin: '10px',
               }}
               onChange={handleChange}
               options={[
@@ -80,8 +83,6 @@ export default function SearchComponent() {
           </Space>
         </div>
       </div>
-
     </div>
-
   )
 }
