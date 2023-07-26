@@ -1,15 +1,19 @@
 import React from 'react'
 import { Input, Select, Space } from 'antd'
+import { connect } from 'react-redux'
+import { actionCreators } from '../../store/modules/study'
 
 // 검색창
 const { Search } = Input
-const onSearch = value => console.log(value)
-// 지역
-const handleChange = value => {
-  console.log(`selected ${value}`)
-}
 
-export default function SearchComponent() {
+function SearchComponent({ searchStudy }) {
+  const onSearch = value => {
+    searchStudy(value)
+  }
+  // 지역
+  const handleChange = value => {
+    console.log(`selected ${value}`)
+  }
   return (
     <div>
       <h2>현재 모집 중인 스터디</h2>
@@ -86,3 +90,10 @@ export default function SearchComponent() {
     </div>
   )
 }
+function mapDispatchToProps(dispatch) {
+  return {
+    searchStudy: value => dispatch(actionCreators.searchStudy(value)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(SearchComponent)

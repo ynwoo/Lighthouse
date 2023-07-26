@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import TempCard from '../Study/TempCard'
 import dummy from '../../db/data.json'
 
-export default function MainComponent() {
-  const filterdData = dummy.data.filter(item => item.id > 6)
+function MainComponent({ text }) {
+  const filterdData = dummy.study_list.filter(item => item.title.includes(text))
 
   return (
     <div
@@ -13,9 +14,6 @@ export default function MainComponent() {
         margin: '10px',
       }}
     >
-      {/* 템플릿 3회 반복문 */}
-      {/* 실무 들어가면 배열 메서드 쓸 예정 */}
-      {/* 결국 데이터는 부모에 있기 때문에 */}
       {/* 렌더링 이전에 배열 메서드(filter)를 통해 필터링을 하고 보여준다. */}
       {filterdData.map(study => (
         <TempCard study={study} key={study.id} />
@@ -23,3 +21,10 @@ export default function MainComponent() {
     </div>
   )
 }
+// store에서 prop 받아오기(얘가 있어야 store 가능)
+function mapStateToProps(state) {
+  return { text: state }
+}
+
+// dispatch만 할 경우 앞에거 null로 하면 됨
+export default connect(mapStateToProps)(MainComponent)
