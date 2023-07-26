@@ -2,7 +2,6 @@ package com.ssafy.lighthouse.domain.study.controller;
 
 import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
-import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +39,23 @@ public class StudyController {
     @PostMapping("/{study-id}")
     public ResponseEntity<?> createStudyById(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        StudyDto result = studyService.createById(studyId);
+        StudyDto result = studyService.createStudyById(studyId);
         return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
+    }
+
+    @PutMapping ("/{study-id}")
+    public ResponseEntity<?> shareStudyById(@PathVariable(name = "study-id") Long studyId) {
+        log.debug("studyId : {}", studyId);
+//        studyService.shareStudyById(studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    // 스터디 삭제
+    @DeleteMapping("/{study-id}")
+    public ResponseEntity<?> removeStudyById(@PathVariable(name = "study-id") Long studyId) {
+        log.debug("studyId : {}", studyId);
+        studyService.removeStudyById(studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
