@@ -11,6 +11,8 @@ public interface UserService {
 
     UserMyPageDto getUserByEmail(String userEmail);
 
+    UserMyPageDto getUserById(Long userId);
+
     void updateUser(UserMyPageDto userMyPageDto);
 
     void deleteUser(Long userId);
