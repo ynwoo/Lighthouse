@@ -26,14 +26,14 @@ public class StudyMaterialController extends HttpServlet {
 	private StudyMaterialService studyMaterialService;
 
 	@PostMapping
-	public ResponseEntity<String> createMaterial(@RequestBody StudyMaterialDto.StudyMaterialReq dto) {
+	public ResponseEntity<String> createMaterial(@RequestBody StudyMaterialDto.Req dto) {
 		studyMaterialService.createMaterial(dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@PutMapping("/{study-material-id}")
 	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
-												@RequestBody StudyMaterialDto.StudyMaterialReq dto) {
+												@RequestBody StudyMaterialDto.Req dto) {
 		studyMaterialService.updateMaterial(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}

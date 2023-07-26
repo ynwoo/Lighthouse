@@ -9,8 +9,8 @@ public interface QnaService {
 	List<Qna> findAllByStudyId(long studyId);
 
 	List<Qna> findAllByUserId(long userId);
-	long createQna(QnaDto.QnaReq dto);
-	long updateQna(long id, QnaDto.QnaReq dto);
+	long createQna(QnaDto.Req dto);
+	long updateQna(long id, QnaDto.Req dto);
 	long removeQna(long id);
 	Qna findById(long id);
 }
