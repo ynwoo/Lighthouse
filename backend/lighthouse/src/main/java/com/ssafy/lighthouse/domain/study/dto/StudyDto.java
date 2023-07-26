@@ -3,6 +3,7 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
+import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class StudyDto {
     private List<StudyEvalDto> studyEvalDtos;
     private List<StudyNoticeDto> studyNoticeDtos;
     private List<StudyMaterialDto> studyMaterialDtos;
-    private List<SessionDto> sessionDtos;
+    private List<SessionRes> sessionDtos;
 
     public StudyDto(Study study) {
         this.id = study.getId();
@@ -65,9 +66,9 @@ public class StudyDto {
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
         this.studyTagDtos = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
         this.studyEvalDtos = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
-//        this.studyMaterialDtos = study.getStudyMaterial() == null ? null : study.getStudyMaterial().stream().map(StudyMaterialDto::new).collect(Collectors.toList());
-//        this.studyNoticeDtos = study.getStudyNotice() == null ? null : study.getStudyNotice().stream().map(StudyNoticeDto::new).collect(Collectors.toList());
-//        this.sessionDtos = study.getSession() == null ? null : study.getSession().stream().map(SessionDto::new).collect(Collectors.toList());
+//        this.studyMaterialDtos = study.getStudyMaterials() == null ? null : study.getStudyMaterials().stream().map(StudyMaterialRes::new).collect(Collectors.toList());
+//        this.studyNoticeDtos = study.getStudyNotices() == null ? null : study.getStudyNotices().stream().map(StudyNoticeRes::new).collect(Collectors.toList());
+        this.sessionDtos = study.getSessions() == null ? null : study.getSessions().stream().map(SessionRes::new).collect(Collectors.toList());
     }
 
     public Study toEntity() {
@@ -91,7 +92,7 @@ public class StudyDto {
                 .studyEvals(this.studyTagDtos != null ? this.studyEvalDtos.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
 //                .studyMaterials(this.studyMaterialDtos.stream().map(StudyMaterialDto::toEntity).collect(Collectors.toSet()))
 //                .studyNotices(this.studyNoticeDtos.stream().map(StudyNoticeDto::toEntity).collect(Collectors.toSet()))
-//                .sessions(this.sessionDtos.stream().map(SessionDto::toEntity).collect(Collectors.toSet()))
+                .sessions(this.sessionDtos.stream().map(SessionRes::toEntity).collect(Collectors.toSet()))
                 .build();
     }
 }

@@ -10,4 +10,5 @@ public interface StudyService {
     List<StudyDto> findAllByStudySearchOption(StudySearchOption options);
     StudyDto findDetailById(Long studyId);
     StudyDto createById(Long studyId);
+    void removeById(Long studyId);
 }

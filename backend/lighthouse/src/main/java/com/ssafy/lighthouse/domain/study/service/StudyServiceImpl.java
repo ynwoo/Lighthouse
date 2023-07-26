@@ -4,9 +4,7 @@ import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
-import com.ssafy.lighthouse.domain.study.repository.StudyEvalRepository;
-import com.ssafy.lighthouse.domain.study.repository.StudyRepository;
-import com.ssafy.lighthouse.domain.study.repository.StudyTagRepository;
+import com.ssafy.lighthouse.domain.study.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,9 @@ import java.util.Optional;
 public class StudyServiceImpl implements StudyService {
     private final StudyRepository studyRepository;
     private final StudyTagRepository studyTagRepository;
-    private final StudyEvalRepository studyEvalRepository;
+    private final StudyMaterialRepository studyMaterialRepository;
+    private final StudyNoticeRepository studyNoticeRepository;
+    private final SessionRepository sessionRepository;
     private final EntityManager em;
 
     @Override
@@ -46,22 +46,35 @@ public class StudyServiceImpl implements StudyService {
         log.debug("service - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(StudyNotFoundException::new);
         StudyDto studyDto = new StudyDto(study);
-        Study newStudy = studyDto.toEntity();
+        em.flush();
+        em.clear();
 
-        // study 넣기
-        studyRepository.save(newStudy);
+        Study newStudy = studyDto.toEntity();
 
         // studyTag 넣기
         studyTagRepository.saveAll(newStudy.getStudyTags());
+//        // studyMaterial 넣기
+//        studyMaterialRepository.saveAll(newStudy.getStudyMaterials());
+//        // studyNotice 넣기
+//        studyNoticeRepository.saveAll(newStudy.getStudyNotices());
+        // session 넣기
+        sessionRepository.saveAll(newStudy.getSessions());
 
-        // studyEval 넣기
-        studyEvalRepository.saveAll(newStudy.getStudyEvals());
-
+        // study 넣기
+        studyRepository.save(newStudy);
         Long id = newStudy.getId();
+
         em.flush();
         em.clear();
 
         Study result = studyRepository.findDetailById(id).orElseThrow(StudyNotFoundException::new);
         return new StudyDto(result);
+    }
+
+    @Override
+    public void removeById(Long studyId) {
+        Optional<Study> result = studyRepository.findById(studyId);
+        Study study = result.orElseThrow(StudyNotFoundException::new);
+        study.remove();
     }
 }
