@@ -24,7 +24,7 @@ public class StudyController {
         log.debug("options : {}", options);
         List<SimpleStudyDto> result = studyService.findAllByStudySearchOption(options);
         log.debug("findAllByStudySearchOption ---------- {}", result);
-        return new ResponseEntity<List<SimpleStudyDto>>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     // 상세 조회
@@ -32,7 +32,7 @@ public class StudyController {
     public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         StudyDto result = studyService.findDetailByStudyId(studyId);
-        return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     // 템플릿 복제
@@ -40,7 +40,7 @@ public class StudyController {
     public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         StudyDto result = studyService.createStudyByStudyId(studyId);
-        return new ResponseEntity<StudyDto>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping ("/{study-id}")
