@@ -66,15 +66,15 @@ class StudyRepositoryTest {
         }
 
         StudySearchOption options = new StudySearchOption();
-        options.setLimit(4);
-        options.setOffset(1);
-
-        List<StudyDto> queryAll = studyRepository.findAllByStudySearchOption(options);
-        if(queryAll.isEmpty()) throw new StudyNotFoundException();
-        for (StudyDto study : queryAll) {
-            System.out.println("studyTitle = " + study.getTitle());
-            System.out.println("studyCreatedAt = " + study.getCreatedAt());
-        }
+//        options.setLimit(4);
+//        options.setOffset(1);
+//
+//        List<StudyDto> queryAll = studyRepository.findAllByStudySearchOption(options);
+//        if(queryAll.isEmpty()) throw new StudyNotFoundException();
+//        for (StudyDto study : queryAll) {
+//            System.out.println("studyTitle = " + study.getTitle());
+//            System.out.println("studyCreatedAt = " + study.getCreatedAt());
+//        }
 //        List<StudyDto> queryAll = studyRepository.findAllByStudySearchOption(options);
 //        if(queryAll.isEmpty()) throw new StudyNotFoundException();
 //        for (StudyDto study : queryAll) {
