@@ -32,5 +32,16 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'react/prop-types': 'off',
+    'react/jsx-no-bind': 'off',
+    'default-param-last': 'off',
+    'no-use-before-define': [
+      'error',
+      {
+        functions: false,
+        classes: true,
+        variables: true,
+        allowNamedExports: false,
+      },
+    ],
   },
 }
