@@ -31,6 +31,22 @@ public class StudyNoticeDto {
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class StudyNoticeRes {
+		private Long id;
+		private String createdAt;
+		private Long studyId;
+		private String content;
+
+		public StudyNoticeRes(StudyNotice studyNotice) {
+			this.id = studyNotice.getId();
+			this.createdAt = studyNotice.getCreatedAt();
+			this.studyId = studyNotice.getStudyId();
+			this.content = studyNotice.getContent();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeCheckReq {
 		private Long userId;
 		private Long studyNoticeId;
@@ -46,6 +62,22 @@ public class StudyNoticeDto {
 				.userId(userId)
 				.studyNoticeId(studyNoticeId)
 				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class StudyNoticeCheckRes {
+		private Long id;
+		private String createdAt;
+		private Long userId;
+		private Long studyNoticeId;
+
+		public StudyNoticeCheckRes(StudyNoticeCheck studyNoticeCheck) {
+			this.id = studyNoticeCheck.getId();
+			this.createdAt = studyNoticeCheck.getCreatedAt();
+			this.userId = studyNoticeCheck.getUserId();
+			this.studyNoticeId = studyNoticeCheck.getStudyNoticeId();
 		}
 	}
 }

@@ -25,13 +25,13 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	}
 
 	@Override
-	public Long createMaterial(final StudyMaterialDto.StudyMaterialReq dto) {
+	public Long createMaterial(final StudyMaterialDto.Req dto) {
 		StudyMaterial entity = studyMaterialRepository.save(dto.toEntity());
 		return entity.getId();
 	}
 
 	@Override
-	public Long updateMaterial(final Long id, final StudyMaterialDto.StudyMaterialReq dto) {
+	public Long updateMaterial(final Long id, final StudyMaterialDto.Req dto) {
 		StudyMaterial studyMaterial = findById(id);
 		studyMaterial.update(dto.getStudyId(), dto.getSessionId(), dto.getType(), dto.getContent(), dto.getFileUrl());
 		return id;

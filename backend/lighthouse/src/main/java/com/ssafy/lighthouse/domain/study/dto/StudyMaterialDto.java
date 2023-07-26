@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class StudyMaterialDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class StudyMaterialReq {
+	public static class Req {
 		private Long studyId;
 		private Long sessionId;
 		private int type;
@@ -18,7 +18,7 @@ public class StudyMaterialDto {
 		private String fileUrl;
 
 		@Builder
-		public StudyMaterialReq(Long studyId, Long sessionId, int type, String content, String fileUrl) {
+		public Req(Long studyId, Long sessionId, int type, String content, String fileUrl) {
 			this.studyId = studyId;
 			this.sessionId = sessionId;
 			this.type = type;
@@ -34,6 +34,28 @@ public class StudyMaterialDto {
 				.content(content)
 				.fileUrl(fileUrl)
 				.build();
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class Res {
+		private Long id;
+		private String createdAt;
+		private Long studyId;
+		private Long sessionId;
+		private int type;
+		private String content;
+		private String fileUrl;
+
+		public Res(StudyMaterial studyMaterial) {
+			this.id = studyMaterial.getId();
+			this.createdAt = studyMaterial.getCreatedAt();
+			this.studyId = studyMaterial.getStudyId();
+			this.sessionId = studyMaterial.getSessionId();
+			this.type = studyMaterial.getType();
+			this.content = studyMaterial.getContent();
+			this.fileUrl = studyMaterial.getFileUrl();
 		}
 	}
 }
