@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
 
-public interface SessionCheckRepository extends JpaRepository<SessionCheck, Integer> {
+public interface SessionCheckRepository extends JpaRepository<SessionCheck, Long> {
 }

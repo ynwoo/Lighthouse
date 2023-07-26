@@ -12,35 +12,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.lighthouse.domain.study.dto.StudyMaterialDto;
-import com.ssafy.lighthouse.domain.study.service.StudyMaterialService;
+import com.ssafy.lighthouse.domain.study.dto.QnaDto;
+import com.ssafy.lighthouse.domain.study.service.QnaService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("study-material")
+@RequestMapping("qna")
 @AllArgsConstructor
-public class StudyMaterialController extends HttpServlet {
+public class QnaController extends HttpServlet {
 	private static final String SUCCESS= "success";
 
-	private StudyMaterialService studyMaterialService;
+	private QnaService qnaService;
+
+	//추후 조회, 검색, 필터링 필요하면 추가
 
 	@PostMapping
-	public ResponseEntity<String> createMaterial(@RequestBody StudyMaterialDto.Req dto) {
-		studyMaterialService.createMaterial(dto);
+	public ResponseEntity<String> createQna(@RequestBody QnaDto.Req dto) {
+		qnaService.createQna(dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
-	@PutMapping("/{study-material-id}")
-	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
-												@RequestBody StudyMaterialDto.Req dto) {
-		studyMaterialService.updateMaterial(id, dto);
+	@PutMapping("/{qna-id}")
+	public ResponseEntity<String> updateQna(@PathVariable("qna-id") final Long id,
+												@RequestBody QnaDto.Req dto) {
+		qnaService.updateQna(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{study-material-id}")
-	public ResponseEntity<String> removeMaterial(@PathVariable("study-material-id") final Long id) {
-		studyMaterialService.removeMaterial(id);
+	@DeleteMapping("/{qna-id}")
+	public ResponseEntity<String> removeQna(@PathVariable("qna-id") final Long id) {
+		qnaService.removeQna(id);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 }

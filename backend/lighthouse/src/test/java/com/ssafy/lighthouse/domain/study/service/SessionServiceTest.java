@@ -15,7 +15,7 @@ public class SessionServiceTest {
 	@Autowired
 	private SessionService sessionService;
 
-	private static final long STUDY_ID = 1L;
+	private static final Long STUDY_ID = 1L;
 
 	@Test
 	public void createSessionTest() {
