@@ -46,7 +46,7 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 
 	@Override
 	public StudyMaterial findById(final Long id) {
-		final Optional<StudyMaterial> studyMaterial = studyMaterialRepository.findById(id.intValue());
+		final Optional<StudyMaterial> studyMaterial = studyMaterialRepository.findById(id);
 		studyMaterial.orElseThrow(() -> new StudyMaterialNotFoundException(id));
 		return studyMaterial.get();
 	}

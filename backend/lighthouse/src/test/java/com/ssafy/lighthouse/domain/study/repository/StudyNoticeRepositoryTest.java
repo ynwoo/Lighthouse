@@ -31,7 +31,7 @@ public class StudyNoticeRepositoryTest {
 		studyNoticeRepository.save(studyNotice);
 		System.out.println(studyNotice);
 		//조회
-		StudyNotice entity = studyNoticeRepository.findById(7).get();
+		StudyNotice entity = studyNoticeRepository.findById(7L).get();
 		assertThat(entity.getStudyId()).isEqualTo(1);
 		assertThat(entity.getContent()).isEqualTo("test notice content");
 
@@ -53,14 +53,14 @@ public class StudyNoticeRepositoryTest {
 	@Test
 	public void deleteTest() {
 		//조회
-		StudyNotice entity = studyNoticeRepository.findById(1).get();
+		StudyNotice entity = studyNoticeRepository.findById(1L).get();
 		
 		//삭제
 		studyNoticeRepository.delete(entity);
 	}
 	@Test
 	public void updateTest() {
-		final int studyNoticeId = 1;
+		final Long studyNoticeId = 1L;
 		Optional<StudyNotice> studyNotice = studyNoticeRepository.findById(studyNoticeId);
 		studyNotice.ifPresent(selectStudyNotice -> {
 		});
