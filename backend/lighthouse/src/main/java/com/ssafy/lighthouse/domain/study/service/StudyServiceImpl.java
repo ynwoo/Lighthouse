@@ -38,16 +38,16 @@ public class StudyServiceImpl implements StudyService {
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
-    public StudyDto findDetailByStudyId(Long studyId) {
+    public StudyResponse findDetailByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
-        return new StudyDto(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        return new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
     }
 
     @Override
-    public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findSimpleDetailShareById(studyId);
+    public StudyResponse createStudyByStudyId(Long studyId) {
+        Optional<Study> findDetail = studyRepository.findSimpleDetailById(studyId);
         log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         
@@ -111,7 +111,7 @@ public class StudyServiceImpl implements StudyService {
         em.clear();
 
         Study result = studyRepository.findDetailById(newStudyId).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        return new StudyDto(result);
+        return new StudyResponse(result);
     }
 
     @Override
@@ -129,8 +129,9 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void updateStudyByStudyId(StudyDto studyDto) {
-        
+    public void updateStudyByStudyId(StudyRequest studyRequest) {
+        Optional<Study> result = studyRepository.findDetailById(studyRequest.getId());
+        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
     }
 
     @Override

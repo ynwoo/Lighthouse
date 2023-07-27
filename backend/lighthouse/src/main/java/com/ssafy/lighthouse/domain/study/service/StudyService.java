@@ -6,11 +6,11 @@ import org.springframework.data.domain.Page;
 
 public interface StudyService {
     Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
-    StudyDto findDetailByStudyId(Long studyId);
-    StudyDto createStudyByStudyId(Long studyId);
+    StudyResponse findDetailByStudyId(Long studyId);
+    StudyResponse createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
     void shareStudyByStudyId(Long studyId);
-    void updateStudyByStudyId(StudyDto studyDto);
+    void updateStudyByStudyId(StudyRequest studyRequest);
 
     // study-like
     void createStudyLike(Long studyId, Long userId);

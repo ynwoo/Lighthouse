@@ -15,7 +15,7 @@ public abstract class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(insertable = false)
+	@Column(insertable = false, updatable = false)
 	private String createdAt;
 	@Column(insertable = false)
 	private int isValid;
@@ -24,5 +24,5 @@ public abstract class BaseEntity {
 		this.isValid = 0;
 	}
 
-	public void resetId() {this.id = null;}
+	public void setId(Long id) {this.id = id;}
 }

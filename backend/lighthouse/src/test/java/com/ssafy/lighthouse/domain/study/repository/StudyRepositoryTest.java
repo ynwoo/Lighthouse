@@ -1,15 +1,11 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
-import com.ssafy.lighthouse.domain.study.dto.StudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
