@@ -2,7 +2,6 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.study.entity.Session;
 import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,19 +72,6 @@ public class SessionDto {
 			this.comment = session.getComment();
 			this.status = session.getStatus();
 			this.seqNum = session.getSeqNum();
-		}
-
-		public Session toEntity() {
-			return Session.builder()
-					.startedAt(startedAt)
-					.endedAt(endedAt)
-					.studyId(studyId)
-					.title(title)
-					.description(description)
-					.comment(comment)
-					.status(status)
-					.seqNum(seqNum)
-					.build();
 		}
 	}
 
