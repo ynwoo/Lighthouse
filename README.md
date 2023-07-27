@@ -74,6 +74,9 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 - Jenkins
 - Docker
 
+## ERD
+<img src='#' alt='erd 사진'>
+
 ## 프로젝트 파일 구조
 
 ### Backend
@@ -155,4 +158,4 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 - BE
 
 # ⛯ 역할 분배
-<img src='asdf' alt='조원들 역할 분배 사진'>
+<img src='#' alt='조원들 역할 분배 사진'>
