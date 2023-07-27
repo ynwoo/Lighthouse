@@ -129,6 +129,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public void updateStudyByStudyId(StudyDto studyDto) {
+        
+    }
+
+    @Override
     public void createStudyLike(Long studyId, Long userId) {
         Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
         if(result.isPresent()) {

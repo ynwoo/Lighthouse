@@ -42,10 +42,19 @@ public class StudyController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 스터디 공유
     @PutMapping ("/{study-id}")
     public ResponseEntity<?> shareStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         studyService.shareStudyByStudyId(studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    // 스터디 공유
+    @PutMapping
+    public ResponseEntity<?> updateStudy(@RequestBody StudyDto studyDto) {
+        log.debug("studyId : {}", studyDto.getId());
+        studyService.updateStudyByStudyId(studyDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

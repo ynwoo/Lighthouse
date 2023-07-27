@@ -10,6 +10,7 @@ public interface StudyService {
     StudyDto createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
     void shareStudyByStudyId(Long studyId);
+    void updateStudyByStudyId(StudyDto studyDto);
 
     // study-like
     void createStudyLike(Long studyId, Long userId);
@@ -26,4 +27,5 @@ public interface StudyService {
     // study-tag
     void createStudyTag(StudyTagDto studyTagDto);
     void removeStudyTag(Long studyId, Long tagId);
+
 }
