@@ -131,9 +131,6 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public void updateStudyByStudyId(StudyRequest studyRequest) {
-//        Optional<Study> result = studyRepository.findDetailById(studyRequest.getId());
-//        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
-//        log.debug("studyId : {}", study.getId());
         Study study = studyRequest.toEntity();
         Set<StudyEval> studyEvals = study.getStudyEvals();
         for (StudyEval studyEval : studyEvals) {
