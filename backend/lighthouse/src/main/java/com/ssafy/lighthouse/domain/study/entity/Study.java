@@ -6,6 +6,7 @@ import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Entity
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {

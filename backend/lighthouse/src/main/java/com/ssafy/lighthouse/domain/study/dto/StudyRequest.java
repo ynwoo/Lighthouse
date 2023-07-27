@@ -38,6 +38,7 @@ public class StudyRequest {
 
     public Study toEntity() {
         return Study.builder()
+                .id(this.id)
                 .title(this.title)
                 .description(this.description)
                 .hit(this.hit)
