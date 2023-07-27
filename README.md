@@ -59,7 +59,17 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 
 ## 기술 스택
 
-### BackEnd
+### BackEnd - Spring
+
+- IntelliJ IDE
+- Springboot 2.7.13
+- Spring Data JPA
+- Spring Web
+- QueryDSL
+- JWT
+- WebSocket
+- Swagger 3.0.0
+- MariaDB
 
 ### Frontend
 
@@ -81,42 +91,44 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 
 ### Backend
 
-- backend
-  - document
-  - lighthouse
-    - gradle/wrapper
-    - src
-      - main
-        - java/com/ssafy/lighthouse
-          - config
-          - domain
-            - common
-              - controller
-              - dto
-              - entity
-              - repository
-              - service
-              - BaseEntity
-            - study
-              - controller
-              - dto
-              - entity
-              - exception
-              - repository
-              - service
-            - user
-              - controller
-              - dto
-              - entity
-              - exception
-              - repository
-              - service
-          - global
-            - config
-            - error
-            - util
-        - resource
-      - test/java/com/ssafy/lighthouse
+```
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── ssafy
+    │   │           └── lighthouse
+    │   │               ├── LighthouseApplication.java
+    │   │               ├── domain
+    │   │               │   ├── common
+    │   │               │   │   ├── controller
+    │   │               │   │   ├── service
+    │   │               │   │   ├── repository
+    │   │               │   │   ├── entity
+    │   │               │   │   ├── dto
+    │   │               │   │   └── BaseEntity.java
+    │   │               │   ├── study
+    │   │               │   │   ├── controller
+    │   │               │   │   ├── service
+    │   │               │   │   ├── repository
+    │   │               │   │   ├── entity
+    │   │               │   │   ├── dto
+    │   │               │   │   └── exception
+    │   │               │   └── user
+    │   │               │       ├── controller
+    │   │               │       ├── service
+    │   │               │       ├── repository
+    │   │               │       ├── entity
+    │   │               │       ├── dto
+    │   │               │       └── exception
+    │   │               ├── global
+    │   │               │   ├── config
+    │   │               │   ├── error
+    │   │               │   └── util
+    │   │               └── config
+    │   └── resources
+    │       └── application.properties
+```
 
 ### Frontend
 
@@ -155,7 +167,7 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 ## 코드 컨벤션
 
 - FE : airbnb 스타일 가이드
-- BE
+- BE : 캠퍼스 핵데이 Java 코딩 컨벤션
 
 # ⛯ 역할 분배
 <img src='#' alt='조원들 역할 분배 사진'>
