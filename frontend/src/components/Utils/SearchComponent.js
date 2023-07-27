@@ -15,7 +15,10 @@ function SearchComponent({ searchStudy }) {
     console.log(`selected ${value}`)
   }
   return (
-    <div>
+    <div style={{
+      margin: '10px',
+      marginLeft: '230px'
+    }}>
       <h2>현재 모집 중인 스터디</h2>
       <div style={{ display: 'flex', width: '100%' }}>
         {/* 검색창 */}

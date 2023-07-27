@@ -38,7 +38,10 @@ export default function MainPage() {
       <Layout style={{ backgroundColor: 'transparent' }}>
         <Layout hasSider style={{ backgroundColor: 'transparent' }}>
           {/* 사이드바 */}
-          <SideComponent />
+          <div style={{ position: 'fixed' }}>
+            <SideComponent />
+          </div>
+
 
           {/* 컨텐츠 */}
           <Content style={contentStyle}>
