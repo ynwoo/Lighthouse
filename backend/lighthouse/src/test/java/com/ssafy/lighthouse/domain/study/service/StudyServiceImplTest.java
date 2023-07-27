@@ -29,10 +29,10 @@ class StudyServiceImplTest {
 
     @BeforeEach
     public void init() {
-        studyTagRepository.save(new StudyTag(224L, 1L));
-        studyTagRepository.save(new StudyTag(224L, 2L));
-        studyTagRepository.save(new StudyTag(224L, 3L));
-        studyTagRepository.save(new StudyTag(224L, 4L));
+//        studyTagRepository.save(new StudyTag(224L, 1L));
+//        studyTagRepository.save(new StudyTag(224L, 2L));
+//        studyTagRepository.save(new StudyTag(224L, 3L));
+//        studyTagRepository.save(new StudyTag(224L, 4L));
 
         em.flush();
         em.clear();
