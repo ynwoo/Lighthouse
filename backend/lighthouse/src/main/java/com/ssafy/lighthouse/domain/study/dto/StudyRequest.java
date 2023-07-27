@@ -3,18 +3,17 @@ package com.ssafy.lighthouse.domain.study.dto;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.user.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
 public class StudyRequest {
     private Long id;
+    private int isValid;
     private String title;
     private String description;
     private int hit;
@@ -28,6 +27,7 @@ public class StudyRequest {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
+    private int status;
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
@@ -39,6 +39,7 @@ public class StudyRequest {
     public Study toEntity() {
         return Study.builder()
                 .id(this.id)
+                .isValid(isValid)
                 .title(this.title)
                 .description(this.description)
                 .hit(this.hit)
@@ -52,6 +53,7 @@ public class StudyRequest {
                 .isOnline(this.isOnline)
                 .likeCnt(this.likeCnt)
                 .bookmarkCnt(this.bookmarkCnt)
+                .status(this.status)
                 .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
                 .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
                 .studyMaterials(this.studyMaterials != null ? this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()) : null)

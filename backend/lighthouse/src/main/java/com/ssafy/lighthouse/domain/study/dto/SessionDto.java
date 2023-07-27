@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.study.entity.Session;
 import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
 import lombok.AccessLevel;
@@ -11,6 +12,8 @@ public class SessionDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionReq {
+		private Long id;
+		private int isValid;
 		private String startedAt;
 		private String endedAt;
 		private Long studyId;
@@ -35,6 +38,8 @@ public class SessionDto {
 
 		public Session toEntity() {
 			return Session.builder()
+					.id(id)
+					.isValid(isValid)
 				.startedAt(startedAt)
 				.endedAt(endedAt)
 				.studyId(studyId)
@@ -51,6 +56,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionRes {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private String startedAt;
 		private String endedAt;
@@ -63,6 +69,7 @@ public class SessionDto {
 
 		public SessionRes(Session session) {
 			this.id = session.getId();
+			this.isValid = session.getIsValid();
 			this.createdAt = session.getCreatedAt();
 			this.startedAt = session.getStartedAt();
 			this.endedAt = session.getEndedAt();
@@ -78,6 +85,8 @@ public class SessionDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckReq {
+		private Long id;
+		private int isValid;
 		private Long userId;
 		private Long sessionId;
 		private String content;
@@ -91,6 +100,8 @@ public class SessionDto {
 
 		public SessionCheck toEntity() {
 			return SessionCheck.builder()
+					.id(id)
+					.isValid(isValid)
 				.userId(userId)
 				.sessionId(sessionId)
 				.content(content)
@@ -102,6 +113,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckRes {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private Long userId;
 		private Long sessionId;
@@ -109,6 +121,7 @@ public class SessionDto {
 
 		public SessionCheckRes(SessionCheck sessionCheck) {
 			this.id = sessionCheck.getId();
+			this.isValid = sessionCheck.getIsValid();
 			this.createdAt = sessionCheck.getCreatedAt();
 			this.userId = sessionCheck.getUserId();
 			this.sessionId = sessionCheck.getSessionId();

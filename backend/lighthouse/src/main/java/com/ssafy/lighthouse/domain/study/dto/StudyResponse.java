@@ -33,6 +33,7 @@ public class StudyResponse {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
+    private int status;
     private StudyResponse original;
     private User leader;    // 수정 필요
     private SidoDto sido;
@@ -60,6 +61,7 @@ public class StudyResponse {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
+        this.status = study.getStatus();
         this.original = study.getOriginal() == null ? null : new StudyResponse(study.getOriginal());
         this.leader = study.getLeader();
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());

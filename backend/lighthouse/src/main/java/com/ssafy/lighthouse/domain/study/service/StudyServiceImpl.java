@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -134,7 +135,16 @@ public class StudyServiceImpl implements StudyService {
 //        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
 //        log.debug("studyId : {}", study.getId());
         Study study = studyRequest.toEntity();
+        Set<StudyEval> studyEvals = study.getStudyEvals();
+        for (StudyEval studyEval : studyEvals) {
+            System.out.println("studyEval = " + studyEval);
+        }
         studyRepository.save(study);
+        studyTagRepository.saveAll(study.getStudyTags());
+        studyEvalRepository.saveAll(study.getStudyEvals());
+        studyNoticeRepository.saveAll(study.getStudyNotices());
+        studyMaterialRepository.saveAll(study.getStudyMaterials());
+        sessionRepository.saveAll(study.getSessions());
         log.debug("studyId : {}", study.getId());
     }
 
