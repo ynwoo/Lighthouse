@@ -12,6 +12,8 @@ public class StudyNoticeDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeReq {
+		private Long id;
+		private int isValid;
 		private Long studyId;
 		private String content;
 
@@ -23,9 +25,11 @@ public class StudyNoticeDto {
 
 		public StudyNotice toEntity() {
 			return StudyNotice.builder()
-				.studyId(studyId)
-				.content(content)
-				.build();
+					.id(id)
+					.isValid(isValid)
+					.studyId(studyId)
+					.content(content)
+					.build();
 		}
 	}
 
@@ -33,12 +37,14 @@ public class StudyNoticeDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeRes {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private Long studyId;
 		private String content;
 
 		public StudyNoticeRes(StudyNotice studyNotice) {
 			this.id = studyNotice.getId();
+			this.isValid = studyNotice.getIsValid();
 			this.createdAt = studyNotice.getCreatedAt();
 			this.studyId = studyNotice.getStudyId();
 			this.content = studyNotice.getContent();
@@ -48,6 +54,8 @@ public class StudyNoticeDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeCheckReq {
+		private Long id;
+		private int isValid;
 		private Long userId;
 		private Long studyNoticeId;
 
@@ -59,6 +67,8 @@ public class StudyNoticeDto {
 
 		public StudyNoticeCheck toEntity() {
 			return StudyNoticeCheck.builder()
+					.id(id)
+					.isValid(isValid)
 				.userId(userId)
 				.studyNoticeId(studyNoticeId)
 				.build();

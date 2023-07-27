@@ -3,7 +3,6 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
-import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionReq;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.entity.User;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudyDto {
+public class StudyResponse {
     private Long id;
     private String createdAt;
     private int isValid;
@@ -34,7 +33,8 @@ public class StudyDto {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
-    private StudyDto original;
+    private int status;
+    private StudyResponse original;
     private User leader;    // 수정 필요
     private SidoDto sido;
     private GugunDto gugun;
@@ -44,10 +44,7 @@ public class StudyDto {
     private List<StudyMaterialDto.Res> studyMaterials;
     private List<SessionRes> sessions;
 
-    public void share() {
-    }
-
-    public StudyDto(Study study) {
+    public StudyResponse(Study study) {
         this.id = study.getId();
         this.createdAt = study.getCreatedAt();
         this.isValid = study.getIsValid();
@@ -64,7 +61,8 @@ public class StudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
-        this.original = study.getOriginal() == null ? null : new StudyDto(study.getOriginal());
+        this.status = study.getStatus();
+        this.original = study.getOriginal() == null ? null : new StudyResponse(study.getOriginal());
         this.leader = study.getLeader();
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
@@ -74,4 +72,6 @@ public class StudyDto {
         this.studyNotices = study.getStudyNotices() == null ? null : study.getStudyNotices().stream().map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList());
         this.sessions = study.getSessions() == null ? null : study.getSessions().stream().map(SessionRes::new).collect(Collectors.toList());
     }
+
+
 }

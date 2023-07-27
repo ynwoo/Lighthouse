@@ -6,16 +6,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
+@SuperBuilder
+@NoArgsConstructor
 @MappedSuperclass
 public abstract class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(insertable = false)
+	@Column(insertable = false, updatable = false)
 	private String createdAt;
 	@Column(insertable = false)
 	private int isValid;
@@ -23,6 +28,4 @@ public abstract class BaseEntity {
 	public void remove() {
 		this.isValid = 0;
 	}
-
-	public void resetId() {this.id = null;}
 }
