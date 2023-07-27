@@ -1,8 +1,7 @@
 import React from 'react'
-import SideComponent from '../components/Utils/SideComponent'
-import MainComponent from '../components/Utils/MainComponent'
+import UserProfile from '../components/User/UserProfile'
 
-export default function MainPage() {
+export default function UserPage() {
   return (
     <div
       style={{
@@ -12,8 +11,7 @@ export default function MainPage() {
         marginTop: '-4px',
       }}
     >
-      <SideComponent />
-      <MainComponent />
+      <UserProfile />
     </div>
   )
 }
