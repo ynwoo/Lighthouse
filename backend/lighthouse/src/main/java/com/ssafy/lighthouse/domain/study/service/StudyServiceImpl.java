@@ -122,10 +122,10 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void shareStudyById(Long studyId) {
+    public void shareStudyByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
         Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
-//        study.share();
+        study.share();
     }
 
     @Override

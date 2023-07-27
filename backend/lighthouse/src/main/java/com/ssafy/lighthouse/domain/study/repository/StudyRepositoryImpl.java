@@ -1,10 +1,7 @@
 package com.ssafy.lighthouse.domain.study.repository;
 
 
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Order;
-import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -42,6 +39,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .leftJoin(study.gugun, gugun)
                 .where(
                         isValid(),
+                        checkStatus(options),
                         isOnline(options),
                         searchByKeyword(options))
                 .orderBy(orderSpecifier)
@@ -63,6 +61,11 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
     // 유효한 스터디 인지 확인
     private BooleanExpression isValid() {
         return study.isValid.eq(1);
+    }
+
+    // 스터디 상태 일치 여부
+    private BooleanExpression checkStatus(StudySearchOption options) {
+        return study.status.eq(options.getStatus());
     }
 
     // 스터디 온라인 / 오프라인

@@ -4,6 +4,7 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
+import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,10 +30,10 @@ public class Study extends BaseEntity {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
-
-    // test용
-    public Study(String title) {
-        this.title = title;
+    private int status;
+    
+    public void share() {
+        this.status = STATUS.SHARE; // share중인 상태
     }
 
     @OneToOne(fetch = FetchType.LAZY)

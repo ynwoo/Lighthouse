@@ -9,7 +9,7 @@ public interface StudyService {
     StudyDto findDetailByStudyId(Long studyId);
     StudyDto createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
-    void shareStudyById(Long studyId);
+    void shareStudyByStudyId(Long studyId);
 
     // study-like
     void createStudyLike(Long studyId, Long userId);

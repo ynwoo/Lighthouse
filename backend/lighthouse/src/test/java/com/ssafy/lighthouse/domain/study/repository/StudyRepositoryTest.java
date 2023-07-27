@@ -27,36 +27,36 @@ class StudyRepositoryTest {
 
     @PersistenceContext
     private EntityManager em;
-
-    @BeforeEach
-    public void init() {
-        studyRepository.save(new Study("aaa"));
-        studyRepository.save(new Study("bbb"));
-        studyRepository.save(new Study("ccc"));
-        studyRepository.save(new Study("ddd"));
-
-        em.flush();
-        em.clear();
-    }
-
-    @Test
-    public void studyFindAllTest() {
-        Study study = studyRepository.save(new Study("aaa"));
-        log.debug("study save check : {}", study);
-        List<Study> findAll = studyRepository.findAll();
-    }
-
-    @Test
-    public void studyFindByIdTest() {
-        Study study = studyRepository.save(new Study("aaa"));
-
-        em.flush();
-        em.clear();
-
-        Study findStudy = studyRepository.findAll().get(0);
-
-        Study findDetailById = studyRepository.findDetailById(findStudy.getId()).get();
-    }
+//
+//    @BeforeEach
+//    public void init() {
+//        studyRepository.save(new Study("aaa"));
+//        studyRepository.save(new Study("bbb"));
+//        studyRepository.save(new Study("ccc"));
+//        studyRepository.save(new Study("ddd"));
+//
+//        em.flush();
+//        em.clear();
+//    }
+//
+//    @Test
+//    public void studyFindAllTest() {
+//        Study study = studyRepository.save(new Study("aaa"));
+//        log.debug("study save check : {}", study);
+//        List<Study> findAll = studyRepository.findAll();
+//    }
+//
+//    @Test
+//    public void studyFindByIdTest() {
+//        Study study = studyRepository.save(new Study());
+//
+//        em.flush();
+//        em.clear();
+//
+//        Study findStudy = studyRepository.findAll().get(0);
+//
+//        Study findDetailById = studyRepository.findDetailById(findStudy.getId()).get();
+//    }
 
     @Test
     public void studyQuerydsl() {

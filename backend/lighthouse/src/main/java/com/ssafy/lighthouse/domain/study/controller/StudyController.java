@@ -45,7 +45,7 @@ public class StudyController {
     @PutMapping ("/{study-id}")
     public ResponseEntity<?> shareStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-//        studyService.shareStudyByStudyId(studyId);
+        studyService.shareStudyByStudyId(studyId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
