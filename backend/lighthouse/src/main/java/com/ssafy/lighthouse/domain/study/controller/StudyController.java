@@ -4,11 +4,10 @@ import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/study")
@@ -22,7 +21,7 @@ public class StudyController {
     @GetMapping
     public ResponseEntity<?> findAllByStudySearchOption(StudySearchOption options) {
         log.debug("options : {}", options);
-        List<SimpleStudyDto> result = studyService.findAllByStudySearchOption(options);
+        Page<SimpleStudyDto> result = studyService.findAllByStudySearchOption(options);
         log.debug("findAllByStudySearchOption ---------- {}", result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

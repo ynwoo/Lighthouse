@@ -17,7 +17,7 @@ public class StudySearchOption {
     private List<Integer> tags;
 
     public int getOffset() {
-        return this.page * PAGE.LIMIT;
+        return (this.page - 1) * PAGE.LIMIT;
     }
 
     public int getLimit() {
