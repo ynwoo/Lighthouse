@@ -17,7 +17,7 @@ public interface StudyRepository extends JpaRepository<Study, Long>, StudyReposi
     // 상세 정보 조회 (복제)
     @EntityGraph(attributePaths = {"sido", "gugun", "studyTags", "studyMaterials", "studyNotices", "sessions"})
     @Query("select s from Study s where s.id = :studyId and s.isValid = 1")
-    Optional<Study> findSimpleDetailShareById(@Param("studyId") Long studyId);
+    Optional<Study> findSimpleDetailById(@Param("studyId") Long studyId);
 
     // 단순 조회 (공유, 삭제용)
     @Query("select s from Study s where s.id = :studyId and s.isValid = 1")

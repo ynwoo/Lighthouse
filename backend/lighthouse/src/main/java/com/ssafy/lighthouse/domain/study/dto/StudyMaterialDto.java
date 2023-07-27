@@ -11,6 +11,8 @@ public class StudyMaterialDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Req {
+		private Long id;
+		private int isValid;
 		private Long studyId;
 		private Long sessionId;
 		private int type;
@@ -28,6 +30,8 @@ public class StudyMaterialDto {
 
 		public StudyMaterial toEntity() {
 			return StudyMaterial.builder()
+					.id(id)
+					.isValid(isValid)
 				.studyId(studyId)
 				.sessionId(sessionId)
 				.type(type)
@@ -41,6 +45,7 @@ public class StudyMaterialDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Res {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private Long studyId;
 		private Long sessionId;
@@ -50,6 +55,7 @@ public class StudyMaterialDto {
 
 		public Res(StudyMaterial studyMaterial) {
 			this.id = studyMaterial.getId();
+			this.isValid = studyMaterial.getIsValid();
 			this.createdAt = studyMaterial.getCreatedAt();
 			this.studyId = studyMaterial.getStudyId();
 			this.sessionId = studyMaterial.getSessionId();

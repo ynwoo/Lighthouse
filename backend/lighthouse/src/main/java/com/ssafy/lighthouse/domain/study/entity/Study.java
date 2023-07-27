@@ -4,7 +4,12 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.*;
+import com.ssafy.lighthouse.global.util.STATUS;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,8 +17,7 @@ import java.util.Set;
 @Entity
 @Getter
 @ToString
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     private String title;
@@ -29,10 +33,10 @@ public class Study extends BaseEntity {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
-
-    // test용
-    public Study(String title) {
-        this.title = title;
+    private int status;
+    
+    public void share() {
+        this.status = STATUS.SHARE; // share중인 상태
     }
 
     @OneToOne(fetch = FetchType.LAZY)
