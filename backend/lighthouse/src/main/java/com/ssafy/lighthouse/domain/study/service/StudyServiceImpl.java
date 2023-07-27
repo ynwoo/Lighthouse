@@ -129,23 +129,17 @@ public class StudyServiceImpl implements StudyService {
         study.share();
     }
 
+    // 변경사항이 있으면 update 진행
     @Override
     public void updateStudyByStudyId(StudyRequest studyRequest) {
-//        Optional<Study> result = studyRepository.findDetailById(studyRequest.getId());
-//        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
-//        log.debug("studyId : {}", study.getId());
         Study study = studyRequest.toEntity();
-        Set<StudyEval> studyEvals = study.getStudyEvals();
-        for (StudyEval studyEval : studyEvals) {
-            System.out.println("studyEval = " + studyEval);
-        }
+        log.debug("studyId : {}", study.getId());
         studyRepository.save(study);
         studyTagRepository.saveAll(study.getStudyTags());
         studyEvalRepository.saveAll(study.getStudyEvals());
         studyNoticeRepository.saveAll(study.getStudyNotices());
         studyMaterialRepository.saveAll(study.getStudyMaterials());
         sessionRepository.saveAll(study.getSessions());
-        log.debug("studyId : {}", study.getId());
     }
 
     @Override
