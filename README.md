@@ -132,21 +132,23 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 
 ### Frontend
 
-- frontend
-  - node_modules
-  - public
-  - src
-    - components
-      - Study
-      - User
-      - Utils
-        - Chat
-        - Footer
-        - NAvbar
-        - PopUp
-    - Routes
-    - store
-      - modules
+```
+├── node_modules
+├── public
+└── src
+    ├── components
+    │   ├── Study
+    │   ├── User
+    │   └── Utils
+    │       ├── Chat
+    │       ├── Footer
+    │       ├── NAvbar
+    │       └── PopUp
+    ├── routes
+    ├── static
+    └── store
+        └── modules
+```
 
 ## 협업 툴
 
