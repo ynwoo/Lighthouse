@@ -42,7 +42,6 @@ export default function MainPage() {
             <SideComponent />
           </div>
 
-
           {/* 컨텐츠 */}
           <Content style={contentStyle}>
             <div
