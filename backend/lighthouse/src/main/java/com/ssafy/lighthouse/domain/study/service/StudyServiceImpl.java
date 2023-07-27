@@ -129,6 +129,7 @@ public class StudyServiceImpl implements StudyService {
         study.share();
     }
 
+    // 변경사항이 있으면 update 진행
     @Override
     public void updateStudyByStudyId(StudyRequest studyRequest) {
         Study study = studyRequest.toEntity();
