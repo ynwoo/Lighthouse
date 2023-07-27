@@ -47,7 +47,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findDetailById(studyId);
+        Optional<Study> findDetail = studyRepository.findSimpleDetailShareById(studyId);
         log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         
