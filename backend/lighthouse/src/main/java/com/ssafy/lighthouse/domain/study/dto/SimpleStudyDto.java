@@ -3,7 +3,6 @@ package com.ssafy.lighthouse.domain.study.dto;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -55,22 +54,22 @@ public class SimpleStudyDto {
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
     }
 
-    public Study toEntity() {
-        return Study.builder()
-                .title(this.title)
-                .description(this.description)
-                .hit(this.hit)
-                .rule(this.rule)
-                .startedAt(this.startedAt)
-                .endedAt(this.endedAt)
-                .recruitFinishedAt(this.recruitFinishedAt)
-                .maxMember(this.maxMember)
-                .minMember(this.minMember)
-                .currentMember(this.currentMember)
-                .isOnline(this.isOnline)
-                .likeCnt(this.likeCnt)
-                .bookmarkCnt(this.bookmarkCnt)
-                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
-                .build();
-    }
+//    public Study toEntity() {
+//        return Study.builder()
+//                .title(this.title)
+//                .description(this.description)
+//                .hit(this.hit)
+//                .rule(this.rule)
+//                .startedAt(this.startedAt)
+//                .endedAt(this.endedAt)
+//                .recruitFinishedAt(this.recruitFinishedAt)
+//                .maxMember(this.maxMember)
+//                .minMember(this.minMember)
+//                .currentMember(this.currentMember)
+//                .isOnline(this.isOnline)
+//                .likeCnt(this.likeCnt)
+//                .bookmarkCnt(this.bookmarkCnt)
+//                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
+//                .build();
+//    }
 }

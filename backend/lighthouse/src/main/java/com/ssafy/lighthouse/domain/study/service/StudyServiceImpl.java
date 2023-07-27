@@ -7,12 +7,13 @@ import com.ssafy.lighthouse.domain.study.repository.*;
 import com.ssafy.lighthouse.global.util.ERROR;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,7 +32,7 @@ public class StudyServiceImpl implements StudyService {
 
 
     @Override
-    public List<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
+    public Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
         return studyRepository.findAllByStudySearchOption(options);
     }
 
@@ -46,32 +47,70 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findDetailById(studyId);
-        log.debug("service - findDetailById : {}", findDetail);
+        Optional<Study> findDetail = studyRepository.findSimpleDetailShareById(studyId);
+        log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        StudyDto studyDto = new StudyDto(study);
-        em.flush();
-        em.clear();
+        
+        // 새로운 스터디 만들기
+        Study newStudy = studyRepository.save(Study.builder()
+                .title(study.getTitle())
+                .description(study.getDescription())
+                .hit(study.getHit())
+                .rule(study.getRule())
+                .isOnline(study.getIsOnline())
+                .original(study)
+                .build());
 
-        Study newStudy = studyDto.toEntity();
-
+        log.debug("service2 - studyId : {}", study.getId());
+        log.debug("service3 - savedStudyId : {}", newStudy.getId());
+        
+        // newStudyId
+        Long newStudyId = newStudy.getId();
         // studyTag 넣기
-        studyTagRepository.saveAll(newStudy.getStudyTags());
-//        // studyMaterial 넣기
-//        studyMaterialRepository.saveAll(newStudy.getStudyMaterials());
-//        // studyNotice 넣기
-//        studyNoticeRepository.saveAll(newStudy.getStudyNotices());
-        // session 넣기
-        sessionRepository.saveAll(newStudy.getSessions());
+        studyTagRepository.saveAll(study.getStudyTags()
+                .stream()
+                .map(studyTag -> StudyTag.builder()
+                        .studyId(newStudyId)
+                        .tagId(studyTag.getTagId())
+                        .build())
+                .collect(Collectors.toSet()));
 
-        // study 넣기
-        studyRepository.save(newStudy);
-        Long id = newStudy.getId();
+        // studyMaterial 넣기
+        studyMaterialRepository.saveAll(study.getStudyMaterials()
+                .stream()
+                .map(studyMaterial -> StudyMaterial.builder()
+                        .studyId(newStudyId)
+                        .content(studyMaterial.getContent())
+                        .type(studyMaterial.getType())
+                        .fileUrl(studyMaterial.getFileUrl())
+                        .build())
+                .collect(Collectors.toSet()));
+
+        // studyNotice 넣기
+        studyNoticeRepository.saveAll(study.getStudyNotices()
+                .stream()
+                .map(studyNotice -> StudyNotice.builder()
+                        .studyId(newStudyId)
+                        .content(studyNotice.getContent())
+                        .build())
+                .collect(Collectors.toSet()));
+
+        // session 넣기
+        sessionRepository.saveAll(study.getSessions()
+                .stream()
+                .map(session -> Session.builder()
+                        .studyId(newStudyId)
+                        .title(session.getTitle())
+                        .description(session.getDescription())
+                        .comment(session.getComment())
+                        .seqNum(session.getSeqNum())
+                        .build())
+                .collect(Collectors.toSet()));
 
         em.flush();
         em.clear();
 
-        Study result = studyRepository.findDetailById(id).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
+        Study result = studyRepository.findDetailById(newStudyId).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         return new StudyDto(result);
     }
 

@@ -60,6 +60,19 @@ public class UserServiceImpl implements UserService {
 		return UserMyPageDto.from(userRepository.findByEmailAndIsValid(userEmail, 1));
 	}
 
+	@Override
+	public UserMyPageDto getUserById(Long userId) {
+		User user = userRepository.findByIdAndIsValid(userId, 1);
+		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
+		UserMyPageDto from = UserMyPageDto.from(user);
+
+		for(UserTag userTag : userTags) {
+			from.getUserTagList().add(userTag.getTagId());
+		}
+
+		return from;
+	}
+
 	@Transactional
 	@Override
 	public void updateUser(UserMyPageDto userMyPageDto) {
@@ -71,6 +84,14 @@ public class UserServiceImpl implements UserService {
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
+
+		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
+
+		List<Long> list = userMyPageDto.getUserTagList();
+		for (Long tagId : list) {
+			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
+			userTagRepository.save(userTag);
+		}
 
 		System.out.println("업데이트 된 유저 : " + foundUser);
 	}
