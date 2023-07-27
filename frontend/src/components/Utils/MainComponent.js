@@ -13,15 +13,17 @@ function MainComponent({ text }) {
         border: '1px solid',
         display: 'flex',
         margin: '10px',
-        marginLeft: '250px'
+        marginLeft: '250px',
       }}
     >
-      <div style={{
-        margin: '10px',
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-      }}>
+      <div
+        style={{
+          margin: '10px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
         {/* 렌더링 이전에 배열 메서드(filter)를 통해 필터링을 하고 보여준다. */}
         {filterdData.map(study => (
           <TempCard study={study} key={study.id} />

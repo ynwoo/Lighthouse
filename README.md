@@ -19,9 +19,9 @@ _당신의 삶이라는 항해 속에서 바람을 타고 나아가라. 모험�
 
 Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베이스로 스터디를 직접 만들거나, 이전에 다른 사람들이 진행했던 스터디의 템플릿을 활용할 수도 있는 스터디 플랫폼입니다.
 
-스터디라 함은 결국 사람들과의 상호작용이 핵심요소이기 때문에 SNS를 베이스로 해서 개발되었습니다. 그렇기에 스터디 내외에서의 상호작용이 활발하게 이루어 질 것이라 예상됩니다.
+스터디라 함은 결국 사람들과의 상호작용이 핵심요소이기 때문에 우리 Lighthouse는 SNS를 베이스로 해서 개발되었습니다.
 
-또한 이전의 노하우와 성공경험이 담긴 템플릿을 제공하기 때문에 새로운 것에 도전하고 싶지만 배경 지식이 모자라거나, 스터디를 체계적으로 운영하는데에 도움이 필요한 사람들에게 도움이 될 것입니다. 또한, 유저에 따라 여러 평가요소가 있어 수준에 맞는 팀원을 찾기 어려운 스터디 진행자에게도 더 할 나위 없이 좋은 플랫폼일 것 입니다.
+Lighthouse에서는 이전의 노하우와 성공경험이 담긴 템플릿을 카피하여 사용할 수 있는 서비스를 제공하기 때문에 새로운 것에 도전하고 싶지만 배경 지식이 모자라거나, 스터디를 체계적으로 운영하는데에 도움이 필요한 사람들에게 도움이 될 것입니다. 또한, 유저에 따라 여러 평가요소가 있어 수준에 맞는 팀원을 찾기 어려운 스터디 진행자에게도 더 할 나위 없이 좋은 플랫폼일 것 입니다.
 
 # ⛯ 주요 기능
 
@@ -59,7 +59,17 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 
 ## 기술 스택
 
-### BackEnd
+### BackEnd - Spring
+
+- IntelliJ IDE
+- Springboot 2.7.13
+- Spring Data JPA
+- Spring Web
+- QueryDSL
+- JWT
+- WebSocket
+- Swagger 3.0.0
+- MariaDB
 
 ### Frontend
 
@@ -75,66 +85,71 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 - Docker
 
 ## ERD
-<img src='#' alt='erd 사진'>
+
+<img src='./README/erd_image.png' alt='erd 사진'>
 
 ## 프로젝트 파일 구조
 
 ### Backend
 
-- backend
-  - document
-  - lighthouse
-    - gradle/wrapper
-    - src
-      - main
-        - java/com/ssafy/lighthouse
-          - config
-          - domain
-            - common
-              - controller
-              - dto
-              - entity
-              - repository
-              - service
-              - BaseEntity
-            - study
-              - controller
-              - dto
-              - entity
-              - exception
-              - repository
-              - service
-            - user
-              - controller
-              - dto
-              - entity
-              - exception
-              - repository
-              - service
-          - global
-            - config
-            - error
-            - util
-        - resource
-      - test/java/com/ssafy/lighthouse
+```
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── ssafy
+    │   │           └── lighthouse
+    │   │               ├── LighthouseApplication.java
+    │   │               ├── domain
+    │   │               │   ├── common
+    │   │               │   │   ├── controller
+    │   │               │   │   ├── service
+    │   │               │   │   ├── repository
+    │   │               │   │   ├── entity
+    │   │               │   │   ├── dto
+    │   │               │   │   └── BaseEntity.java
+    │   │               │   ├── study
+    │   │               │   │   ├── controller
+    │   │               │   │   ├── service
+    │   │               │   │   ├── repository
+    │   │               │   │   ├── entity
+    │   │               │   │   ├── dto
+    │   │               │   │   └── exception
+    │   │               │   └── user
+    │   │               │       ├── controller
+    │   │               │       ├── service
+    │   │               │       ├── repository
+    │   │               │       ├── entity
+    │   │               │       ├── dto
+    │   │               │       └── exception
+    │   │               ├── global
+    │   │               │   ├── config
+    │   │               │   ├── error
+    │   │               │   └── util
+    │   │               └── config
+    │   └── resources
+    │       └── application.properties
+```
 
 ### Frontend
 
-- frontend
-  - node_modules
-  - public
-  - src
-    - components
-      - Study
-      - User
-      - Utils
-        - Chat
-        - Footer
-        - NAvbar
-        - PopUp
-    - Routes
-    - store
-      - modules
+```
+├── node_modules
+├── public
+└── src
+    ├── components
+    │   ├── Study
+    │   ├── User
+    │   └── Utils
+    │       ├── Chat
+    │       ├── Footer
+    │       ├── NAvbar
+    │       └── PopUp
+    ├── routes
+    ├── static
+    └── store
+        └── modules
+```
 
 ## 협업 툴
 
@@ -155,7 +170,8 @@ Lighthouse는 스터디에 참여하거나, 기본 제공되는 템플릿을 베
 ## 코드 컨벤션
 
 - FE : airbnb 스타일 가이드
-- BE
+- BE : 캠퍼스 핵데이 Java 코딩 컨벤션
 
 # ⛯ 역할 분배
-<img src='#' alt='조원들 역할 분배 사진'>
+
+<img src='./README/역할.png' alt='조원들 역할 분배 사진'>
