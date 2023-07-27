@@ -40,8 +40,8 @@ public class StudyDto {
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
-    private List<StudyNoticeDto> studyNotices;
-    private List<StudyMaterialDto> studyMaterials;
+    private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
+    private List<StudyMaterialDto.Res> studyMaterials;
     private List<SessionRes> sessions;
 
     public void share() {
@@ -70,33 +70,8 @@ public class StudyDto {
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
         this.studyEvals = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
-//        this.studyMaterialDtos = study.getStudyMaterials() == null ? null : study.getStudyMaterials().stream().map(StudyMaterialRes::new).collect(Collectors.toList());
-//        this.studyNoticeDtos = study.getStudyNotices() == null ? null : study.getStudyNotices().stream().map(StudyNoticeRes::new).collect(Collectors.toList());
+        this.studyMaterials = study.getStudyMaterials() == null ? null : study.getStudyMaterials().stream().map(StudyMaterialDto.Res::new).collect(Collectors.toList());
+        this.studyNotices = study.getStudyNotices() == null ? null : study.getStudyNotices().stream().map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList());
         this.sessions = study.getSessions() == null ? null : study.getSessions().stream().map(SessionRes::new).collect(Collectors.toList());
-    }
-
-    public Study toEntity() {
-        return Study.builder()
-                .title(this.title)
-                .description(this.description)
-                .hit(this.hit)
-                .rule(this.rule)
-                .startedAt(this.startedAt)
-                .endedAt(this.endedAt)
-                .recruitFinishedAt(this.recruitFinishedAt)
-                .maxMember(this.maxMember)
-                .minMember(this.minMember)
-                .currentMember(this.currentMember)
-                .isOnline(this.isOnline)
-                .likeCnt(this.likeCnt)
-                .bookmarkCnt(this.bookmarkCnt)
-                .original(this.original != null ? this.original.toEntity() : null)
-//                .leader(this.leader.toEntity())
-                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
-//                .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
-//                .studyMaterials(this.studyMaterialDtos.stream().map(StudyMaterialDto::toEntity).collect(Collectors.toSet()))
-//                .studyNotices(this.studyNoticeDtos.stream().map(StudyNoticeDto::toEntity).collect(Collectors.toSet()))
-                .sessions(this.sessions.stream().map(SessionRes::toEntity).collect(Collectors.toSet()))
-                .build();
     }
 }

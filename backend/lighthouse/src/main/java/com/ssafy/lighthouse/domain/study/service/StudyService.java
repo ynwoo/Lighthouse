@@ -1,12 +1,11 @@
 package com.ssafy.lighthouse.domain.study.service;
 
 import com.ssafy.lighthouse.domain.study.dto.*;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 
 public interface StudyService {
-    List<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
+    Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
     StudyDto findDetailByStudyId(Long studyId);
     StudyDto createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
