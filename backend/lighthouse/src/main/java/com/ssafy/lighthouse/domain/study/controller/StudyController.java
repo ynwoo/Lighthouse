@@ -30,7 +30,7 @@ public class StudyController {
     @GetMapping("/{study-id}")
     public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        StudyDto result = studyService.findDetailByStudyId(studyId);
+        StudyResponse result = studyService.findDetailByStudyId(studyId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -38,14 +38,23 @@ public class StudyController {
     @PostMapping("/{study-id}")
     public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-        StudyDto result = studyService.createStudyByStudyId(studyId);
+        StudyResponse result = studyService.createStudyByStudyId(studyId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // 스터디 공유
     @PutMapping ("/{study-id}")
     public ResponseEntity<?> shareStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
-//        studyService.shareStudyByStudyId(studyId);
+        studyService.shareStudyByStudyId(studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    // 스터디 정보 수정
+    @PutMapping
+    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest) {
+        log.debug("studyId : {}", studyRequest.getId());
+        studyService.updateStudyByStudyId(studyRequest);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

@@ -1,7 +1,6 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.study.entity.Qna;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +10,8 @@ public class QnaDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Req {
+		private Long id;
+		private int isValid;
 		private long userId;
 		private long studyId;
 		private String question;
@@ -26,6 +27,8 @@ public class QnaDto {
 
 		public Qna toEntity() {
 			return Qna.builder()
+					.id(id)
+					.isValid(isValid)
 				.userId(userId)
 				.studyId(studyId)
 				.question(question)
@@ -37,6 +40,7 @@ public class QnaDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Res {
 		private long id;
+		private int isValid;
 		private String createdAt;
 		private long userId;
 		private long studyId;
@@ -45,6 +49,7 @@ public class QnaDto {
 
 		public Res(Qna qna) {
 			this.id = qna.getId();
+			this.isValid = qna.getIsValid();
 			this.createdAt = qna.getCreatedAt();
 			this.userId = qna.getUserId();
 			this.studyId = qna.getStudyId();

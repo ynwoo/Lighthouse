@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,16 +39,16 @@ public class StudyServiceImpl implements StudyService {
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
-    public StudyDto findDetailByStudyId(Long studyId) {
+    public StudyResponse findDetailByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
-        return new StudyDto(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        return new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
     }
 
     @Override
-    public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findSimpleDetailShareById(studyId);
+    public StudyResponse createStudyByStudyId(Long studyId) {
+        Optional<Study> findDetail = studyRepository.findSimpleDetailById(studyId);
         log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         
@@ -111,7 +112,7 @@ public class StudyServiceImpl implements StudyService {
         em.clear();
 
         Study result = studyRepository.findDetailById(newStudyId).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        return new StudyDto(result);
+        return new StudyResponse(result);
     }
 
     @Override
@@ -122,10 +123,29 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void shareStudyById(Long studyId) {
+    public void shareStudyByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
         Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
-//        study.share();
+        study.share();
+    }
+
+    @Override
+    public void updateStudyByStudyId(StudyRequest studyRequest) {
+//        Optional<Study> result = studyRepository.findDetailById(studyRequest.getId());
+//        Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
+//        log.debug("studyId : {}", study.getId());
+        Study study = studyRequest.toEntity();
+        Set<StudyEval> studyEvals = study.getStudyEvals();
+        for (StudyEval studyEval : studyEvals) {
+            System.out.println("studyEval = " + studyEval);
+        }
+        studyRepository.save(study);
+        studyTagRepository.saveAll(study.getStudyTags());
+        studyEvalRepository.saveAll(study.getStudyEvals());
+        studyNoticeRepository.saveAll(study.getStudyNotices());
+        studyMaterialRepository.saveAll(study.getStudyMaterials());
+        sessionRepository.saveAll(study.getSessions());
+        log.debug("studyId : {}", study.getId());
     }
 
     @Override

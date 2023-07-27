@@ -53,23 +53,4 @@ public class SimpleStudyDto {
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
     }
-
-//    public Study toEntity() {
-//        return Study.builder()
-//                .title(this.title)
-//                .description(this.description)
-//                .hit(this.hit)
-//                .rule(this.rule)
-//                .startedAt(this.startedAt)
-//                .endedAt(this.endedAt)
-//                .recruitFinishedAt(this.recruitFinishedAt)
-//                .maxMember(this.maxMember)
-//                .minMember(this.minMember)
-//                .currentMember(this.currentMember)
-//                .isOnline(this.isOnline)
-//                .likeCnt(this.likeCnt)
-//                .bookmarkCnt(this.bookmarkCnt)
-//                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
-//                .build();
-//    }
 }
