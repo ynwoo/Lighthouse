@@ -28,4 +28,5 @@ public abstract class BaseEntity {
 	public void remove() {
 		this.isValid = 0;
 	}
+	public boolean isValid() {return isValid == 1;}
 }

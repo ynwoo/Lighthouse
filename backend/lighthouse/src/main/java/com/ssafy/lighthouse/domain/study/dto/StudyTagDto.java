@@ -15,6 +15,7 @@ public class StudyTagDto {
 
     public StudyTagDto(StudyTag studyTag) {
         this.id = studyTag.getId();
+        this.isValid = studyTag.getIsValid();
         this.studyId = studyTag.getStudyId();
         this.tagId = studyTag.getTagId();
     }

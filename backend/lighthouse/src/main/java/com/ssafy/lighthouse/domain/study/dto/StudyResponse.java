@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
@@ -35,7 +36,7 @@ public class StudyResponse {
     private int bookmarkCnt;
     private int status;
     private StudyResponse original;
-    private User leader;    // 수정 필요
+//    private User leader;    // 수정 필요
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
@@ -62,15 +63,15 @@ public class StudyResponse {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
-        this.original = study.getOriginal() == null ? null : new StudyResponse(study.getOriginal());
-        this.leader = study.getLeader();
-        this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
-        this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
-        this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
-        this.studyEvals = study.getStudyEvals() == null ? null : study.getStudyEvals().stream().map(StudyEvalDto::new).collect(Collectors.toList());
-        this.studyMaterials = study.getStudyMaterials() == null ? null : study.getStudyMaterials().stream().map(StudyMaterialDto.Res::new).collect(Collectors.toList());
-        this.studyNotices = study.getStudyNotices() == null ? null : study.getStudyNotices().stream().map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList());
-        this.sessions = study.getSessions() == null ? null : study.getSessions().stream().map(SessionRes::new).collect(Collectors.toList());
+        this.original = study.getOriginal() != null ? new StudyResponse(study.getOriginal()) : null;
+//        this.leader = study.getLeader();
+        this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
+        this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
+        this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
+        this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
+        this.studyMaterials = study.getStudyMaterials() != null ? study.getStudyMaterials().stream().filter(BaseEntity::isValid).map(StudyMaterialDto.Res::new).collect(Collectors.toList()) : null;
+        this.studyNotices = study.getStudyNotices() != null ? study.getStudyNotices().stream().filter(BaseEntity::isValid).map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList()) : null;
+        this.sessions = study.getSessions() != null ? study.getSessions().stream().filter(BaseEntity::isValid).map(SessionRes::new).collect(Collectors.toList()) : null;
     }
 
 

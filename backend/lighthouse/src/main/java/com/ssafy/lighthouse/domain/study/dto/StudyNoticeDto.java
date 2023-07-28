@@ -49,6 +49,10 @@ public class StudyNoticeDto {
 			this.studyId = studyNotice.getStudyId();
 			this.content = studyNotice.getContent();
 		}
+
+		public boolean isValid() {
+			return this.isValid == 1;
+		}
 	}
 
 	@Getter
