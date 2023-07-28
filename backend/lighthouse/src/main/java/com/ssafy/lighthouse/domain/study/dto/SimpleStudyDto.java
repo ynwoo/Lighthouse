@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
@@ -51,6 +52,6 @@ public class SimpleStudyDto {
         this.bookmarkCnt = study.getBookmarkCnt();
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
-        this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().map(StudyTagDto::new).collect(Collectors.toList());
+        this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList());
     }
 }

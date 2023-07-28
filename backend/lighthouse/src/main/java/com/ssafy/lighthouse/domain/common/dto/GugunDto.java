@@ -3,7 +3,6 @@ package com.ssafy.lighthouse.domain.common.dto;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor

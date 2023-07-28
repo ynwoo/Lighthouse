@@ -30,7 +30,10 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
     @Override
     public Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
+        // 정렬 정보 가져오기
         OrderSpecifier<?> orderSpecifier = sortByOptions(options);
+
+        // contents 구하기
         List<SimpleStudyDto> contents = jpaQueryFactory
                 .select(Projections.constructor(SimpleStudyDto.class, study)).distinct()
                 .from(study)
@@ -47,11 +50,14 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .limit(options.getLimit())
                 .fetch();
 
+        // total 구하기
         Long total = jpaQueryFactory.select(study.count())
                 .from(study)
                 .where(isValid())
                 .fetchOne();
         if(total == null) total = 0L;
+
+        // Page<SimpleStudyDto>로 변환
         Sort sort = Sort.by(orderSpecifier.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC,
                 options.getOrderKey() == null ? "createdAt" : options.getOrderKey());
         PageRequest pageable = PageRequest.of(options.getPage(), PAGE.LIMIT, sort);
