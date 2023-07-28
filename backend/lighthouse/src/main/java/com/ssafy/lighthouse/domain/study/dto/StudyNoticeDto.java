@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class StudyNoticeDto {
 					.isValid(isValid)
 					.studyId(studyId)
 					.content(content)
-					.studyNoticeChecks(studyNoticeChecks.stream().map(StudyNoticeCheckReq::toEntity).collect(Collectors.toSet()))
+					.studyNoticeChecks(studyNoticeChecks != null ? studyNoticeChecks.stream().map(StudyNoticeCheckReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
 					.build();
 		}
 	}

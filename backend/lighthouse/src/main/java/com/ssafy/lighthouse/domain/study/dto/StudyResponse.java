@@ -42,6 +42,7 @@ public class StudyResponse {
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
     private List<SessionRes> sessions;
+    private List<QnaDto.Res> qnas;
 
     public StudyResponse(Study study) {
         this.id = study.getId();
@@ -69,6 +70,7 @@ public class StudyResponse {
         this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
         this.studyNotices = study.getStudyNotices() != null ? study.getStudyNotices().stream().filter(BaseEntity::isValid).map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList()) : null;
         this.sessions = study.getSessions() != null ? study.getSessions().stream().filter(BaseEntity::isValid).map(SessionRes::new).collect(Collectors.toList()) : null;
+        this.qnas = study.getQnas() != null ? study.getQnas().stream().filter(BaseEntity::isValid).map(QnaDto.Res::new).collect(Collectors.toList()) : null;
     }
 
 

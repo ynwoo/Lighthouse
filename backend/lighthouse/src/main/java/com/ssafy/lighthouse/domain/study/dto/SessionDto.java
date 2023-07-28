@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,8 +54,8 @@ public class SessionDto {
 					.comment(comment)
 					.status(status)
 					.seqNum(seqNum)
-					.studyMaterials(this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()))
-					.sessionChecks(this.sessionChecks.stream().map(SessionCheckReq::toEntity).collect(Collectors.toSet()))
+					.studyMaterials(this.studyMaterials != null ? this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+					.sessionChecks(this.sessionChecks != null ? this.sessionChecks.stream().map(SessionCheckReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
 					.build();
 
 		}

@@ -8,6 +8,7 @@ import com.ssafy.lighthouse.global.util.ERROR;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -26,6 +27,7 @@ public class StudyServiceImpl implements StudyService {
     private final StudyTagRepository studyTagRepository;
     private final StudyMaterialRepository studyMaterialRepository;
     private final StudyNoticeRepository studyNoticeRepository;
+    private final StudyNoticeCheckRepository studyNoticeCheckRepository;
     private final SessionRepository sessionRepository;
     private final SessionCheckRepository sessionCheckRepository;
     private final StudyLikeRepository studyLikeRepository;
@@ -47,7 +49,8 @@ public class StudyServiceImpl implements StudyService {
         log.debug("service - findDetailById : {}", result);
         return new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
     }
-
+    
+    // 스터디 복제
     @Override
     public StudyResponse createStudyByStudyId(Long studyId) {
         Optional<Study> findDetail = studyRepository.findSimpleDetailById(studyId);
@@ -56,6 +59,7 @@ public class StudyServiceImpl implements StudyService {
         
         // 새로운 스터디 만들기
         Study newStudy = studyRepository.save(Study.builder()
+                        .isValid(study.getIsValid())
                 .title(study.getTitle())
                 .description(study.getDescription())
                 .hit(study.getHit())
@@ -73,6 +77,7 @@ public class StudyServiceImpl implements StudyService {
         studyTagRepository.saveAll(study.getStudyTags()
                 .stream()
                 .map(studyTag -> StudyTag.builder()
+                        .isValid(studyTag.getIsValid())
                         .studyId(newStudyId)
                         .tagId(studyTag.getTagId())
                         .build())
@@ -83,6 +88,7 @@ public class StudyServiceImpl implements StudyService {
         sessionRepository.saveAll(sessions
                 .stream()
                 .map(session -> Session.builder()
+                        .isValid(session.getIsValid())
                         .studyId(newStudyId)
                         .title(session.getTitle())
                         .description(session.getDescription())
@@ -96,6 +102,7 @@ public class StudyServiceImpl implements StudyService {
         sessions.forEach(session -> studyMaterials.addAll(session.getStudyMaterials()
                 .stream()
                 .map(studyMaterial -> StudyMaterial.builder()
+                        .isValid(studyMaterial.getIsValid())
                         .studyId(newStudyId)
                         .sessionId(session.getId())
                         .content(studyMaterial.getContent())
@@ -106,35 +113,18 @@ public class StudyServiceImpl implements StudyService {
 
         studyMaterialRepository.saveAll(studyMaterials);
 
-        // sesstionCheck
-        Set<SessionCheck> sessionChecks = new HashSet<>();
-        sessions.forEach(session -> sessionChecks.addAll(session.getSessionChecks()
-                .stream()
-                .map(sessionCheck -> SessionCheck.builder()
-                        .sessionId(session.getId())
-                        .userId(sessionCheck.getUserId())
-                        .content(sessionCheck.getContent())
-                        .build())
-                .collect(Collectors.toSet())));
-
-        sessionCheckRepository.saveAll(sessionChecks);
-
         // studyNotice
-        studyNoticeRepository.saveAll(study.getStudyNotices()
+        Set<StudyNotice> studyNotices = study.getStudyNotices();
+        studyNoticeRepository.saveAll(studyNotices
                 .stream()
                 .map(studyNotice -> StudyNotice.builder()
+                        .isValid(studyNotice.getIsValid())
                         .studyId(newStudyId)
                         .content(studyNotice.getContent())
                         .build())
                 .collect(Collectors.toSet()));
 
-
-
-        em.flush();
-        em.clear();
-
-        Study result = studyRepository.findDetailById(newStudyId).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        return new StudyResponse(result);
+        return new StudyResponse(newStudy);
     }
 
     @Override
@@ -159,9 +149,27 @@ public class StudyServiceImpl implements StudyService {
         studyRepository.save(study);
         studyTagRepository.saveAll(study.getStudyTags());
         studyEvalRepository.saveAll(study.getStudyEvals());
-        studyNoticeRepository.saveAll(study.getStudyNotices());
-        studyMaterialRepository.saveAll(study.getStudyMaterials());
-        sessionRepository.saveAll(study.getSessions());
+        
+        // studyNotice & studyNoticeCheck
+        Set<StudyNotice> studyNotices = study.getStudyNotices();
+        Set<StudyNoticeCheck> studyNoticeChecks = new HashSet<>();
+        studyNotices.forEach(studyNotice -> studyNoticeChecks.addAll(studyNotice.getStudyNoticeChecks()));
+        
+        studyNoticeRepository.saveAll(studyNotices);
+        studyNoticeCheckRepository.saveAll(studyNoticeChecks);
+        
+        // session & sessionCheck & studyMaterial
+        Set<Session> sessions = study.getSessions();
+        Set<SessionCheck> sessionChecks = new HashSet<>();
+        Set<StudyMaterial> studyMaterials = new HashSet<>();
+        sessions.forEach(session -> {
+            sessionChecks.addAll(session.getSessionChecks());
+            studyMaterials.addAll(session.getStudyMaterials());
+        });
+        
+        sessionRepository.saveAll(sessions);
+        sessionCheckRepository.saveAll(sessionChecks);
+        studyMaterialRepository.saveAll(studyMaterials);
     }
 
     @Override
