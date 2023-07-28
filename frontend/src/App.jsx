@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 // import Footer from './components/Utils/Footer/Footer'
@@ -8,6 +8,7 @@ import TempDetailPage from './routes/TempDetailPage'
 import UserPage from './routes/UserPage'
 import SignInPage from './routes/SignInPage'
 import SignUpPage from './routes/SignUpPage'
+import ScrollToTop from './components/Utils/ScrollTop'
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         backgroundColor: 'white',
       }}
     >
-      <BrowserRouter>
+      <Router>
+        <ScrollToTop />
         <Navbar />
         <WaveComponent />
         <Routes>
@@ -27,7 +29,7 @@ function App() {
           <Route path="/login" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
         </Routes>
-      </BrowserRouter>
+      </Router>
       {/* <Footer /> */}
     </div>
   )

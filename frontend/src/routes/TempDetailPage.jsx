@@ -1,15 +1,22 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import TempDetail from '../components/Study/TempDetail'
 import SideComponent from '../components/Utils/SideComponent'
+import TempInfo from '../components/Study/TempInfo'
+import TempMember from '../components/Study/TempMember'
+import TempQnA from '../components/Study/TempQnA'
+import TempRecord from '../components/Study/TempRecord'
+import TempReview from '../components/Study/TempReview'
 import dummy from '../db/data.json'
-// import TempInfo from '../components/Study/TempInfo'
 
-const onChange = key => {
-  console.log(key)
-}
 export default function TempDetailPage() {
   const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
+  const tabMenu = {
+    TempInfo: <TempInfo study={study} />,
+    TempMember: <TempMember study={study} />,
+    TempQnA: <TempQnA study={study} />,
+    TempRecord: <TempRecord study={study} />,
+    TempReview: <TempReview study={study} />,
+  }
 
   // const stat = 1
   return (
@@ -24,35 +31,18 @@ export default function TempDetailPage() {
       <SideComponent />
       <div>
         <Tabs
-          onChange={onChange}
           type="card"
-          items={new Array(3).fill(null).map((_, i) => {
-            const id = String(i + 1)
-            return {
-              label: `Tab ${id}`,
-              key: id,
-              children: 'tempDetail',
-            }
-          })}
+          items={new Array(Object.keys(tabMenu).length)
+            .fill(null)
+            .map((_, i) => {
+              return {
+                label: Object.keys(tabMenu)[i],
+                key: i,
+                children: Object.values(tabMenu)[i],
+              }
+            })}
         />
-        <TempDetail study={study} />
       </div>
-      {/* <div className="tabs-container">
-        <Tabs
-          onChange={onChange}
-          type="card"
-          items={new Array(3).fill(null).map((_, i) => {
-            const id = String(i + 1)
-            return {
-              label: `Tab ${id}`,
-              key: id,
-              children: '',
-            }
-          })}
-        />
-      </div> */}
-      {/* stat에 따라 다르게 랜더링 해주는 컴포넌트 */}
-      {/* <TempDetail stat={stat} /> */}
     </div>
   )
 }
