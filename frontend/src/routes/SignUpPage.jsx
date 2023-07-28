@@ -36,7 +36,7 @@ const normFile = e => {
   return e?.fileList
 }
 
-function FormDisabledDemo() {
+function SignUpPage() {
   return (
     <div
       style={{
@@ -225,4 +225,4 @@ function FormDisabledDemo() {
   )
 }
 
-export default FormDisabledDemo
+export default SignUpPage

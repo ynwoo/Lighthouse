@@ -6,8 +6,8 @@ import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import TempDetailPage from './routes/TempDetailPage'
 import UserPage from './routes/UserPage'
-import SignIn from './components/User/SignIn'
-import SignUp from './components/User/SignUp'
+import SignInPage from './routes/SignInPage'
+import SignUpPage from './routes/SignUpPage'
 
 function App() {
   return (
@@ -24,8 +24,8 @@ function App() {
           <Route exact path="/" element={<MainPage />} />
           <Route path="/temp/:id" element={<TempDetailPage />} />
           <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
         </Routes>
       </BrowserRouter>
       {/* <Footer /> */}
