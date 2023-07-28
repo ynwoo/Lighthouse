@@ -16,6 +16,7 @@ public class StudyEvalDto {
 
     public StudyEvalDto(StudyEval studyEval) {
         this.id = studyEval.getId();
+        this.isValid = studyEval.getIsValid();
         this.studyId = studyEval.getStudyId();
         this.userId = studyEval.getUserId();
         this.comment = studyEval.getComment();
