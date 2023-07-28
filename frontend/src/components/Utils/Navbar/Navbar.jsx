@@ -12,7 +12,7 @@ const items = [
   {
     key: '2',
     label: `JOIN`,
-    linkTo: '/signin',
+    linkTo: '/signup',
   },
   {
     key: '3',
@@ -21,6 +21,10 @@ const items = [
   },
 ]
 export default function App() {
+  const nowIn = items.find(obj => {
+    return obj.linkTo === window.location.pathname
+  })
+
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <Link to="/">
@@ -29,18 +33,17 @@ export default function App() {
         </div>
       </Link>
 
+      {/* 새로고침 시 tab default 문제 */}
+
       <div>
-        <Tabs
-          defaultActiveKey="1"
-          items={items}
-          style={{ paddingRight: '10px' }}
-        />
-        {items.map(item => (
-          <Tabs.TabPane
-            tab={<Link to={item.linkTo}>{item.label}</Link>}
-            key={item.key}
-          />
-        ))}
+        <Tabs defaultActiveKey={nowIn.key} style={{ paddingRight: '10px' }}>
+          {items.map(item => (
+            <Tabs.TabPane
+              tab={<Link to={item.linkTo}>{item.label}</Link>}
+              key={item.key}
+            />
+          ))}
+        </Tabs>
       </div>
     </div>
   )
