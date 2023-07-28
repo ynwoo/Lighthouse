@@ -8,6 +8,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SessionDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +26,8 @@ public class SessionDto {
 		private String comment;
 		private int status;
 		private int seqNum;
+		private List<StudyMaterialDto.Req> studyMaterials;
+		private List<SessionCheckReq> sessionChecks;
 
 		@Builder
 		public SessionReq(String startedAt, String endedAt, Long studyId, String title, String description,
@@ -40,15 +46,18 @@ public class SessionDto {
 			return Session.builder()
 					.id(id)
 					.isValid(isValid)
-				.startedAt(startedAt)
-				.endedAt(endedAt)
-				.studyId(studyId)
-				.title(title)
-				.description(description)
-				.comment(comment)
-				.status(status)
-				.seqNum(seqNum)
-				.build();
+					.startedAt(startedAt)
+					.endedAt(endedAt)
+					.studyId(studyId)
+					.title(title)
+					.description(description)
+					.comment(comment)
+					.status(status)
+					.seqNum(seqNum)
+					.studyMaterials(this.studyMaterials != null ? this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+					.sessionChecks(this.sessionChecks != null ? this.sessionChecks.stream().map(SessionCheckReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+					.build();
+
 		}
 	}
 
@@ -66,6 +75,8 @@ public class SessionDto {
 		private String comment;
 		private int status;
 		private int seqNum;
+		private List<StudyMaterialDto.Res> studyMaterials;
+		private List<SessionCheckRes> sessionChecks;
 
 		public SessionRes(Session session) {
 			this.id = session.getId();
@@ -79,6 +90,8 @@ public class SessionDto {
 			this.comment = session.getComment();
 			this.status = session.getStatus();
 			this.seqNum = session.getSeqNum();
+			this.studyMaterials = session.getStudyMaterials() != null ? session.getStudyMaterials().stream().filter(BaseEntity::isValid).map(StudyMaterialDto.Res::new).collect(Collectors.toList()) : null;
+			this.sessionChecks = session.getSessionChecks() != null ? session.getSessionChecks().stream().filter(BaseEntity::isValid).map(SessionCheckRes::new).collect(Collectors.toList()) : null;
 		}
 	}
 
