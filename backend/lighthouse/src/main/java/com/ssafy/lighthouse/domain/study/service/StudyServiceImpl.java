@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,6 +27,7 @@ public class StudyServiceImpl implements StudyService {
     private final StudyMaterialRepository studyMaterialRepository;
     private final StudyNoticeRepository studyNoticeRepository;
     private final SessionRepository sessionRepository;
+    private final SessionCheckRepository sessionCheckRepository;
     private final StudyLikeRepository studyLikeRepository;
     private final BookmarkRepository bookmarkRepository;
     private final StudyEvalRepository studyEvalRepository;
@@ -76,28 +78,9 @@ public class StudyServiceImpl implements StudyService {
                         .build())
                 .collect(Collectors.toSet()));
 
-        // studyMaterial 넣기
-        studyMaterialRepository.saveAll(study.getStudyMaterials()
-                .stream()
-                .map(studyMaterial -> StudyMaterial.builder()
-                        .studyId(newStudyId)
-                        .content(studyMaterial.getContent())
-                        .type(studyMaterial.getType())
-                        .fileUrl(studyMaterial.getFileUrl())
-                        .build())
-                .collect(Collectors.toSet()));
-
-        // studyNotice 넣기
-        studyNoticeRepository.saveAll(study.getStudyNotices()
-                .stream()
-                .map(studyNotice -> StudyNotice.builder()
-                        .studyId(newStudyId)
-                        .content(studyNotice.getContent())
-                        .build())
-                .collect(Collectors.toSet()));
-
-        // session 넣기
-        sessionRepository.saveAll(study.getSessions()
+        // session
+        Set<Session> sessions = study.getSessions();
+        sessionRepository.saveAll(sessions
                 .stream()
                 .map(session -> Session.builder()
                         .studyId(newStudyId)
@@ -107,6 +90,45 @@ public class StudyServiceImpl implements StudyService {
                         .seqNum(session.getSeqNum())
                         .build())
                 .collect(Collectors.toSet()));
+
+        // studyMaterial
+        Set<StudyMaterial> studyMaterials = new HashSet<>();
+        sessions.forEach(session -> studyMaterials.addAll(session.getStudyMaterials()
+                .stream()
+                .map(studyMaterial -> StudyMaterial.builder()
+                        .studyId(newStudyId)
+                        .sessionId(session.getId())
+                        .content(studyMaterial.getContent())
+                        .type(studyMaterial.getType())
+                        .fileUrl(studyMaterial.getFileUrl())
+                        .build())
+                .collect(Collectors.toSet())));
+
+        studyMaterialRepository.saveAll(studyMaterials);
+
+        // sesstionCheck
+        Set<SessionCheck> sessionChecks = new HashSet<>();
+        sessions.forEach(session -> sessionChecks.addAll(session.getSessionChecks()
+                .stream()
+                .map(sessionCheck -> SessionCheck.builder()
+                        .sessionId(session.getId())
+                        .userId(sessionCheck.getUserId())
+                        .content(sessionCheck.getContent())
+                        .build())
+                .collect(Collectors.toSet())));
+
+        sessionCheckRepository.saveAll(sessionChecks);
+
+        // studyNotice
+        studyNoticeRepository.saveAll(study.getStudyNotices()
+                .stream()
+                .map(studyNotice -> StudyNotice.builder()
+                        .studyId(newStudyId)
+                        .content(studyNotice.getContent())
+                        .build())
+                .collect(Collectors.toSet()));
+
+
 
         em.flush();
         em.clear();

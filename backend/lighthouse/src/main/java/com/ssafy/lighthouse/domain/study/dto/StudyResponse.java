@@ -6,7 +6,6 @@ import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +41,6 @@ public class StudyResponse {
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
-    private List<StudyMaterialDto.Res> studyMaterials;
     private List<SessionRes> sessions;
 
     public StudyResponse(Study study) {
@@ -69,7 +67,6 @@ public class StudyResponse {
         this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
         this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
-        this.studyMaterials = study.getStudyMaterials() != null ? study.getStudyMaterials().stream().filter(BaseEntity::isValid).map(StudyMaterialDto.Res::new).collect(Collectors.toList()) : null;
         this.studyNotices = study.getStudyNotices() != null ? study.getStudyNotices().stream().filter(BaseEntity::isValid).map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList()) : null;
         this.sessions = study.getSessions() != null ? study.getSessions().stream().filter(BaseEntity::isValid).map(SessionRes::new).collect(Collectors.toList()) : null;
     }
