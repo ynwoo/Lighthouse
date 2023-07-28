@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class StudyNotice extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "studyNoticeId")
-	private List<StudyNoticeCheck> studyNoticeChecks;
+	private Set<StudyNoticeCheck> studyNoticeChecks;
 
 	public void update(Long studyId, String content) {
 		this.studyId = studyId;

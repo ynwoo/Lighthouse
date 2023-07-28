@@ -33,7 +33,6 @@ public class StudyRequest {
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeReq> studyNotices;
-    private List<StudyMaterialDto.Req> studyMaterials;
     private List<SessionDto.SessionReq> sessions;
 
     public Study toEntity() {
@@ -56,7 +55,6 @@ public class StudyRequest {
                 .status(this.status)
                 .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
                 .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
-                .studyMaterials(this.studyMaterials != null ? this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()) : null)
                 .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : null)
                 .sessions(this.sessions != null ? this.sessions.stream().map(SessionDto.SessionReq::toEntity).collect(Collectors.toSet()) : null)
                 .build();

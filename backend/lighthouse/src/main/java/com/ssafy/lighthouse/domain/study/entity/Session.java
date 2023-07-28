@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,11 +31,11 @@ public class Session extends BaseEntity {
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sessionId")
-	private List<StudyMaterial> studyMaterials;
+	private Set<StudyMaterial> studyMaterials;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sessionId")
-	private List<SessionCheck> sessionChecks;
+	private Set<SessionCheck> sessionChecks;
 
 	public void update(String startedAt, String endedAt, Long studyId, String title, String description,
 		String comment, int status, int seqNum) {
