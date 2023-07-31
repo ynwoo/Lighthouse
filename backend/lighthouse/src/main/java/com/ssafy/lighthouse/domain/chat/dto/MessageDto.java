@@ -2,12 +2,14 @@ package com.ssafy.lighthouse.domain.chat.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 
 @Data
-@Builder
-public class ChatDto {
+@RequiredArgsConstructor
+public class MessageDto implements Serializable {
 
     public enum MessageType {
         ENTER, TALK, LEAVE
