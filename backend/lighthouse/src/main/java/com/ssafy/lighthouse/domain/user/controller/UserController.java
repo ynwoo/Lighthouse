@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.service.JwtService;
 import com.ssafy.lighthouse.domain.user.service.UserService;
@@ -195,5 +196,45 @@ public class UserController {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
+	}
+
+	@PostMapping("/eval")
+	public ResponseEntity<?> createUserEval(@RequestBody UserEvalDto userEvalDto) {
+		// session에서 userId 가져오기
+		userEvalDto.setEvaluatorId(getUserId());
+		log.debug("userId : {}", userEvalDto.getUserId());
+		userService.createUserEval(userEvalDto);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@DeleteMapping("/eval/{user-id}")
+	public ResponseEntity<?> removeUserEval(@PathVariable(name = "user-id") Long userId) {
+		// session에서 userId 가져오기
+		Long evaluatorId = getUserId();
+		log.debug("userId : {}", userId);
+		userService.removeUserEval(userId, evaluatorId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PostMapping("/follow/{followee-id}")
+	public ResponseEntity<?> createFollow(@PathVariable(name = "followee-id") Long followeeId) {
+		// session에서 userId 가져오기
+		Long followerId = getUserId();
+		log.debug("followerId : {}", followerId);
+		userService.createFollow(followeeId, followerId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@DeleteMapping("/follow/{followee-id}")
+	public ResponseEntity<?> removeFollow(@PathVariable(name = "followee-id") Long followeeId) {
+		// session에서 userId 가져오기
+		Long followerId = getUserId();
+		log.debug("followerId : {}", followerId);
+		userService.removeFollow(followeeId, followerId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	private Long getUserId() {
+		return 1L;
 	}
 }
