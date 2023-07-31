@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
@@ -14,8 +15,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     @Query("select bm from Bookmark bm where bm.studyId = :studyId and bm.userId = :userId and bm.isValid = 1")
     Optional<Bookmark> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 
-    // update -> db에 직접 업데이트
-//    @Modifying(clearAutomatically = true)
-//    @Query("update Bookmark bm set bm.isValid = 0 where bm.studyId = :studyId and bm.userId = :userId and bm.isValid = 1")
-//    int update(@Param("studyId") int studyId, @Param("userId") int userId);
+    // userId 가 bookmark한 studyIdList
+    @Query("select bm from Bookmark bm where bm.userId = :userId and bm.isValid = 1")
+    List<Long> findAllByUserId(@Param("userId") Long userId);
 }

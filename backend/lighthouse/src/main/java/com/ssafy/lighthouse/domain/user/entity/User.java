@@ -8,6 +8,10 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.TagDto;
+import com.ssafy.lighthouse.domain.common.entity.Tag;
+import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
+import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 
 import lombok.AccessLevel;
@@ -16,10 +20,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class User extends BaseEntity {
@@ -36,24 +42,11 @@ public class User extends BaseEntity {
 	private String phoneNumber;
 	private String description;
     private String token;
-    //@OneToMany(mappedBy = "user")
-    //private List<UserTag> userTags = new ArrayList<>();
 
-    @Builder
-	public User(String password, String name, String email, String nickname,
-		String profileImgUrl, int age, Long sidoId, Long gugunId,
-		String phoneNumber, String description) {
-		this.password = password;
-		this.name = name;
-		this.email = email;
-		this.nickname = nickname;
-		this.profileImgUrl = profileImgUrl;
-		this.age = age;
-		this.sidoId = sidoId;
-		this.gugunId = gugunId;
-		this.phoneNumber = phoneNumber;
-		this.description = description;
-	}
+//
+/*    @OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn("userId")
+    private List<UserTag> userTags;*/
 
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,

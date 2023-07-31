@@ -46,7 +46,7 @@ public class ParticipationHistoryServiceImpl implements ParticipationHistoryServ
         ParticipationHistory participationHistory = participationHistoryRepository.find(studyId, userId).orElseThrow(() -> new ParticipationHistoryException(ERROR.FIND));
 
         // 스터디 가입 (status = STATUS.ON_PROGRESS)
-        participationHistory.changeStatus(STATUS.ON_PROGRESS);
+        participationHistory.changeStatus(STATUS.PROGRESS);
         participationHistory.initJoinedAt();
 
         // 스터디 인원 증가
