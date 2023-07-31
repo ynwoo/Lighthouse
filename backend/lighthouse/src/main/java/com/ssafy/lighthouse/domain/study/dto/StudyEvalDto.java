@@ -14,6 +14,10 @@ public class StudyEvalDto {
     private String comment;
     private int score;
 
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public StudyEvalDto(StudyEval studyEval) {
         this.id = studyEval.getId();
         this.isValid = studyEval.getIsValid();
