@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.user.repository;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,4 +21,7 @@ public interface UserTagRepository extends JpaRepository<UserTag, Long> {
 	void updateIsValidToZeroByUserId(@Param("userId") Long userId);
 
 	List<UserTag> findByUserIdAndIsValid(Long userId, Integer isValid);
+
+	@Query("select ut.tagId from UserTag ut WHERE ut.userId = :userId and ut.isValid = 1")
+	Set<Long> findTagIdAllByUserId(@Param("userId") Long userId);
 }
