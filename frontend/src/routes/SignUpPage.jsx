@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+
 import {
   Button,
   Form,
@@ -10,12 +10,11 @@ import {
   Upload,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-//
-// const { useState } = React;
+import { userAction } from '../store/user'
+
 const { TextArea } = Input
 const { Option } = Select
-// const { useState } = React;
-// const [size] = useState('large')
+
 const prefixSelector = (
   <Form.Item name="prefix" noStyle>
     <Select
@@ -37,6 +36,15 @@ const normFile = e => {
 }
 
 function SignUpPage() {
+  const dispatch = useDispatch()
+  const [form] = Form.useForm()
+
+  const testDisp = () => {
+    console.log('yay')
+    dispatch(userAction.test('안녕'))
+  }
+
+  const finFin = value => console.log(value)
   return (
     <div
       style={{
@@ -52,6 +60,9 @@ function SignUpPage() {
       }}
     >
       <Form
+        form={form}
+        name="normal_login"
+        onFinish={finFin}
         labelCol={{
           span: 4,
         }}
@@ -120,7 +131,7 @@ function SignUpPage() {
           <Input.Password />
         </Form.Item>
 
-        <Form.Item label="이름">
+        <Form.Item label="이름" name="name">
           <Input />
         </Form.Item>
 
@@ -142,12 +153,13 @@ function SignUpPage() {
           <Input />
         </Form.Item>
 
-        <Form.Item label="나이">
+        <Form.Item label="나이" name="age">
           <InputNumber />
         </Form.Item>
 
         <Form.Item
           label="Upload"
+          name="profileImgUrl"
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
@@ -166,7 +178,7 @@ function SignUpPage() {
         </Form.Item>
 
         <Form.Item
-          name="phone"
+          name="phoneNumber"
           label="Phone Number"
           rules={[
             {
@@ -183,13 +195,13 @@ function SignUpPage() {
           />
         </Form.Item>
 
-        <Form.Item label="주소(시/도)">
+        <Form.Item label="주소(시/도)" name="sido">
           <Select>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
 
-        <Form.Item label="주소(구/군)">
+        <Form.Item label="주소(구/군)" name="gugun">
           <TreeSelect
             treeData={[
               {
@@ -206,7 +218,7 @@ function SignUpPage() {
           />
         </Form.Item>
 
-        <Form.Item label="자기소개">
+        <Form.Item label="자기소개" name="description">
           <TextArea rows={4} />
         </Form.Item>
         <div
@@ -216,11 +228,14 @@ function SignUpPage() {
             alignItems: 'right',
           }}
         >
-          <Link to="/">
-            <Button type="primary">SUBMIT</Button>
-          </Link>
+          <Button type="primary" htmlType="submit">
+            SUBMIT
+          </Button>
         </div>
       </Form>
+      <button type="button" onClick={testDisp}>
+        dispatch!
+      </button>
     </div>
   )
 }

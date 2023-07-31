@@ -43,5 +43,12 @@ module.exports = {
         allowNamedExports: false,
       },
     ],
+    'no-param-reassign': [
+      'error',
+      {
+        props: true,
+        ignorePropertyModificationsFor: ['state'],
+      },
+    ],
   },
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
@@ -25,7 +25,6 @@ const footerStyle = {
 
 // 내부 탭
 export default function MainPage() {
-  console.log(useContext)
   return (
     <div
       style={{
