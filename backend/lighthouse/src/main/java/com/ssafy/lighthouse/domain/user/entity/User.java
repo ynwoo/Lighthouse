@@ -8,10 +8,6 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
-import com.ssafy.lighthouse.domain.common.dto.TagDto;
-import com.ssafy.lighthouse.domain.common.entity.Tag;
-import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
-import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 
 import lombok.AccessLevel;
@@ -42,11 +38,8 @@ public class User extends BaseEntity {
 	private String phoneNumber;
 	private String description;
     private String token;
-
-//
-/*    @OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn("userId")
-    private List<UserTag> userTags;*/
+    //@OneToMany(mappedBy = "user")
+    //private List<UserTag> userTags = new ArrayList<>();
 
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,

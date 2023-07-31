@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     // insert는 기본 제공 save 사용
@@ -17,5 +18,5 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
 
     // userId 가 bookmark한 studyIdList
     @Query("select bm from Bookmark bm where bm.userId = :userId and bm.isValid = 1")
-    List<Long> findAllByUserId(@Param("userId") Long userId);
+    Set<Long> findAllByUserId(@Param("userId") Long userId);
 }

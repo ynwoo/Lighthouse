@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfileResponse {
+    private Long id;
+    private int isValid;
     private String nickname;
     private String profileImgUrl;
     private String description;
@@ -28,17 +30,4 @@ public class ProfileResponse {
     private Double score;   // 유저 평점 평균
     private Long following;
     private Long follower;
-
-//    public ProfileResponse(String nickname, String profileImgUrl, String description, List<Tag> tags, List<Study> studies, List<Study> participatedStudies, List<Study> bookmarkStudies, Double score, Long following, Long follower) {
-//        this.nickname = nickname;
-//        this.profileImgUrl = profileImgUrl;
-//        this.description = description;
-//        this.tags = tags != null ? tags.stream().map(TagDto::new).collect(Collectors.toList()) : null;
-//        this.studies = studies != null ? studies.stream().map(SimpleStudyDto::new).collect(Collectors.toList()) : null;
-//        this.participatedStudies = participatedStudies != null ? participatedStudies.stream().map(SimpleStudyDto::new).collect(Collectors.toList()) : null;
-//        this.bookmarkStudies = bookmarkStudies != null ? bookmarkStudies.stream().map(SimpleStudyDto::new).collect(Collectors.toList()) : null;
-//        this.score = score;
-//        this.following = following;
-//        this.follower = follower;
-//    }
 }
