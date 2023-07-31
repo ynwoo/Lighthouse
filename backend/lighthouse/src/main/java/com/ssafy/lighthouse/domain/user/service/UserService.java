@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.user.service;
 
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
 
@@ -29,6 +30,14 @@ public interface UserService {
     // List<String> getKeywordsByUserId(Long userId);
 
     ProfileResponse findProfileByUserId(Long userId);
+
+    // userEval
+    void createUserEval(UserEvalDto userEvalDto);
+    void removeUserEval(Long userId, Long evaluatorId);
+
+    // follow
+    void createFollow(Long followeeId, Long followerId);
+    void removeFollow(Long followeeId, Long followerId);
 
     default UserMyPageDto entityToDto(User userEntity) {
         UserMyPageDto dto = UserMyPageDto.builder()
