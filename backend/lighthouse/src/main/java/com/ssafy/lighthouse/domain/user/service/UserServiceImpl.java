@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import com.ssafy.lighthouse.domain.user.entity.UserTag;
@@ -131,6 +132,11 @@ public class UserServiceImpl implements UserService {
 			() -> new UserNotFoundException(userId.toString())
 		);
 		return this.entityToDto(user);
+	}
+
+	@Override
+	public ProfileResponse findProfileByUserId(Long userId) {
+		return userRepository.findProfileByUserId(userId);
 	}
 
 	// @Override
