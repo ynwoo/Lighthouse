@@ -5,10 +5,10 @@ import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
 import com.ssafy.lighthouse.global.util.ERROR;
+import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -33,6 +33,7 @@ public class StudyServiceImpl implements StudyService {
     private final StudyLikeRepository studyLikeRepository;
     private final BookmarkRepository bookmarkRepository;
     private final StudyEvalRepository studyEvalRepository;
+    private final ParticipationHistoryRepository participationHistoryRepository;
     private final EntityManager em;
 
 
@@ -170,6 +171,15 @@ public class StudyServiceImpl implements StudyService {
         sessionRepository.saveAll(sessions);
         sessionCheckRepository.saveAll(sessionChecks);
         studyMaterialRepository.saveAll(studyMaterials);
+
+        // 스터디 참여 기록 등록(팀장)
+        // userId 가져오기 필요
+//        if(study.getStatus() == STATUS.ON_PROGRESS) {
+//            participationHistoryRepository.save(ParticipationHistory
+//                    .builder()
+//                    .userId(userId)
+//                    .build());
+//        }
     }
 
     @Override
@@ -178,13 +188,24 @@ public class StudyServiceImpl implements StudyService {
         if(result.isPresent()) {
             throw new StudyLikeException(ERROR.CREATE);
         }
+
+        // 좋아요 등록
         studyLikeRepository.save(new StudyLike(studyId, userId));
+
+        // study - likeCnt 증가
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.addLike();
     }
 
     @Override
     public void removeStudyLike(Long studyId, Long userId) {
+        // 좋아요 삭제
         Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
         result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+
+        // study - likeCnt 감소
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.removeLike();
     }
 
     @Override
@@ -193,13 +214,24 @@ public class StudyServiceImpl implements StudyService {
         if(result.isPresent()) {
             throw new BookmarkException(ERROR.CREATE);
         }
+
+        // 북마크 등록
         bookmarkRepository.save(new Bookmark(studyId, userId));
+
+        // study - bookmarkCnt 증가
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.addBookmark();
     }
 
     @Override
     public void removeStudyBookmark(Long studyId, Long userId) {
+        // 북마크 삭제
         Optional<Bookmark> result = bookmarkRepository.find(studyId, userId);
         result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+
+        // study - bookmarkCnt 감소
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.removeBookmark();
     }
 
     @Override

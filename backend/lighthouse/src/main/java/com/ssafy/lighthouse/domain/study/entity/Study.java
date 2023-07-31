@@ -38,6 +38,17 @@ public class Study extends BaseEntity {
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
+    
+    // like 관리
+    public void addLike(){this.likeCnt++;}
+    public void removeLike(){this.likeCnt--;}
+    
+    // bookmark 관리
+    public void addBookmark(){this.bookmarkCnt++;}
+    public void removeBookmark(){this.bookmarkCnt--;}
+
+    public void addMember() {this.currentMember++;}
+    public void removeMember() {this.currentMember--;}
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "originalId")
