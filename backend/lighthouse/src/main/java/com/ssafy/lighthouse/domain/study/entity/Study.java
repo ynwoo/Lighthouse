@@ -4,16 +4,16 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Getter
+@ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     private String title;
@@ -58,4 +58,16 @@ public class Study extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Set<StudyEval> studyEvals;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyNotice> studyNotices;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<StudyMaterial> studyMaterials;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<Session> sessions;
 }

@@ -9,10 +9,8 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Bookmark extends BaseEntity {
-    @NonNull
-    private int studyId;
-    @NonNull
-    private int userId;
+    private Long studyId;
+    private Long userId;
 }

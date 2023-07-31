@@ -8,15 +8,19 @@ import javax.persistence.*;
 @Entity
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class StudyEval extends BaseEntity {
-    @NonNull
-    private int studyId;
-    @NonNull
-    private int userId;
-    @NonNull
+    private Long studyId;
+    private Long userId;
     private String comment;
-    @NonNull
     private int score;
+
+    public StudyEval(StudyEval studyEval) {
+        this.studyId = studyEval.getStudyId();
+        this.userId = studyEval.getUserId();
+        this.comment = studyEval.getComment();
+        this.score = studyEval.getScore();
+    }
 }

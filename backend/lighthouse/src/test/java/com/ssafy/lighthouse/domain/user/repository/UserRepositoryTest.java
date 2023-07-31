@@ -1,19 +1,15 @@
 package com.ssafy.lighthouse.domain.user.repository;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ssafy.lighthouse.domain.user.entity.User;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.ssafy.lighthouse.domain.user.entity.User;
 
 @SpringBootTest
 @Transactional
@@ -29,14 +25,14 @@ class UserRepositoryTest {
 	public void testCreateUser() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		User savedUser = userRepository.save(user);
 		em.flush();
 		em.clear();
 
-		User findedUser = userRepository.findById(savedUser.getId()).get();
+		User findedUser = userRepository.findById((long) savedUser.getId().intValue()).get();
 
 		assertThat(findedUser.getId()).isEqualTo(savedUser.getId());
 		assertThat(findedUser.getName()).isEqualTo(savedUser.getName());
@@ -48,7 +44,7 @@ class UserRepositoryTest {
 	public void testUserCRUD() {
 		User user = new User(
 			"비밀번호789", "박철수", "parkcheolsu@example.com",
-			"철수야", "", 21, 1, 4, "",
+			"철수야", "", 21, 1L, 4L, "",
 			"농구를 즐기고 여가 시간에 코딩을 하는 것을 좋아합니다.");
 
 		// Create
@@ -76,5 +72,12 @@ class UserRepositoryTest {
 		// List
 		List<User> validUsers = userRepository.findByIsValid(1);
 		assertThat(validUsers.size()).isEqualTo(0);
+	}
+
+	@Test
+	public void testGetUserByEmail() {
+		String email = "ssafy@example.com";
+		System.out.println(userRepository.findByEmailAndIsValid(email, 1).getId());
+		System.out.println(userRepository.findByEmailAndIsValid(email, 1).getEmail());
 	}
 }
