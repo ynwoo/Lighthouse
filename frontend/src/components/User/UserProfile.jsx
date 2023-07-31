@@ -36,6 +36,141 @@ export default function UserProfile() {
         position: 'relative',
       }}
     >
+      <div style={{ display: 'flex', marginTop: '100px', flexWrap: 'wrap' }}>
+        <div>
+          <div
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>닉네임</p>
+            </div>
+            <div className="profile_box1">
+              <p>닉네임</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>자기소개</p>
+            </div>
+            <div className="profile_box1">
+              <p>자기소개</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>진행 중</p>
+            </div>
+            <div className="profile_box1">
+              <p>별점</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>참여했던 스터디</p>
+            </div>
+
+            <div style={{ marginLeft: '60px' }}>
+              <Form.Item>
+                <Select className="edit_select2" value="지역(시)">
+                  <Select.Option value="demo">Demo</Select.Option>
+                </Select>
+              </Form.Item>
+            </div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          {/* 추가된 부분 시작 */}
+
+          <div
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>별점</p>
+            </div>
+            <div className="profile_box1">
+              <p>별어케띄우지</p>
+            </div>
+          </div>
+          <div
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>뱃지 목록</p>
+            </div>
+            <div className="profile_box1">
+              <p>뱃지 목록</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>통계</p>
+            </div>
+            <div className="profile_box1">
+              <p>통계</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>북마크</p>
+            </div>
+            <div className="profile_box1">
+              <p>북마크 목록</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         style={{
           position: 'absolute',
@@ -72,106 +207,53 @@ export default function UserProfile() {
           <div>팔로잉 000</div>
         </Tooltip>
       </div>
+
       <div>
         <div className="circular-image">
           <img src="/logo192.png" alt="안뜸" />
         </div>
       </div>
+      <div style={{ position: 'relative' }}>
+        <Button
+          type="primary"
+          onClick={showModal}
+          style={{
+            width: '200px',
+            top: '30px', // Adjust the bottom property to move the button down
+            right: '100px',
+            border: '1px solid #3E5D99',
+            backgroundColor: '#3E5D99',
+            color: 'white',
+            borderRadius: '20px',
+            padding: '8px',
+            fontWeight: 'bold',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          사용중인 템플릿 보러가기
+        </Button>
 
-      <div className="f_big_bix">
-        <div className="profile_bigbox">
-          <div className="profile_head">
-            <div className="profile_text">
-              <h4>닉네임</h4>
-            </div>
-            <div className="profile_text">
-              <h4>자기소개</h4>
-            </div>
-            <div className="profile_text">
-              <h4>진행 중</h4>
-            </div>
-          </div>
-          <div>
-            <div className="profile_box1">
-              <p>닉네임</p>
-            </div>
-            <div className="profile_box1">
-              <p>자기소개</p>
-            </div>
-            <div className="profile_box1">
-              <p>스터디들</p>
-            </div>
-            <Form.Item>
-              <Select className="profile_select" value="참여했던 스터디 목록">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </Form.Item>
-          </div>
-        </div>
-        <div className="profile_bigbox2">
-          <div
-            style={{
-              position: 'absolute',
-              top: '15%',
-              left: '70%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <div>
-              {/* ...프로필 컨텐츠... */}
-
-              <Button
-                type="primary"
-                onClick={showModal}
-                style={{
-                  width: '200px',
-                  marginLeft: '80px',
-                  border: '1px solid #3E5D99',
-                  backgroundColor: '#3E5D99',
-                  color: 'white',
-                  borderRadius: '20px',
-                  margin: '10px',
-                  padding: '8px',
-                  fontWeight: 'bold',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                사용중인 템플릿 보러가기
-              </Button>
-
-              <Modal
-                title="사용중인 템플릿"
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                {/* 모달 내용 */}
-                <p>여기에 템플릿에 관한 상세한 내용을 넣을 수 있습니다.</p>
-                <p>
-                  더 많은 정보와 버튼 등을 추가하여 원하는 대화 상자를 만들 수
-                  있습니다.
-                </p>
-              </Modal>
-            </div>
-          </div>
-
-          <div className="profile_box1">
-            <p>별점</p>
-          </div>
-          <div className="profile_box1">
-            <p>뱃지 목록</p>
-          </div>
-          <div className="profile_box1">
-            <p>통계</p>
-          </div>
-          <Form.Item>
-            <Select className="profile_select" value="북마크 스터디 목록">
-              <Select.Option value="demo">Demo</Select.Option>
-            </Select>
-          </Form.Item>
-        </div>
+        <Modal
+          title="사용중인 템플릿"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%', // Adjust the left property to move the modal to the right
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          {/* 모달 내용 */}
+          <p>여기에 템플릿에 관한 상세한 내용을 넣을 수 있습니다.</p>
+          <p>
+            더 많은 정보와 버튼 등을 추가하여 원하는 대화 상자를 만들 수
+            있습니다.
+          </p>
+        </Modal>
       </div>
     </div>
   )

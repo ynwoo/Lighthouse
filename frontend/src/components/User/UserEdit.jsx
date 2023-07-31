@@ -129,10 +129,10 @@ export default function UserEdit() {
             }}
           >
             <div className="edit_text">
-              <p>추가된 텍스트1</p>
+              <p>전화번호</p>
             </div>
             <div className="profile_box1">
-              <p>추가된 박스1</p>
+              <p>전화번호</p>
             </div>
           </div>
           <div
@@ -143,10 +143,10 @@ export default function UserEdit() {
             }}
           >
             <div className="edit_text">
-              <p>추가된 텍스트2</p>
+              <p>닉네임</p>
             </div>
             <div className="profile_box1">
-              <p>추가된 박스2</p>
+              <p>닉네임</p>
             </div>
           </div>
           <div
@@ -157,7 +157,21 @@ export default function UserEdit() {
             }}
           >
             <div className="edit_text">
-              <p>추가된 텍스트2</p>
+              <p>자기소개</p>
+            </div>
+            <div className="profile_box1">
+              <p>자기소개</p>
+            </div>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div className="edit_text">
+              <p>주소</p>
             </div>
             {/* <div className="profile_box1"> */}
             <div

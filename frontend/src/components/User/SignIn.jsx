@@ -19,18 +19,28 @@ function SignIn() {
       style={{
         display: 'flex',
         justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
         margin: '10px',
         marginLeft: '20px',
-        // border: '1px solid',
         padding: '20px',
         borderRadius: '20px',
-        backgroundColor: 'transparent',
-        // backgroundColor: 'white',
-        // margin: '0px',
+        border: '1px solid',
+        backgroundColor: 'white',
+        width: '60%',
       }}
     >
       <Layout>
-        <Content style={{ margin: '0px', backgroundColor: 'white' }}>
+        <Content
+          style={{
+            margin: '0px',
+            backgroundColor: 'white',
+            width: '800px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
           <Form
             name="basic"
             labelCol={{
@@ -38,10 +48,6 @@ function SignIn() {
             }}
             wrapperCol={{
               span: 16,
-            }}
-            style={{
-              maxWidth: 600,
-              backgroundColor: 'transparent',
             }}
             initialValues={{
               remember: true,
@@ -59,6 +65,7 @@ function SignIn() {
                   message: 'Please input your username!',
                 },
               ]}
+              style={{ width: '500px' }}
             >
               <Input />
             </Form.Item>
@@ -89,6 +96,43 @@ function SignIn() {
               }}
             >
               <Checkbox>Remember me</Checkbox>
+              <div style={{ display: 'flex' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    margin: '10px',
+                    marginTop: '20px',
+                  }}
+                >
+                  <img
+                    src="/kakao.png"
+                    alt="카카오 로그인"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                  <p style={{ margin: '0', fontSize: '8px' }}>카카오</p>
+                  <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    margin: '10px',
+                    marginTop: '20px',
+                  }}
+                >
+                  <img
+                    src="/google.png"
+                    alt="구글 로그인"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                  <p style={{ margin: '0', fontSize: '8px' }}>구글</p>
+                  <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
+                </div>
+              </div>
             </Form.Item>
 
             <Form.Item
