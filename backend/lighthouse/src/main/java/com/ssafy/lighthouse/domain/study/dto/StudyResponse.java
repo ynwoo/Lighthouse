@@ -6,6 +6,7 @@ import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
 import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public class StudyResponse {
     private int bookmarkCnt;
     private int status;
     private StudyResponse original;
-//    private User leader;    // 수정 필요
+    private SimpleProfileResponse leaderProfile;
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
@@ -43,6 +44,10 @@ public class StudyResponse {
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
     private List<SessionRes> sessions;
     private List<QnaDto.Res> qnas;
+
+    public void setLeaderProfile(SimpleProfileResponse leaderProfile) {
+        this.leaderProfile = leaderProfile;
+    }
 
     public StudyResponse(Study study) {
         this.id = study.getId();
@@ -63,7 +68,6 @@ public class StudyResponse {
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
         this.original = study.getOriginal() != null ? new StudyResponse(study.getOriginal()) : null;
-//        this.leader = study.getLeader();
         this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
         this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
