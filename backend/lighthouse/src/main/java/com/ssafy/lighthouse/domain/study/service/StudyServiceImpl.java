@@ -84,7 +84,7 @@ public class StudyServiceImpl implements StudyService {
                 .map(studyTag -> StudyTag.builder()
                         .isValid(studyTag.getIsValid())
                         .studyId(newStudyId)
-                        .tagId(studyTag.getTagId())
+                        .tag(studyTag.getTag())
                         .build())
                 .collect(Collectors.toSet()));
 
@@ -255,7 +255,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public void createStudyTag(StudyTagDto studyTagDto) {
-        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTagId());
+        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTag().getId());
         if(result.isPresent()) {
             throw new StudyTagException(ERROR.CREATE);
         }
