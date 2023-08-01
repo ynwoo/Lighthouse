@@ -1,26 +1,30 @@
 package com.ssafy.lighthouse.domain.user.service;
 
-import com.ssafy.lighthouse.domain.common.repository.TagRepository;
+import com.ssafy.lighthouse.domain.study.entity.StudyTag;
+import com.ssafy.lighthouse.domain.study.exception.StudyTagException;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-import com.ssafy.lighthouse.domain.user.dto.UserTagDto;
 import com.ssafy.lighthouse.domain.user.entity.Follow;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import com.ssafy.lighthouse.domain.user.entity.UserEval;
+import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
 import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserEvalRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserTagRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import com.ssafy.lighthouse.global.util.ERROR;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,7 +36,6 @@ public class UserServiceImpl implements UserService {
 	private final UserTagRepository userTagRepository;
 	private final UserEvalRepository userEvalRepository;
 	private final FollowRepository followRepository;
-	private final TagRepository tagRepository;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -40,8 +43,11 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(userMyPageDto);
 		User savedUser = userRepository.save(user);
-		user.getUserTags().forEach(userTag -> userTag.setUserId(user.getId()));
-		userTagRepository.saveAll(user.getUserTags());
+		List<Long> list = userMyPageDto.getUserTagList();
+		for (Long tagId : list) {
+			UserTag userTag = UserTag.from(savedUser.getId(), tagId);
+			userTagRepository.save(userTag);
+		}
 	}
 
 	@Override
@@ -67,9 +73,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
-		log.debug("getUserById");
-		return UserMyPageDto.from(user);
+		User user = userRepository.findByIdAndIsValid(userId, 1);
+		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
+		UserMyPageDto from = UserMyPageDto.from(user);
+
+		for(UserTag userTag : userTags) {
+			from.getUserTagList().add(userTag.getTagId());
+		}
+
+		return from;
 	}
 
 	@Transactional
@@ -81,13 +93,16 @@ public class UserServiceImpl implements UserService {
 		// Update : 닉네임 업데이트
 		foundUser.updateUserInfo(userMyPageDto.getPassword() == null ? foundUser.getPassword() : userMyPageDto.getPassword(), userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
-			userMyPageDto.getAge(), userMyPageDto.getSido(), userMyPageDto.getGugun(),
+			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
-//		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
-		
-		// userTag 수정
-		userTagRepository.saveAll(userMyPageDto.getUserTagList().stream().map(UserTagDto::toEntity).collect(Collectors.toList()));
+		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
+
+		List<Long> list = userMyPageDto.getUserTagList();
+		for (Long tagId : list) {
+			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
+			userTagRepository.save(userTag);
+		}
 
 		System.out.println("업데이트 된 유저 : " + foundUser);
 	}
