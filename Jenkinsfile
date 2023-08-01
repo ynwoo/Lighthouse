@@ -18,9 +18,7 @@ pipeline {
             }
         }
         stage('Test'){
-            steps {
-                
-            }
+
         }
         stage('Build and Push Docker Image'){
             steps {
