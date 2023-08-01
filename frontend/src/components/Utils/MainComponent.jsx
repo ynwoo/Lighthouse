@@ -1,10 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import TempCard from '../Study/TempCard'
 import dummy from '../../db/data.json'
 
-function MainComponent({ text }) {
-  console.log(text)
+function MainComponent() {
+  const text = useSelector(state => state.study.value)
   const filterdData = dummy.study_list.filter(item => item.title.includes(text))
 
   return (
@@ -32,10 +32,5 @@ function MainComponent({ text }) {
     </div>
   )
 }
-// store에서 prop 받아오기
-function mapStateToProps(state) {
-  return { text: state.text }
-}
 
-// 매개변수에는 props와 dispatch가 들어간다.
-export default connect(mapStateToProps)(MainComponent)
+export default MainComponent

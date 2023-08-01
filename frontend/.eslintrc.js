@@ -43,5 +43,6 @@ module.exports = {
         allowNamedExports: false,
       },
     ],
+    'no-param-reassign': 'off',
   },
 }
