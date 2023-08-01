@@ -53,10 +53,10 @@ pipeline {
             steps {
                 sshagent(credentials: ['ec2']) {
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker rm -f $IMAGE_NAME'"
-                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker rmi -f $DOCKERHUB_REPOSITORY:latest'"
-                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker pull $DOCKERHUB_REPOSITORY:latest'"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker rmi -f $DOCKERHUB_REPOSITORY:$VERSION'"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker pull $DOCKERHUB_REPOSITORY:$VERSION'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker images'"
-                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker run -d --name $IMAGE_NAME --env-file $ENV_DIR -p 8081:8080 $DOCKERHUB_REPOSITORY:latest'"
+                    sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker run -d --name $IMAGE_NAME --env-file $ENV_DIR -p 8081:8080 $DOCKERHUB_REPOSITORY:$VERSION'"
                     sh "ssh -o StrictHostKeyChecking=no $SSH_CONNECTION 'docker ps'"
                 }
             }
