@@ -9,6 +9,7 @@ import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
 import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryRepository;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
@@ -46,10 +47,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         allStudyIdSet.addAll(bookmarkSet);
 
 
-        Set<Long> tagList = userTagRepository.findTagIdAllByUserId(userId);
+        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         QFollow followee = new QFollow("followee");
 
-        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagList), tag.isValid.eq(1)).fetch();
+        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
         List<SimpleStudyDto> studies = new ArrayList<>();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
@@ -57,10 +58,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
+
+            // leaderProfile 넣기
+            simpleStudyDto.setLeaderProfile(findSimpleProfileByUserId(study.getLeaderId()));
+
             // 진행중 스터디
             if(progressSet.contains(study.getId())) {
                 studies.add(simpleStudyDto);
-            } 
+            }
+
             // 끝난 스터디
             else if(terminatedSet.contains(study.getId())) {
                 participatedStudies.add(simpleStudyDto);
@@ -99,6 +105,34 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(result.getScore())
                 .following(result.getFollowing())
                 .follower(result.getFollower())
+                .build();
+    }
+
+    @Override
+    public SimpleProfileResponse findSimpleProfileByUserId(Long userId) {
+        SimpleProfileResponse result = jpaQueryFactory.select(Projections.fields(SimpleProfileResponse.class,
+                        user.id,
+                        user.isValid,
+                        user.nickname,
+                        user.profileImgUrl,
+                        user.description,
+                        ExpressionUtils.as(select(userEval.score.avg()).from(userEval).where(userEval.userId.eq(userId), userEval.isValid.eq(1)), "score")))
+                .from(user)
+                .where(user.id.eq(userId), user.isValid.eq(1))
+                .fetchOne();
+
+        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
+        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
+
+
+        return SimpleProfileResponse.builder()
+                .id(result.getId())
+                .isValid(result.getIsValid())
+                .nickname(result.getNickname())
+                .profileImgUrl(result.getProfileImgUrl())
+                .description(result.getDescription())
+                .tags(tags)
+                .score(result.getScore())
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
+import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.ERROR;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class StudyServiceImpl implements StudyService {
     private final BookmarkRepository bookmarkRepository;
     private final StudyEvalRepository studyEvalRepository;
     private final ParticipationHistoryRepository participationHistoryRepository;
+    private final UserRepository userRepository;
     private final EntityManager em;
 
 
@@ -48,7 +50,9 @@ public class StudyServiceImpl implements StudyService {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
-        return new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        StudyResponse studyResponse = new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(result.get().getLeaderId()));
+        return studyResponse;
     }
     
     // 스터디 복제
@@ -80,7 +84,7 @@ public class StudyServiceImpl implements StudyService {
                 .map(studyTag -> StudyTag.builder()
                         .isValid(studyTag.getIsValid())
                         .studyId(newStudyId)
-                        .tagId(studyTag.getTagId())
+                        .tag(studyTag.getTag())
                         .build())
                 .collect(Collectors.toSet()));
 
@@ -251,7 +255,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public void createStudyTag(StudyTagDto studyTagDto) {
-        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTagId());
+        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTag().getId());
         if(result.isPresent()) {
             throw new StudyTagException(ERROR.CREATE);
         }

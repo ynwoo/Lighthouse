@@ -8,4 +8,5 @@ public class UserNotFoundException extends ResponseStatusException {
 	public UserNotFoundException(String reason) {
 		super(HttpStatus.NOT_FOUND, reason);
 	}
+
 }

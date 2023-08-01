@@ -1,31 +1,38 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import com.ssafy.lighthouse.domain.common.repository.TagRepository;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.dto.UserTagDto;
+import com.ssafy.lighthouse.domain.user.entity.Follow;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import com.ssafy.lighthouse.domain.user.entity.UserTag;
+import com.ssafy.lighthouse.domain.user.entity.UserEval;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
+import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
+import com.ssafy.lighthouse.domain.user.repository.UserEvalRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserTagRepository;
-
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ssafy.lighthouse.global.util.ERROR;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
+@Slf4j
+@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private UserRepository userRepository;
-	private UserTagRepository userTagRepository;
-
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository, UserTagRepository userTagRepository) {
-		this.userRepository = userRepository;
-		this.userTagRepository = userTagRepository;
-	}
+	private final UserRepository userRepository;
+	private final UserTagRepository userTagRepository;
+	private final UserEvalRepository userEvalRepository;
+	private final FollowRepository followRepository;
+	private final TagRepository tagRepository;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -33,11 +40,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(userMyPageDto);
 		User savedUser = userRepository.save(user);
-		List<Long> list = userMyPageDto.getUserTagList();
-		for (Long tagId : list) {
-			UserTag userTag = UserTag.from(savedUser.getId(), tagId);
-			userTagRepository.save(userTag);
-		}
+		userTagRepository.saveAll(user.getUserTags());
 	}
 
 	@Override
@@ -63,15 +66,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
-		User user = userRepository.findByIdAndIsValid(userId, 1);
-		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
-		UserMyPageDto from = UserMyPageDto.from(user);
-
-		for(UserTag userTag : userTags) {
-			from.getUserTagList().add(userTag.getTagId());
-		}
-
-		return from;
+		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
+		log.debug("getUserById");
+		return UserMyPageDto.from(user);
 	}
 
 	@Transactional
@@ -83,16 +80,13 @@ public class UserServiceImpl implements UserService {
 		// Update : 닉네임 업데이트
 		foundUser.updateUserInfo(userMyPageDto.getPassword(), userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
-			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
+			userMyPageDto.getAge(), userMyPageDto.getSido(), userMyPageDto.getGugun(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
-		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
-
-		List<Long> list = userMyPageDto.getUserTagList();
-		for (Long tagId : list) {
-			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
-			userTagRepository.save(userTag);
-		}
+//		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
+		
+		// userTag 수정
+		userTagRepository.saveAll(userMyPageDto.getUserTagList().stream().map(UserTagDto::toEntity).collect(Collectors.toList()));
 
 		System.out.println("업데이트 된 유저 : " + foundUser);
 	}
@@ -137,6 +131,41 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ProfileResponse findProfileByUserId(Long userId) {
 		return userRepository.findProfileByUserId(userId);
+	}
+
+	@Override
+	public void createUserEval(UserEvalDto userEvalDto) {
+		Optional<UserEval> result = userEvalRepository.find(userEvalDto.getUserId(), userEvalDto.getEvaluatorId());
+		if(result.isPresent()) {
+			throw new UserNotFoundException(ERROR.CREATE);
+		}
+		userEvalRepository.save(userEvalDto.toEntity());
+	}
+
+	@Override
+	public void removeUserEval(Long userId, Long evaluatorId) {
+		Optional<UserEval> result = userEvalRepository.find(userId, evaluatorId);
+		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
+	}
+
+	@Override
+	public void createFollow(Long followeeId, Long followerId) {
+		Optional<Follow> result = followRepository.find(followeeId, followerId);
+		if(result.isPresent()) {
+			throw new UserNotFoundException(ERROR.CREATE);
+		}
+		followRepository.save(Follow.builder()
+				.followerId(followerId)
+				.followeeId(followeeId)
+				.build());
+	}
+
+	@Override
+	public void removeFollow(Long followeeId, Long followerId) {
+		Optional<Follow> result = followRepository.find(followeeId, followerId);
+		log.debug("followeeId : {}", result.get().getFolloweeId());
+		log.debug("followerId : {}", result.get().getFollowerId());
+		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
 	}
 
 	// @Override

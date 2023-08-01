@@ -1,6 +1,9 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import com.ssafy.lighthouse.domain.common.dto.GugunDto;
+import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
 
@@ -30,6 +33,14 @@ public interface UserService {
 
     ProfileResponse findProfileByUserId(Long userId);
 
+    // userEval
+    void createUserEval(UserEvalDto userEvalDto);
+    void removeUserEval(Long userId, Long evaluatorId);
+
+    // follow
+    void createFollow(Long followeeId, Long followerId);
+    void removeFollow(Long followeeId, Long followerId);
+
     default UserMyPageDto entityToDto(User userEntity) {
         UserMyPageDto dto = UserMyPageDto.builder()
                 .name(userEntity.getName())
@@ -37,8 +48,8 @@ public interface UserService {
                 .nickname(userEntity.getNickname())
                 .profileImgUrl(userEntity.getProfileImgUrl())
                 .age(userEntity.getAge())
-                .sidoId(userEntity.getSidoId())
-                .gugunId(userEntity.getGugunId())
+                .sido(new SidoDto(userEntity.getSido()))
+                .gugun(new GugunDto(userEntity.getGugun()))
                 .phoneNumber(userEntity.getPhoneNumber())
                 .description(userEntity.getDescription())
                 .build();

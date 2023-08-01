@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface StudyRepository extends JpaRepository<Study, Long>, StudyRepositoryCustom {
     // 상세 정보 조회 (상세정보)
-    @EntityGraph(attributePaths = {"original", "leader", "sido", "gugun", "studyTags", "studyEvals", "studyNotices", "sessions", "qnas"})
+    @EntityGraph(attributePaths = {"original", "sido", "gugun", "studyTags", "studyEvals", "studyNotices", "sessions", "qnas"})
     Optional<Study> findDetailById(@Param("studyId") Long studyId);
 
     // 상세 정보 조회 (복제)

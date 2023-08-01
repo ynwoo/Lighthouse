@@ -7,6 +7,9 @@ import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
+import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.PAGE;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
@@ -27,6 +31,7 @@ import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
 public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
+    private final UserRepository userRepository;
 
     @Override
     public Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
@@ -34,8 +39,8 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         OrderSpecifier<?> orderSpecifier = sortByOptions(options);
 
         // contents 구하기
-        List<SimpleStudyDto> contents = jpaQueryFactory
-                .select(Projections.constructor(SimpleStudyDto.class, study)).distinct()
+        List<Study> studyList = jpaQueryFactory
+                .select(study)
                 .from(study)
                 .leftJoin(study.studyTags, studyTag)
                 .leftJoin(study.sido, sido)
@@ -49,6 +54,12 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .offset(options.getOffset())
                 .limit(options.getLimit())
                 .fetch();
+
+        List<SimpleStudyDto> contents = studyList.stream().map(study -> {
+            SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
+            simpleStudyDto.setLeaderProfile(userRepository.findSimpleProfileByUserId(study.getLeaderId()));
+            return simpleStudyDto;
+        }).collect(Collectors.toList());
 
         // total 구하기
         Long total = jpaQueryFactory.select(study.count())

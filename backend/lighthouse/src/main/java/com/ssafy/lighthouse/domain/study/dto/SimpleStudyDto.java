@@ -4,6 +4,8 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +34,11 @@ public class SimpleStudyDto {
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
+    private SimpleProfileResponse leaderProfile;
+
+    public void setLeaderProfile(SimpleProfileResponse leaderProfile) {
+        this.leaderProfile = leaderProfile;
+    }
 
     public SimpleStudyDto(Study study) {
         this.id = study.getId();
