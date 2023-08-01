@@ -14,4 +14,11 @@ public class TagDto {
         this.id = tag.getId();
         this.keyword = tag.getKeyword();
     }
+
+    public Tag toEntity() {
+        return Tag.builder()
+                .id(this.id)
+                .keyword(this.keyword)
+                .build();
+    }
 }

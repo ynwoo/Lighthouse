@@ -1,23 +1,20 @@
 package com.ssafy.lighthouse.domain.user.service;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JwtServiceImpl implements JwtService {
