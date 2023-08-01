@@ -1,18 +1,12 @@
 package com.ssafy.lighthouse.domain.user.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
-import com.ssafy.lighthouse.domain.common.dto.TagDto;
-import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
-
-import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
