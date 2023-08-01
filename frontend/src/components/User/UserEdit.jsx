@@ -1,22 +1,9 @@
 import React, { useState } from 'react'
-import { Form, Select, Modal, Button, Tooltip } from 'antd'
+import { Form, Select } from 'antd'
 
 // 템플릿 상세의 질의응답
 
 export default function TempQnA() {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
-  const showModal = () => {
-    setIsModalVisible(true)
-  }
-
-  const handleOk = () => {
-    setIsModalVisible(false)
-  }
-
-  const handleCancel = () => {
-    setIsModalVisible(false)
-  }
   const [checkboxValues, setCheckboxValues] = useState({
     개발: false,
     알고리즘: false,
@@ -41,8 +28,8 @@ export default function TempQnA() {
     <div
       className="comp"
       style={{
-        width: '100%',
-        height: '100%',
+        width: '80%',
+        height: '500px',
         border: '2px solid #999999',
         borderRadius: '20px',
         textAlign: 'center',
@@ -54,84 +41,13 @@ export default function TempQnA() {
         position: 'relative',
         margin: '20px',
         padding: '20px',
+        alignItems: 'center',
       }}
     >
       <div className="circular-image">
         <img src="/logo192.png" alt="안뜸" />
       </div>
-      <div className="grid-container">
-        <div className="item">
-          <div
-            style={{
-              position: 'absolute',
-              display: 'flex',
-              // alignItems: 'center', // Center the text vertically
-              border: '1px solid #177AEE',
-              backgroundColor: '#177AEE',
-              color: 'white',
-              borderRadius: '20px',
-              padding: '8px',
-              flexDirection: 'flex-start',
-              marginTop: '20px',
-            }}
-          >
-            <div>#해시태그</div>
-          </div>
-        </div>
-        <div className="item">
-          <Button
-            type="primary"
-            onClick={showModal}
-            style={{
-              width: '200px',
-              border: '1px solid #3E5D99',
-              backgroundColor: '#3E5D99',
-              color: 'white',
-              borderRadius: '20px',
-              padding: '8px',
-              fontWeight: 'bold',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '20px',
-              marginLeft: '200px',
-            }}
-          >
-            사용중인 템플릿 보러가기
-          </Button>
-
-          <Modal
-            title="사용중인 템플릿"
-            visible={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%', // Adjust the left property to move the modal to the right
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            {/* 모달 내용 */}
-            <p>여기에 템플릿에 관한 상세한 내용을 넣을 수 있습니다.</p>
-            <p>
-              더 많은 정보와 버튼 등을 추가하여 원하는 대화 상자를 만들 수
-              있습니다.
-            </p>
-          </Modal>
-        </div>
-        <div className="item">
-          <div style={{ position: 'absolute', top: '10px', right: '30px' }}>
-            <Tooltip title="팔로워 목록 보기" placement="bottom">
-              <div>팔로워 000</div>
-            </Tooltip>
-            <Tooltip title="팔로잉 목록 보기" placement="bottom">
-              <div>팔로잉 000</div>
-            </Tooltip>
-          </div>
-        </div>
-      </div>
-      <div className="container1">
+      <div className="container2">
         <div className="u_item">닉네임</div>
         <div className="u_item1">닉네임</div>
         <div className="u_item">별점</div>
@@ -145,7 +61,17 @@ export default function TempQnA() {
         <div className="u_item">통계</div>
         <div className="u_item1">통계</div> */}
         <div className="u_item">참여했던 스터디</div>
-        <div style={{ display: 'flex' }}>
+        <div
+          style={{
+            display: 'flex',
+            // margin: '0px',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            marginTop: '25px',
+            marginRight: '50px',
+          }}
+        >
           <Form.Item>
             <div style={{ width: '70%' }}>
               <Select className="u_item2" value="참여했던 스터디">
@@ -171,20 +97,21 @@ export default function TempQnA() {
         <div className="u_item1">닉네임</div>
         <div className="u_item">별점</div>
         <div className="u_item1">별점</div>
-        <div>관심 분야를 선택해주세요.</div>
+        <div className="u_item" />
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            marginRight: '20px',
-            marginBottom: '20px',
+            // marginRight: '20px',
+            // marginBottom: '20px',
           }}
         >
+          <div className="ue_item">관심 분야를 선택해주세요.</div>
           <div
+            className="u_item"
             style={{
               display: 'flex',
-              // flexDirection: 'column',
             }}
           >
             <label htmlFor="개발">
@@ -242,6 +169,7 @@ export default function TempQnA() {
               alignContent: 'flex-start',
             }}
           >
+            &nbsp;&nbsp;&nbsp;
             <label htmlFor="공무원">
               <input
                 type="checkbox"
@@ -250,7 +178,7 @@ export default function TempQnA() {
                 checked={checkboxValues.checkbox1}
                 onChange={handleCheckboxChange}
               />
-              공무원
+              공무원&nbsp;
             </label>
             <div style={{ marginRight: '10px' }}>
               <label htmlFor="인적성">
