@@ -9,7 +9,7 @@ pipeline {
         ENV_DIR = "./config/.env"
     }
     stages {
-        stage('Build') {
+        stage('Build Backend') {
             steps {
                 dir('backend/lighthouse') {
                     sh "chmod +x gradlew"
