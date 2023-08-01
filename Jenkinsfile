@@ -11,15 +11,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "pwd"
-                dir('backend/lighthouse') {
-                    sh "pwd"
-                }
-                sh "pwd"
                 dir('backend/lighthouse') {
                     sh "chmod +x gradlew"
-                    sh "./gradlew compileJava"
-                    
+                    sh "./gradlew clean compileJava bootJar"
                }
                sh "ls"
                dir('backend/lighthouse/build') {
