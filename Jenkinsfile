@@ -35,7 +35,7 @@ pipeline {
                     sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
                     sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
                }
-            }
+            
         }
         stage('Deploy on EC2') {
             steps {
