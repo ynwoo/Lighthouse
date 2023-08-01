@@ -3,16 +3,6 @@ package com.ssafy.lighthouse.domain.user.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
-import com.ssafy.lighthouse.domain.common.BaseEntity;
-import com.ssafy.lighthouse.domain.common.dto.GugunDto;
-import com.ssafy.lighthouse.domain.common.dto.SidoDto;
-import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
-=======
 import com.ssafy.lighthouse.domain.user.entity.User;
 
 import lombok.Builder;
@@ -20,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
->>>>>>> parent of 80b7f2b (feat: study, user -> Tag, Sido, Gugun 타입 entity, dto 반영)
 
 @Getter
 @Setter
