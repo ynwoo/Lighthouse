@@ -10,7 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableWebMvc
 @EnableScheduling // 스케줄러 사용
 @SpringBootApplication
-@EnableMongoRepositories(basePackageClasses = HeartbeatRepository.class)
+//@EnableMongoRepositories(basePackageClasses = HeartbeatRepository.class)
+@EnableMongoRepositories(basePackages="com.ssafy.lighthouse.domain.*")
 public class LighthouseApplication {
 
 	public static void main(String[] args) {
