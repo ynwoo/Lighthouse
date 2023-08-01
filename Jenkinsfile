@@ -21,7 +21,7 @@ pipeline {
                     sh "./gradlew compileJava"
                     
                }
-               sh "cp ./backend/lighthouse/build/libs/*.jar app.jar"
+               sh "cp /var/jenkins_home/workspace/pipeline_test/backend/lighthouse/build/libs/*.jar app.jar"
             }
                         
         }
@@ -36,7 +36,7 @@ pipeline {
         // }
         stage('Push Docker Image'){
             steps {
-                    
+                    sh "pwd"
                     sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
                     sh "docker compose build"
                     // sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
