@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(userMyPageDto);
 		User savedUser = userRepository.save(user);
+		user.getUserTags().forEach(userTag -> userTag.setUserId(user.getId()));
 		userTagRepository.saveAll(user.getUserTags());
 	}
 
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
 		User foundUser = userRepository.findById(userMyPageDto.getId()).get();
 		System.out.println("찾은 유저 : " + foundUser);
 		// Update : 닉네임 업데이트
-		foundUser.updateUserInfo(userMyPageDto.getPassword(), userMyPageDto.getName(),
+		foundUser.updateUserInfo(userMyPageDto.getPassword() == null ? foundUser.getPassword() : userMyPageDto.getPassword(), userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
 			userMyPageDto.getAge(), userMyPageDto.getSido(), userMyPageDto.getGugun(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());

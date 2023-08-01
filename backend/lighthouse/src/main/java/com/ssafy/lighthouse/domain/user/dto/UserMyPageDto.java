@@ -1,5 +1,10 @@
 package com.ssafy.lighthouse.domain.user.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
@@ -41,7 +46,7 @@ public class UserMyPageDto {
 			.gugun(new GugunDto(user.getGugun()))
 			.phoneNumber(user.getPhoneNumber())
 			.description(user.getDescription())
-			.userTagList(user.getUserTags().stream().map(UserTagDto::new).collect(Collectors.toList()))
+			.userTagList(user.getUserTags().stream().filter(BaseEntity::isValid).map(UserTagDto::new).collect(Collectors.toList()))
 			.build();
 	}
 }
