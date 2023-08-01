@@ -17,9 +17,6 @@ pipeline {
                }
             }
         }
-        stage('Test'){
-
-        }
         stage('Build and Push Docker Image'){
             steps {
                 dir('backend/lighthouse') {
