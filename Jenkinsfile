@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         VERSION = "0.1.0" //Major.Minor.Patch
-        DOCKERHUB_REPOSITORY = "imsong/test"
+        DOCKERHUB_REPOSITORY = "imsongj/test"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-imsong')
         IMAGE_NAME = "test-lighthouse"
         SSH_CONNECTION = "ubuntu@i9a409.p.ssafy.io"
