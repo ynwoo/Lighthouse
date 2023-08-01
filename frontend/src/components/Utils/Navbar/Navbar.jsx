@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 import logo from '../../../static/main_logo.PNG'
 
 export default function App() {
+  const nowIn = items.find(obj => {
+    return obj.linkTo === window.location.pathname
+  })
+
   return (
     <div
       style={{

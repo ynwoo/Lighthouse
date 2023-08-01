@@ -1,14 +1,15 @@
 import React from 'react'
 import { Input, Select, Space } from 'antd'
-import { connect } from 'react-redux'
-import { actionCreators } from '../../store/modules/study'
+import { useDispatch } from 'react-redux'
+import { setText } from '../../store/study'
 
 // 검색창
 const { Search } = Input
 
-function SearchComponent({ searchStudy }) {
+function SearchComponent() {
+  const dispatch = useDispatch()
   const onSearch = value => {
-    searchStudy(value)
+    dispatch(setText(value))
   }
   // 지역
   const handleChange = value => {
@@ -95,10 +96,5 @@ function SearchComponent({ searchStudy }) {
     </div>
   )
 }
-function mapDispatchToProps(dispatch) {
-  return {
-    searchStudy: value => dispatch(actionCreators.searchStudy(value)),
-  }
-}
 
-export default connect(null, mapDispatchToProps)(SearchComponent)
+export default SearchComponent

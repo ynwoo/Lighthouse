@@ -1,19 +1,26 @@
 import React from 'react'
 import { Layout, Button, Checkbox, Form, Input } from 'antd'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { userAction } from '../../store/user'
+
 // import { createRoot } from 'react-router-dom';
 
 const { Content } = Layout
 // 로그인
-const onFinish = values => {
-  console.log('Success:', values)
-}
+
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
 //
 
 function SignIn() {
+  const dispatch = useDispatch()
+  const [form] = Form.useForm()
+  const onFinish = value => {
+    console.log(value)
+    dispatch(userAction.login(value))
+  }
   return (
     <div
       style={{
@@ -42,6 +49,7 @@ function SignIn() {
           }}
         >
           <Form
+            form={form}
             name="basic"
             labelCol={{
               span: 8,
@@ -57,8 +65,8 @@ function SignIn() {
             autoComplete="off"
           >
             <Form.Item
-              label="Username"
-              name="username"
+              label="Email"
+              name="userEmail"
               rules={[
                 {
                   required: true,
@@ -72,7 +80,7 @@ function SignIn() {
 
             <Form.Item
               label="Password"
-              name="password"
+              name="userPwd"
               rules={[
                 {
                   required: true,
@@ -88,7 +96,6 @@ function SignIn() {
             </Form.Item>
 
             <Form.Item
-              name="remember"
               valuePropName="checked"
               wrapperCol={{
                 offset: 8,
@@ -141,11 +148,9 @@ function SignIn() {
                 span: 16,
               }}
             >
-              <Link to="/">
-                <Button type="primary" htmlType="submit">
-                  SUBMIT
-                </Button>
-              </Link>
+              <Button type="primary" htmlType="submit">
+                SUBMIT
+              </Button>
 
               <Link to="/signup">
                 <Button type="primary" htmlType="submit" danger>
