@@ -24,7 +24,7 @@ pipeline {
                     sh "ls"
                     
                }
-               sh "cp /var/jenkins_home/workspace/pipeline_test/backend/lighthouse/build/libs/*.jar app.jar"
+               //sh "cp /var/jenkins_home/workspace/pipeline_test/backend/lighthouse/build/libs/*.jar app.jar"
             }
                         
         }
