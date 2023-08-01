@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.common.repository;
 
+import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.lighthouse.domain.common.entity.Tag;
@@ -11,5 +12,5 @@ import java.util.Set;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("select new com.ssafy.lighthouse.domain.common.dto.TagDto(t) from Tag t where t.id in (:tagIds) and t.isValid = 1")
-    Set<Tag> findAllByTagIds(@Param("tagIds") List<Long> tagIds);
+    List<TagDto> findAllByTagIds(@Param("tagIds") List<Long> tagIds);
 }

@@ -27,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	@Query("UPDATE User u SET u.token = NULL WHERE u.id = :userId")
 	void deleteRefreshToken(@Param("userId") Long userId);
 
-	@EntityGraph("userTags")
+	@EntityGraph(attributePaths = {"userTags"})
 	@Query("select us from User us where us.id = :id and us.isValid = 1")
 	Optional<User> findById(@Param("id") Long id);
 

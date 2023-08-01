@@ -1,5 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.dto.TagDto;
+import com.ssafy.lighthouse.domain.common.entity.Tag;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +12,13 @@ public class StudyTagDto {
     private Long id;
     private int isValid;
     private Long studyId;
-    private Long tagId;
-//    private TagDto tag;
+    private TagDto tag;
 
     public StudyTagDto(StudyTag studyTag) {
         this.id = studyTag.getId();
         this.isValid = studyTag.getIsValid();
         this.studyId = studyTag.getStudyId();
-        this.tagId = studyTag.getTagId();
+        this.tag = new TagDto(studyTag.getTag());
     }
 
     public StudyTag toEntity() {
@@ -25,7 +26,7 @@ public class StudyTagDto {
                 .id(this.id)
                 .isValid(this.isValid)
                 .studyId(this.studyId)
-                .tagId(this.tagId)
+                .tag(this.tag.toEntity())
                 .build();
     }
 }

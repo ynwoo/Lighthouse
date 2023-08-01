@@ -76,7 +76,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
-		Set<Tag> tags = tagRepository.findAllByTagIds(user.getUserTags().stream().map(UserTag::getTagId).collect(Collectors.toList()));
+		List<TagDto> tags = tagRepository.findAllByTagIds(user.getUserTags().stream().map(UserTag::getTagId).collect(Collectors.toList()));
+		log.debug("getUserById");
 		return UserMyPageDto.builder()
 				.id(user.getId())
 				.name(user.getName())
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
 				.gugunId(user.getGugunId())
 				.phoneNumber(user.getPhoneNumber())
 				.description(user.getDescription())
-				.userTagList(tags.stream().map(TagDto::new).collect(Collectors.toList()))
+				.userTagList(tags)
 				.build();
 	}
 
