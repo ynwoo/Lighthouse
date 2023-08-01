@@ -14,7 +14,9 @@ pipeline {
                 dir('backend/lighthouse') {
                     sh "chmod +x gradlew"
                     sh "./gradlew compileJava"
+                    
                }
+               sh "cp backend/lighthouse/build/libs/*.jar app.jar"
             }
         }
         // stage("Build Image") {
