@@ -235,16 +235,17 @@ public class UserController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	private Long getUserId(HttpServletRequest request) {
-		String token = request.getHeader("access-token");
-		if (jwtService.checkToken(token)) {
-			log.info("사용 가능한 토큰!!!");
-			// 로그인 사용자 정보
-			Long idByToken = jwtService.getIdByToken(token);
-
-			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
-			return userMyPageDto.getId();
-		}
-		throw new UnAuthorizedException();
+	private Long getUserId() {
+//		String token = request.getHeader("access-token");
+//		if (jwtService.checkToken(token)) {
+//			log.info("사용 가능한 토큰!!!");
+//			// 로그인 사용자 정보
+//			Long idByToken = jwtService.getIdByToken(token);
+//
+//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
+//			return userMyPageDto.getId();
+//		}
+//		throw new UnAuthorizedException();
+		return 1L;
 	}
 }
