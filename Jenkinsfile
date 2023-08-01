@@ -21,6 +21,15 @@ pipeline {
                     sh "./gradlew compileJava"
                     
                }
+               sh "ls"
+               dir('backend/lighthouse/build') {
+                    sh "ls"
+                    
+               }
+               dir('backend/lighthouse/build/libs') {
+                    sh "ls"
+                    
+               }
                sh "cp /var/jenkins_home/workspace/pipeline_test/backend/lighthouse/build/libs/*.jar app.jar"
             }
                         
