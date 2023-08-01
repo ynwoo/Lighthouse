@@ -10,6 +10,7 @@ import SignInPage from './routes/SignInPage'
 import SignUpPage from './routes/SignUpPage'
 // import ChatPage from './routes/ChatPage'
 import ScrollToTop from './components/Utils/ScrollTop'
+import UserEditPage from './routes/UserEditPage'
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/login" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          {/* <Route path="/chat" element={<ChatPage />} /> */}
+          <Route path="/user_edit/:id" element={<UserEditPage />} />
         </Routes>
       </Router>
       {/* <Footer /> */}
