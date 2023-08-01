@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Form, Select } from 'antd'
 
-export default function UserEdit() {
-  // 체크박스 상태를 관리하기 위한 상태 변수
+// 템플릿 상세의 질의응답
+
+export default function TempQnA() {
   const [checkboxValues, setCheckboxValues] = useState({
     개발: false,
     알고리즘: false,
@@ -22,320 +23,205 @@ export default function UserEdit() {
       [name]: checked,
     })
   }
+
   return (
     <div
       className="comp"
       style={{
         width: '80%',
-        height: '100%',
+        height: '500px',
         border: '2px solid #999999',
         borderRadius: '20px',
         textAlign: 'center',
         backgroundColor: 'white',
-        display: 'flex',
-        flexDirection: 'column',
+        // display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignContent: 'center',
         boxShadow: '4px 4px 15px rgba(0, 0, 0, 0.4)',
         position: 'relative',
-        flexWrap: 'wrap',
+        margin: '20px',
+        padding: '20px',
+        alignItems: 'center',
       }}
     >
       <div className="circular-image">
         <img src="/logo192.png" alt="안뜸" />
       </div>
-      <div style={{ display: 'flex', marginTop: '50px', flexWrap: 'wrap' }}>
-        <div>
+      <div className="container2">
+        <div className="u_item">닉네임</div>
+        <div className="u_item1">닉네임</div>
+        <div className="u_item">별점</div>
+        <div className="u_item1">별점</div>
+        <div className="u_item">자기소개</div>
+        <div className="u_item1">자기소개</div>
+        {/* <div className="u_item">뱃지 목록</div>
+        <div className="u_item1">뱃지 목록</div>
+        <div className="u_item">진행 중</div>
+        <div className="u_item1">진행 중</div>
+        <div className="u_item">통계</div>
+        <div className="u_item1">통계</div> */}
+        <div className="u_item">참여했던 스터디</div>
+        <div
+          style={{
+            display: 'flex',
+            // margin: '0px',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            marginTop: '25px',
+            marginRight: '50px',
+          }}
+        >
+          <Form.Item>
+            <div style={{ width: '70%' }}>
+              <Select className="u_item2" value="참여했던 스터디">
+                <Select.Option value="demo">Demo</Select.Option>
+              </Select>
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <div style={{ width: '70%' }}>
+              <Select className="u_item2" value="참여했던 스터디">
+                <Select.Option value="demo">Demo</Select.Option>
+              </Select>
+            </div>
+          </Form.Item>
+        </div>
+        <div className="u_item">닉네임</div>
+        <div className="u_item1">닉네임</div>
+        <div className="u_item">별점</div>
+        <div className="u_item1">별점</div>
+        <div className="u_item">자기소개</div>
+        <div className="u_item1">자기소개</div>
+        <div className="u_item">닉네임</div>
+        <div className="u_item1">닉네임</div>
+        <div className="u_item">별점</div>
+        <div className="u_item1">별점</div>
+        <div className="u_item" />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            // marginRight: '20px',
+            // marginBottom: '20px',
+          }}
+        >
+          <div className="ue_item">관심 분야를 선택해주세요.</div>
           <div
+            className="u_item"
             style={{
-              marginTop: '20px',
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
             }}
           >
-            <div className="edit_text">
-              <p>이메일</p>
+            <label htmlFor="개발">
+              <input
+                type="checkbox"
+                id="개발"
+                name="개발"
+                checked={checkboxValues.checkbox1}
+                onChange={handleCheckboxChange}
+              />
+              개발&nbsp;&nbsp;&nbsp;
+            </label>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="알고리즘">
+                <input
+                  type="checkbox"
+                  id="알고리즘"
+                  name="알고리즘"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                알고리즘
+              </label>
             </div>
-            <div className="profile_box1">
-              <p>별점</p>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="CS">
+                <input
+                  type="checkbox"
+                  id="CS"
+                  name="CS"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                CS
+              </label>
+            </div>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="면접">
+                <input
+                  type="checkbox"
+                  id="면접"
+                  name="면접"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                면접
+              </label>
             </div>
           </div>
           <div
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              // flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignContent: 'flex-start',
             }}
           >
-            <div className="edit_text">
-              <p>비밀번호</p>
+            &nbsp;&nbsp;&nbsp;
+            <label htmlFor="공무원">
+              <input
+                type="checkbox"
+                id="공무원"
+                name="공무원"
+                checked={checkboxValues.checkbox1}
+                onChange={handleCheckboxChange}
+              />
+              공무원&nbsp;
+            </label>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="인적성">
+                <input
+                  type="checkbox"
+                  id="인적성"
+                  name="인적성"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                인적성
+              </label>
             </div>
-            <div className="profile_box1">
-              <p>별점</p>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="수능">
+                <input
+                  type="checkbox"
+                  id="수능"
+                  name="수능"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                수능
+              </label>
             </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>비밀번호 확인</p>
-            </div>
-            <div className="profile_box1">
-              <p>별점</p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>이름</p>
-            </div>
-            <div className="profile_box1">
-              <p>별점</p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>나이</p>
-            </div>
-            <div className="profile_box1">
-              <p>별점</p>
+            <div style={{ marginRight: '10px' }}>
+              <label htmlFor="영어">
+                <input
+                  type="checkbox"
+                  id="영어"
+                  name="영어"
+                  checked={checkboxValues.checkbox1}
+                  onChange={handleCheckboxChange}
+                />
+                영어
+              </label>
             </div>
           </div>
         </div>
-        <div>
-          {/* 추가된 부분 시작 */}
-          <div
-            style={{
-              marginTop: '20px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>전화번호</p>
-            </div>
-            <div className="profile_box1">
-              <p>전화번호</p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>닉네임</p>
-            </div>
-            <div className="profile_box1">
-              <p>닉네임</p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>자기소개</p>
-            </div>
-            <div className="profile_box1">
-              <p>자기소개</p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div className="edit_text">
-              <p>주소</p>
-            </div>
-            {/* <div className="profile_box1"> */}
-            <div
-              style={{
-                display: 'flex',
-                marginRight: '20px',
-                marginTop: '20px',
-              }}
-            >
-              <Form.Item>
-                <Select className="edit_select" value="지역(시)">
-                  <Select.Option value="demo">Demo</Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item>
-                <Select className="edit_select" value="지역(구)">
-                  <Select.Option value="demo">Demo</Select.Option>
-                </Select>
-              </Form.Item>
-              {/* </div> */}
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <div
-              className="check_total"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end', // Align checkboxes to the right
-                justifyContent: 'flex-end', // Align the "check_total" div to the right
-                marginRight: '20px',
-                marginBottom: '20px',
-              }}
-            >
-              <div>관심 분야를 선택해주세요.</div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-start',
-                  marginRight: '20px',
-                  marginBottom: '20px',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    // flexDirection: 'column',
-                  }}
-                >
-                  <label htmlFor="개발">
-                    <input
-                      type="checkbox"
-                      id="개발"
-                      name="개발"
-                      checked={checkboxValues.checkbox1}
-                      onChange={handleCheckboxChange}
-                    />
-                    개발&nbsp;&nbsp;&nbsp;
-                  </label>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="알고리즘">
-                      <input
-                        type="checkbox"
-                        id="알고리즘"
-                        name="알고리즘"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      알고리즘
-                    </label>
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="CS">
-                      <input
-                        type="checkbox"
-                        id="CS"
-                        name="CS"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      CS
-                    </label>
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="면접">
-                      <input
-                        type="checkbox"
-                        id="면접"
-                        name="면접"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      면접
-                    </label>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    // flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    alignContent: 'flex-start',
-                  }}
-                >
-                  <label htmlFor="공무원">
-                    <input
-                      type="checkbox"
-                      id="공무원"
-                      name="공무원"
-                      checked={checkboxValues.checkbox1}
-                      onChange={handleCheckboxChange}
-                    />
-                    공무원
-                  </label>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="인적성">
-                      <input
-                        type="checkbox"
-                        id="인적성"
-                        name="인적성"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      인적성
-                    </label>
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="수능">
-                      <input
-                        type="checkbox"
-                        id="수능"
-                        name="수능"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      수능
-                    </label>
-                  </div>
-                  <div style={{ marginRight: '10px' }}>
-                    <label htmlFor="영어">
-                      <input
-                        type="checkbox"
-                        id="영어"
-                        name="영어"
-                        checked={checkboxValues.checkbox1}
-                        onChange={handleCheckboxChange}
-                      />
-                      영어
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* <div classN
+        {/* <div className="u_item">북마크</div>
+        <div className="u_item1">북마크</div> */}
       </div>
-      {/* check box 시작 */}
     </div>
   )
 }
