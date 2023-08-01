@@ -15,37 +15,20 @@ pipeline {
                     sh "chmod +x gradlew"
                     sh "./gradlew clean compileJava bootJar"
                }
-               sh "ls"
-               dir('backend/lighthouse/build') {
-                    sh "ls"
-                    
-               }
-               dir('backend/lighthouse/build/libs') {
-                    sh "ls"
-                    
-               }
-               //sh "cp /var/jenkins_home/workspace/pipeline_test/backend/lighthouse/build/libs/*.jar app.jar"
             }
                         
         }
-        // stage("Build Image") {
-        //     steps {
-        //         dir('backend/lighthouse') {
-        //             script {
-        //                 image = docker.build("$DOCKERHUB_REPOSITORY")
-        //             }
-        //         }
-        //     }
-        // }
+        stage("Build Image") {
+            steps {
+                sh "docker compose build"
+            }
+        }
         stage('Push Docker Image'){
             steps {
                     sh "pwd"
                     sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
-                    sh "docker compose build"
                     // sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
-                    sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
-                    
-                    
+                    sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"   
                }
             
         }
