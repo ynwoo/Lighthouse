@@ -15,6 +15,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .allowedMethods(HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name());
+                        HttpMethod.DELETE.name())
+                .allowCredentials(true)
+                .maxAge(3000);
     }
 }
