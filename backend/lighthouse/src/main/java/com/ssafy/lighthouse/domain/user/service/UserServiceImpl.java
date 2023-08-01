@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(userMyPageDto);
 		User savedUser = userRepository.save(user);
+		user.getUserTags().forEach(userTag -> userTag.setUserId(user.getId()));
 		userTagRepository.saveAll(user.getUserTags());
 	}
 
