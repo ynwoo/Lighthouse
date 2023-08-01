@@ -25,6 +25,10 @@ public class UserTag extends BaseEntity {
 	@JoinColumn(name = "tagId")
 	private Tag tag;
 
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 //	public void updateUserTagInfo(Long userId, Long tagId) {
 //		this.userId = userId;
 //		this.tag = tagId;

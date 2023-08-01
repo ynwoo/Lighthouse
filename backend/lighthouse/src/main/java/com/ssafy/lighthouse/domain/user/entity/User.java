@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.springframework.context.annotation.Configuration;
 
 @Entity
 @Getter
@@ -32,6 +33,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(callSuper = true)
 public class User extends BaseEntity {
 
+	@Column(updatable = false)
 	private String password;
 	private String name;
 	private String email;
