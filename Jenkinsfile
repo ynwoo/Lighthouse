@@ -28,9 +28,12 @@ pipeline {
         // }
         stage('Push Docker Image'){
             steps {
-                    sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
-                    sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
-                    sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
+                    dir ('backend/lighthouse') {
+                        sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
+                        sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
+                        sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
+                    }
+                    
                }
             
         }
