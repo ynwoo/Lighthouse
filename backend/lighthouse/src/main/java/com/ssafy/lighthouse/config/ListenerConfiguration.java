@@ -17,23 +17,50 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class ListenerConfiguration {
+
+    // 1. Propagation consumer group configuration
     @Bean
-    ConcurrentKafkaListenerContainerFactory<String, MessageDto> kafkaListenerContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory<String, MessageDto> propKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, MessageDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(propConsumerFactory());
         return factory;
     }
 
     @Bean
-    public ConsumerFactory<String, MessageDto> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(MessageDto.class));
+    public ConsumerFactory<String, MessageDto> propConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(propConsumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(MessageDto.class));
     }
 
     @Bean
-    public Map<String, Object> consumerConfigurations() {
+    public Map<String, Object> propConsumerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
         configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKER);
         configurations.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConstants.GROUP_PROPAGATE);
+        configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        return configurations;
+    }
+
+
+    // 2. Store consumer group configuration
+    @Bean
+    ConcurrentKafkaListenerContainerFactory<String, MessageDto> storeKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, MessageDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(storeConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, MessageDto> storeConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(storeConsumerConfigurations(), new StringDeserializer(), new JsonDeserializer<>(MessageDto.class));
+    }
+
+    @Bean
+    public Map<String, Object> storeConsumerConfigurations() {
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKER);
+        configurations.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConstants.GROUP_STORE);
         configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         configurations.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
