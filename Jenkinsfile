@@ -13,11 +13,9 @@ pipeline {
             steps {
                 sh "pwd"
                 dir('backend/lighthouse') {
-                sh "pwd"
+                    sh "pwd"
                 }
                 sh "pwd"
-            } 
-            steps {
                 dir('backend/lighthouse') {
                     sh "chmod +x gradlew"
                     sh "./gradlew compileJava"
