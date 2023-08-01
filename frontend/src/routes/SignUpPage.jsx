@@ -1,5 +1,4 @@
-import { useDispatch } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
   Form,
@@ -10,24 +9,25 @@ import {
   Upload,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
+
 import { userAction } from '../store/user'
 
 const { TextArea } = Input
-const { Option } = Select
+// const { Option } = Select
 
-const prefixSelector = (
-  <Form.Item name="prefix" noStyle>
-    <Select
-      style={{
-        width: 70,
-        backgroundColor: 'transparent',
-      }}
-    >
-      <Option value="86">+86</Option>
-      <Option value="87">+87</Option>
-    </Select>
-  </Form.Item>
-)
+// const prefixSelector = (
+//   <Form.Item name="prefix" noStyle>
+//     <Select
+//       style={{
+//         width: 70,
+//         backgroundColor: 'transparent',
+//       }}
+//     >
+//       <Option value="86">+86</Option>
+//       <Option value="87">+87</Option>
+//     </Select>
+//   </Form.Item>
+// )
 const normFile = e => {
   if (Array.isArray(e)) {
     return e
@@ -36,6 +36,7 @@ const normFile = e => {
 }
 
 function SignUpPage() {
+  const par = useSelector(state => state.user.signUpData)
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
@@ -44,7 +45,7 @@ function SignUpPage() {
     dispatch(userAction.test('안녕'))
   }
 
-  const finFin = value => console.log(value)
+  // const finFin = value => console.log(value)
   return (
     <div
       style={{
@@ -62,7 +63,11 @@ function SignUpPage() {
       <Form
         form={form}
         name="normal_login"
-        onFinish={finFin}
+        onFinish={value => {
+          delete value.confirm
+          value.userTagList = []
+          dispatch(userAction.signUpFin(par))
+        }}
         labelCol={{
           span: 4,
         }}
@@ -188,20 +193,20 @@ function SignUpPage() {
           ]}
         >
           <Input
-            addonBefore={prefixSelector}
+            // addonBefore={prefixSelector}
             style={{
               width: '100%',
             }}
           />
         </Form.Item>
 
-        <Form.Item label="주소(시/도)" name="sido">
+        <Form.Item label="주소(시/도)" name="sidoId">
           <Select>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
 
-        <Form.Item label="주소(구/군)" name="gugun">
+        <Form.Item label="주소(구/군)" name="gugunId">
           <TreeSelect
             treeData={[
               {
