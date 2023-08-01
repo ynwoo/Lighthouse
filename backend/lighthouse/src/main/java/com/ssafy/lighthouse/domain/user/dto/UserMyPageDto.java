@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ssafy.lighthouse.domain.common.dto.GugunDto;
+import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
+import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
 
 import com.ssafy.lighthouse.domain.user.entity.UserTag;
@@ -26,8 +29,8 @@ public class UserMyPageDto {
 
 	private String profileImgUrl;
 	private Integer age;
-	private Long sidoId;
-	private Long gugunId;
+	private SidoDto sido;
+	private GugunDto gugun;
 	private String phoneNumber;
 	private String description;
 	List<UserTagDto> userTagList;
@@ -40,8 +43,8 @@ public class UserMyPageDto {
 			.nickname(user.getNickname())
 			.profileImgUrl(user.getProfileImgUrl())
 			.age(user.getAge())
-			.sidoId(user.getSidoId())
-			.gugunId(user.getGugunId())
+			.sido(new SidoDto(user.getSido()))
+			.gugun(new GugunDto(user.getGugun()))
 			.phoneNumber(user.getPhoneNumber())
 			.description(user.getDescription())
 			.userTagList(user.getUserTags().stream().map(UserTagDto::new).collect(Collectors.toList()))

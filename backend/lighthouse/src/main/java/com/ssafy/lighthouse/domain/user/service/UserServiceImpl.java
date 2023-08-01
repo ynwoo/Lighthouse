@@ -78,19 +78,7 @@ public class UserServiceImpl implements UserService {
 	public UserMyPageDto getUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
 		log.debug("getUserById");
-		return UserMyPageDto.builder()
-				.id(user.getId())
-				.name(user.getName())
-				.email(user.getEmail())
-				.nickname(user.getNickname())
-				.profileImgUrl(user.getProfileImgUrl())
-				.age(user.getAge())
-				.sidoId(user.getSidoId())
-				.gugunId(user.getGugunId())
-				.phoneNumber(user.getPhoneNumber())
-				.description(user.getDescription())
-				.userTagList(user.getUserTags().stream().map(UserTagDto::new).collect(Collectors.toList()))
-				.build();
+		return UserMyPageDto.from(user);
 	}
 
 	@Transactional
@@ -102,7 +90,7 @@ public class UserServiceImpl implements UserService {
 		// Update : 닉네임 업데이트
 		foundUser.updateUserInfo(userMyPageDto.getPassword(), userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
-			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
+			userMyPageDto.getAge(), userMyPageDto.getSido(), userMyPageDto.getGugun(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
 //		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
