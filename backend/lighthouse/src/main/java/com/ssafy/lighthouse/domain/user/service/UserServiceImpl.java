@@ -1,5 +1,8 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import com.ssafy.lighthouse.domain.common.dto.TagDto;
+import com.ssafy.lighthouse.domain.common.entity.Tag;
+import com.ssafy.lighthouse.domain.common.repository.TagRepository;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import com.ssafy.lighthouse.domain.study.exception.StudyTagException;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
@@ -17,6 +20,8 @@ import com.ssafy.lighthouse.domain.user.repository.UserTagRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -36,6 +41,7 @@ public class UserServiceImpl implements UserService {
 	private final UserTagRepository userTagRepository;
 	private final UserEvalRepository userEvalRepository;
 	private final FollowRepository followRepository;
+	private final TagRepository tagRepository;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -43,11 +49,7 @@ public class UserServiceImpl implements UserService {
 
 		User user = User.from(userMyPageDto);
 		User savedUser = userRepository.save(user);
-		List<Long> list = userMyPageDto.getUserTagList();
-		for (Long tagId : list) {
-			UserTag userTag = UserTag.from(savedUser.getId(), tagId);
-			userTagRepository.save(userTag);
-		}
+		userTagRepository.saveAll(user.getUserTags());
 	}
 
 	@Override
@@ -73,15 +75,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
-		User user = userRepository.findByIdAndIsValid(userId, 1);
-		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
-		UserMyPageDto from = UserMyPageDto.from(user);
-
-		for(UserTag userTag : userTags) {
-			from.getUserTagList().add(userTag.getTagId());
-		}
-
-		return from;
+		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
+		Set<Tag> tags = tagRepository.findAllByTagIds(user.getUserTags().stream().map(UserTag::getTagId).collect(Collectors.toList()));
+		return UserMyPageDto.builder()
+				.id(user.getId())
+				.name(user.getName())
+				.email(user.getEmail())
+				.nickname(user.getNickname())
+				.profileImgUrl(user.getProfileImgUrl())
+				.age(user.getAge())
+				.sidoId(user.getSidoId())
+				.gugunId(user.getGugunId())
+				.phoneNumber(user.getPhoneNumber())
+				.description(user.getDescription())
+				.userTagList(tags.stream().map(TagDto::new).collect(Collectors.toList()))
+				.build();
 	}
 
 	@Transactional
@@ -98,11 +106,13 @@ public class UserServiceImpl implements UserService {
 
 		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
 
-		List<Long> list = userMyPageDto.getUserTagList();
-		for (Long tagId : list) {
-			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
+		List<TagDto> userTagList = userMyPageDto.getUserTagList();
+		for (TagDto tag : userTagList) {
+			UserTag userTag = UserTag.from(foundUser.getId(), tag.getId());
 			userTagRepository.save(userTag);
 		}
+
+		// 기존 userTag 삭제 필요
 
 		System.out.println("업데이트 된 유저 : " + foundUser);
 	}

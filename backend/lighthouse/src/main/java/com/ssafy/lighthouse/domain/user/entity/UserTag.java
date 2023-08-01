@@ -1,9 +1,12 @@
 package com.ssafy.lighthouse.domain.user.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 
+import com.ssafy.lighthouse.domain.common.entity.Tag;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

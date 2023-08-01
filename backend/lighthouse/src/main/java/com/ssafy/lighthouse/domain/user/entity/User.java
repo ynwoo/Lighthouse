@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.*;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
@@ -38,8 +39,10 @@ public class User extends BaseEntity {
 	private String phoneNumber;
 	private String description;
     private String token;
-    //@OneToMany(mappedBy = "user")
-    //private List<UserTag> userTags = new ArrayList<>();
+
+	@JoinColumn(name = "userId")
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<UserTag> userTags;
 
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,
@@ -56,16 +59,16 @@ public class User extends BaseEntity {
 	}
     public static User from(UserMyPageDto userMyPageDto) {
         return User.builder()
-            .email(userMyPageDto.getEmail())
-            .password(userMyPageDto.getPassword())
-            .name(userMyPageDto.getName())
-            .nickname(userMyPageDto.getNickname())
-            .age(userMyPageDto.getAge())
-            .sidoId(userMyPageDto.getSidoId())
-            .gugunId(userMyPageDto.getGugunId())
-            .phoneNumber(userMyPageDto.getPhoneNumber())
-            .description(userMyPageDto.getDescription())
-            //.userTags(userMyPageDto.getUserTagList())
-            .build();
+				.email(userMyPageDto.getEmail())
+				.password(userMyPageDto.getPassword())
+				.name(userMyPageDto.getName())
+				.nickname(userMyPageDto.getNickname())
+				.age(userMyPageDto.getAge())
+				.sidoId(userMyPageDto.getSidoId())
+				.gugunId(userMyPageDto.getGugunId())
+				.phoneNumber(userMyPageDto.getPhoneNumber())
+				.description(userMyPageDto.getDescription())
+				.userTags(userMyPageDto.getUserTagList().stream().map(tagDto -> UserTag.builder().userId(userMyPageDto.getId()).tagId(tagDto.getId()).build()).collect(Collectors.toList()))
+				.build();
     }
 }

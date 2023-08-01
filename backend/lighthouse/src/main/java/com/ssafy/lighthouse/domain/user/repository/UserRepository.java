@@ -3,6 +3,7 @@ package com.ssafy.lighthouse.domain.user.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.lighthouse.domain.user.entity.User;
@@ -26,7 +27,9 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	@Query("UPDATE User u SET u.token = NULL WHERE u.id = :userId")
 	void deleteRefreshToken(@Param("userId") Long userId);
 
-	Optional<User> findById(Long id);
+	@EntityGraph("userTags")
+	@Query("select us from User us where us.id = :id and us.isValid = 1")
+	Optional<User> findById(@Param("id") Long id);
 
 	@Transactional
 	@Modifying
