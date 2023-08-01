@@ -1,6 +1,8 @@
 FROM openjdk:8-jdk-alpine
 
-ARG JAR_FILE=build/libs/*.jar
+CMD pwd
+CMD ls
+ARG JAR_FILE=backend/lighthouse/build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
 
