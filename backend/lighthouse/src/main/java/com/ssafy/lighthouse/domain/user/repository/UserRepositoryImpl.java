@@ -58,6 +58,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
+
+            // leaderProfile 넣기
+            simpleStudyDto.setLeaderProfile(findSimpleProfileByUserId(study.getLeaderId()));
+
             // 진행중 스터디
             if(progressSet.contains(study.getId())) {
                 studies.add(simpleStudyDto);
