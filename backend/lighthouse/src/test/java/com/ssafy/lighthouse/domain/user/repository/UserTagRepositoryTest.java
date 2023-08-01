@@ -18,7 +18,7 @@ class UserTagRepositoryTest {
 	void findTagIdByUserIdAndIsValid() {
 		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
 		for (UserTag userTag : userTags) {
-			System.out.println(userTag.getTag().getId());
+			System.out.println(userTag.getTagId());
 		}
 	}
 }
