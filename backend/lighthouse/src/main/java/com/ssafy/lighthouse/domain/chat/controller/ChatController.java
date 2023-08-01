@@ -10,6 +10,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+
 
 @RestController
 @Slf4j
