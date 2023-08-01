@@ -2,26 +2,57 @@ package com.ssafy.lighthouse.domain.chat.service;
 
 import com.ssafy.lighthouse.config.KafkaConstants;
 import com.ssafy.lighthouse.domain.chat.dto.MessageDto;
+import com.ssafy.lighthouse.domain.chat.entity.Chat;
+import com.ssafy.lighthouse.domain.chat.entity.ChatRecord;
+import com.ssafy.lighthouse.domain.chat.repository.ChatRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class MessageListener {
 
-    @Autowired
-    SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
+    private final ChatRepository chatRepository;
 
     @KafkaListener(
             topics = KafkaConstants.KAFKA_TOPIC,
-            groupId = KafkaConstants.GROUP_ID
+            groupId = KafkaConstants.GROUP_PROPAGATE
     )
-    public void listen(MessageDto messageDto) {
-        log.info("msg dto in Listener!! " + messageDto.toString());
-        log.info("sending via kafka listener..");
-        template.convertAndSend("/topic/group", messageDto);
+    public void listenAndSend(MessageDto messageDto) {
+        log.info("Propagation consumer working with : " + messageDto.toString());
+        String roomId = messageDto.getRoomId();
+        // propagation
+        template.convertAndSend("/"+roomId, messageDto);
     }
+
+    @KafkaListener(
+            topics = KafkaConstants.KAFKA_TOPIC,
+            groupId = KafkaConstants.GROUP_STORE
+    )
+    public void listenAndStore(MessageDto messageDto) {
+
+        if(!chatRepository.existsById(messageDto.getRoomId())) {
+            chatRepository.save(ChatRecord.create(messageDto.getRoomId()));
+        }
+
+        ChatRecord record = chatRepository.findById(messageDto.getRoomId()).get();
+        List<Chat> recordLog = record.getLog();
+        recordLog.add(messageDto.convertMessageDtoToChat());
+        record.setLog(recordLog);
+
+        chatRepository.save(record);
+        log.info("Storing consumer group working with : " + messageDto.toString());
+    }
+
+
+
+
 }

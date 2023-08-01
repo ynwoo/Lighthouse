@@ -1,8 +1,7 @@
 package com.ssafy.lighthouse.domain.chat.dto;
 
-import lombok.Builder;
+import com.ssafy.lighthouse.domain.chat.entity.Chat;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
@@ -17,8 +16,20 @@ public class MessageDto implements Serializable {
 
     private MessageType type;
     private String roomId;
-    private String sender;
+    private String senderId;
+    private String senderName;
     private String message;
-    private String time;
+    private Long time;
+
+    public Chat convertMessageDtoToChat() {
+        Chat chat = new Chat();
+        chat.setType(this.type);
+        chat.setRoomId(this.roomId);
+        chat.setSenderId(this.senderId);
+        chat.setSenderName(this.senderName);
+        chat.setMessage(this.message);
+        chat.setTime(this.time);
+        return chat;
+    }
 
 }

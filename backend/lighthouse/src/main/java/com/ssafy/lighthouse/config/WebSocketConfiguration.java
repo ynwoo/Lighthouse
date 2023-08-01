@@ -11,14 +11,15 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint("/my-chat").setAllowedOrigins("*").withSockJS();
-        registry.addEndpoint("/my-chat").setAllowedOriginPatterns("*");
-        registry.addEndpoint("/my-chat").setAllowedOriginPatterns("*").withSockJS();
+        // handshake endpoint
+        registry.addEndpoint("/ws/chat").setAllowedOriginPatterns("*");
+        registry.addEndpoint("/ws/chat").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/kafka");
-        registry.enableSimpleBroker("/topic/");
+        // destination starting with prefix will be routed to message broker: @Controller -> @MessageMapping
+        registry.setApplicationDestinationPrefixes("/pub");
+        registry.enableSimpleBroker("/sub");
     }
 }
