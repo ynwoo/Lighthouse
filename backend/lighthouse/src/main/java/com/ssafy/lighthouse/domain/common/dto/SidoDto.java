@@ -21,4 +21,11 @@ public class SidoDto {
         this.id = sido.getId();
         this.name = sido.getName();
     }
+
+    public Sido toEntity() {
+        return Sido.builder()
+                .id(this.id)
+                .name(this.name)
+                .build();
+    }
 }
