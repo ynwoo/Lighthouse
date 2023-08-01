@@ -1,7 +1,5 @@
 package com.ssafy.lighthouse.domain.user.service;
 
-import com.ssafy.lighthouse.domain.common.dto.GugunDto;
-import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
@@ -48,8 +46,8 @@ public interface UserService {
                 .nickname(userEntity.getNickname())
                 .profileImgUrl(userEntity.getProfileImgUrl())
                 .age(userEntity.getAge())
-                .sido(new SidoDto(userEntity.getSido()))
-                .gugun(new GugunDto(userEntity.getGugun()))
+                .sidoId(userEntity.getSidoId())
+                .gugunId(userEntity.getGugunId())
                 .phoneNumber(userEntity.getPhoneNumber())
                 .description(userEntity.getDescription())
                 .build();

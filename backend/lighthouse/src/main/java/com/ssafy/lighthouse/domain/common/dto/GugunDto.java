@@ -16,12 +16,4 @@ public class GugunDto {
         this.sidoId = gugun.getSidoId();
         this.name = gugun.getName();
     }
-
-    public Gugun toEntity() {
-        return Gugun.builder()
-                .id(this.id)
-                .sidoId(this.sidoId)
-                .name(this.name)
-                .build();
-    }
 }

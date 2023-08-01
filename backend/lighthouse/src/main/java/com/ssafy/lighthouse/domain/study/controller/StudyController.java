@@ -104,7 +104,7 @@ public class StudyController {
 
     @PostMapping("/tag")
     public ResponseEntity<?> createStudyTag(@RequestBody StudyTagDto studyTagDto) {
-        log.debug("studyId : {}, tagId : {}", studyTagDto.getStudyId(), studyTagDto.getTag().getId());
+        log.debug("studyId : {}, tagId : {}", studyTagDto.getStudyId(), studyTagDto.getTagId());
         studyService.createStudyTag(studyTagDto);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }

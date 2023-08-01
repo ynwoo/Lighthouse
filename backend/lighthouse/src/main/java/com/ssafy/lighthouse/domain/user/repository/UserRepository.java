@@ -1,15 +1,16 @@
 package com.ssafy.lighthouse.domain.user.repository;
 
-import com.ssafy.lighthouse.domain.user.entity.User;
-import org.springframework.data.jpa.repository.EntityGraph;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ssafy.lighthouse.domain.user.entity.User;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
 	List<User> findByIsValid(int isValid);
@@ -25,9 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	@Query("UPDATE User u SET u.token = NULL WHERE u.id = :userId")
 	void deleteRefreshToken(@Param("userId") Long userId);
 
-	@EntityGraph(attributePaths = {"userTags"})
-	@Query("select us from User us where us.id = :id and us.isValid = 1")
-	Optional<User> findById(@Param("id") Long id);
+	Optional<User> findById(Long id);
 
 	@Transactional
 	@Modifying
