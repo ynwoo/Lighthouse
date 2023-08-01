@@ -22,6 +22,6 @@ public interface UserTagRepository extends JpaRepository<UserTag, Long> {
 
 	List<UserTag> findByUserIdAndIsValid(Long userId, Integer isValid);
 
-	@Query("select ut.tagId from UserTag ut WHERE ut.userId = :userId and ut.isValid = 1")
+	@Query("select ut.tag.id from UserTag ut WHERE ut.userId = :userId and ut.isValid = 1")
 	Set<Long> findTagIdAllByUserId(@Param("userId") Long userId);
 }

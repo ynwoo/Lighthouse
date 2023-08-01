@@ -11,6 +11,7 @@ import javax.persistence.*;
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 
+import com.ssafy.lighthouse.domain.user.dto.UserTagDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -68,7 +69,7 @@ public class User extends BaseEntity {
 				.gugunId(userMyPageDto.getGugunId())
 				.phoneNumber(userMyPageDto.getPhoneNumber())
 				.description(userMyPageDto.getDescription())
-				.userTags(userMyPageDto.getUserTagList().stream().map(tagDto -> UserTag.builder().userId(userMyPageDto.getId()).tagId(tagDto.getId()).build()).collect(Collectors.toList()))
+				.userTags(userMyPageDto.getUserTagList().stream().map(UserTagDto::toEntity).collect(Collectors.toList()))
 				.build();
     }
 }

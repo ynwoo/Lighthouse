@@ -1,7 +1,6 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
-import com.ssafy.lighthouse.domain.common.entity.Tag;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

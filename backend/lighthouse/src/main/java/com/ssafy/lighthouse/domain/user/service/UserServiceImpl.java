@@ -8,6 +8,7 @@ import com.ssafy.lighthouse.domain.study.exception.StudyTagException;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.dto.UserTagDto;
 import com.ssafy.lighthouse.domain.user.entity.Follow;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import com.ssafy.lighthouse.domain.user.entity.UserEval;
@@ -76,7 +77,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMyPageDto getUserById(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(ERROR.FIND));
-		List<TagDto> tags = tagRepository.findAllByTagIds(user.getUserTags().stream().map(UserTag::getTagId).collect(Collectors.toList()));
 		log.debug("getUserById");
 		return UserMyPageDto.builder()
 				.id(user.getId())
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 				.gugunId(user.getGugunId())
 				.phoneNumber(user.getPhoneNumber())
 				.description(user.getDescription())
-				.userTagList(tags)
+				.userTagList(user.getUserTags().stream().map(UserTagDto::new).collect(Collectors.toList()))
 				.build();
 	}
 
@@ -105,15 +105,10 @@ public class UserServiceImpl implements UserService {
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
-		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
-
-		List<TagDto> userTagList = userMyPageDto.getUserTagList();
-		for (TagDto tag : userTagList) {
-			UserTag userTag = UserTag.from(foundUser.getId(), tag.getId());
-			userTagRepository.save(userTag);
-		}
-
-		// 기존 userTag 삭제 필요
+//		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
+		
+		// userTag 수정
+		userTagRepository.saveAll(userMyPageDto.getUserTagList().stream().map(UserTagDto::toEntity).collect(Collectors.toList()));
 
 		System.out.println("업데이트 된 유저 : " + foundUser);
 	}

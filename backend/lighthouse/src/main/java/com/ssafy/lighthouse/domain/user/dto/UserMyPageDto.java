@@ -2,10 +2,12 @@ package com.ssafy.lighthouse.domain.user.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.user.entity.User;
 
+import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -28,7 +30,7 @@ public class UserMyPageDto {
 	private Long gugunId;
 	private String phoneNumber;
 	private String description;
-	List<TagDto> userTagList;
+	List<UserTagDto> userTagList;
 
 	public static UserMyPageDto from(User user) {
 		return UserMyPageDto.builder()
@@ -42,7 +44,7 @@ public class UserMyPageDto {
 			.gugunId(user.getGugunId())
 			.phoneNumber(user.getPhoneNumber())
 			.description(user.getDescription())
-			.userTagList(new ArrayList<>())
+			.userTagList(user.getUserTags().stream().map(UserTagDto::new).collect(Collectors.toList()))
 			.build();
 	}
 }
