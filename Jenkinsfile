@@ -17,19 +17,17 @@ pipeline {
                }
             }
         }
-        stage("Build Image") {
-            steps {
-                dir('backend/lighthouse') {
-                    script {
-                        image = docker.build("$DOCKERHUB_REPOSITORY")
-                    }
-                }
-            }
-        }
+        // stage("Build Image") {
+        //     steps {
+        //         dir('backend/lighthouse') {
+        //             script {
+        //                 image = docker.build("$DOCKERHUB_REPOSITORY")
+        //             }
+        //         }
+        //     }
+        // }
         stage('Push Docker Image'){
             steps {
-                    echo sh "ls"
-                    echo sh "pwd"
                     sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
                     sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
                     sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
