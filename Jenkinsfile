@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        VERSION = "front_test" //Major.Minor.Patch
+        VERSION = "latest" //Major.Minor.Patch
         DOCKERHUB_REPOSITORY_BACK = "imsongj/test_backend"
         DOCKERHUB_REPOSITORY_FRONT = "imsongj/test_frontend"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-imsong')
