@@ -51,4 +51,6 @@ public interface UserService {
                 .build();
         return dto;
     }
+
+    boolean isEmailUnique(String emailToValidate);
 }
