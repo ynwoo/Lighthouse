@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { Cookies } from 'react-cookie'
 
 const API_URL = process.env.REACT_APP_API_URL
+const cookies = new Cookies()
 
 // 이것은 초깃값이자 저장 폼
 const initialState = {
-  token: {
-    refreshToken: '',
-    accessToken: '',
-  },
+  accessToken: '',
   sido: {},
   gugun: { 0: '시/도를 선택하세요' },
 }
@@ -75,8 +74,13 @@ export const userSlice = createSlice({
       console.log(action.payload)
     },
     [userAction.login.fulfilled]: (state, action) => {
-      state.token.accessToken = action.payload['access-token']
-      state.token.refreshToken = action.payload['refresh-token']
+      state.accessToken = action.payload['access-token']
+      cookies.set('refresh_token', action.payload['refresh-token'], {
+        sameSite: 'strict',
+        path: '/',
+        secure: true,
+      })
+      console.log(cookies.get('refresh_token'))
     },
   },
 })
