@@ -47,15 +47,8 @@ export const userAction = {
   // 로그인
   login: createAsyncThunk('LOGIN', async (payload, thunkAPI) => {
     try {
-      const response = await axios({
-        method: 'post',
-        url: '/users/login',
-        baseURL: API_URL,
-        data: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-        },
-      })
+      const response = await axios.post(`${API_URL}/users/login`, payload)
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
