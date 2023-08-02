@@ -1,5 +1,7 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
+import static org.springframework.http.HttpStatus.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.lighthouse.domain.user.dto.EmailDto;
+import com.ssafy.lighthouse.domain.user.dto.LoginDto;
 import com.ssafy.lighthouse.domain.user.dto.NicknameDto;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
@@ -37,7 +40,7 @@ public class UserController {
 	}
 
 	@PostMapping("/check-email")
-	public ResponseEntity<?> checkDuplicateEmail(@RequestBody EmailDto emailDto) {
+	public ResponseEntity<Map<String, Object>> checkDuplicateEmail(@RequestBody EmailDto emailDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 
@@ -54,7 +57,7 @@ public class UserController {
 	}
 
 	@PostMapping("/check-nickname")
-	public ResponseEntity<?> checkDuplicateNickname(@RequestBody NicknameDto nicknameDto) {
+	public ResponseEntity<Map<String, Object>> checkDuplicateNickname(@RequestBody NicknameDto nicknameDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 
@@ -71,19 +74,19 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
+	public ResponseEntity<String> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
 		userService.addUser(userMyPageDto);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> param) {
+	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody LoginDto loginDto) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
+		HttpStatus status;
 
 		try {
-			UserMyPageDto loginUser = userService.loginUser(param.get("userEmail"),
-				param.get("userPwd"));
+			UserMyPageDto loginUser = userService.loginUser(loginDto.getUserEmail(),
+				loginDto.getUserPwd());
 			if (loginUser != null) {
 				log.debug("로그인 유저 정보 : {}", loginUser);
 				String accessToken = jwtService.createAccessToken("userId",
@@ -95,26 +98,29 @@ public class UserController {
 
 				log.debug("로그인 accessToken 정보 : {}", accessToken);
 				log.debug("로그인 refreshToken 정보 : {}", refreshToken);
+
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
+
+				status = HttpStatus.OK;
 			} else {
 				resultMap.put("message", FAIL);
-				status = HttpStatus.ACCEPTED;
+				status = HttpStatus.UNAUTHORIZED;
 			}
 		} catch (Exception e) {
-			log.error("로그인 실패 : {}", e);
+			log.error("로그인 실패 : {}", e.getMessage());
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 
 	@GetMapping("/logout")
-	public ResponseEntity<?> logoutUser(HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> logoutUser(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
+
 		String token = request.getHeader("access-token");
 		if (jwtService.checkToken(token)) {
 			log.info("사용 가능한 토큰!!!");
@@ -127,19 +133,19 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				log.error("로그아웃 실패 : {}", e);
+				log.error("로그아웃 실패 : {}", e.getMessage());
 				resultMap.put("message", e.getMessage());
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
 		}
 
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshToken(HttpServletRequest request) throws Exception {
+	public ResponseEntity<Map<String, Object>> refreshToken(HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		String token = request.getHeader("refresh-token");
 		if (jwtService.checkToken(token)) {
 			// payload에서 id값 추출
@@ -150,13 +156,12 @@ public class UserController {
 				log.debug("정상적으로 액세스토큰 재발급!!!");
 				resultMap.put("access-token", accessToken);
 				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
+				status = HttpStatus.OK;
 			}
 		} else {
-			log.debug("리프레쉬토큰도 사용불!!!!!!!");
-			status = HttpStatus.UNAUTHORIZED;
+			log.debug("리프레쉬토큰도 사용불가!!!!!!!");
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 
 	// userId에 해당하는 유저 프로필 조회
@@ -183,9 +188,9 @@ public class UserController {
 
 				resultMap.put("userInfo", userMyPageDto);
 				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
+				status = ACCEPTED;
 			} catch (Exception e) {
-				log.error("정보조회 실패 : {}", e);
+				log.error("정보조회 실패 : {}", e.getMessage());
 				resultMap.put("message", e.getMessage());
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
@@ -194,7 +199,7 @@ public class UserController {
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		return new ResponseEntity<>(resultMap, status);
 	}
 
 	@PutMapping("/update")
@@ -207,9 +212,9 @@ public class UserController {
 			log.info("사용 가능한 토큰!!!");
 			try {
 				userService.updateUser(userMyPageDto);
-				return new ResponseEntity<String>("SUCCESS!!!", HttpStatus.OK);
+				return new ResponseEntity<>("SUCCESS!!!", HttpStatus.OK);
 			} catch (Exception e) {
-				return new ResponseEntity<String>("FAIL!!!", HttpStatus.NOT_ACCEPTABLE);
+				return new ResponseEntity<>("FAIL!!!", HttpStatus.NOT_ACCEPTABLE);
 			}
 
 		} else {
