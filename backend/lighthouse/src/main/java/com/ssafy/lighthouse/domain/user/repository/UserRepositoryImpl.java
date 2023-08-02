@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.ssafy.lighthouse.domain.common.entity.QTag.tag;
@@ -138,5 +139,34 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .tags(tags)
                 .score(result.getScore())
                 .build();
+    }
+
+    @Override
+    public List<SimpleProfileResponse> findSimpleProfileByUserIds(List<Long> userIds) {
+        List<SimpleProfileResponse> result = jpaQueryFactory.select(Projections.fields(SimpleProfileResponse.class,
+                        user.id,
+                        user.isValid,
+                        user.nickname,
+                        user.profileImgUrl,
+                        user.description,
+                        ExpressionUtils.as(select(userEval.score.avg()).from(userEval).where(userEval.userId.eq(user.id), userEval.isValid.eq(1)), "score")))
+                .from(user)
+                .where(user.id.in(userIds), user.isValid.eq(1))
+                .fetch();
+
+        return result.stream().map((simpleProfileResponse) -> SimpleProfileResponse.builder()
+                .id(simpleProfileResponse.getId())
+                .isValid(simpleProfileResponse.getIsValid())
+                .nickname(simpleProfileResponse.getNickname())
+                .profileImgUrl(simpleProfileResponse.getProfileImgUrl())
+                .description(simpleProfileResponse.getDescription())
+                .tags(jpaQueryFactory
+                        .select(Projections.constructor(TagDto.class, tag))
+                        .from(tag)
+                        .where(tag.id.in(userTagRepository.findTagIdAllByUserId(simpleProfileResponse.getId())), tag.isValid.eq(1))
+                        .fetch())
+                .score(simpleProfileResponse.getScore())
+                .build())
+                .collect(Collectors.toList());
     }
 }

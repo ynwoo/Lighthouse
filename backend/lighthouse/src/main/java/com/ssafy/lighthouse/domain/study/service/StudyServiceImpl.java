@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.service;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
@@ -49,11 +50,23 @@ public class StudyServiceImpl implements StudyService {
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
     public StudyResponse findDetailByStudyId(Long studyId) {
-        Optional<Study> result = studyRepository.findDetailById(studyId);
+        Study study = studyRepository.findDetailById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
         log.debug("service - studyId : {}", studyId);
-        log.debug("service - findDetailById : {}", result.get().getId());
-        StudyResponse studyResponse = new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
-        studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(result.get().getLeaderId()));
+        log.debug("service - findDetailById : {}", study.getId());
+        StudyResponse studyResponse = new StudyResponse(study);
+
+        int status = studyResponse.getStatus();
+
+        // setLeaderProfile
+        studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(study.getLeaderId()));
+
+        // setMemberProfile
+        studyResponse.setMemberProfiles(userRepository.findSimpleProfileByUserIds(study.getParticipations()
+                .stream()
+                .filter(BaseEntity::isValid)
+                .filter(participationHistory -> participationHistory.checkStatus(status))
+                .map(ParticipationHistory::getUserId)
+                .collect(Collectors.toList())));
         return studyResponse;
     }
     
@@ -178,8 +191,6 @@ public class StudyServiceImpl implements StudyService {
         sessionCheckRepository.saveAll(sessionChecks);
         studyMaterialRepository.saveAll(studyMaterials);
 
-//        em.clear();
-
         log.debug("status : {}", studyRequest.getStatus());
 
         // 스터디 참여 기록 등록(팀장)
@@ -193,9 +204,15 @@ public class StudyServiceImpl implements StudyService {
                             .joinedAt(LocalDateTime.now())
                     .build());
         }
+        // 스터디가 시작하면 팀 전원의 기록 수정
+        else if(studyRequest.getStatus() == STATUS.RECRUITING) {
+            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
+                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.RECRUITING));
+        }
+
         // 스터디가 끝나면 팀 전원의 기록 수정
         else if(studyRequest.getStatus() == STATUS.TERMINATED) {
-            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
+            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.RECRUITING)
                     .forEach(participationHistory -> participationHistory.changeStatus(STATUS.TERMINATED));
         }
     }
