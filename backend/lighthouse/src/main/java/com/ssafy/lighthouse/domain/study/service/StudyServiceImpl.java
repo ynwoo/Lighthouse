@@ -6,13 +6,11 @@ import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
-import com.ssafy.lighthouse.global.util.ERROR;
-import com.ssafy.lighthouse.global.util.LocalDateTime;
-import com.ssafy.lighthouse.global.util.ROLE;
-import com.ssafy.lighthouse.global.util.STATUS;
+import com.ssafy.lighthouse.global.util.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -45,6 +43,11 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
         return studyRepository.findAllByStudySearchOption(options);
+    }
+
+    @Override
+    public Page<SimpleStudyDto> findAllByOriginalId(Long originalId, StudySearchOption options) {
+        return studyRepository.findAllByOriginalId(originalId , PageRequest.of(options.getPage() - 1, PAGE.LIMIT));
     }
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
