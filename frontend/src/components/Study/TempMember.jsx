@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
 import TempTodoList from './TempTodoList'
 import TempList from './TempList'
+import MemoInput from './memo/MemoInput'
+import MemoList from './memo/MemoList'
+import TempCurri from './TempCurri'
 
 const { createRoot } = ReactDOM
 
@@ -45,16 +48,31 @@ export default function App() {
   const dateCellRender = value => {
     const listData = getListData(value)
     return (
-      <ul className="events">
+      <div className="events">
         {listData.map(item => (
           <li key={item.id}>
             {' '}
             {/* 고유한 식별자를 key로 사용합니다. */}
-            <Badge status={item.type} text={item.content} />
-            <Button onClick={() => handleDelete(item)}>Delete</Button>
+            <Badge
+              status={item.type}
+              text=<span style={{ fontSize: '10px' }}>{item.content}</span>
+            />
+            <Button
+              onClick={() => handleDelete(item)}
+              style={{
+                color: 'red',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                marginLeft: '8px',
+                fontSize: '8px',
+              }}
+            >
+              X
+            </Button>
           </li>
         ))}
-      </ul>
+      </div>
     )
   }
 
@@ -85,6 +103,18 @@ export default function App() {
     setVisible(true)
   }
 
+  const [memos, setMemos] = useState([])
+
+  const handleAddMemo = memo => {
+    setMemos(prevMemos => [
+      ...prevMemos,
+      {
+        id: Date.now(), // 랜덤 ID 대신 현재 시간을 ID로 사용
+        text: memo,
+      },
+    ])
+  }
+
   return (
     <div
       style={{
@@ -101,8 +131,31 @@ export default function App() {
         margin: '-18px',
       }}
     >
+      <div className="memo_box">
+        <TempTodoList />
+        <TempCurri />
+
+        <div
+          style={{
+            border: '1px solid #C9C9C9',
+            margin: '10px',
+            borderRadius: '10px',
+          }}
+        >
+          {/* Curriculum Input */}
+
+          {/* Memo Input */}
+          <h3>메모장</h3>
+          <MemoInput onAddMemo={handleAddMemo} />
+
+          {/* Memo List */}
+          <MemoList memos={memos} />
+
+          {/* ... (rest of the code) */}
+        </div>
+      </div>
       <TempList />
-      <TempTodoList />
+
       <Calendar dateCellRender={dateCellRender} />
       <Button onClick={showModal}>Add Event</Button>
       <Modal
