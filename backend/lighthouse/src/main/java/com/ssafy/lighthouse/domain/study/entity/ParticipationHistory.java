@@ -25,9 +25,10 @@ public class ParticipationHistory extends BaseEntity {
     public void changeStatus(int status) {
         if(status == STATUS.PROGRESS) {
             this.initJoinedAt();
+        } else if(status == STATUS.RECRUITING) {
+        } else if(status == STATUS.TERMINATED) {
         } else if(status == STATUS.LEAVED) {
             this.initLeavedAt();
-        } else if(status == STATUS.TERMINATED) {
         } else {
             return;
         }
@@ -40,5 +41,14 @@ public class ParticipationHistory extends BaseEntity {
 
     public void initLeavedAt() {
         this.leavedAt = LocalDateTime.now();
+    }
+
+    public boolean checkStatus(int status) {
+        // share는 terminated 인것만 가능하므로 계산의 편의상 치환해준다.
+        if(status == STATUS.SHARE) {
+            status = STATUS.TERMINATED;
+        }
+
+        return this.status == status;
     }
 }

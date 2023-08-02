@@ -136,8 +136,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ProfileResponse findProfileByUserId(Long userId) {
-		return userRepository.findProfileByUserId(userId);
+	public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
+		return userRepository.findProfileByUserId(userId, loginId);
 	}
 
 	@Override
@@ -173,5 +173,17 @@ public class UserServiceImpl implements UserService {
 		log.debug("followeeId : {}", result.get().getFolloweeId());
 		log.debug("followerId : {}", result.get().getFollowerId());
 		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
+	}
+
+	@Override
+	public boolean isEmailUnique(String emailToValidate) {
+		User existingUser = userRepository.findByEmailAndIsValid(emailToValidate, 1);
+		return existingUser == null;
+	}
+
+	@Override
+	public boolean isNicknameUnique(String nicknameToValidate) {
+		User existingUser = userRepository.findByNicknameAndIsValid(nicknameToValidate, 1);
+		return existingUser == null;
 	}
 }
