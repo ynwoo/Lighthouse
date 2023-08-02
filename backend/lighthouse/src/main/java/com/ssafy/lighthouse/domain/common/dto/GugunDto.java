@@ -3,7 +3,6 @@ package com.ssafy.lighthouse.domain.common.dto;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -16,5 +15,13 @@ public class GugunDto {
         this.id = gugun.getId();
         this.sidoId = gugun.getSidoId();
         this.name = gugun.getName();
+    }
+
+    public Gugun toEntity() {
+        return Gugun.builder()
+                .id(this.id)
+                .sidoId(this.sidoId)
+                .name(this.name)
+                .build();
     }
 }

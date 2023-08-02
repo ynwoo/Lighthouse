@@ -4,7 +4,9 @@ import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
+import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.ERROR;
+import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,10 +28,14 @@ public class StudyServiceImpl implements StudyService {
     private final StudyTagRepository studyTagRepository;
     private final StudyMaterialRepository studyMaterialRepository;
     private final StudyNoticeRepository studyNoticeRepository;
+    private final StudyNoticeCheckRepository studyNoticeCheckRepository;
     private final SessionRepository sessionRepository;
+    private final SessionCheckRepository sessionCheckRepository;
     private final StudyLikeRepository studyLikeRepository;
     private final BookmarkRepository bookmarkRepository;
     private final StudyEvalRepository studyEvalRepository;
+    private final ParticipationHistoryRepository participationHistoryRepository;
+    private final UserRepository userRepository;
     private final EntityManager em;
 
 
@@ -38,21 +46,25 @@ public class StudyServiceImpl implements StudyService {
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
-    public StudyDto findDetailByStudyId(Long studyId) {
+    public StudyResponse findDetailByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
         log.debug("service - findDetailById : {}", result);
-        return new StudyDto(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        StudyResponse studyResponse = new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
+        studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(result.get().getLeaderId()));
+        return studyResponse;
     }
-
+    
+    // 스터디 복제
     @Override
-    public StudyDto createStudyByStudyId(Long studyId) {
-        Optional<Study> findDetail = studyRepository.findSimpleDetailShareById(studyId);
+    public StudyResponse createStudyByStudyId(Long studyId) {
+        Optional<Study> findDetail = studyRepository.findSimpleDetailById(studyId);
         log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
         
         // 새로운 스터디 만들기
         Study newStudy = studyRepository.save(Study.builder()
+                        .isValid(study.getIsValid())
                 .title(study.getTitle())
                 .description(study.getDescription())
                 .hit(study.getHit())
@@ -70,35 +82,18 @@ public class StudyServiceImpl implements StudyService {
         studyTagRepository.saveAll(study.getStudyTags()
                 .stream()
                 .map(studyTag -> StudyTag.builder()
+                        .isValid(studyTag.getIsValid())
                         .studyId(newStudyId)
-                        .tagId(studyTag.getTagId())
+                        .tag(studyTag.getTag())
                         .build())
                 .collect(Collectors.toSet()));
 
-        // studyMaterial 넣기
-        studyMaterialRepository.saveAll(study.getStudyMaterials()
-                .stream()
-                .map(studyMaterial -> StudyMaterial.builder()
-                        .studyId(newStudyId)
-                        .content(studyMaterial.getContent())
-                        .type(studyMaterial.getType())
-                        .fileUrl(studyMaterial.getFileUrl())
-                        .build())
-                .collect(Collectors.toSet()));
-
-        // studyNotice 넣기
-        studyNoticeRepository.saveAll(study.getStudyNotices()
-                .stream()
-                .map(studyNotice -> StudyNotice.builder()
-                        .studyId(newStudyId)
-                        .content(studyNotice.getContent())
-                        .build())
-                .collect(Collectors.toSet()));
-
-        // session 넣기
-        sessionRepository.saveAll(study.getSessions()
+        // session
+        Set<Session> sessions = study.getSessions();
+        sessionRepository.saveAll(sessions
                 .stream()
                 .map(session -> Session.builder()
+                        .isValid(session.getIsValid())
                         .studyId(newStudyId)
                         .title(session.getTitle())
                         .description(session.getDescription())
@@ -107,11 +102,34 @@ public class StudyServiceImpl implements StudyService {
                         .build())
                 .collect(Collectors.toSet()));
 
-        em.flush();
-        em.clear();
+        // studyMaterial
+        Set<StudyMaterial> studyMaterials = new HashSet<>();
+        sessions.forEach(session -> studyMaterials.addAll(session.getStudyMaterials()
+                .stream()
+                .map(studyMaterial -> StudyMaterial.builder()
+                        .isValid(studyMaterial.getIsValid())
+                        .studyId(newStudyId)
+                        .sessionId(session.getId())
+                        .content(studyMaterial.getContent())
+                        .type(studyMaterial.getType())
+                        .fileUrl(studyMaterial.getFileUrl())
+                        .build())
+                .collect(Collectors.toSet())));
 
-        Study result = studyRepository.findDetailById(newStudyId).orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
-        return new StudyDto(result);
+        studyMaterialRepository.saveAll(studyMaterials);
+
+        // studyNotice
+        Set<StudyNotice> studyNotices = study.getStudyNotices();
+        studyNoticeRepository.saveAll(studyNotices
+                .stream()
+                .map(studyNotice -> StudyNotice.builder()
+                        .isValid(studyNotice.getIsValid())
+                        .studyId(newStudyId)
+                        .content(studyNotice.getContent())
+                        .build())
+                .collect(Collectors.toSet()));
+
+        return new StudyResponse(newStudy);
     }
 
     @Override
@@ -122,10 +140,50 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void shareStudyById(Long studyId) {
+    public void shareStudyByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findById(studyId);
         Study study = result.orElseThrow(() -> new StudyNotFoundException(ERROR.UPDATE));
-//        study.share();
+        study.share();
+    }
+
+    // 변경사항이 있으면 update 진행
+    @Override
+    public void updateStudyByStudyId(StudyRequest studyRequest) {
+        Study study = studyRequest.toEntity();
+        log.debug("studyId : {}", study.getId());
+        studyRepository.save(study);
+        studyTagRepository.saveAll(study.getStudyTags());
+        studyEvalRepository.saveAll(study.getStudyEvals());
+        
+        // studyNotice & studyNoticeCheck
+        Set<StudyNotice> studyNotices = study.getStudyNotices();
+        Set<StudyNoticeCheck> studyNoticeChecks = new HashSet<>();
+        studyNotices.forEach(studyNotice -> studyNoticeChecks.addAll(studyNotice.getStudyNoticeChecks()));
+        
+        studyNoticeRepository.saveAll(studyNotices);
+        studyNoticeCheckRepository.saveAll(studyNoticeChecks);
+        
+        // session & sessionCheck & studyMaterial
+        Set<Session> sessions = study.getSessions();
+        Set<SessionCheck> sessionChecks = new HashSet<>();
+        Set<StudyMaterial> studyMaterials = new HashSet<>();
+        sessions.forEach(session -> {
+            sessionChecks.addAll(session.getSessionChecks());
+            studyMaterials.addAll(session.getStudyMaterials());
+        });
+        
+        sessionRepository.saveAll(sessions);
+        sessionCheckRepository.saveAll(sessionChecks);
+        studyMaterialRepository.saveAll(studyMaterials);
+
+        // 스터디 참여 기록 등록(팀장)
+        // userId 가져오기 필요
+//        if(study.getStatus() == STATUS.ON_PROGRESS) {
+//            participationHistoryRepository.save(ParticipationHistory
+//                    .builder()
+//                    .userId(userId)
+//                    .build());
+//        }
     }
 
     @Override
@@ -134,13 +192,24 @@ public class StudyServiceImpl implements StudyService {
         if(result.isPresent()) {
             throw new StudyLikeException(ERROR.CREATE);
         }
+
+        // 좋아요 등록
         studyLikeRepository.save(new StudyLike(studyId, userId));
+
+        // study - likeCnt 증가
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.addLike();
     }
 
     @Override
     public void removeStudyLike(Long studyId, Long userId) {
+        // 좋아요 삭제
         Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
         result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+
+        // study - likeCnt 감소
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.removeLike();
     }
 
     @Override
@@ -149,13 +218,24 @@ public class StudyServiceImpl implements StudyService {
         if(result.isPresent()) {
             throw new BookmarkException(ERROR.CREATE);
         }
+
+        // 북마크 등록
         bookmarkRepository.save(new Bookmark(studyId, userId));
+
+        // study - bookmarkCnt 증가
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.addBookmark();
     }
 
     @Override
     public void removeStudyBookmark(Long studyId, Long userId) {
+        // 북마크 삭제
         Optional<Bookmark> result = bookmarkRepository.find(studyId, userId);
         result.orElseThrow(() -> new StudyLikeException(ERROR.REMOVE)).remove();
+
+        // study - bookmarkCnt 감소
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        study.removeBookmark();
     }
 
     @Override
@@ -175,7 +255,7 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public void createStudyTag(StudyTagDto studyTagDto) {
-        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTagId());
+        Optional<StudyTag> result = studyTagRepository.find(studyTagDto.getStudyId(), studyTagDto.getTag().getId());
         if(result.isPresent()) {
             throw new StudyTagException(ERROR.CREATE);
         }

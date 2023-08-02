@@ -4,15 +4,13 @@ import javax.persistence.Entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @ToString
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyMaterial extends BaseEntity {
 	private Long studyId;
@@ -20,15 +18,6 @@ public class StudyMaterial extends BaseEntity {
 	private int type;
 	private String content;
 	private String fileUrl;
-
-	@Builder
-	public StudyMaterial(Long studyId, Long sessionId, int type, String content, String fileUrl) {
-		this.studyId = studyId;
-		this.sessionId = sessionId;
-		this.type = type;
-		this.content = content;
-		this.fileUrl = fileUrl;
-	}
 
 	public void update(Long studyId, Long sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;

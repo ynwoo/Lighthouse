@@ -14,6 +14,7 @@ public class StudySearchOption {
     private String orderKey;
     private String orderBy;
     private int isOnline;
+    private int status;
     private List<Integer> tags;
 
     public int getOffset() {
