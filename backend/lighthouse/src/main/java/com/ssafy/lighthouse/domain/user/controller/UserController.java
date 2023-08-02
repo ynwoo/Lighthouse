@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -166,9 +167,11 @@ public class UserController {
 
 	// userId에 해당하는 유저 프로필 조회
 	@GetMapping("/{user-id}")
-	public ResponseEntity<?> findProfileByUserId(@PathVariable(name = "user-id") Long userId) {
-		log.debug("userId : {}", userId);
-		return new ResponseEntity<>(userService.findProfileByUserId(userId), HttpStatus.OK);
+	public ResponseEntity<?> findProfileByUserId(@PathVariable(name = "user-id") Long userId,
+												 HttpServletRequest request) {
+		Long loginId = getUserId(request);
+		log.debug("userId : {}, loginId : {}", userId, loginId);
+		return new ResponseEntity<>(userService.findProfileByUserId(userId, loginId), HttpStatus.OK);
 	}
 
 	@GetMapping("/mypage")
@@ -251,52 +254,59 @@ public class UserController {
 	}
 
 	@PostMapping("/eval")
-	public ResponseEntity<?> createUserEval(@RequestBody UserEvalDto userEvalDto) {
+	public ResponseEntity<?> createUserEval(@RequestBody UserEvalDto userEvalDto,
+											HttpServletRequest request) {
 		// session에서 userId 가져오기
-		userEvalDto.setEvaluatorId(getUserId());
+		userEvalDto.setEvaluatorId(getUserId(request));
 		log.debug("userId : {}", userEvalDto.getUserId());
 		userService.createUserEval(userEvalDto);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/eval/{user-id}")
-	public ResponseEntity<?> removeUserEval(@PathVariable(name = "user-id") Long userId) {
+	public ResponseEntity<?> removeUserEval(@PathVariable(name = "user-id") Long userId,
+											HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long evaluatorId = getUserId();
+		Long evaluatorId = getUserId(request);
 		log.debug("userId : {}", userId);
 		userService.removeUserEval(userId, evaluatorId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@PostMapping("/follow/{followee-id}")
-	public ResponseEntity<?> createFollow(@PathVariable(name = "followee-id") Long followeeId) {
+	public ResponseEntity<?> createFollow(@PathVariable(name = "followee-id") Long followeeId,
+										  HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long followerId = getUserId();
+		Long followerId = getUserId(request);
 		log.debug("followerId : {}", followerId);
 		userService.createFollow(followeeId, followerId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/follow/{followee-id}")
-	public ResponseEntity<?> removeFollow(@PathVariable(name = "followee-id") Long followeeId) {
+	public ResponseEntity<?> removeFollow(@PathVariable(name = "followee-id") Long followeeId,
+										  HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long followerId = getUserId();
+		Long followerId = getUserId(request);
 		log.debug("followerId : {}", followerId);
 		userService.removeFollow(followeeId, followerId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	private Long getUserId() {
-		//		String token = request.getHeader("access-token");
-		//		if (jwtService.checkToken(token)) {
-		//			log.info("사용 가능한 토큰!!!");
-		//			// 로그인 사용자 정보
-		//			Long idByToken = jwtService.getIdByToken(token);
-		//
-		//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
-		//			return userMyPageDto.getId();
-		//		}
-		//		throw new UnAuthorizedException();
-		return 1L;
+	private String getToken(HttpServletRequest request) {
+		// header에서 토큰 가져오기
+		String token = request.getHeader("access-token");
+		if (jwtService.checkToken(token)) {
+			log.info("사용 가능한 토큰!!!");
+
+			// 로그인 사용자의 id 리턴
+			return token;
+		}
+		// 사용 불가능한 토큰이면 예외처리
+		throw new UnAuthorizedException();
+	}
+
+	private Long getUserId(HttpServletRequest request) {
+		return jwtService.getIdByToken(getToken(request));
 	}
 }
