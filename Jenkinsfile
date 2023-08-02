@@ -9,7 +9,7 @@ pipeline {
         CONTAINER_NAME_FRONT = "test-lighthouse-front"
         SSH_CONNECTION = "ubuntu@i9a409.p.ssafy.io"
         ENV_DIR = "./config/.env"
-        PORT_BACK = "8081"
+        PORT_BACK = "8082"
         PORT_FRONT = "3000"
     }
     stages {
