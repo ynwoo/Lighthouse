@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ssafy.lighthouse.domain.user.dto.EmailDto;
+import com.ssafy.lighthouse.domain.user.dto.NicknameDto;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.service.JwtService;
@@ -24,8 +26,8 @@ public class UserController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
-	private UserService userService;
-	private JwtService jwtService;
+	private final UserService userService;
+	private final JwtService jwtService;
 
 	@Autowired
 	public UserController(UserService userService, JwtService jwtService) {
@@ -34,9 +36,42 @@ public class UserController {
 		this.jwtService = jwtService;
 	}
 
+	@PostMapping("/check-email")
+	public ResponseEntity<?> checkDuplicateEmail(@RequestBody EmailDto emailDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
+
+		String emailToValidate = emailDto.getEmail();
+		if (userService.isEmailUnique(emailToValidate)) {
+			resultMap.put("available", true);
+			status = HttpStatus.OK;
+		} else {
+			resultMap.put("available", false);
+			status = HttpStatus.CONFLICT;
+		}
+
+		return new ResponseEntity<>(resultMap, status);
+	}
+
+	@PostMapping("/check-nickname")
+	public ResponseEntity<?> checkDuplicateNickname(@RequestBody NicknameDto nicknameDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
+
+		String nicknameToValidate = nicknameDto.getNickname();
+		if (userService.isNicknameUnique(nicknameToValidate)) {
+			resultMap.put("available", true);
+			status = HttpStatus.OK;
+		} else {
+			resultMap.put("available", false);
+			status = HttpStatus.CONFLICT;
+		}
+
+		return new ResponseEntity<>(resultMap, status);
+	}
+
 	@PostMapping
 	public ResponseEntity<?> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
-		log.debug("userMyPageDto : {}", userMyPageDto);
 		userService.addUser(userMyPageDto);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
