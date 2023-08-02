@@ -31,9 +31,6 @@ public interface UserService {
 	
 	UserMyPageDto getMyPageUser(Long userId);
 
-
-	ProfileResponse findProfileByUserId(Long userId);
-
 	// userEval
 	void createUserEval(UserEvalDto userEvalDto);
 
