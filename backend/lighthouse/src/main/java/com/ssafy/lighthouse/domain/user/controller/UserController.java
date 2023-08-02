@@ -1,23 +1,21 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
-import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
-import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
+import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.service.JwtService;
+import com.ssafy.lighthouse.domain.user.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
@@ -38,6 +36,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<?> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
+		log.debug("userMyPageDto : {}", userMyPageDto);
 		userService.addUser(userMyPageDto);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
@@ -136,7 +135,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> getInfo(
 		HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 
 		String token = request.getHeader("access-token");
 		if (jwtService.checkToken(token)) {
@@ -163,37 +162,49 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	// @GetMapping("/mypage/{userId}")
-	// public ResponseEntity<UserMyPageDto> getMyPageInfo(@PathVariable Long userId) {
-	// 	// 전체 Tag 목록도 불러와야함
-	// 	List<String> tags = userService.getKeywordsByUserId(userId);
-	// 	System.out.println(tags.toString());
-	// 	UserMyPageDto userMyPageDto = userService.getMyPageUser(userId);
-	// 	return new ResponseEntity<>(userMyPageDto, HttpStatus.OK);
-	// }
-
 	@PutMapping("/update")
-	public ResponseEntity<?> updateUser(@RequestBody UserMyPageDto userMyPageDto) {
-		System.out.println(userMyPageDto.toString());
-		try {
-			userService.updateUser(userMyPageDto);
-			return new ResponseEntity<String>("SUCCESS!!!", HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("FAIL!!!", HttpStatus.NOT_ACCEPTABLE);
+	public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserMyPageDto userMyPageDto) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
+		String token = request.getHeader("access-token");
+
+		if (jwtService.checkToken(token)) {
+			log.info("사용 가능한 토큰!!!");
+			try {
+				userService.updateUser(userMyPageDto);
+				return new ResponseEntity<String>("SUCCESS!!!", HttpStatus.OK);
+			} catch (Exception e) {
+				return new ResponseEntity<String>("FAIL!!!", HttpStatus.NOT_ACCEPTABLE);
+			}
+
+		} else {
+			log.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.UNAUTHORIZED;
 		}
+		return new ResponseEntity<>(resultMap, status);
 	}
 
 	@DeleteMapping()
 	public ResponseEntity<?> deleteUser(HttpServletRequest request) {
 		log.info("deleteUser - 호출");
+
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status;
 		try {
 			String token = request.getHeader("access-token");
 			if (jwtService.checkToken(token)) {
 				// payload에서 id값 추출
 				Long idByToken = jwtService.getIdByToken(token);
 				userService.deleteUser(idByToken);
+
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			} else {
+				log.error("사용 불가능 토큰!!!");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
+				return new ResponseEntity<>(resultMap, status);
 			}
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
@@ -236,16 +247,16 @@ public class UserController {
 	}
 
 	private Long getUserId() {
-//		String token = request.getHeader("access-token");
-//		if (jwtService.checkToken(token)) {
-//			log.info("사용 가능한 토큰!!!");
-//			// 로그인 사용자 정보
-//			Long idByToken = jwtService.getIdByToken(token);
-//
-//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
-//			return userMyPageDto.getId();
-//		}
-//		throw new UnAuthorizedException();
+		//		String token = request.getHeader("access-token");
+		//		if (jwtService.checkToken(token)) {
+		//			log.info("사용 가능한 토큰!!!");
+		//			// 로그인 사용자 정보
+		//			Long idByToken = jwtService.getIdByToken(token);
+		//
+		//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
+		//			return userMyPageDto.getId();
+		//		}
+		//		throw new UnAuthorizedException();
 		return 1L;
 	}
 }
