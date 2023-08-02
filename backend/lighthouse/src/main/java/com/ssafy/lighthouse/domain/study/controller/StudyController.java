@@ -2,12 +2,17 @@ package com.ssafy.lighthouse.domain.study.controller;
 
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
+import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
+import com.ssafy.lighthouse.domain.user.service.JwtService;
+import com.ssafy.lighthouse.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/study")
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class StudyController {
 
     private final StudyService studyService;
+    private final JwtService jwtService;
+    private final UserService userService;
 
     // 검색 옵션에 대한 전체 조회
     @GetMapping
@@ -28,7 +35,11 @@ public class StudyController {
 
     // 상세 조회
     @GetMapping("/{study-id}")
-    public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                 HttpServletRequest request) {
+        // token 확인
+        getToken(request);
+
         log.debug("studyId : {}", studyId);
         StudyResponse result = studyService.findDetailByStudyId(studyId);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -52,9 +63,11 @@ public class StudyController {
 
     // 스터디 정보 수정
     @PutMapping
-    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest) {
+    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest,
+                                         HttpServletRequest request) {
+        Long userId = getUserId(request);
         log.debug("studyId : {}", studyRequest.getId());
-        studyService.updateStudyByStudyId(studyRequest);
+        studyService.updateStudyByStudyId(studyRequest, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -67,36 +80,40 @@ public class StudyController {
     }
 
     @PostMapping("/like/{study-id}")
-    public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyService.createStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/like/{study-id}")
-    public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyService.removeStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @PostMapping("/bookmark/{study-id}")
-    public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId,
+                                                 HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyService.createStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/bookmark/{study-id}")
-    public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId,
+                                                 HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyService.removeStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -117,9 +134,10 @@ public class StudyController {
     }
 
     @PostMapping("/eval")
-    public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto) {
+    public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyEvalDto.setUserId(userId);
         studyService.createStudyEval(studyEvalDto);
@@ -127,16 +145,30 @@ public class StudyController {
     }
 
     @DeleteMapping("/eval/{study-id}")
-    public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
 //         session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = getUserId(request);
         log.debug("userId : {}", userId);
         studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    private Long getUserId() {
-        return 1L;
+    private String getToken(HttpServletRequest request) {
+        // header에서 토큰 가져오기
+        String token = request.getHeader("access-token");
+        if (jwtService.checkToken(token)) {
+            log.info("사용 가능한 토큰!!!");
+
+            // 로그인 사용자의 id 리턴
+            return token;
+        }
+        // 사용 불가능한 토큰이면 예외처리
+        throw new UnAuthorizedException();
+    }
+
+    private Long getUserId(HttpServletRequest request) {
+        return jwtService.getIdByToken(getToken(request));
     }
 
 }

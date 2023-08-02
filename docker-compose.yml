@@ -1,13 +1,13 @@
 version: '3.8'
 services:
   backend:
-    image: imsongj/test
+    image: imsongj/test_backend:latest
     build:
       context: ./backend/lighthouse
       dockerfile: Dockerfile
 
-  # frontend:
-  #   image: frontend:${TAG:-latest}
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
+  frontend:
+    image: imsongj/test_frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile

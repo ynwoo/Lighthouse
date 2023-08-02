@@ -8,10 +8,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.PAGE;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +27,7 @@ import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
 
 @Repository
+@Slf4j
 @RequiredArgsConstructor
 public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
@@ -42,13 +43,14 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         List<Study> studyList = jpaQueryFactory
                 .select(study)
                 .from(study)
-                .leftJoin(study.studyTags, studyTag)
-                .leftJoin(study.sido, sido)
-                .leftJoin(study.gugun, gugun)
+                .leftJoin(study.studyTags, studyTag).on(studyTag.isValid.eq(1))
+                .leftJoin(study.sido, sido).on(sido.isValid.eq(1))
+                .leftJoin(study.gugun, gugun).on(gugun.isValid.eq(1))
                 .where(
                         isValid(),
                         checkStatus(options),
                         isOnline(options),
+                        checkByTagIds(options),
                         searchByKeyword(options))
                 .orderBy(orderSpecifier)
                 .offset(options.getOffset())
@@ -73,6 +75,11 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 options.getOrderKey() == null ? "createdAt" : options.getOrderKey());
         PageRequest pageable = PageRequest.of(options.getPage(), PAGE.LIMIT, sort);
         return new PageImpl<>(contents, pageable, total);
+    }
+    
+    // tag 일치 여부 확인
+    private BooleanExpression checkByTagIds(StudySearchOption options) {
+        return options.getTagIds() != null ? studyTag.tag.id.in(options.getTagIds()) : null;
     }
 
     // 유효한 스터디 인지 확인
