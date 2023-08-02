@@ -136,7 +136,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> getInfo(
 		HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status;
 
 		String token = request.getHeader("access-token");
 		if (jwtService.checkToken(token)) {

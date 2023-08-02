@@ -21,8 +21,11 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import com.ssafy.lighthouse.global.util.ERROR;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,7 @@ public class UserServiceImpl implements UserService {
 		System.out.println(userMyPageDto.toString());
 
 		User user = User.from(userMyPageDto);
+		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User savedUser = userRepository.save(user);
 		List<Long> list = userMyPageDto.getUserTagList();
 		for (Long tagId : list) {
@@ -52,15 +56,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserMyPageDto loginUser(String userEmail, String userPwd) {
-		// UserMyPageDto userDto = userMapper.loginUser(userId);
-
 		User loginUser = userRepository.findByEmailAndIsValid(userEmail, 1);
-		// if (userDto != null && BCrypt.checkpw(userPwd, userRepository.getById(loginUser.getId()).getPassword())) {
-		if (loginUser != null) {
-			UserMyPageDto userMyPageDto = UserMyPageDto.from(loginUser);
-			return userMyPageDto;
+		if (loginUser != null && BCrypt.checkpw(userPwd, userRepository.getReferenceById(loginUser.getId()).getPassword())) {
+			return UserMyPageDto.from(loginUser);
 		}
-
 		return null;
 	}
 
@@ -77,7 +76,7 @@ public class UserServiceImpl implements UserService {
 		List<UserTag> userTags = userTagRepository.findByUserIdAndIsValid(1L, 1);
 		UserMyPageDto from = UserMyPageDto.from(user);
 
-		for(UserTag userTag : userTags) {
+		for (UserTag userTag : userTags) {
 			from.getUserTagList().add(userTag.getTagId());
 		}
 
@@ -91,7 +90,10 @@ public class UserServiceImpl implements UserService {
 		User foundUser = userRepository.findById(userMyPageDto.getId()).get();
 		System.out.println("찾은 유저 : " + foundUser);
 		// Update : 닉네임 업데이트
-		foundUser.updateUserInfo(userMyPageDto.getPassword() == null ? foundUser.getPassword() : userMyPageDto.getPassword(), userMyPageDto.getName(),
+		foundUser.updateUserInfo(
+			userMyPageDto.getPassword() == null ? foundUser.getPassword() :
+				BCrypt.hashpw(userMyPageDto.getPassword(), BCrypt.gensalt()),
+			userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
@@ -152,7 +154,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createUserEval(UserEvalDto userEvalDto) {
 		Optional<UserEval> result = userEvalRepository.find(userEvalDto.getUserId(), userEvalDto.getEvaluatorId());
-		if(result.isPresent()) {
+		if (result.isPresent()) {
 			throw new UserNotFoundException(ERROR.CREATE);
 		}
 		userEvalRepository.save(userEvalDto.toEntity());
@@ -167,13 +169,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void createFollow(Long followeeId, Long followerId) {
 		Optional<Follow> result = followRepository.find(followeeId, followerId);
-		if(result.isPresent()) {
+		if (result.isPresent()) {
 			throw new UserNotFoundException(ERROR.CREATE);
 		}
 		followRepository.save(Follow.builder()
-				.followerId(followerId)
-				.followeeId(followeeId)
-				.build());
+			.followerId(followerId)
+			.followeeId(followeeId)
+			.build());
 	}
 
 	@Override
