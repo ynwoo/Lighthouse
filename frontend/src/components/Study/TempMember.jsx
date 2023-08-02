@@ -1,113 +1,135 @@
-import React from 'react'
-import readerLogo from '../../static/crown.png'
-// 템플릿 상세의 인원정보(멤버)
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
+import TempTodoList from './TempTodoList'
+import TempList from './TempList'
 
-export default function TempMember({ study }) {
+const { createRoot } = ReactDOM
+
+const data = []
+for (let i = 0; i < 5; i += 1) {
+  data.push({
+    key: i,
+    name: `Edward King ${i}`,
+  })
+}
+
+export default function App() {
+  const [visible, setVisible] = useState(false)
+  const [form] = Form.useForm()
+  const [events, setEvents] = useState([
+    {
+      id: 1, // 고유한 식별자를 추가합니다.
+      date: '2023-08-15',
+      type: 'warning',
+      content: '스터디',
+    },
+    {
+      id: 2, // 고유한 식별자를 추가합니다.
+      date: '2023-08-15',
+      type: 'success',
+      content: 'This is a success event',
+    },
+    // Add more events as needed...
+  ])
+
+  const handleDelete = item => {
+    setEvents(prevEvents => prevEvents.filter(event => event.id !== item.id))
+  }
+
+  const getListData = value => {
+    const dateString = value.format('YYYY-MM-DD')
+    return events.filter(event => event.date === dateString)
+  }
+
+  const dateCellRender = value => {
+    const listData = getListData(value)
+    return (
+      <ul className="events">
+        {listData.map(item => (
+          <li key={item.id}>
+            {' '}
+            {/* 고유한 식별자를 key로 사용합니다. */}
+            <Badge status={item.type} text={item.content} />
+            <Button onClick={() => handleDelete(item)}>Delete</Button>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  // handleOk 함수 내의 setEvents 부분을 다음과 같이 수정합니다.
+  const handleOk = () => {
+    form.validateFields().then(values => {
+      const { date, type, content } = values
+      setEvents(prevEvents => [
+        ...prevEvents,
+        {
+          id: Date.now(), // 고유한 식별자를 추가합니다.
+          date: date ? date.format('YYYY-MM-DD') : '', // 기본값 설정
+          type: type || '', // 기본값 설정
+          content: content || '', // 기본값 설정
+        },
+      ])
+      form.resetFields()
+      setVisible(false)
+    })
+  }
+
+  const handleCancel = () => {
+    form.resetFields()
+    setVisible(false)
+  }
+
+  const showModal = () => {
+    setVisible(true)
+  }
+
   return (
-    <div className="comp">
-      {/* 만약 팀장이면 띄우기 */}
-      <div className="t_mem_text">
-        <img
-          src={readerLogo}
-          alt="엑박"
-          style={{
-            width: '40px',
-            height: '40px',
-            marginTop: '10px',
-            marginRight: '5px',
-          }}
-        />
-        <h2>닉네임</h2>
-      </div>
-      <div className="container">
-        <div className="item1">
-          <div className="temp_mini">
-            <p>스터디 이름</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_detail2">
-            <p>{study.title}</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_mini">
-            <p>팀장</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_detail2">
-            <p>{study.leader_id}</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_mini">
-            <p>스터디 소개</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_detail2">
-            <p>{study.description}</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_mini">
-            <p>총원</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_detail2">
-            <p>
-              {study.min_member} / {study.max_member}
-            </p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_mini">
-            <p>모집기간</p>
-          </div>
-        </div>
-        <div className="item">
-          <div className="temp_detail2">
-            <p>{study.recruit_finished_at} 까지</p>
-          </div>
-        </div>
-        <div className="item1">
-          <div className="temp_mini">
-            <p>시작 ~ 종료 기간</p>
-          </div>
-        </div>
-        <div className="item1">
-          {/* <div className="temp_detail3_1"> */}
-          <div className="temp_detail3">
-            <p>{study.started_at}</p>
-          </div>
-          <div className="temp_detail3">
-            <p>{study.ended_at}</p>
-            {/* </div> */}
-          </div>
-        </div>
-        <div className="item" />
-        <div className="item2">
-          {/* <div className="temp_detail4_1"> */}
-          {/* 조회수 */}
-          <div className="temp_detail4">
-            <p>조회수</p>
-            <p>{study.hit}</p>
-          </div>
-          {/* 북마크 */}
-          <div className="temp_detail4">
-            <p>북마크</p>
-            <p>{study.bookmark_cnt}</p>
-          </div>
-          {/* 좋아요 */}
-          <div className="temp_detail4">
-            <p>좋아요</p>
-            <p>{study.like_cnt}</p>
-          </div>
-          {/* </div> */}
-        </div>
-      </div>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        borderRadius: '20px',
+        textAlign: 'center',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignContent: 'center',
+        boxShadow: '4px 4px 15px rgba(0, 0, 0, 0.4)',
+        position: 'relative',
+        padding: '20px',
+        margin: '-18px',
+      }}
+    >
+      <TempList />
+      <TempTodoList />
+      <Calendar dateCellRender={dateCellRender} />
+      <Button onClick={showModal}>Add Event</Button>
+      <Modal
+        visible={visible}
+        title="Add Event"
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="date" label="Date" rules={[{ required: true }]}>
+            <DatePicker style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="type" label="Type" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="content"
+            label="Content"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }
+
+const mountNode = document.getElementById('root')
+createRoot(mountNode).render(<App />)
