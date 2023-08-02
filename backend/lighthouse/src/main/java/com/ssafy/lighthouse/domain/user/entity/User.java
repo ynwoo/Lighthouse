@@ -26,8 +26,6 @@ import org.springframework.context.annotation.Configuration;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class User extends BaseEntity {
-
-	@Column(updatable = false)
 	private String password;
 	private String name;
 	private String email;
