@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   backend:
-    image: imsongj/test:0.1.0
+    image: imsongj/test:0.1.1
     build:
       context: ./backend/lighthouse
       dockerfile: Dockerfile
