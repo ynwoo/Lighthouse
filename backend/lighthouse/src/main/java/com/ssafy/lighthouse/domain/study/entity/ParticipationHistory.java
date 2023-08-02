@@ -1,14 +1,14 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.global.util.LocalDateTime;
+import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -23,17 +23,22 @@ public class ParticipationHistory extends BaseEntity {
     private int status;
 
     public void changeStatus(int status) {
+        if(status == STATUS.PROGRESS) {
+            this.initJoinedAt();
+        } else if(status == STATUS.LEAVED) {
+            this.initLeavedAt();
+        } else if(status == STATUS.TERMINATED) {
+        } else {
+            return;
+        }
+
         this.status = status;
     }
     public void initJoinedAt() {
-        this.joinedAt = formatLocalDateTimeToString(LocalDateTime.now());
+        this.joinedAt = LocalDateTime.now();
     }
 
     public void initLeavedAt() {
-        this.leavedAt = formatLocalDateTimeToString(LocalDateTime.now());
-    }
-
-    private String formatLocalDateTimeToString(LocalDateTime localDateTime) {
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.leavedAt = LocalDateTime.now();
     }
 }
