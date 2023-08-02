@@ -532,3 +532,9 @@ p {
 .info_item {
   margin-left: 100px;
 }
+
+.memo_box {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-content: center;
+}
