@@ -49,7 +49,7 @@ public class StudyServiceImpl implements StudyService {
     public StudyResponse findDetailByStudyId(Long studyId) {
         Optional<Study> result = studyRepository.findDetailById(studyId);
         log.debug("service - studyId : {}", studyId);
-        log.debug("service - findDetailById : {}", result);
+        log.debug("service - findDetailById : {}", result.get().getId());
         StudyResponse studyResponse = new StudyResponse(result.orElseThrow(() -> new StudyNotFoundException(ERROR.FIND)));
         studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(result.get().getLeaderId()));
         return studyResponse;
@@ -176,9 +176,11 @@ public class StudyServiceImpl implements StudyService {
         sessionCheckRepository.saveAll(sessionChecks);
         studyMaterialRepository.saveAll(studyMaterials);
 
+        em.clear();
+
         // 스터디 참여 기록 등록(팀장)
         // userId 가져오기 필요
-//        if(study.getStatus() == STATUS.ON_PROGRESS) {
+//        if(study.getStatus() == STATUS.PROGRESS) {
 //            participationHistoryRepository.save(ParticipationHistory
 //                    .builder()
 //                    .userId(userId)
