@@ -36,6 +36,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<?> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
+		log.debug("userMyPageDto : {}", userMyPageDto);
 		userService.addUser(userMyPageDto);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
