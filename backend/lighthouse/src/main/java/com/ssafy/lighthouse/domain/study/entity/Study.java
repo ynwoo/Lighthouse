@@ -32,7 +32,6 @@ public class Study extends BaseEntity {
     private int bookmarkCnt;
     private int status;
     private Long leaderId;
-    
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
@@ -79,4 +78,8 @@ public class Study extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
     private Set<Qna> qnas;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "studyId")
+    private Set<ParticipationHistory> participations;
 }

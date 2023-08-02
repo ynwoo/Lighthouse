@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.ssafy.lighthouse.domain.common.entity.QTag.tag;
@@ -37,36 +38,44 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     private final UserTagRepository userTagRepository;
 
     @Override
-    public ProfileResponse findProfileByUserId(Long userId) {
+    public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
+        Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) :new HashSet<>();
         Set<Long> progressSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PROGRESS);
         Set<Long> terminatedSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.TERMINATED);
         Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+
+        // all
         Set<Long> allStudyIdSet = new HashSet<>();
+        allStudyIdSet.addAll(participatedSet);
         allStudyIdSet.addAll(progressSet);
         allStudyIdSet.addAll(terminatedSet);
         allStudyIdSet.addAll(bookmarkSet);
-
 
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         QFollow followee = new QFollow("followee");
 
         List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
-        List<SimpleStudyDto> studies = new ArrayList<>();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
+        List<SimpleStudyDto> progressStudies = new ArrayList<>();
+        List<SimpleStudyDto> terminatedStudies = new ArrayList<>();
         List<SimpleStudyDto> bookmarkStudies = new ArrayList<>();
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
             // 진행중 스터디
             if(progressSet.contains(study.getId())) {
-                studies.add(simpleStudyDto);
+                progressStudies.add(simpleStudyDto);
             } 
             // 끝난 스터디
             else if(terminatedSet.contains(study.getId())) {
+                terminatedStudies.add(simpleStudyDto);
+            } 
+            // 신청한 스터디
+            else if (participatedSet.contains(study.getId())) {
                 participatedStudies.add(simpleStudyDto);
             }
-            
+
             // 북마크 한 스터디
             if(bookmarkSet.contains(study.getId())) {
                 bookmarkStudies.add(simpleStudyDto);
@@ -93,9 +102,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .nickname(result.getNickname())
                 .profileImgUrl(result.getProfileImgUrl())
                 .description(result.getDescription())
-                .studies(studies)
                 .tags(tags)
                 .participatedStudies(participatedStudies)
+                .progressStudies(progressStudies)
+                .terminatedStudies(terminatedStudies)
                 .bookmarkStudies(bookmarkStudies)
                 .score(result.getScore())
                 .following(result.getFollowing())
@@ -129,5 +139,34 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .tags(tags)
                 .score(result.getScore())
                 .build();
+    }
+
+    @Override
+    public List<SimpleProfileResponse> findSimpleProfileByUserIds(List<Long> userIds) {
+        List<SimpleProfileResponse> result = jpaQueryFactory.select(Projections.fields(SimpleProfileResponse.class,
+                        user.id,
+                        user.isValid,
+                        user.nickname,
+                        user.profileImgUrl,
+                        user.description,
+                        ExpressionUtils.as(select(userEval.score.avg()).from(userEval).where(userEval.userId.eq(user.id), userEval.isValid.eq(1)), "score")))
+                .from(user)
+                .where(user.id.in(userIds), user.isValid.eq(1))
+                .fetch();
+
+        return result.stream().map((simpleProfileResponse) -> SimpleProfileResponse.builder()
+                .id(simpleProfileResponse.getId())
+                .isValid(simpleProfileResponse.getIsValid())
+                .nickname(simpleProfileResponse.getNickname())
+                .profileImgUrl(simpleProfileResponse.getProfileImgUrl())
+                .description(simpleProfileResponse.getDescription())
+                .tags(jpaQueryFactory
+                        .select(Projections.constructor(TagDto.class, tag))
+                        .from(tag)
+                        .where(tag.id.in(userTagRepository.findTagIdAllByUserId(simpleProfileResponse.getId())), tag.isValid.eq(1))
+                        .fetch())
+                .score(simpleProfileResponse.getScore())
+                .build())
+                .collect(Collectors.toList());
     }
 }

@@ -26,7 +26,11 @@ public interface UserService {
 
 	void deleRefreshToken(Long userId) throws Exception;
 
+
+    ProfileResponse findProfileByUserId(Long userId, Long loginId);
+	
 	UserMyPageDto getMyPageUser(Long userId);
+
 
 	ProfileResponse findProfileByUserId(Long userId);
 
