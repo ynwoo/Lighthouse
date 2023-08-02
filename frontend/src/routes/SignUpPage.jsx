@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import {
   Button,
   Form,
@@ -13,21 +13,7 @@ import { PlusOutlined } from '@ant-design/icons'
 import { userAction } from '../store/user'
 
 const { TextArea } = Input
-// const { Option } = Select
 
-// const prefixSelector = (
-//   <Form.Item name="prefix" noStyle>
-//     <Select
-//       style={{
-//         width: 70,
-//         backgroundColor: 'transparent',
-//       }}
-//     >
-//       <Option value="86">+86</Option>
-//       <Option value="87">+87</Option>
-//     </Select>
-//   </Form.Item>
-// )
 const normFile = e => {
   if (Array.isArray(e)) {
     return e
@@ -36,7 +22,6 @@ const normFile = e => {
 }
 
 function SignUpPage() {
-  const par = useSelector(state => state.user.signUpData)
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
@@ -64,9 +49,18 @@ function SignUpPage() {
         form={form}
         name="normal_login"
         onFinish={value => {
+          if (value.password !== value.confirm) {
+            alert('Password You!')
+            return
+          }
           delete value.confirm
           value.userTagList = []
-          dispatch(userAction.signUpFin(par))
+          Object.keys(value).forEach(key => {
+            if (value[key] === undefined) {
+              value[key] = null
+            }
+          })
+          dispatch(userAction.signUp(value))
         }}
         labelCol={{
           span: 4,
@@ -167,6 +161,7 @@ function SignUpPage() {
           name="profileImgUrl"
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          initialValue={null}
         >
           <Upload action="/upload.do" listType="picture-card">
             <div>
@@ -200,13 +195,13 @@ function SignUpPage() {
           />
         </Form.Item>
 
-        <Form.Item label="주소(시/도)" name="sidoId">
+        <Form.Item label="주소(시/도)" name="sido">
           <Select>
             <Select.Option value="demo">Demo</Select.Option>
           </Select>
         </Form.Item>
 
-        <Form.Item label="주소(구/군)" name="gugunId">
+        <Form.Item label="주소(구/군)" name="gugun">
           <TreeSelect
             treeData={[
               {

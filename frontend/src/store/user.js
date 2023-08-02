@@ -6,20 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL
 const initialState = {
   token: {
     refreshToken: '',
-    accessTpken: '',
-  },
-  signUpData: {
-    email: 'ssafy@example.com',
-    password: 'secure_password',
-    name: 'fox',
-    nickName: 'foxfox',
-    profileImgUrl: null,
-    age: 5,
-    sidoId: 1,
-    gugunId: 1,
-    phoneNumber: '010-1234-5678',
-    description: '안녕하세요 김싸피 입니다.',
-    userTagList: [3, 4, 7], // 자격증, 알고리즘, CS
+    accessToken: '',
   },
   sido: [],
   gugun: [],
@@ -40,23 +27,11 @@ export const userAction = {
   }),
 
   // 회원가입
-  signUpFin: createAsyncThunk('SIGNUPFIN', async (payload, thunkAPI) => {
+  signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
       console.log('URL', API_URL)
       console.log('payload', payload)
-      const response = await axios.post(`${API_URL}/users`, {
-        email: 'ssafy@example.com',
-        password: 'secure_password',
-        name: 'fox',
-        nickName: 'foxfox',
-        profileImgUrl: null,
-        age: 5,
-        sidoId: 1,
-        gugunId: 1,
-        phoneNumber: '010-1234-5678',
-        description: '안녕하세요 김싸피 입니다.',
-        userTagList: [3, 4, 7],
-      })
+      const response = await axios.post(`${API_URL}/users`, payload)
       console.log('response', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -100,12 +75,15 @@ export const userSlice = createSlice({
     [userAction.test.fulfilled]: (state, action) => {
       state.sido.push(action.payload)
     },
-    [userAction.signUpFin.fulfilled]: (state, action) => {
+    [userAction.signUp.fulfilled]: (state, action) => {
       state.sido.push(action.payload)
     },
     [userAction.login.fulfilled]: (state, action) => {
       console.log(action.payload)
-      state.token.refreshToken = action.payload
+      state.token.accessToken = action.payload['access-token']
+      state.token.refreshToken = action.payload['refresh-token']
+      console.log(state.token.accessToken)
+      console.log(state.token.refreshToken)
     },
   },
 })

@@ -1,10 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialStateValue = ''
-
+const initialState = {
+  myStudy: [],
+  studys: [],
+}
 export const studySlice = createSlice({
   name: 'study',
-  initialState: { value: initialStateValue },
+  initialState,
   reducers: {
     setText: (state, action) => {
       state.value = action.payload
