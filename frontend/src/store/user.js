@@ -64,17 +64,23 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: {
+    // 시도 성공 시 store에 저장
     [userAction.sido.fulfilled]: (state, action) => {
       state.sido = action.payload
     },
+    // 구군 성공 시 store에 저장
     [userAction.gugun.fulfilled]: (state, action) => {
       state.gugun = action.payload
     },
+    // 회원가입 성공 시 확인용
     [userAction.signUp.fulfilled]: (state, action) => {
       console.log(action.payload)
     },
+    // 로그인 성공 시
     [userAction.login.fulfilled]: (state, action) => {
+      // access token save in store
       state.accessToken = action.payload['access-token']
+      // refresh token save in cookie
       cookies.set('refresh_token', action.payload['refresh-token'], {
         sameSite: 'strict',
         path: '/',
