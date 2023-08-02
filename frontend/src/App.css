@@ -445,7 +445,7 @@ p {
   top: -18px;
   left: 0;
   right: 0;
-  z-index: 1;
+  /* width: 1000px; */
 }
 
 .nav_item {
@@ -518,4 +518,17 @@ p {
   font-size: 1rem;
   text-align: left;
   text-decoration: none;
+}
+
+/* tempinfo */
+
+.info_container {
+  display: gird;
+  grid-template-rows: 30% 70%;
+  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  margin-top: -15px;
+}
+
+.info_item {
+  margin-left: 100px;
 }
