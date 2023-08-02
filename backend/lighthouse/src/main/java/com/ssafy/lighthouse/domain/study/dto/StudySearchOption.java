@@ -15,7 +15,7 @@ public class StudySearchOption {
     private String orderBy;
     private int isOnline;
     private int status;
-    private List<Integer> tags;
+    private List<Long> tagIds;
 
     public int getOffset() {
         return (this.page - 1) * PAGE.LIMIT;
