@@ -136,8 +136,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public ProfileResponse findProfileByUserId(Long userId) {
-		return userRepository.findProfileByUserId(userId);
+	public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
+		return userRepository.findProfileByUserId(userId, loginId);
 	}
 
 	@Override
