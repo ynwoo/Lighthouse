@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const API_URL = process.env.REACT_APP_API_URL
 
+// 이것은 초깃값이자 저장 폼
 const initialState = {
   token: {
     refreshToken: '',
@@ -13,11 +14,23 @@ const initialState = {
 }
 
 export const userAction = {
-  // 테스트 액션
-  test: createAsyncThunk('TEST', async (payload, thunkAPI) => {
+  // 시도 액션
+  sido: createAsyncThunk('user/sido', async (payload, thunkAPI) => {
     try {
       console.log('payload', payload)
-      const response = await axios.get(`${API_URL}/tags`)
+      const response = await axios.get(`${API_URL}/places/sido`)
+      console.log('response', response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      console.log('안돼')
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  // 구군 액션
+  gugun: createAsyncThunk('user/gugun', async (payload, thunkAPI) => {
+    try {
+      console.log('payload', payload)
+      const response = await axios.get(`${API_URL}/places/gugun`)
       console.log('response', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -62,7 +75,7 @@ export const userAction = {
 }
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: 'userSlice',
   initialState,
   reducers: {
     signUp: (state, action) => {
@@ -72,8 +85,11 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: {
-    [userAction.test.fulfilled]: (state, action) => {
-      state.sido.push(action.payload)
+    [userAction.sido.fulfilled]: (state, action) => {
+      state.sido = action.payload
+    },
+    [userAction.gugun.fulfilled]: (state, action) => {
+      state.gugun = action.payload
     },
     [userAction.signUp.fulfilled]: (state, action) => {
       state.sido.push(action.payload)
