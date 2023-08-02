@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        VERSION = "0.1.0" //Major.Minor.Patch
+        VERSION = "latest" //Major.Minor.Patch
         DOCKERHUB_REPOSITORY = "imsongj/test"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-imsong')
         CONTAINER_NAME = "test-lighthouse"
@@ -16,7 +16,7 @@ pipeline {
                     sh "./gradlew clean compileJava bootJar"
                }
             }
-                        
+
         }
         stage("Build Images") {
             steps {
@@ -28,9 +28,9 @@ pipeline {
                     sh "pwd"
                     sh "echo $DOCKERHUB_CREDENTIAL_PSW | docker login -u $DOCKERHUB_CREDENTIAL_USR --password-stdin"
                     // sh "docker build -t $DOCKERHUB_REPOSITORY:$VERSION ."
-                    sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"   
+                    sh "docker push $DOCKERHUB_REPOSITORY:$VERSION"
                }
-            
+
         }
         stage('Deploy on EC2') {
             steps {

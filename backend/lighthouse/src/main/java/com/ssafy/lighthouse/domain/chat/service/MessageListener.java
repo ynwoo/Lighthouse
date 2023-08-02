@@ -24,7 +24,8 @@ public class MessageListener {
 
     @KafkaListener(
             topics = KafkaConstants.KAFKA_TOPIC,
-            groupId = KafkaConstants.GROUP_PROPAGATE
+            groupId = KafkaConstants.GROUP_PROPAGATE,
+            containerFactory = "propKafkaListenerContainerFactory"
     )
     public void listenAndSend(MessageDto messageDto) {
         log.info("Propagation consumer working with : " + messageDto.toString());
@@ -35,7 +36,8 @@ public class MessageListener {
 
     @KafkaListener(
             topics = KafkaConstants.KAFKA_TOPIC,
-            groupId = KafkaConstants.GROUP_STORE
+            groupId = KafkaConstants.GROUP_STORE,
+            containerFactory = "storeKafkaListenerContainerFactory"
     )
     public void listenAndStore(MessageDto messageDto) {
 

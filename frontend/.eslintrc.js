@@ -28,7 +28,7 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    // 'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
     'jsx-a11y/no-static-element-interactions': 0,
     'jsx-a11y/click-events-have-key-events': 0,
     'react/prop-types': 'off',
@@ -43,5 +43,6 @@ module.exports = {
         allowNamedExports: false,
       },
     ],
+    'no-param-reassign': 'off',
   },
 }

@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.user.controller;
 
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
 import com.ssafy.lighthouse.domain.user.service.JwtService;
 import com.ssafy.lighthouse.domain.user.service.UserService;
 
@@ -235,6 +236,16 @@ public class UserController {
 	}
 
 	private Long getUserId() {
+//		String token = request.getHeader("access-token");
+//		if (jwtService.checkToken(token)) {
+//			log.info("사용 가능한 토큰!!!");
+//			// 로그인 사용자 정보
+//			Long idByToken = jwtService.getIdByToken(token);
+//
+//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
+//			return userMyPageDto.getId();
+//		}
+//		throw new UnAuthorizedException();
 		return 1L;
 	}
 }
