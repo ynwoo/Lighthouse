@@ -37,36 +37,44 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     private final UserTagRepository userTagRepository;
 
     @Override
-    public ProfileResponse findProfileByUserId(Long userId) {
+    public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
+        Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) :new HashSet<>();
         Set<Long> progressSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PROGRESS);
         Set<Long> terminatedSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.TERMINATED);
         Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+
+        // all
         Set<Long> allStudyIdSet = new HashSet<>();
+        allStudyIdSet.addAll(participatedSet);
         allStudyIdSet.addAll(progressSet);
         allStudyIdSet.addAll(terminatedSet);
         allStudyIdSet.addAll(bookmarkSet);
-
 
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         QFollow followee = new QFollow("followee");
 
         List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
-        List<SimpleStudyDto> studies = new ArrayList<>();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
+        List<SimpleStudyDto> progressStudies = new ArrayList<>();
+        List<SimpleStudyDto> terminatedStudies = new ArrayList<>();
         List<SimpleStudyDto> bookmarkStudies = new ArrayList<>();
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
             // 진행중 스터디
             if(progressSet.contains(study.getId())) {
-                studies.add(simpleStudyDto);
+                progressStudies.add(simpleStudyDto);
             } 
             // 끝난 스터디
             else if(terminatedSet.contains(study.getId())) {
+                terminatedStudies.add(simpleStudyDto);
+            } 
+            // 신청한 스터디
+            else if (participatedSet.contains(study.getId())) {
                 participatedStudies.add(simpleStudyDto);
             }
-            
+
             // 북마크 한 스터디
             if(bookmarkSet.contains(study.getId())) {
                 bookmarkStudies.add(simpleStudyDto);
@@ -93,9 +101,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .nickname(result.getNickname())
                 .profileImgUrl(result.getProfileImgUrl())
                 .description(result.getDescription())
-                .studies(studies)
                 .tags(tags)
                 .participatedStudies(participatedStudies)
+                .progressStudies(progressStudies)
+                .terminatedStudies(terminatedStudies)
                 .bookmarkStudies(bookmarkStudies)
                 .score(result.getScore())
                 .following(result.getFollowing())

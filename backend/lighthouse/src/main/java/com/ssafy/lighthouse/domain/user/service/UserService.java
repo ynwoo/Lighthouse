@@ -27,7 +27,7 @@ public interface UserService {
 
     UserMyPageDto getMyPageUser(Long userId);
 
-    ProfileResponse findProfileByUserId(Long userId);
+    ProfileResponse findProfileByUserId(Long userId, Long loginId);
 
     // userEval
     void createUserEval(UserEvalDto userEvalDto);
