@@ -180,4 +180,10 @@ public class UserServiceImpl implements UserService {
 		User existingUser = userRepository.findByEmailAndIsValid(emailToValidate, 1);
 		return existingUser == null;
 	}
+
+	@Override
+	public boolean isNicknameUnique(String nicknameToValidate) {
+		User existingUser = userRepository.findByNicknameAndIsValid(nicknameToValidate, 1);
+		return existingUser == null;
+	}
 }

@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 	//	User findUserWithTags(@Param("userId") Long userId);
 	User findByEmailAndIsValid(String email, int isValid);
 
+	User findByNicknameAndIsValid(String nickname, int isValid);
+
 	User findByIdAndIsValid(Long id, int isValid);
 
 	@Transactional
