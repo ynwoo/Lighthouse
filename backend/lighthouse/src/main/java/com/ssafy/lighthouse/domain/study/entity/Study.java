@@ -4,7 +4,12 @@ import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.domain.user.entity.User;
-import lombok.*;
+import com.ssafy.lighthouse.global.util.STATUS;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,8 +17,7 @@ import java.util.Set;
 @Entity
 @Getter
 @ToString
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends BaseEntity {
     private String title;
@@ -29,19 +33,27 @@ public class Study extends BaseEntity {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
-
-    // test용
-    public Study(String title) {
-        this.title = title;
+    private int status;
+    private Long leaderId;
+    
+    public void share() {
+        this.status = STATUS.SHARE; // share중인 상태
     }
+    
+    // like 관리
+    public void addLike(){this.likeCnt++;}
+    public void removeLike(){this.likeCnt--;}
+    
+    // bookmark 관리
+    public void addBookmark(){this.bookmarkCnt++;}
+    public void removeBookmark(){this.bookmarkCnt--;}
+
+    public void addMember() {this.currentMember++;}
+    public void removeMember() {this.currentMember--;}
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "originalId")
     private Study original;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "leaderId")
-    private User leader;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sidoId")
@@ -65,9 +77,9 @@ public class Study extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
-    private Set<StudyMaterial> studyMaterials;
+    private Set<Session> sessions;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
-    private Set<Session> sessions;
+    private Set<Qna> qnas;
 }

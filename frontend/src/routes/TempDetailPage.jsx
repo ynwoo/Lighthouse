@@ -18,19 +18,21 @@ export default function TempDetailPage() {
     TempReview: <TempReview study={study} />,
   }
 
-  // const stat = 1
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
-        marginTop: '-4px',
-      }}
-    >
-      <SideComponent />
-      <div>
+    <div className="info_container" style={{ display: 'flex' }}>
+      <div className="info_item" style={{ flex: '2' }}>
+        <SideComponent />
+      </div>
+
+      {/* Tabs */}
+      <div
+        className="info_item"
+        style={{
+          flex: '8',
+        }}
+      >
         <Tabs
+          style={{ width: '90%', right: '50px' }}
           type="card"
           items={new Array(Object.keys(tabMenu).length)
             .fill(null)

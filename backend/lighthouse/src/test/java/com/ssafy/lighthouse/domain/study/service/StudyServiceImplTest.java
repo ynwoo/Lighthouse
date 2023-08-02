@@ -1,6 +1,6 @@
 package com.ssafy.lighthouse.domain.study.service;
 
-import com.ssafy.lighthouse.domain.study.dto.StudyDto;
+import com.ssafy.lighthouse.domain.study.dto.StudyResponse;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import com.ssafy.lighthouse.domain.study.repository.StudyTagRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +29,10 @@ class StudyServiceImplTest {
 
     @BeforeEach
     public void init() {
-        studyTagRepository.save(new StudyTag(224L, 1L));
-        studyTagRepository.save(new StudyTag(224L, 2L));
-        studyTagRepository.save(new StudyTag(224L, 3L));
-        studyTagRepository.save(new StudyTag(224L, 4L));
+//        studyTagRepository.save(new StudyTag(224L, 1L));
+//        studyTagRepository.save(new StudyTag(224L, 2L));
+//        studyTagRepository.save(new StudyTag(224L, 3L));
+//        studyTagRepository.save(new StudyTag(224L, 4L));
 
         em.flush();
         em.clear();
@@ -40,8 +40,8 @@ class StudyServiceImplTest {
 
     @Test
     public void createById() {
-        StudyDto studyDto = studyService.createStudyByStudyId(224L);
-        log.debug("service - createById {}", studyDto);
+        StudyResponse studyResponse = studyService.createStudyByStudyId(224L);
+        log.debug("service - createById {}", studyResponse);
     }
 
 }

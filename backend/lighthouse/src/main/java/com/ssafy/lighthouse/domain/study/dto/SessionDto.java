@@ -1,17 +1,23 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.study.entity.Session;
 import com.ssafy.lighthouse.domain.study.entity.SessionCheck;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class SessionDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionReq {
+		private Long id;
+		private int isValid;
 		private String startedAt;
 		private String endedAt;
 		private Long studyId;
@@ -20,6 +26,8 @@ public class SessionDto {
 		private String comment;
 		private int status;
 		private int seqNum;
+		private List<StudyMaterialDto.Req> studyMaterials;
+		private List<SessionCheckReq> sessionChecks;
 
 		@Builder
 		public SessionReq(String startedAt, String endedAt, Long studyId, String title, String description,
@@ -36,15 +44,20 @@ public class SessionDto {
 
 		public Session toEntity() {
 			return Session.builder()
-				.startedAt(startedAt)
-				.endedAt(endedAt)
-				.studyId(studyId)
-				.title(title)
-				.description(description)
-				.comment(comment)
-				.status(status)
-				.seqNum(seqNum)
-				.build();
+					.id(id)
+					.isValid(isValid)
+					.startedAt(startedAt)
+					.endedAt(endedAt)
+					.studyId(studyId)
+					.title(title)
+					.description(description)
+					.comment(comment)
+					.status(status)
+					.seqNum(seqNum)
+					.studyMaterials(this.studyMaterials != null ? this.studyMaterials.stream().map(StudyMaterialDto.Req::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+					.sessionChecks(this.sessionChecks != null ? this.sessionChecks.stream().map(SessionCheckReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+					.build();
+
 		}
 	}
 
@@ -52,6 +65,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionRes {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private String startedAt;
 		private String endedAt;
@@ -61,9 +75,12 @@ public class SessionDto {
 		private String comment;
 		private int status;
 		private int seqNum;
+		private List<StudyMaterialDto.Res> studyMaterials;
+		private List<SessionCheckRes> sessionChecks;
 
 		public SessionRes(Session session) {
 			this.id = session.getId();
+			this.isValid = session.getIsValid();
 			this.createdAt = session.getCreatedAt();
 			this.startedAt = session.getStartedAt();
 			this.endedAt = session.getEndedAt();
@@ -73,25 +90,16 @@ public class SessionDto {
 			this.comment = session.getComment();
 			this.status = session.getStatus();
 			this.seqNum = session.getSeqNum();
-		}
-
-		public Session toEntity() {
-			return Session.builder()
-					.startedAt(startedAt)
-					.endedAt(endedAt)
-					.studyId(studyId)
-					.title(title)
-					.description(description)
-					.comment(comment)
-					.status(status)
-					.seqNum(seqNum)
-					.build();
+			this.studyMaterials = session.getStudyMaterials() != null ? session.getStudyMaterials().stream().filter(BaseEntity::isValid).map(StudyMaterialDto.Res::new).collect(Collectors.toList()) : null;
+			this.sessionChecks = session.getSessionChecks() != null ? session.getSessionChecks().stream().filter(BaseEntity::isValid).map(SessionCheckRes::new).collect(Collectors.toList()) : null;
 		}
 	}
 
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckReq {
+		private Long id;
+		private int isValid;
 		private Long userId;
 		private Long sessionId;
 		private String content;
@@ -105,6 +113,8 @@ public class SessionDto {
 
 		public SessionCheck toEntity() {
 			return SessionCheck.builder()
+					.id(id)
+					.isValid(isValid)
 				.userId(userId)
 				.sessionId(sessionId)
 				.content(content)
@@ -116,6 +126,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckRes {
 		private Long id;
+		private int isValid;
 		private String createdAt;
 		private Long userId;
 		private Long sessionId;
@@ -123,6 +134,7 @@ public class SessionDto {
 
 		public SessionCheckRes(SessionCheck sessionCheck) {
 			this.id = sessionCheck.getId();
+			this.isValid = sessionCheck.getIsValid();
 			this.createdAt = sessionCheck.getCreatedAt();
 			this.userId = sessionCheck.getUserId();
 			this.sessionId = sessionCheck.getSessionId();

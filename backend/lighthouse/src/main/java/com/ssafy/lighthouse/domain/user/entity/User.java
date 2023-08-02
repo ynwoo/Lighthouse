@@ -16,14 +16,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.context.annotation.Configuration;
 
 @Entity
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 public class User extends BaseEntity {
 
+	@Column(updatable = false)
 	private String password;
 	private String name;
 	private String email;
@@ -38,22 +42,6 @@ public class User extends BaseEntity {
     private String token;
     //@OneToMany(mappedBy = "user")
     //private List<UserTag> userTags = new ArrayList<>();
-
-    @Builder
-	public User(String password, String name, String email, String nickname,
-		String profileImgUrl, int age, Long sidoId, Long gugunId,
-		String phoneNumber, String description) {
-		this.password = password;
-		this.name = name;
-		this.email = email;
-		this.nickname = nickname;
-		this.profileImgUrl = profileImgUrl;
-		this.age = age;
-		this.sidoId = sidoId;
-		this.gugunId = gugunId;
-		this.phoneNumber = phoneNumber;
-		this.description = description;
-	}
 
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,

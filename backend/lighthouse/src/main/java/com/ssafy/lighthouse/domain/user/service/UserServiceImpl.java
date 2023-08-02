@@ -1,30 +1,41 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import com.ssafy.lighthouse.domain.study.entity.StudyTag;
+import com.ssafy.lighthouse.domain.study.exception.StudyTagException;
+import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.entity.Follow;
 import com.ssafy.lighthouse.domain.user.entity.User;
+import com.ssafy.lighthouse.domain.user.entity.UserEval;
 import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
+import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
+import com.ssafy.lighthouse.domain.user.repository.UserEvalRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserTagRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.lighthouse.global.util.ERROR;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
+@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	private UserRepository userRepository;
-	private UserTagRepository userTagRepository;
-
-	@Autowired
-	public UserServiceImpl(UserRepository userRepository, UserTagRepository userTagRepository) {
-		this.userRepository = userRepository;
-		this.userTagRepository = userTagRepository;
-	}
+	private final UserRepository userRepository;
+	private final UserTagRepository userTagRepository;
+	private final UserEvalRepository userEvalRepository;
+	private final FollowRepository followRepository;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -80,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		User foundUser = userRepository.findById(userMyPageDto.getId()).get();
 		System.out.println("찾은 유저 : " + foundUser);
 		// Update : 닉네임 업데이트
-		foundUser.updateUserInfo(userMyPageDto.getPassword(), userMyPageDto.getName(),
+		foundUser.updateUserInfo(userMyPageDto.getPassword() == null ? foundUser.getPassword() : userMyPageDto.getPassword(), userMyPageDto.getName(),
 			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
@@ -131,6 +142,46 @@ public class UserServiceImpl implements UserService {
 			() -> new UserNotFoundException(userId.toString())
 		);
 		return this.entityToDto(user);
+	}
+
+	@Override
+	public ProfileResponse findProfileByUserId(Long userId) {
+		return userRepository.findProfileByUserId(userId);
+	}
+
+	@Override
+	public void createUserEval(UserEvalDto userEvalDto) {
+		Optional<UserEval> result = userEvalRepository.find(userEvalDto.getUserId(), userEvalDto.getEvaluatorId());
+		if(result.isPresent()) {
+			throw new UserNotFoundException(ERROR.CREATE);
+		}
+		userEvalRepository.save(userEvalDto.toEntity());
+	}
+
+	@Override
+	public void removeUserEval(Long userId, Long evaluatorId) {
+		Optional<UserEval> result = userEvalRepository.find(userId, evaluatorId);
+		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
+	}
+
+	@Override
+	public void createFollow(Long followeeId, Long followerId) {
+		Optional<Follow> result = followRepository.find(followeeId, followerId);
+		if(result.isPresent()) {
+			throw new UserNotFoundException(ERROR.CREATE);
+		}
+		followRepository.save(Follow.builder()
+				.followerId(followerId)
+				.followeeId(followeeId)
+				.build());
+	}
+
+	@Override
+	public void removeFollow(Long followeeId, Long followerId) {
+		Optional<Follow> result = followRepository.find(followeeId, followerId);
+		log.debug("followeeId : {}", result.get().getFolloweeId());
+		log.debug("followerId : {}", result.get().getFollowerId());
+		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
 	}
 
 	// @Override

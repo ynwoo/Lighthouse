@@ -11,7 +11,7 @@ const siderStyle = {
   color: 'black',
   backgroundColor: 'transparent',
   margin: '10px',
-  // position: 'fixed'
+  position: 'fixed',
 }
 
 export default function SideComponent() {
