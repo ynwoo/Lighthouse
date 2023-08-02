@@ -1,15 +1,18 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Entity
 @Getter
 @ToString
-@Builder
-@AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StudyEval extends BaseEntity {
     private Long studyId;

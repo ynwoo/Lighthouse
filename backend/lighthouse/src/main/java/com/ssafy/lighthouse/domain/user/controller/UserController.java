@@ -1,6 +1,8 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
 import com.ssafy.lighthouse.domain.user.service.JwtService;
 import com.ssafy.lighthouse.domain.user.service.UserService;
 
@@ -9,24 +11,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Slf4j
 @RequestMapping("/users")
 public class UserController {
-
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
@@ -55,7 +51,7 @@ public class UserController {
 			UserMyPageDto loginUser = userService.loginUser(param.get("userEmail"),
 				param.get("userPwd"));
 			if (loginUser != null) {
-				logger.debug("로그인 유저 정보 : {}", loginUser);
+				log.debug("로그인 유저 정보 : {}", loginUser);
 				String accessToken = jwtService.createAccessToken("userId",
 					loginUser.getId());// key, data
 				String refreshToken = jwtService.createRefreshToken("userId",
@@ -63,8 +59,8 @@ public class UserController {
 
 				userService.saveRefreshToken(loginUser.getId(), refreshToken);
 
-				logger.debug("로그인 accessToken 정보 : {}", accessToken);
-				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
+				log.debug("로그인 accessToken 정보 : {}", accessToken);
+				log.debug("로그인 refreshToken 정보 : {}", refreshToken);
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
@@ -74,7 +70,7 @@ public class UserController {
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
-			logger.error("로그인 실패 : {}", e);
+			log.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -87,7 +83,7 @@ public class UserController {
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		String token = request.getHeader("access-token");
 		if (jwtService.checkToken(token)) {
-			logger.info("사용 가능한 토큰!!!");
+			log.info("사용 가능한 토큰!!!");
 
 			// payload에서 id값 추출
 			Long idByToken = jwtService.getIdByToken(token);
@@ -97,7 +93,7 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.error("로그아웃 실패 : {}", e);
+				log.error("로그아웃 실패 : {}", e);
 				resultMap.put("message", e.getMessage());
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
@@ -116,17 +112,24 @@ public class UserController {
 			Long idByToken = jwtService.getIdByToken(token);
 			if (token.equals(userService.getRefreshToken(idByToken))) {
 				String accessToken = jwtService.createAccessToken("userId", idByToken);
-				logger.debug("token : {}", accessToken);
-				logger.debug("정상적으로 액세스토큰 재발급!!!");
+				log.debug("token : {}", accessToken);
+				log.debug("정상적으로 액세스토큰 재발급!!!");
 				resultMap.put("access-token", accessToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			}
 		} else {
-			logger.debug("리프레쉬토큰도 사용불!!!!!!!");
+			log.debug("리프레쉬토큰도 사용불!!!!!!!");
 			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	// userId에 해당하는 유저 프로필 조회
+	@GetMapping("/{user-id}")
+	public ResponseEntity<?> findProfileByUserId(@PathVariable(name = "user-id") Long userId) {
+		log.debug("userId : {}", userId);
+		return new ResponseEntity<>(userService.findProfileByUserId(userId), HttpStatus.OK);
 	}
 
 	@GetMapping("/mypage")
@@ -137,7 +140,7 @@ public class UserController {
 
 		String token = request.getHeader("access-token");
 		if (jwtService.checkToken(token)) {
-			logger.info("사용 가능한 토큰!!!");
+			log.info("사용 가능한 토큰!!!");
 			try {
 				// 로그인 사용자 정보
 				Long idByToken = jwtService.getIdByToken(token);
@@ -148,12 +151,12 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.error("정보조회 실패 : {}", e);
+				log.error("정보조회 실패 : {}", e);
 				resultMap.put("message", e.getMessage());
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
 		} else {
-			logger.error("사용 불가능 토큰!!!");
+			log.error("사용 불가능 토큰!!!");
 			resultMap.put("message", FAIL);
 			status = HttpStatus.UNAUTHORIZED;
 		}
@@ -182,7 +185,7 @@ public class UserController {
 
 	@DeleteMapping()
 	public ResponseEntity<?> deleteUser(HttpServletRequest request) {
-		logger.info("deleteUser - 호출");
+		log.info("deleteUser - 호출");
 		try {
 			String token = request.getHeader("access-token");
 			if (jwtService.checkToken(token)) {
@@ -194,5 +197,55 @@ public class UserController {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
+	}
+
+	@PostMapping("/eval")
+	public ResponseEntity<?> createUserEval(@RequestBody UserEvalDto userEvalDto) {
+		// session에서 userId 가져오기
+		userEvalDto.setEvaluatorId(getUserId());
+		log.debug("userId : {}", userEvalDto.getUserId());
+		userService.createUserEval(userEvalDto);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@DeleteMapping("/eval/{user-id}")
+	public ResponseEntity<?> removeUserEval(@PathVariable(name = "user-id") Long userId) {
+		// session에서 userId 가져오기
+		Long evaluatorId = getUserId();
+		log.debug("userId : {}", userId);
+		userService.removeUserEval(userId, evaluatorId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@PostMapping("/follow/{followee-id}")
+	public ResponseEntity<?> createFollow(@PathVariable(name = "followee-id") Long followeeId) {
+		// session에서 userId 가져오기
+		Long followerId = getUserId();
+		log.debug("followerId : {}", followerId);
+		userService.createFollow(followeeId, followerId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	@DeleteMapping("/follow/{followee-id}")
+	public ResponseEntity<?> removeFollow(@PathVariable(name = "followee-id") Long followeeId) {
+		// session에서 userId 가져오기
+		Long followerId = getUserId();
+		log.debug("followerId : {}", followerId);
+		userService.removeFollow(followeeId, followerId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	private Long getUserId() {
+//		String token = request.getHeader("access-token");
+//		if (jwtService.checkToken(token)) {
+//			log.info("사용 가능한 토큰!!!");
+//			// 로그인 사용자 정보
+//			Long idByToken = jwtService.getIdByToken(token);
+//
+//			UserMyPageDto userMyPageDto = userService.getUserById(idByToken);
+//			return userMyPageDto.getId();
+//		}
+//		throw new UnAuthorizedException();
+		return 1L;
 	}
 }

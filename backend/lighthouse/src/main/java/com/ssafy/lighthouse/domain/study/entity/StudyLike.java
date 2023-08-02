@@ -3,7 +3,7 @@ package com.ssafy.lighthouse.domain.study.entity;
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Entity
 @Getter

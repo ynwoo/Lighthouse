@@ -6,16 +6,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @MappedSuperclass
 public abstract class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(insertable = false)
+	@Column(insertable = false, updatable = false)
 	private String createdAt;
 	@Column(insertable = false)
 	private int isValid;
@@ -23,6 +25,5 @@ public abstract class BaseEntity {
 	public void remove() {
 		this.isValid = 0;
 	}
-
-	public void resetId() {this.id = null;}
+	public boolean isValid() {return isValid == 1;}
 }
