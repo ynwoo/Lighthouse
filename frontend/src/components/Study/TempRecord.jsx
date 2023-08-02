@@ -43,22 +43,17 @@ export default function TempQnA() {
       style={{
         width: '100%',
         height: '100%',
-        border: '2px solid #999999',
         borderRadius: '20px',
         textAlign: 'center',
         backgroundColor: 'white',
-        // display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
         boxShadow: '4px 4px 15px rgba(0, 0, 0, 0.4)',
         position: 'relative',
-        margin: '20px',
         padding: '20px',
+        margin: '-18px',
       }}
     >
-      <div className="circular-image">
-        <img src="/logo192.png" alt="안뜸" />
-      </div>
       <div className="grid-container">
         <div className="item">
           <div
