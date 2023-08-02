@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
 import TempTodoList from './TempTodoList'
+import TempList from './TempList'
 
 const { createRoot } = ReactDOM
 
@@ -100,6 +101,7 @@ export default function App() {
         margin: '-18px',
       }}
     >
+      <TempList />
       <TempTodoList />
       <Calendar dateCellRender={dateCellRender} />
       <Button onClick={showModal}>Add Event</Button>

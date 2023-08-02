@@ -9,32 +9,26 @@ const initialState = {
     refreshToken: '',
     accessToken: '',
   },
-  sido: [],
-  gugun: [],
+  sido: {},
+  gugun: { 0: '시/도를 선택하세요' },
 }
 
 export const userAction = {
   // 시도 액션
-  sido: createAsyncThunk('user/sido', async (payload, thunkAPI) => {
+  sido: createAsyncThunk('user/sido', async (_, thunkAPI) => {
     try {
-      console.log('payload', payload)
       const response = await axios.get(`${API_URL}/places/sido`)
-      console.log('response', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
-      console.log('안돼')
       return thunkAPI.rejectWithValue(error)
     }
   }),
   // 구군 액션
   gugun: createAsyncThunk('user/gugun', async (payload, thunkAPI) => {
     try {
-      console.log('payload', payload)
-      const response = await axios.get(`${API_URL}/places/gugun`)
-      console.log('response', response)
+      const response = await axios.get(`${API_URL}/places/gugun/${payload}`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
-      console.log('안돼')
       return thunkAPI.rejectWithValue(error)
     }
   }),
@@ -42,10 +36,8 @@ export const userAction = {
   // 회원가입
   signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
-      console.log('URL', API_URL)
-      console.log('payload', payload)
+      console.log(payload)
       const response = await axios.post(`${API_URL}/users`, payload)
-      console.log('response', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -55,8 +47,6 @@ export const userAction = {
   // 로그인
   login: createAsyncThunk('LOGIN', async (payload, thunkAPI) => {
     try {
-      console.log('URL', API_URL)
-      console.log('payload', payload)
       const response = await axios({
         method: 'post',
         url: '/users/login',
@@ -66,7 +56,6 @@ export const userAction = {
           'Content-Type': 'application/json;charset=utf-8',
         },
       })
-      console.log('response', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -79,9 +68,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     signUp: (state, action) => {
-      console.log(action.payload)
       state.signUpData = action.payload
-      console.log(state.signUpData)
     },
   },
   extraReducers: {
@@ -92,14 +79,11 @@ export const userSlice = createSlice({
       state.gugun = action.payload
     },
     [userAction.signUp.fulfilled]: (state, action) => {
-      state.sido.push(action.payload)
+      console.log(action.payload)
     },
     [userAction.login.fulfilled]: (state, action) => {
-      console.log(action.payload)
       state.token.accessToken = action.payload['access-token']
       state.token.refreshToken = action.payload['refresh-token']
-      console.log(state.token.accessToken)
-      console.log(state.token.refreshToken)
     },
   },
 })
