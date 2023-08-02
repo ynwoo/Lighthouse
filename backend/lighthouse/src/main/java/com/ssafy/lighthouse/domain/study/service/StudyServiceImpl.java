@@ -6,6 +6,8 @@ import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.ERROR;
+import com.ssafy.lighthouse.global.util.LocalDateTime;
+import com.ssafy.lighthouse.global.util.ROLE;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -148,7 +150,7 @@ public class StudyServiceImpl implements StudyService {
 
     // 변경사항이 있으면 update 진행
     @Override
-    public void updateStudyByStudyId(StudyRequest studyRequest) {
+    public void updateStudyByStudyId(StudyRequest studyRequest, Long userId) {
         Study study = studyRequest.toEntity();
         log.debug("studyId : {}", study.getId());
         studyRepository.save(study);
@@ -176,16 +178,26 @@ public class StudyServiceImpl implements StudyService {
         sessionCheckRepository.saveAll(sessionChecks);
         studyMaterialRepository.saveAll(studyMaterials);
 
-        em.clear();
+//        em.clear();
+
+        log.debug("status : {}", studyRequest.getStatus());
 
         // 스터디 참여 기록 등록(팀장)
-        // userId 가져오기 필요
-//        if(study.getStatus() == STATUS.PROGRESS) {
-//            participationHistoryRepository.save(ParticipationHistory
-//                    .builder()
-//                    .userId(userId)
-//                    .build());
-//        }
+        if(studyRequest.getStatus() == STATUS.PROGRESS) {
+            participationHistoryRepository.save(ParticipationHistory
+                    .builder()
+                    .userId(userId)
+                            .studyId(studyRequest.getId())
+                            .status(STATUS.PROGRESS)
+                            .userRole(ROLE.TEAM_LEADER)
+                            .joinedAt(LocalDateTime.now())
+                    .build());
+        }
+        // 스터디가 끝나면 팀 전원의 기록 수정
+        else if(studyRequest.getStatus() == STATUS.TERMINATED) {
+            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
+                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.TERMINATED));
+        }
     }
 
     @Override

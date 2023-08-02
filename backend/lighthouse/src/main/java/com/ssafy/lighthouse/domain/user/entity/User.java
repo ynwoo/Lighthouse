@@ -34,7 +34,7 @@ public class User extends BaseEntity {
 	private String nickname;
 
 	private String profileImgUrl;
-	private int age;
+	private Integer age;
 	private Long sidoId;
 	private Long gugunId;
 	private String phoneNumber;
