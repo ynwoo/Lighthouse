@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        VERSION = "0.1.0" //Major.Minor.Patch
+        VERSION = "0.1.1" //Major.Minor.Patch
         DOCKERHUB_REPOSITORY = "imsongj/test"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-imsong')
         CONTAINER_NAME = "test-lighthouse"
