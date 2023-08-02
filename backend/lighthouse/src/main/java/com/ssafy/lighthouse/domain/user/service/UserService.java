@@ -27,8 +27,6 @@ public interface UserService {
 
     UserMyPageDto getMyPageUser(Long userId);
 
-    // List<String> getKeywordsByUserId(Long userId);
-
     ProfileResponse findProfileByUserId(Long userId);
 
     // userEval
