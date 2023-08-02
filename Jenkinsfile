@@ -5,8 +5,8 @@ pipeline {
         DOCKERHUB_REPOSITORY_BACK = "imsongj/test_backend"
         DOCKERHUB_REPOSITORY_FRONT = "imsongj/test_frontend"
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-imsong')
-        CONTAINER_BACK_NAME = "test-lighthouse-back"
-        CONTAINER_FRONT_NAME = "test-lighthouse-front"
+        CONTAINER_NAME_BACK = "test-lighthouse-back"
+        CONTAINER_NAME_FRONT = "test-lighthouse-front"
         SSH_CONNECTION = "ubuntu@i9a409.p.ssafy.io"
         ENV_DIR = "./config/.env"
         PORT_BACK = "8081"
