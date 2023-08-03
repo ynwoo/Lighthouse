@@ -7,6 +7,8 @@ function MainComponent() {
   const text = useSelector(state => state.study.value)
   const filterdData = dummy.study_list.filter(item => item.title.includes(text))
 
+  console.log(sessionStorage.getItem('isLoggedIn'))
+
   return (
     <div
       style={{

@@ -19,20 +19,23 @@ export default function TempDetailPage() {
   }
 
   return (
-    <div className="info_container" style={{ display: 'flex' }}>
+    <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
         <SideComponent />
       </div>
 
       {/* Tabs */}
       <div
-        className="info_item"
+        className="info_item1"
         style={{
           flex: '8',
         }}
       >
         <Tabs
-          style={{ width: '90%', right: '50px' }}
+          style={{
+            width: '90%',
+            right: '50px',
+          }}
           type="card"
           items={new Array(Object.keys(tabMenu).length)
             .fill(null)
