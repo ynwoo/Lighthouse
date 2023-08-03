@@ -1,8 +1,12 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import java.util.List;
+
+import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
 import com.ssafy.lighthouse.domain.user.entity.User;
 
 public interface UserService {
@@ -26,9 +30,8 @@ public interface UserService {
 
 	void deleRefreshToken(Long userId) throws Exception;
 
+	ProfileResponse findProfileByUserId(Long userId, Long loginId);
 
-    ProfileResponse findProfileByUserId(Long userId, Long loginId);
-	
 	UserMyPageDto getMyPageUser(Long userId);
 
 	// userEval
@@ -40,6 +43,13 @@ public interface UserService {
 	void createFollow(Long followeeId, Long followerId);
 
 	void removeFollow(Long followeeId, Long followerId);
+
+	boolean isEmailUnique(String emailToValidate);
+
+	boolean isNicknameUnique(String nicknameToValidate);
+
+
+	List<AlertDto> getAlertDtoList(Long id);
 
 	default UserMyPageDto entityToDto(User userEntity) {
 		UserMyPageDto dto = UserMyPageDto.builder()
@@ -56,7 +66,15 @@ public interface UserService {
 		return dto;
 	}
 
-	boolean isEmailUnique(String emailToValidate);
-
-	boolean isNicknameUnique(String nicknameToValidate);
+	default AlertDto alertQueueEntityToAlertDto(AlertQueue alertQueue) {
+		AlertDto alertDto = AlertDto.builder()
+			.id(alertQueue.getId())
+			.createdAt(alertQueue.getCreatedAt())
+			.producerId(alertQueue.getProducerId())
+			.consumerId(alertQueue.getConsumerId())
+			.message(alertQueue.getMessage())
+			.type(alertQueue.getType())
+			.build();
+		return alertDto;
+	}
 }

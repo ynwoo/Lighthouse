@@ -1,27 +1,20 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
-import static org.springframework.http.HttpStatus.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
+import com.ssafy.lighthouse.domain.user.dto.*;
+import com.ssafy.lighthouse.domain.user.service.JwtService;
+import com.ssafy.lighthouse.domain.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.ssafy.lighthouse.domain.user.dto.EmailDto;
-import com.ssafy.lighthouse.domain.user.dto.LoginDto;
-import com.ssafy.lighthouse.domain.user.dto.NicknameDto;
-import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
-import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.springframework.http.HttpStatus.ACCEPTED;
 
 @RestController
 @Slf4j
@@ -104,6 +97,10 @@ public class UserController {
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
 
+				// 알림 목록 불러오기
+				List<AlertDto> alertDtoList = userService.getAlertDtoList(loginUser.getId());
+				resultMap.put("alerts", alertDtoList);
+
 				status = HttpStatus.OK;
 			} else {
 				resultMap.put("message", FAIL);
@@ -169,7 +166,7 @@ public class UserController {
 	@GetMapping("/{user-id}")
 	public ResponseEntity<?> findProfileByUserId(@PathVariable(name = "user-id") Long userId,
 												 HttpServletRequest request) {
-		Long loginId = getUserId(request);
+		Long loginId = (Long) request.getAttribute("userId");
 		log.debug("userId : {}, loginId : {}", userId, loginId);
 		return new ResponseEntity<>(userService.findProfileByUserId(userId, loginId), HttpStatus.OK);
 	}
@@ -257,7 +254,7 @@ public class UserController {
 	public ResponseEntity<?> createUserEval(@RequestBody UserEvalDto userEvalDto,
 											HttpServletRequest request) {
 		// session에서 userId 가져오기
-		userEvalDto.setEvaluatorId(getUserId(request));
+		userEvalDto.setEvaluatorId((Long) request.getAttribute("userId"));
 		log.debug("userId : {}", userEvalDto.getUserId());
 		userService.createUserEval(userEvalDto);
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -267,7 +264,7 @@ public class UserController {
 	public ResponseEntity<?> removeUserEval(@PathVariable(name = "user-id") Long userId,
 											HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long evaluatorId = getUserId(request);
+		Long evaluatorId = (Long) request.getAttribute("userId");
 		log.debug("userId : {}", userId);
 		userService.removeUserEval(userId, evaluatorId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -277,7 +274,7 @@ public class UserController {
 	public ResponseEntity<?> createFollow(@PathVariable(name = "followee-id") Long followeeId,
 										  HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long followerId = getUserId(request);
+		Long followerId = (Long) request.getAttribute("userId");
 		log.debug("followerId : {}", followerId);
 		userService.createFollow(followeeId, followerId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -287,26 +284,9 @@ public class UserController {
 	public ResponseEntity<?> removeFollow(@PathVariable(name = "followee-id") Long followeeId,
 										  HttpServletRequest request) {
 		// session에서 userId 가져오기
-		Long followerId = getUserId(request);
+		Long followerId = (Long) request.getAttribute("userId");
 		log.debug("followerId : {}", followerId);
 		userService.removeFollow(followeeId, followerId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-
-	private String getToken(HttpServletRequest request) {
-		// header에서 토큰 가져오기
-		String token = request.getHeader("access-token");
-		if (jwtService.checkToken(token)) {
-			log.info("사용 가능한 토큰!!!");
-
-			// 로그인 사용자의 id 리턴
-			return token;
-		}
-		// 사용 불가능한 토큰이면 예외처리
-		throw new UnAuthorizedException();
-	}
-
-	private Long getUserId(HttpServletRequest request) {
-		return jwtService.getIdByToken(getToken(request));
 	}
 }

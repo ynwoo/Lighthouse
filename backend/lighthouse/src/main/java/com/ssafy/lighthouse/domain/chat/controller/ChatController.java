@@ -30,7 +30,7 @@ public class ChatController {
         log.info("Produce message : " + messageDto.toString());
         messageDto.setTime(System.currentTimeMillis());
         try {
-            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, messageDto).get();
+            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, "send_temp_key", messageDto).get();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -2,9 +2,6 @@ package com.ssafy.lighthouse.domain.study.controller;
 
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 public class StudyController {
 
     private final StudyService studyService;
-    private final JwtService jwtService;
 
     // 검색 옵션에 대한 전체 조회
     @GetMapping
@@ -34,11 +30,7 @@ public class StudyController {
 
     // 상세 조회
     @GetMapping("/{study-id}")
-    public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId,
-                                                 HttpServletRequest request) {
-        // token 확인
-        getToken(request);
-
+    public ResponseEntity<?> findDetailByStudyId(@PathVariable(name = "study-id") Long studyId) {
         log.debug("studyId : {}", studyId);
         StudyResponse result = studyService.findDetailByStudyId(studyId);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -47,11 +39,7 @@ public class StudyController {
     // original study를 사용한 스터디들 조회
     @GetMapping("/use/{original-id}")
     public ResponseEntity<?> findAllByOriginalId(@PathVariable(name = "original-id") Long originalId,
-                                                 StudySearchOption options,
-                                                 HttpServletRequest request) {
-        // token 확인
-        getToken(request);
-
+                                                 StudySearchOption options) {
         log.debug("originalId : {}", originalId);
         Page<SimpleStudyDto> result = studyService.findAllByOriginalId(originalId, options);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -77,8 +65,9 @@ public class StudyController {
     @PutMapping
     public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest,
                                          HttpServletRequest request) {
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("studyId : {}", studyRequest.getId());
+        log.debug("userId : {}", userId);
         studyService.updateStudyByStudyId(studyRequest, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
@@ -95,7 +84,7 @@ public class StudyController {
     public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId,
                                              HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.createStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -105,7 +94,7 @@ public class StudyController {
     public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId,
                                              HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -115,7 +104,7 @@ public class StudyController {
     public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId,
                                                  HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.createStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -125,7 +114,7 @@ public class StudyController {
     public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId,
                                                  HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -149,7 +138,7 @@ public class StudyController {
     public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto,
                                              HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyEvalDto.setUserId(userId);
         studyService.createStudyEval(studyEvalDto);
@@ -160,27 +149,9 @@ public class StudyController {
     public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId,
                                              HttpServletRequest request) {
 //         session에서 userId 가져오기
-        Long userId = getUserId(request);
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
-
-    private String getToken(HttpServletRequest request) {
-        // header에서 토큰 가져오기
-        String token = request.getHeader("access-token");
-        if (jwtService.checkToken(token)) {
-            log.info("사용 가능한 토큰!!!");
-
-            // 로그인 사용자의 id 리턴
-            return token;
-        }
-        // 사용 불가능한 토큰이면 예외처리
-        throw new UnAuthorizedException();
-    }
-
-    private Long getUserId(HttpServletRequest request) {
-        return jwtService.getIdByToken(getToken(request));
-    }
-
 }
