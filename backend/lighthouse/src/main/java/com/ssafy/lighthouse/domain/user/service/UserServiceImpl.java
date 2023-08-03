@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,14 +9,17 @@ import javax.transaction.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
 import com.ssafy.lighthouse.domain.user.entity.Follow;
 import com.ssafy.lighthouse.domain.user.entity.User;
 import com.ssafy.lighthouse.domain.user.entity.UserEval;
 import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
+import com.ssafy.lighthouse.domain.user.repository.AlertQueueRepository;
 import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserEvalRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	private final UserTagRepository userTagRepository;
 	private final UserEvalRepository userEvalRepository;
 	private final FollowRepository followRepository;
+	private final AlertQueueRepository alertQueueRepository;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -121,10 +126,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleRefreshToken(Long userId) throws Exception {
 		userRepository.deleteRefreshToken(userId);
-		// Map<String, String> map = new HashMap<String, String>();
-		// map.put("userId", useriuserIdd);
-		// map.put("token", null);
-		//userMapper.deleteRefreshToken(map);
 	}
 
 	@Override
@@ -185,5 +186,17 @@ public class UserServiceImpl implements UserService {
 	public boolean isNicknameUnique(String nicknameToValidate) {
 		User existingUser = userRepository.findByNicknameAndIsValid(nicknameToValidate, 1);
 		return existingUser == null;
+	}
+
+	@Override
+	public List<AlertDto> getAlertDtoList(Long id) {
+		List<AlertDto> result = new ArrayList<>();
+		// 구현 예정
+		List<AlertQueue> alertQueues = alertQueueRepository.findByConsumerIdAndIsValidOrderByCreatedAtDesc(
+			id, 1);
+		for(AlertQueue alertQueue : alertQueues) {
+			result.add(alertQueueEntityToAlertDto(alertQueue));
+		}
+		return result;
 	}
 }
