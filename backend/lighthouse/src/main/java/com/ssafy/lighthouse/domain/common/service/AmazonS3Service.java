@@ -1,7 +1,6 @@
 package com.ssafy.lighthouse.domain.common.service;
 
-import java.io.IOException;
-import java.util.UUID;
+import java.io.FileNotFoundException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,9 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AmazonS3Service {
 	public static final String CLOUNDFRONT_DOMAIN_NAME = "${CLOUDFRONT_DOMAIN_NAME}";
+	private static final String FILE_EXTENSION_SEPARATOR = ".";
+	private static final String FOLDER_SEPARATOR = "/";
+	private static final String TIME_SEPARATOR = "_";
 	private AmazonS3Client amazonS3Client;
 
 	@Value("${cloud.aws.s3.bucket}")
@@ -27,41 +32,60 @@ public class AmazonS3Service {
 
 
 
-	public String upload(MultipartFile file) {
-		String originalFileName = file.getOriginalFilename();
-		String filePath = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
+	public String upload(String category, MultipartFile file) {
+		String filePath = buildFileName(category, file.getOriginalFilename());
+
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentLength(file.getSize());
 		objectMetadata.setContentType(file.getContentType());
-
 		try {
-			amazonS3Client.putObject(
-				new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
+			amazonS3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Filed upload fail", e);
+			log.error("file upload fail", e);
 		}
-		return CLOUNDFRONT_DOMAIN_NAME + filePath;
-		//S3 파일 경로 리턴
-		//return s3Client.getUrl(bucket, fileName).toString();
 		//CloudFront 경로 리턴
-
+		//return CLOUNDFRONT_DOMAIN_NAME + filePath;
+		//S3 파일 경로 리턴
+		return amazonS3Client.getUrl(bucket, filePath).toString();
 	}
 
-	public String delete(String filePath) {
-		String result = "success";
+	public byte[] download(String filePath) {
 		try {
-			boolean isObjectExist = amazonS3Client.doesObjectExist(bucket, filePath);
-			if (isObjectExist) {
-				amazonS3Client.deleteObject(bucket, filePath);
-			} else {
-				result = "File not found";
-			}
+			validateFileExists(filePath);
+
+			S3Object s3Object = amazonS3Client.getObject(bucket, filePath);
+			S3ObjectInputStream inputStream = s3Object.getObjectContent();
+			return IOUtils.toByteArray(inputStream);
 		} catch (Exception e) {
-			log.debug("Delete File failed", e);
+			log.debug("file download fail", e);
+			return null;
 		}
-		return result;
+	}
+
+	public void delete(String filePath) {
+		try {
+			validateFileExists(filePath);
+			amazonS3Client.deleteObject(bucket, filePath);
+		} catch (Exception e) {
+			log.debug("file delete fail", e);
+		}
+	}
+
+	public static String buildFileName(String category, String originalFileName) {
+		int fileExtensionIndex = originalFileName.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+		String fileExtension = originalFileName.substring(fileExtensionIndex);
+		String fileName = originalFileName.substring(0, fileExtensionIndex);
+		String now = String.valueOf(System.currentTimeMillis());
+
+		return category + FOLDER_SEPARATOR + fileName + TIME_SEPARATOR + now + fileExtension;
+	}
+
+	private void validateFileExists(String filePath) throws FileNotFoundException {
+		if (!amazonS3Client.doesObjectExist(bucket, filePath)) {
+			throw new FileNotFoundException();
+		}
 	}
 }
