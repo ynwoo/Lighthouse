@@ -26,7 +26,7 @@ export default function TempDetailPage() {
 
       {/* Tabs */}
       <div
-        className="info_item"
+        className="info_item1"
         style={{
           flex: '8',
         }}
@@ -35,7 +35,6 @@ export default function TempDetailPage() {
           style={{
             width: '90%',
             right: '50px',
-            marginLeft: '20px',
           }}
           type="card"
           items={new Array(Object.keys(tabMenu).length)
