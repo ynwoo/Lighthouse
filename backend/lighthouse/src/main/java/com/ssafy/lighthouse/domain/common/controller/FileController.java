@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,17 +27,19 @@ import lombok.RequiredArgsConstructor;
 public class FileController {
 	private static final String FOLDER_SEPARATOR = "/";
 	private static final int UNDER_BAR_INDEX = 1;
-	private AmazonS3Service s3Service;
+	private static final String SUCCESS = "success";
+	private final AmazonS3Service s3Service;
 
 	@PostMapping(name = "S3 파일 업로드", value = "/file")
-	public String uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+	public ResponseEntity<?> uploadFile(@RequestPart("file") MultipartFile multipartFile) {
 		s3Service.upload("test", multipartFile);
-		return "success";
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	@GetMapping(name = "S3 파일 다운로드", value ="/file")
-	public ResponseEntity<ByteArrayResource> downloadFile(@RequestParam("filePath") String filePath) {
+	public ResponseEntity<?> downloadFile(@RequestParam("filePath") String filePath) {
 		byte[] data = s3Service.download(filePath);
+
 		ByteArrayResource resource = new ByteArrayResource(data);
 		HttpHeaders headers = buildHeaders(filePath, data);
 
@@ -46,9 +50,9 @@ public class FileController {
 	}
 
 	@DeleteMapping(name = "S3 파일 삭제", value = "/file")
-	public String deleteFile(@RequestParam("path") String filePath) {
+	public ResponseEntity<?> deleteFile(@RequestParam("filePath") String filePath) {
 		s3Service.delete(filePath);
-		return "success";
+		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
 	private HttpHeaders buildHeaders(String resourcePath, byte[] data) {

@@ -1,7 +1,5 @@
 package com.ssafy.lighthouse.domain.common.service;
 
-import java.io.FileNotFoundException;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +11,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
+import com.ssafy.lighthouse.domain.common.exception.S3FileNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,7 @@ public class AmazonS3Service {
 	private static final String FILE_EXTENSION_SEPARATOR = ".";
 	private static final String FOLDER_SEPARATOR = "/";
 	private static final String TIME_SEPARATOR = "_";
-	private AmazonS3Client amazonS3Client;
+	private final AmazonS3Client amazonS3Client;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
@@ -35,13 +34,13 @@ public class AmazonS3Service {
 	public String upload(String category, MultipartFile file) {
 		String filePath = buildFileName(category, file.getOriginalFilename());
 
-
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentLength(file.getSize());
 		objectMetadata.setContentType(file.getContentType());
 		try {
 			amazonS3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead));
+			log.debug("file upload success");
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("file upload fail", e);
@@ -58,6 +57,7 @@ public class AmazonS3Service {
 
 			S3Object s3Object = amazonS3Client.getObject(bucket, filePath);
 			S3ObjectInputStream inputStream = s3Object.getObjectContent();
+			log.debug("file download success");
 			return IOUtils.toByteArray(inputStream);
 		} catch (Exception e) {
 			log.debug("file download fail", e);
@@ -69,6 +69,7 @@ public class AmazonS3Service {
 		try {
 			validateFileExists(filePath);
 			amazonS3Client.deleteObject(bucket, filePath);
+			log.debug("file delete success");
 		} catch (Exception e) {
 			log.debug("file delete fail", e);
 		}
@@ -83,9 +84,9 @@ public class AmazonS3Service {
 		return category + FOLDER_SEPARATOR + fileName + TIME_SEPARATOR + now + fileExtension;
 	}
 
-	private void validateFileExists(String filePath) throws FileNotFoundException {
+	private void validateFileExists(String filePath) {
 		if (!amazonS3Client.doesObjectExist(bucket, filePath)) {
-			throw new FileNotFoundException();
+			throw new S3FileNotFoundException(filePath);
 		}
 	}
 }
