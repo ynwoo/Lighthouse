@@ -23,7 +23,8 @@ function SignIn() {
     dispatch(userAction.login(value)).then(res => {
       // 로그인 성공하면 메인으로 보내주는 코드
       // 실패하면 안된다 함
-      if (res.type === 'LOGIN/fulfilled') {
+      console.log(res.type)
+      if (res.type === 'user/login/fulfilled') {
         navigate('/')
       } else {
         alert('안돼')

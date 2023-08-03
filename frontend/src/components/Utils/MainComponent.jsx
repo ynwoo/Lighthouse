@@ -5,10 +5,10 @@ import dummy from '../../db/data.json'
 
 function MainComponent() {
   const text = useSelector(state => state.study.value)
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
   const filterdData = dummy.study_list.filter(item => item.title.includes(text))
 
-  console.log(isLoggedIn)
+  console.log(sessionStorage.getItem('isLoggedIn'))
+
   return (
     <div
       style={{
