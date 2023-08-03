@@ -59,7 +59,12 @@ function CurriculumTable() {
 
   return (
     <div>
-      <h3>커리큘럼 작성</h3>
+      <div className="info_text">
+        <ul>
+          <p>신청대상</p>
+        </ul>
+      </div>
+
       <Table columns={columns} dataSource={tableData} />
       <Space style={{ marginBottom: 16 }}>
         <Input
