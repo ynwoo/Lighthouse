@@ -19,4 +19,9 @@ public class SessionCheck extends BaseEntity {
 	private Long sessionId;
 	private String content;
 
+	public void update(Long userId, Long sessionId, String content) {
+		this.userId = userId;
+		this.sessionId = sessionId;
+		this.content = content;
+	}
 }

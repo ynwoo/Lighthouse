@@ -7,6 +7,7 @@ import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -48,7 +49,7 @@ public class Study extends BaseEntity {
     public void removeMember() {this.currentMember--;}
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "originalId")
+    @JoinColumn(name = "originalId", updatable = false)
     private Study original;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -76,10 +77,27 @@ public class Study extends BaseEntity {
     private Set<Session> sessions;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
+    @JoinColumn(name = "studyId", updatable = false)
     private Set<Qna> qnas;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
+    @JoinColumn(name = "studyId", updatable = false)
     private Set<ParticipationHistory> participations;
+
+    public void update(Study study) {
+        this.title = study.getTitle();
+        this.description = study.getDescription();
+        this.hit = study.getHit();
+        this.rule = study.getRule();
+        this.startedAt = study.getStartedAt();
+        this.endedAt = study.getEndedAt();
+        this.recruitFinishedAt = study.getRecruitFinishedAt();
+        this.maxMember = study.getMaxMember();
+        this.minMember = study.getMinMember();
+        this.currentMember = study.getCurrentMember();
+        this.isOnline = study.getIsOnline();
+        this.likeCnt = study.getLikeCnt();
+        this.bookmarkCnt = study.getBookmarkCnt();
+        this.status = study.getStatus();
+    }
 }
