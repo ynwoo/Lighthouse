@@ -10,6 +10,7 @@ import SignInPage from './routes/SignInPage'
 import SignUpPage from './routes/SignUpPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
+import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/login" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user_edit/:id" element={<UserEditPage />} />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </Router>
       <button

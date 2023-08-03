@@ -1,6 +1,8 @@
 import React from 'react'
 import { Button, Layout } from 'antd'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import UserProfileSide from '../User/UserProfileSide'
 
 const { Sider } = Layout
 
@@ -17,6 +19,11 @@ const siderStyle = {
 }
 
 export default function SideComponent() {
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+  if (!isLoggedIn) {
+    return <UserProfileSide />
+  }
+
   return (
     <Sider style={siderStyle}>
       <div
