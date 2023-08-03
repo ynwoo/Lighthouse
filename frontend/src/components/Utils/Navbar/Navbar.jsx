@@ -31,6 +31,11 @@ export default function App() {
               LOGIN
             </Link>
           </div>
+          <div className="item dropdown_king nav_item">
+            <Link to="/user/me" className="dropdown_toggle">
+              MYPAGE
+            </Link>
+          </div>
         </div>
       </div>
     </div>

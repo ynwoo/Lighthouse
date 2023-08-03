@@ -25,8 +25,7 @@ public class StudyTag extends BaseEntity {
     @JoinColumn(name = "tagId")
     private Tag tag;
 
-    public void update(Long studyId, Tag tag, int isValid) {
-        super.changeIsValid(isValid);
+    public void update(Long studyId, Tag tag) {
         this.studyId = studyId;
         this.tag = tag;
     }
