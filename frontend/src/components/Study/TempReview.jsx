@@ -1,14 +1,13 @@
 import React from 'react'
 // import { Link } from 'react-router-dom'
 
-function Nav() {
+function TempReview() {
   return (
     <div
       style={{
         width: '100%',
         height: '100%',
         borderRadius: '20px',
-        textAlign: 'center',
         backgroundColor: 'white',
         justifyContent: 'center',
         alignContent: 'center',
@@ -17,8 +16,15 @@ function Nav() {
         padding: '20px',
         margin: '-18px',
       }}
-    />
+    >
+      <details style={{ fontSize: '15px' }}>
+        <summary>저의 점수는요</summary>
+        <ul>
+          <li>10점 만점에 10점</li>
+        </ul>
+      </details>
+    </div>
   )
 }
 
-export default Nav
+export default TempReview

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { Cookies } from 'react-cookie'
 
 const API_URL = process.env.REACT_APP_API_URL
-const cookies = new Cookies()
 
 // 이것은 초깃값이자 저장 폼
 const initialState = {
   accessToken: '',
+  isLoggedIn: false,
   sido: {},
   gugun: { 0: '시/도를 선택하세요' },
 }
@@ -59,8 +58,13 @@ export const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    signUp: (state, action) => {
-      state.signUpData = action.payload
+    logout: () => {
+      sessionStorage.removeItem('refresh_token')
+    },
+    loginCheck: state => {
+      if (sessionStorage.getItem('refresh_token')) {
+        state.isLoggedIn = true
+      }
     },
   },
   extraReducers: {
@@ -80,17 +84,14 @@ export const userSlice = createSlice({
     [userAction.login.fulfilled]: (state, action) => {
       // access token save in store
       state.accessToken = action.payload['access-token']
-      // refresh token save in cookie
-      cookies.set('refresh_token', action.payload['refresh-token'], {
-        sameSite: 'strict',
-        path: '/',
-        secure: true,
-      })
-      console.log(cookies.get('refresh_token'))
+      // refresh token save in session storage
+      sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
+      state.isLoggedIn = true
+      console.log(sessionStorage.getItem('refresh_token'))
     },
   },
 })
 
-export const { signUp } = userSlice.actions
+export const { logout, loginCheck } = userSlice.actions
 
 export default userSlice.reducer
