@@ -2,9 +2,6 @@ package com.ssafy.lighthouse.domain.study.controller;
 
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 public class StudyController {
 
     private final StudyService studyService;
-    private final JwtService jwtService;
 
     // 검색 옵션에 대한 전체 조회
     @GetMapping
@@ -158,22 +154,4 @@ public class StudyController {
         studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
-//
-//    private String getToken(HttpServletRequest request) {
-//        // header에서 토큰 가져오기
-//        String token = request.getHeader("access-token");
-//        if (jwtService.checkToken(token)) {
-//            log.info("사용 가능한 토큰!!!");
-//
-//            // 로그인 사용자의 id 리턴
-//            return token;
-//        }
-//        // 사용 불가능한 토큰이면 예외처리
-//        throw new UnAuthorizedException();
-//    }
-//
-//    private Long getUserId(HttpServletRequest request) {
-//        return jwtService.getIdByToken(getToken(request));
-//    }
-
 }
