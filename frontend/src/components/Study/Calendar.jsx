@@ -1,21 +1,5 @@
-import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
-import TempTodoList from './TempTodoList'
-import TempList from './TempList'
-import MemoInput from './memo/MemoInput'
-import MemoList from './memo/MemoList'
-import TempCurri from './TempCurri'
-
-const { createRoot } = ReactDOM
-
-const data = []
-for (let i = 0; i < 5; i += 1) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-  })
-}
+import React, { useState } from 'react'
 
 export default function App() {
   const [visible, setVisible] = useState(false)
@@ -64,7 +48,6 @@ export default function App() {
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
-                marginLeft: '8px',
                 fontSize: '8px',
               }}
             >
@@ -103,45 +86,8 @@ export default function App() {
     setVisible(true)
   }
 
-  const [memos, setMemos] = useState([])
-
-  const handleAddMemo = memo => {
-    setMemos(prevMemos => [
-      ...prevMemos,
-      {
-        id: Date.now(), // 랜덤 ID 대신 현재 시간을 ID로 사용
-        text: memo,
-      },
-    ])
-  }
-
   return (
     <div className="big_box">
-      <div className="memo_box">
-        <TempTodoList />
-        <TempCurri />
-
-        <div
-          style={{
-            border: '1px solid #C9C9C9',
-            margin: '10px',
-            borderRadius: '10px',
-          }}
-        >
-          {/* Curriculum Input */}
-
-          {/* Memo Input */}
-          <h3>메모장</h3>
-          <MemoInput onAddMemo={handleAddMemo} />
-
-          {/* Memo List */}
-          <MemoList memos={memos} />
-
-          {/* ... (rest of the code) */}
-        </div>
-      </div>
-      <TempList />
-
       <Calendar dateCellRender={dateCellRender} />
       <Button onClick={showModal}>Add Event</Button>
       <Modal
@@ -169,6 +115,3 @@ export default function App() {
     </div>
   )
 }
-
-const mountNode = document.getElementById('root')
-createRoot(mountNode).render(<App />)

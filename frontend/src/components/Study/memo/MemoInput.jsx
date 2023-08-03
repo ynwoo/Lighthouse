@@ -32,7 +32,7 @@ function MemoInput({ onAddMemo }) {
           type="text"
           value={memo}
           onChange={e => setMemo(e.target.value)}
-          placeholder="Enter a memo..."
+          placeholder="모집 대상을 입력해주세요"
         />
         <Button type="primary" onClick={handleAddMemo}>
           Add Memo

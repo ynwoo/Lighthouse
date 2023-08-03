@@ -7,7 +7,7 @@ const siderStyle = {
   lineHeight: '100%',
   color: 'black',
   backgroundColor: 'transparent',
-  margin: '10px',
+  // margin: '10px',
   position: 'fixed',
 }
 

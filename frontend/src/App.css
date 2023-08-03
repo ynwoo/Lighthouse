@@ -233,22 +233,7 @@ body {
   margin: 0;
 }
 
-/* .circular-image {
-  width: 150px; 
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden; 
-  border: 3px solid #c2bfbf;
-}
-
-.circular-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
-/* ... 이전 CSS 스타일들 ... */
-
-.circular-image {
+... 이전 CSS 스타일들 ... */ .circular-image {
   position: absolute;
   top: 0%; /* 이미지를 수직 중앙으로 정렬하려면 50%로 설정 */
   left: 50%; /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
@@ -523,18 +508,119 @@ p {
 /* tempinfo */
 
 .info_container {
-  display: gird;
-  grid-template-rows: 30% 70%;
+  display: grid;
+  grid-template-columns: 1fr 9fr;
   background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
   margin-top: -15px;
+  width: 100%;
 }
 
 .info_item {
-  margin-left: 100px;
+  margin: 30px;
+  /* margin-right: 20px; */
+}
+
+.info_item1 {
+  margin: 30px;
+  margin-left: 280px;
 }
 
 .memo_box {
   display: grid;
   grid-template-columns: 50% 50%;
   align-content: center;
+}
+
+.study_container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  align-items: center;
+  background-color: #e4edf6;
+}
+
+.study_box {
+  display: grid;
+  grid-template-rows: 60px 30px 30px 30px;
+  /* align-items: center; */
+}
+
+@font-face {
+  font-family: 'HakgyoansimWoojuR';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Pretendard-Regular', sans-serif;
+}
+
+.info_text {
+  display: flex;
+  text-align: left;
+  background-color: #c4e3ff;
+  align-content: center;
+  align-items: center;
+  height: 40px;
+  margin: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #4c4c4c;
+}
+
+.big_box {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: 20px;
+  margin: -18px;
+  margin-bottom: 40px;
+  left: 10px;
+}
+
+.circular-image2 {
+  position: absolute;
+  /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
+  /* transform: translate(-50%, -50%); */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-left: 25px;
+  /* overflow: hidden; */
+  border: 3px solid #c2bfbf;
+  background-color: white;
+}
+
+.circular-image2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sidebar {
+  position: fixed;
+  display: grid;
+  grid-template-rows: 170px 30px 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+  margin-left: 100px;
+  margin-top: 20px;
 }
