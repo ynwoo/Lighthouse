@@ -22,7 +22,6 @@ public class StudyController {
 
     private final StudyService studyService;
     private final JwtService jwtService;
-    private final UserService userService;
 
     // 검색 옵션에 대한 전체 조회
     @GetMapping
@@ -42,6 +41,19 @@ public class StudyController {
 
         log.debug("studyId : {}", studyId);
         StudyResponse result = studyService.findDetailByStudyId(studyId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    // original study를 사용한 스터디들 조회
+    @GetMapping("/use/{original-id}")
+    public ResponseEntity<?> findAllByOriginalId(@PathVariable(name = "original-id") Long originalId,
+                                                 StudySearchOption options,
+                                                 HttpServletRequest request) {
+        // token 확인
+        getToken(request);
+
+        log.debug("originalId : {}", originalId);
+        Page<SimpleStudyDto> result = studyService.findAllByOriginalId(originalId, options);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -1,33 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  TreeSelect,
-  Upload,
-} from 'antd'
+import { Button, Form, Input, InputNumber, Select, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-
+import { useEffect } from 'react'
 import { userAction } from '../store/user'
 
 const { TextArea } = Input
-// const { Option } = Select
 
-// const prefixSelector = (
-//   <Form.Item name="prefix" noStyle>
-//     <Select
-//       style={{
-//         width: 70,
-//         backgroundColor: 'transparent',
-//       }}
-//     >
-//       <Option value="86">+86</Option>
-//       <Option value="87">+87</Option>
-//     </Select>
-//   </Form.Item>
-// )
+// 사진 업로드 하는 것 같음
 const normFile = e => {
   if (Array.isArray(e)) {
     return e
@@ -36,16 +15,25 @@ const normFile = e => {
 }
 
 function SignUpPage() {
-  const par = useSelector(state => state.user.signUpData)
+  // dispatch와 form을 사용하기 위한 두 줄
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
-  const testDisp = () => {
-    console.log('yay')
-    dispatch(userAction.test('안녕'))
+  // 컴포넌트가 mount되는 과정에서 서버에 요청을 보내 store에 sido를 추가해줌
+  // 저 아래에 [dispatch] 부분이 없으면 인생 끝날 때 까지 요청함
+  useEffect(() => {
+    dispatch(userAction.sido())
+  }, [dispatch])
+
+  // sido와 gugun을 store에서 불러 와주는 선언문
+  const sido = useSelector(state => state.user.sido)
+  const gugun = useSelector(state => state.user.gugun)
+
+  // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
+  const sidoChange = e => {
+    dispatch(userAction.gugun(e))
   }
 
-  // const finFin = value => console.log(value)
   return (
     <div
       style={{
@@ -64,9 +52,17 @@ function SignUpPage() {
         form={form}
         name="normal_login"
         onFinish={value => {
+          // submit버튼을 누르면 이루어지는 동작
+          // 비밀번호 확인 지우기
           delete value.confirm
-          value.userTagList = []
-          dispatch(userAction.signUpFin(par))
+          // 비어있는 요소를 undefined => null로 바꾸어주는 작업
+          Object.keys(value).forEach(key => {
+            if (value[key] === undefined) {
+              value[key] = null
+            }
+          })
+          // redux => server
+          dispatch(userAction.signUp(value))
         }}
         labelCol={{
           span: 4,
@@ -97,6 +93,7 @@ function SignUpPage() {
         >
           <Input />
         </Form.Item>
+
         <Form.Item
           name="password"
           label="Password"
@@ -167,6 +164,7 @@ function SignUpPage() {
           name="profileImgUrl"
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          initialValue={null}
         >
           <Upload action="/upload.do" listType="picture-card">
             <div>
@@ -193,7 +191,6 @@ function SignUpPage() {
           ]}
         >
           <Input
-            // addonBefore={prefixSelector}
             style={{
               width: '100%',
             }}
@@ -201,26 +198,29 @@ function SignUpPage() {
         </Form.Item>
 
         <Form.Item label="주소(시/도)" name="sidoId">
-          <Select>
-            <Select.Option value="demo">Demo</Select.Option>
+          <Select onChange={sidoChange} defaultValue={null}>
+            {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
+            {Object.keys(sido).map(key => {
+              return (
+                <Select.Option value={Number(key)} key={key}>
+                  {sido[key]}
+                </Select.Option>
+              )
+            })}
           </Select>
         </Form.Item>
 
         <Form.Item label="주소(구/군)" name="gugunId">
-          <TreeSelect
-            treeData={[
-              {
-                title: 'Light',
-                value: 'light',
-                children: [
-                  {
-                    title: 'Bamboo',
-                    value: 'bamboo',
-                  },
-                ],
-              },
-            ]}
-          />
+          <Select defaultValue={null}>
+            {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
+            {Object.keys(gugun).map(key => {
+              return (
+                <Select.Option value={Number(key)} key={key}>
+                  {gugun[key]}
+                </Select.Option>
+              )
+            })}
+          </Select>
         </Form.Item>
 
         <Form.Item label="자기소개" name="description">
@@ -238,9 +238,6 @@ function SignUpPage() {
           </Button>
         </div>
       </Form>
-      <button type="button" onClick={testDisp}>
-        dispatch!
-      </button>
     </div>
   )
 }

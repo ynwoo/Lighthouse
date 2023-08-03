@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 public interface StudyService {
     Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
+    Page<SimpleStudyDto> findAllByOriginalId(Long originalId, StudySearchOption options);
     StudyResponse findDetailByStudyId(Long studyId);
     StudyResponse createStudyByStudyId(Long studyId);
     void removeStudyByStudyId(Long studyId);
