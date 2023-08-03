@@ -30,6 +30,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 				.addPathPatterns("/users/mypage")
 				.addPathPatterns("/users/refresh")
 				.addPathPatterns("/users/logout")
+				.addPathPatterns("/users/follow", "/users/follow/*")
+				.addPathPatterns("/users/eval", "/users/eval/*")
 				.addPathPatterns("/users");
 	}
 }
