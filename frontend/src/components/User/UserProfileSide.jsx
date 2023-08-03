@@ -1,67 +1,60 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Layout } from 'antd'
 import profilePic from '../../logo.svg'
-import UserFollow from './UserFollow'
 
-// 옆에서 작게 보는 프로필
+const { Sider } = Layout
+const siderStyle = {
+  textAlign: 'center',
+  lineHeight: '100%',
+  color: 'black',
+  backgroundColor: 'transparent',
+  // margin: '10px',
+  position: 'fixed',
+}
 
 export default function UserProfileSide() {
-  const [message, setName] = useState('로그인, 필요.')
-  const [btnState, setBtn] = useState('SignIn')
   const Pic = profilePic
 
-  function SignInAction() {
-    setName(
-      message === '로그인, 필요.' ? '환영합니다, 리액트님!' : '로그인, 필요.',
-    )
-    setBtn(btnState === 'SignIn' ? 'LogOut' : 'SignIn')
-  }
-
-  if (btnState === 'SignIn') {
-    return (
+  return (
+    <Sider style={siderStyle}>
       <div
-        className="comp"
         style={{
-          margin: '5px',
+          display: 'flex',
+          flexDirection: 'Column',
+          alignItems: 'center',
+          padding: '10px',
+          borderRadius: '10px',
+          backgroundColor: 'white',
         }}
       >
-        <h4>SignInSide</h4>
-        {message}
-        <div>
-          <button type="submit" onClick={SignInAction}>
-            {btnState}
-          </button>
+        <img src={Pic} alt="XBOX" />
+
+        <div
+          style={{
+            border: '1px solid',
+            borderRadius: '10px',
+            width: '80%',
+            margin: '10px',
+          }}
+        >
+          <h4>베스트 스터디</h4>
+          <p>1. </p>
+          <p>2. </p>
+          <p>3. </p>
+        </div>
+        <div
+          style={{
+            border: '1px solid',
+            borderRadius: '10px',
+            width: '80%',
+            margin: '10px',
+          }}
+        >
+          <h4>베스트 템플릿</h4>
+          <p>1. </p>
+          <p>2. </p>
+          <p>3. </p>
         </div>
       </div>
-    )
-  }
-  return (
-    <div
-      className="comp"
-      style={{
-        width: '300px',
-        height: '800px',
-      }}
-    >
-      <h3>UserProfileSide</h3>
-      <div
-        className="flex"
-        style={{
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <img src={Pic} alt="없다" />
-
-        <Link to="/user/fromUserProfileSide">
-          <h4>{message}</h4>
-        </Link>
-
-        <button type="submit" onClick={SignInAction}>
-          {btnState}
-        </button>
-        <UserFollow />
-      </div>
-    </div>
+    </Sider>
   )
 }
