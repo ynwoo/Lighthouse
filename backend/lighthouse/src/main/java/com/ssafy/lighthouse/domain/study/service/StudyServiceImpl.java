@@ -194,12 +194,13 @@ public class StudyServiceImpl implements StudyService {
 
             // 있으면 update
             if(result.isPresent()) {
-                result.get().update(
+                StudyEval studyEval = result.get();
+                studyEval.update(
                         changedStudyEval.getStudyId(),
                         changedStudyEval.getUserId(),
                         changedStudyEval.getComment(),
-                        changedStudyEval.getScore(),
-                        changedStudyEval.getIsValid());
+                        changedStudyEval.getScore());
+                studyEval.changeIsValid(changedStudyEval.getIsValid());
             }
             // 없으면 save
             else {
@@ -219,10 +220,11 @@ public class StudyServiceImpl implements StudyService {
 
             // 있으면 update
             if(result.isPresent()) {
-                result.get().update(
+                StudyTag studyTag = result.get();
+                studyTag.update(
                         changedStudyTag.getStudyId(),
-                        changedStudyTag.getTag().toEntity(),
-                        changedStudyTag.getIsValid());
+                        changedStudyTag.getTag().toEntity());
+                studyTag.changeIsValid(changedStudyTag.getIsValid());
             }
             // 없으면 save
             else {
