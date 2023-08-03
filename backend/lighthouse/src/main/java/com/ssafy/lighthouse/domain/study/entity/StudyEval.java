@@ -27,8 +27,7 @@ public class StudyEval extends BaseEntity {
         this.score = studyEval.getScore();
     }
 
-    public void update(Long studyId, Long userId, String comment, int score, int isValid) {
-        super.changeIsValid(isValid);
+    public void update(Long studyId, Long userId, String comment, int score) {
         this.studyId = studyId;
         this.userId = userId;
         this.comment = comment;
