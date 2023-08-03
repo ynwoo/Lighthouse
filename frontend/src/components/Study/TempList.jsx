@@ -59,6 +59,8 @@ function CurriculumTable() {
 
   return (
     <div>
+      <h3>커리큘럼 작성</h3>
+      <Table columns={columns} dataSource={tableData} />
       <Space style={{ marginBottom: 16 }}>
         <Input
           type="text"
@@ -70,7 +72,6 @@ function CurriculumTable() {
           Add Curriculum
         </Button>
       </Space>
-      <Table columns={columns} dataSource={tableData} />
     </div>
   )
 }

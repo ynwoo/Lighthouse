@@ -13,6 +13,8 @@ const siderStyle = {
   color: 'black',
   backgroundColor: 'transparent',
   margin: '10px',
+  bottom: '50px',
+  left: '20px',
   position: 'fixed',
 }
 
