@@ -3,10 +3,12 @@ package com.ssafy.lighthouse.domain.user.controller;
 import static org.springframework.http.HttpStatus.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -103,6 +105,10 @@ public class UserController {
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
+
+				// 알림 목록 불러오기
+				List<AlertDto> alertDtoList = userService.getAlertDtoList(loginUser.getId());
+				resultMap.put("alerts", alertDtoList);
 
 				status = HttpStatus.OK;
 			} else {
