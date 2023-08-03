@@ -213,10 +213,12 @@ public class StudyServiceImpl implements StudyService {
                     .forEach(participationHistory -> participationHistory.changeStatus(STATUS.RECRUITING));
         }
 
-        // 스터디가 끝나면 팀 전원의 기록 수정
+        // 스터디가 끝나면 팀 전원의 기록 수정 & 뱃지 지급
         else if(studyRequest.getStatus() == STATUS.TERMINATED) {
             participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.RECRUITING)
                     .forEach(participationHistory -> participationHistory.changeStatus(STATUS.TERMINATED));
+            
+            // 뱃지 지급 로직 추가 필요
         }
     }
 
