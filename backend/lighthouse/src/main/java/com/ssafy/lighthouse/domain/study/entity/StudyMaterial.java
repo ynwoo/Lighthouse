@@ -26,4 +26,8 @@ public class StudyMaterial extends BaseEntity {
 		this.content = content;
 		this.fileUrl = fileUrl;
 	}
+
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
 }

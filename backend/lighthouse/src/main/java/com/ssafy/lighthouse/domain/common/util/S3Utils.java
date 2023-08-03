@@ -1,7 +1,7 @@
-package com.ssafy.lighthouse.domain.common.service;
+package com.ssafy.lighthouse.domain.common.util;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -17,13 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
-public class AmazonS3Service {
+@Component
+public class S3Utils {
 	public static final String CLOUNDFRONT_DOMAIN_NAME = "${CLOUDFRONT_DOMAIN_NAME}";
 	private static final String FILE_EXTENSION_SEPARATOR = ".";
 	private static final String FOLDER_SEPARATOR = "/";
 	private static final String TIME_SEPARATOR = "_";
+	private static final String URL_SEPARATOR = ".com/"; //cloudfront 사용시 ".net/"
 	private final AmazonS3Client amazonS3Client;
 
 	@Value("${cloud.aws.s3.bucket}")
@@ -31,7 +32,7 @@ public class AmazonS3Service {
 
 
 
-	public String upload(String category, MultipartFile file) {
+	public String uploadFile(String category, MultipartFile file) {
 		String filePath = buildFileName(category, file.getOriginalFilename());
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -40,7 +41,7 @@ public class AmazonS3Service {
 		try {
 			amazonS3Client.putObject(new PutObjectRequest(bucket, filePath, file.getInputStream(), objectMetadata)
 					.withCannedAcl(CannedAccessControlList.PublicRead));
-			log.debug("file upload success");
+			log.debug("file upload success: {}", filePath);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error("file upload fail", e);
@@ -51,7 +52,8 @@ public class AmazonS3Service {
 		return amazonS3Client.getUrl(bucket, filePath).toString();
 	}
 
-	public byte[] download(String filePath) {
+	public byte[] downloadFile(String fileUrl) {
+		String filePath = getFilePath(fileUrl);
 		try {
 			validateFileExists(filePath);
 
@@ -65,13 +67,20 @@ public class AmazonS3Service {
 		}
 	}
 
-	public void delete(String filePath) {
+	public void deleteFile(String fileUrl) {
+		String filePath = getFilePath(fileUrl);
 		try {
 			validateFileExists(filePath);
 			amazonS3Client.deleteObject(bucket, filePath);
 			log.debug("file delete success");
 		} catch (Exception e) {
 			log.debug("file delete fail", e);
+		}
+	}
+
+	private void validateFileExists(String filePath) {
+		if (!amazonS3Client.doesObjectExist(bucket, filePath)) {
+			throw new S3FileNotFoundException(filePath);
 		}
 	}
 
@@ -83,10 +92,10 @@ public class AmazonS3Service {
 
 		return category + FOLDER_SEPARATOR + fileName + TIME_SEPARATOR + now + fileExtension;
 	}
-
-	private void validateFileExists(String filePath) {
-		if (!amazonS3Client.doesObjectExist(bucket, filePath)) {
-			throw new S3FileNotFoundException(filePath);
-		}
+	/*
+	파일 url에서 파일 경로만 추출하는 함수
+	 */
+	public static String getFilePath(String fileUrl) {
+		return fileUrl.substring(fileUrl.lastIndexOf(URL_SEPARATOR) + URL_SEPARATOR.length());
 	}
 }

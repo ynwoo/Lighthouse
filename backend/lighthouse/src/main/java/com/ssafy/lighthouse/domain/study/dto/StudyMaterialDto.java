@@ -1,9 +1,10 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,15 +19,7 @@ public class StudyMaterialDto {
 		private int type;
 		private String content;
 		private String fileUrl;
-
-		@Builder
-		public Req(Long studyId, Long sessionId, int type, String content, String fileUrl) {
-			this.studyId = studyId;
-			this.sessionId = sessionId;
-			this.type = type;
-			this.content = content;
-			this.fileUrl = fileUrl;
-		}
+		private MultipartFile file;
 
 		public StudyMaterial toEntity() {
 			return StudyMaterial.builder()
@@ -36,7 +29,6 @@ public class StudyMaterialDto {
 				.sessionId(sessionId)
 				.type(type)
 				.content(content)
-				.fileUrl(fileUrl)
 				.build();
 		}
 	}

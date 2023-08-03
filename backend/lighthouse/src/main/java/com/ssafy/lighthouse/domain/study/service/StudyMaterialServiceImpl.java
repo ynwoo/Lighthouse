@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import com.ssafy.lighthouse.domain.study.dto.StudyMaterialDto;
 import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 import com.ssafy.lighthouse.domain.study.exception.StudyMaterialNotFoundException;
@@ -17,7 +18,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Transactional
 public class StudyMaterialServiceImpl implements StudyMaterialService {
+	private static final String CATEGORY = "studymaterials";
 	private StudyMaterialRepository studyMaterialRepository;
+	private S3Utils s3Utils;
 
 	@Override
 	public List<StudyMaterial> findAllByStudyId(Long studyId) {
@@ -26,7 +29,10 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 
 	@Override
 	public Long createMaterial(final StudyMaterialDto.Req dto) {
-		StudyMaterial entity = studyMaterialRepository.save(dto.toEntity());
+		StudyMaterial entity = dto.toEntity();
+		String fileUrl = s3Utils.uploadFile(CATEGORY, dto.getFile());
+
+		studyMaterialRepository.save(entity);
 		return entity.getId();
 	}
 
