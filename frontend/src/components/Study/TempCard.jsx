@@ -46,12 +46,17 @@ function TempCard({ study }) {
               <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
             }
             title={study.title}
-            description={`${study.is_online ? '온라인' : '오프라인'}
-                            ${study.current_member}/${study.max_member}
-                            작성시간: ${study.created_at}
-                            모집 마감: ${study.recruit_finished_at}
-                            ${study.like_cnt}개의 따봉`}
+            description={`작성자: ${study.leaderProfile.nickname}
+                          ${study.is_online ? '온라인' : '오프라인'}
+                          ${study.currentMember}/${study.maxMember}
+                          작성시간: ${study.createdAt}
+                          모집 마감: ${study.recruitFinishedAt}
+                          ${study.bookmarkCnt}명이 북마크
+                          `}
           />
+          {study.studyTags.map(tag => {
+            return <span key={tag.id}>#{tag.keyword}</span>
+          })}
         </Card>
       </div>
     </Link>
