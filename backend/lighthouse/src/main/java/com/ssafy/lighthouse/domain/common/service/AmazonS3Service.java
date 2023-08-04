@@ -3,6 +3,7 @@ package com.ssafy.lighthouse.domain.common.service;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.ssafy.lighthouse.domain.common.exception.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,7 @@ public class AmazonS3Service {
 
 	public String upload(MultipartFile file) {
 		String originalFileName = file.getOriginalFilename();
-		String filePath = UUID.randomUUID() + originalFileName.substring(originalFileName.lastIndexOf("."));
+		String filePath = getFilePath(originalFileName);
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentLength(file.getSize());
@@ -63,5 +64,11 @@ public class AmazonS3Service {
 			log.debug("Delete File failed", e);
 		}
 		return result;
+	}
+
+	public String getFilePath(String originalFileName) {
+		if(originalFileName == null) throw new FileUploadException();
+		return UUID.randomUUID() +
+				originalFileName.substring(originalFileName.lastIndexOf("."));
 	}
 }
