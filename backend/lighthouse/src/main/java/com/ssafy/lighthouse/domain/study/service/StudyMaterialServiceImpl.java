@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import com.ssafy.lighthouse.domain.study.dto.StudyMaterialDto;
 import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 import com.ssafy.lighthouse.domain.study.exception.StudyMaterialNotFoundException;
@@ -17,7 +19,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Transactional
 public class StudyMaterialServiceImpl implements StudyMaterialService {
+	private static final String CATEGORY = "studymaterials";
 	private StudyMaterialRepository studyMaterialRepository;
+	private S3Utils s3Utils;
 
 	@Override
 	public List<StudyMaterial> findAllByStudyId(Long studyId) {
@@ -26,20 +30,41 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 
 	@Override
 	public Long createMaterial(final StudyMaterialDto.Req dto) {
-		StudyMaterial entity = studyMaterialRepository.save(dto.toEntity());
+		StudyMaterial entity = dto.toEntity();
+		MultipartFile file = dto.getFile();
+		if (!file.isEmpty()) {
+			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
+			entity.setFileUrl(fileUrl);
+		}
+		studyMaterialRepository.save(entity);
 		return entity.getId();
 	}
 
 	@Override
-	public Long updateMaterial(final Long id, final StudyMaterialDto.Req dto) {
-		StudyMaterial studyMaterial = findById(id);
-		studyMaterial.update(dto.getStudyId(), dto.getSessionId(), dto.getType(), dto.getContent(), dto.getFileUrl());
-		return id;
+	public Long updateMaterialFromId(final Long id, final StudyMaterialDto.Req dto) {
+		StudyMaterial targetStudyMaterial = findById(id);
+		return updateMaterial(targetStudyMaterial, dto);
+	}
+
+	@Override
+	public Long updateMaterial(final StudyMaterial targetStudyMaterial, final StudyMaterialDto.Req dto) {
+		MultipartFile file = dto.getFile();
+		if (!file.isEmpty()) {
+			//이전 파일 삭제
+			s3Utils.deleteFile(targetStudyMaterial.getFileUrl());
+			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
+			targetStudyMaterial.updateWithFile(dto.getStudyId(), dto.getSessionId(), dto.getType(),
+				dto.getContent(), fileUrl);
+			return dto.getStudyId();
+		}
+		targetStudyMaterial.updateWithoutFile(dto.getStudyId(), dto.getSessionId(), dto.getType(), dto.getContent());
+		return dto.getStudyId();
 	}
 
 	@Override
 	public Long removeMaterial(final Long id) {
 		StudyMaterial studyMaterial = findById(id);
+		s3Utils.deleteFile(studyMaterial.getFileUrl());
 		studyMaterial.remove();
 		return id;
 	}
