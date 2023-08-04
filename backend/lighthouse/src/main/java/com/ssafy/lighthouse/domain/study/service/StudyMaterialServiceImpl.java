@@ -29,9 +29,10 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	}
 
 	@Override
-	public Long createMaterial(final StudyMaterialDto.Req dto, final MultipartFile file) {
+	public Long createMaterial(final StudyMaterialDto.Req dto) {
 		StudyMaterial entity = dto.toEntity();
-		if (!file.isEmpty()) {
+		MultipartFile file = dto.getFile();
+		if (file != null && !file.isEmpty()) {
 			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
 			entity.setFileUrl(fileUrl);
 		}
