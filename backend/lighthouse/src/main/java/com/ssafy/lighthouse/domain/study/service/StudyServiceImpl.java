@@ -1,6 +1,8 @@
 package com.ssafy.lighthouse.domain.study.service;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
+import com.ssafy.lighthouse.domain.common.service.BadgeService;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import java.util.HashSet;
@@ -37,6 +40,7 @@ public class StudyServiceImpl implements StudyService {
     private final StudyEvalRepository studyEvalRepository;
     private final ParticipationHistoryRepository participationHistoryRepository;
     private final UserRepository userRepository;
+    private final BadgeService badgeService;
     private final EntityManager em;
 
     private final StudyMaterialService studyMaterialService;
@@ -345,7 +349,7 @@ public class StudyServiceImpl implements StudyService {
                     // 있으면 update
                     if(checkResult.isPresent()) {
                         StudyMaterial targetStudyMaterial = checkResult.get();
-                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial);
+                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial, null);
                         targetStudyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
                     }
 
@@ -478,5 +482,16 @@ public class StudyServiceImpl implements StudyService {
     public void removeStudyTag(Long studyId, Long tagId) {
         Optional<StudyTag> result = studyTagRepository.find(studyId, tagId);
         result.orElseThrow(() -> new StudyTagException(ERROR.REMOVE)).remove();
+    }
+
+    @Override
+    public void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long prevBadgeId) {
+        if(prevBadgeId != null) {
+            // 기존 badge 삭제
+            badgeService.removeBadge(prevBadgeId);
+        }
+        
+        // 새로운 badge 생성
+        badgeService.createBadge(badgeRequest, img);
     }
 }

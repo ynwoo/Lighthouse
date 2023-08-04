@@ -18,7 +18,7 @@ public class StudyMaterialDto {
 		private Long sessionId;
 		private int type;
 		private String content;
-		private MultipartFile file;
+		private String fileUrl;
 
 		public StudyMaterial toEntity() {
 			return StudyMaterial.builder()
@@ -28,6 +28,7 @@ public class StudyMaterialDto {
 				.sessionId(sessionId)
 				.type(type)
 				.content(content)
+				.fileUrl(fileUrl)
 				.build();
 		}
 	}

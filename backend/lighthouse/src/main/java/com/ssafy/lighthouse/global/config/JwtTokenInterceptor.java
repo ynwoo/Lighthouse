@@ -33,9 +33,16 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         
-        // study 전체 조회 제외 & 상세 조회 제외
-        if(requestURI.startsWith("/study") && method.equals(HttpMethod.GET.name())) {
-            return true;
+        if(requestURI.startsWith("/study")) {
+            // study 전체 조회 제외 & 상세 조회 제외
+            if(method.equals(HttpMethod.GET.name())) {
+                return true;
+            }
+            
+            // study badge 수정 제외
+            if(method.equals(HttpMethod.PUT.name())) {
+                return true;
+            }
         }
 
         String token = request.getHeader("access-token");
