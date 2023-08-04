@@ -22,6 +22,7 @@ import java.util.concurrent.CompletableFuture;
 @CrossOrigin
 @RequestMapping(value = "/kafka")
 public class ChatController {
+
     @Autowired
     private KafkaTemplate<String, MessageDto> kafkaTemplate;
 
