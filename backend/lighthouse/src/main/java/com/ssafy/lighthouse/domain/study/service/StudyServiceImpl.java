@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -39,19 +39,24 @@ public class StudyServiceImpl implements StudyService {
     private final UserRepository userRepository;
     private final EntityManager em;
 
+    private final StudyMaterialService studyMaterialService;
+
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options) {
         return studyRepository.findAllByStudySearchOption(options);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<SimpleStudyDto> findAllByOriginalId(Long originalId, StudySearchOption options) {
         return studyRepository.findAllByOriginalId(originalId , PageRequest.of(options.getPage() - 1, PAGE.LIMIT));
     }
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
+    @Transactional(readOnly = true)
     public StudyResponse findDetailByStudyId(Long studyId) {
         Study study = studyRepository.findDetailById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
         log.debug("service - studyId : {}", studyId);
@@ -339,15 +344,9 @@ public class StudyServiceImpl implements StudyService {
 
                     // 있으면 update
                     if(checkResult.isPresent()) {
-                        StudyMaterial studyMaterial = checkResult.get();
-                        studyMaterial.update(
-                                changedStudyMaterial.getStudyId(),
-                                changedStudyMaterial.getSessionId(),
-                                changedStudyMaterial.getType(),
-                                changedStudyMaterial.getContent(),
-                                changedStudyMaterial.getFileUrl()
-                        );
-                        studyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
+                        StudyMaterial targetStudyMaterial = checkResult.get();
+                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial);
+                        targetStudyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
                     }
 
                     // 없으면 save
