@@ -50,11 +50,12 @@ public class S3Utils {
 		//CloudFront 경로 리턴
 		//return CLOUNDFRONT_DOMAIN_NAME + filePath;
 		//S3 파일 경로 리턴
-		return amazonS3Client.getUrl(bucket, filePath).toString();
+		//return amazonS3Client.getUrl(bucket, filePath).toString();
+		return filePath;
 	}
 
-	public byte[] downloadFile(String fileUrl) {
-		String filePath = getFilePath(fileUrl);
+	public byte[] downloadFile(String filePath) {
+		//String filePath = getFilePath(fileUrl);
 		try {
 			validateFileExists(filePath);
 
@@ -68,8 +69,8 @@ public class S3Utils {
 		}
 	}
 
-	public void deleteFile(String fileUrl) {
-		String filePath = getFilePath(fileUrl);
+	public void deleteFile(String filePath) {
+		//String filePath = getFilePath(fileUrl);
 		try {
 			validateFileExists(filePath);
 			amazonS3Client.deleteObject(bucket, filePath);
