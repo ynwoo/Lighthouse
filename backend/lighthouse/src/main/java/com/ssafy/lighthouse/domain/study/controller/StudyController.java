@@ -163,8 +163,8 @@ public class StudyController {
     @PutMapping("/badge")
     public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
                                               @RequestPart(value = "img") MultipartFile img,
-                                              @RequestPart(value = "prevBadgeId") Long prevBadgeId) {
-        studyService.updateStudyBadge(badgeRequest, img, prevBadgeId);
+                                              @RequestPart(value = "studyId") Long studyId) {
+        studyService.updateStudyBadge(badgeRequest, img, studyId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
