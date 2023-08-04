@@ -31,7 +31,7 @@ public class MessageListener {
         log.info("Propagation consumer working with : " + messageDto.toString());
         String roomId = messageDto.getRoomId();
         // propagation
-        template.convertAndSend("/sub/"+roomId, messageDto.toString());
+        template.convertAndSend("/sub/"+roomId, messageDto);
     }
 
     @KafkaListener(
