@@ -3,7 +3,9 @@ package com.ssafy.lighthouse.domain.user.repository;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
+import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
@@ -36,10 +38,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     private final ParticipationHistoryRepository participationHistoryRepository;
     private final BookmarkRepository bookmarkRepository;
     private final UserTagRepository userTagRepository;
+    private final UserBadgeRepository userBadgeRepository;
 
     @Override
     public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
-        Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) :new HashSet<>();
+        Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) : new HashSet<>();
         Set<Long> progressSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PROGRESS);
         Set<Long> terminatedSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.TERMINATED);
         Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
@@ -95,6 +98,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .where(user.id.eq(userId), user.isValid.eq(1))
                 .fetchOne();
 
+        // badgeList
+        List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         return ProfileResponse.builder()
                 .id(result.getId())
@@ -103,6 +108,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .profileImgUrl(result.getProfileImgUrl())
                 .description(result.getDescription())
                 .tags(tags)
+                .badges(badgeResponses)
                 .participatedStudies(participatedStudies)
                 .progressStudies(progressStudies)
                 .terminatedStudies(terminatedStudies)
@@ -129,6 +135,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
 
+        // badgeList
+        List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         return SimpleProfileResponse.builder()
                 .id(result.getId())
@@ -137,6 +145,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .profileImgUrl(result.getProfileImgUrl())
                 .description(result.getDescription())
                 .tags(tags)
+                .badges(badgeResponses)
                 .score(result.getScore())
                 .build();
     }
@@ -168,5 +177,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(simpleProfileResponse.getScore())
                 .build())
                 .collect(Collectors.toList());
+    }
+
+    // badgeList
+    private List<BadgeResponse> getBadgeResponsesByUserId(Long userId) {
+        return userBadgeRepository.findBadgeIdAllByUserId(userId).stream()
+                        .filter(userBadge -> userBadge.getBadge().isValid())
+                        .map(userBadge -> {
+                            Badge badge = userBadge.getBadge();
+                            return BadgeResponse.builder()
+                                    .name(badge.getName())
+                                    .imgUrl(badge.getImgUrl())
+                                    .description(badge.getDescription())
+                                    .id(badge.getId())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
@@ -30,6 +32,7 @@ public class StudyRequest {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
+    private BadgeRequest badge;
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;

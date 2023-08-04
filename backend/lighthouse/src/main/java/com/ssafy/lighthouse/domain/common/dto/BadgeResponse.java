@@ -1,10 +1,14 @@
 package com.ssafy.lighthouse.domain.common.dto;
 
 import com.ssafy.lighthouse.domain.common.entity.Badge;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class BadgeResponse {
     private Long id;
