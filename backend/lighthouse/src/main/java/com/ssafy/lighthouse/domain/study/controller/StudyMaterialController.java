@@ -3,6 +3,7 @@ package com.ssafy.lighthouse.domain.study.controller;
 import javax.servlet.http.HttpServlet;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,10 +30,11 @@ public class StudyMaterialController extends HttpServlet {
 	private StudyMaterialService studyMaterialService;
 	private final S3Utils s3Utils;
 
-	@PostMapping(consumes = {"multipart/form-data"})
-	public ResponseEntity<String> createMaterial(@ModelAttribute StudyMaterialDto.Req dto,
-													@RequestPart MultipartFile file) {
-		studyMaterialService.createMaterial(dto, file);
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<String> createMaterial(@ModelAttribute StudyMaterialDto.Req dto) {
+		System.out.println(dto.toString());
+		System.out.println(dto.getFile().getName());
+		studyMaterialService.createMaterial(dto, dto.getFile());
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
