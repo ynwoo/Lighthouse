@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.global.util.STATUS;
@@ -59,6 +60,10 @@ public class Study extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gugunId")
     private Gugun gugun;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "badgeId")
+    private Badge badge;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
