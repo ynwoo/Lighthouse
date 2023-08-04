@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.controller;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -154,6 +156,15 @@ public class StudyController {
         Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyEval(studyId, userId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    // studyBadge 교체
+    @PutMapping("/badge")
+    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+                                              @RequestPart(value = "img") MultipartFile img,
+                                              @RequestPart(value = "prevBadgeId") Long prevBadgeId) {
+        studyService.updateStudyBadge(badgeRequest, img, prevBadgeId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
