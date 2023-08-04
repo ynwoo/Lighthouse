@@ -69,7 +69,12 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         // total 구하기
         Long total = jpaQueryFactory.select(study.count())
                 .from(study)
-                .where(isValid())
+                .where(
+                        isValid(),
+                        checkStatus(options),
+                        isOnline(options),
+                        checkByTagIds(options),
+                        searchByKeyword(options))
                 .fetchOne();
         if(total == null) total = 0L;
 
