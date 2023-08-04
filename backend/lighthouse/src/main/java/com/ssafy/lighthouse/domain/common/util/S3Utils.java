@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.common.util;
 
+import com.ssafy.lighthouse.domain.common.exception.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,6 +100,7 @@ public class S3Utils {
 	파일 url에서 파일 경로만 추출하는 함수
 	 */
 	public static String getFilePath(String fileUrl) {
+		if(fileUrl == null) throw new FileUploadException();
 		return fileUrl.substring(fileUrl.lastIndexOf(URL_SEPARATOR) + URL_SEPARATOR.length());
 	}
 }

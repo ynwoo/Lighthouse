@@ -8,9 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.CompletableFuture;
 
 
 @RestController
@@ -30,7 +34,18 @@ public class ChatController {
         log.info("Produce message : " + messageDto.toString());
         messageDto.setTime(System.currentTimeMillis());
         try {
-            kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, "send_temp_key", messageDto).get();
+            ListenableFuture<SendResult<String, MessageDto>> future = kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, messageDto);
+            future.addCallback(new ListenableFutureCallback<SendResult<String, MessageDto>>() {
+                @Override
+                public void onFailure(Throwable ex) {
+                    log.debug("UNABLE TO SEND MSG=[" + messageDto.toString() + "] due to : " + ex.getMessage());
+                }
+
+                @Override
+                public void onSuccess(SendResult<String, MessageDto> result) {
+                    log.debug("SENT MSG!!! ["+ messageDto.toString()+"with RESULT : "+result.toString());
+                }
+            });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

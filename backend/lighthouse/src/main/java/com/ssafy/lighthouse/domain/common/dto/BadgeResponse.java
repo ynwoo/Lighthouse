@@ -6,25 +6,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class BadgeDto {
+public class BadgeResponse {
     private Long id;
     private String imgUrl;
     private String name;
     private String description;
 
-    public BadgeDto(Badge badge) {
+    public BadgeResponse(Badge badge) {
         this.id = badge.getId();
         this.imgUrl = badge.getImgUrl();
         this.name = badge.getName();
         this.description = badge.getDescription();
     }
-
-//    public Badge toEntity() {
-//        return Badge.builder()
-//                .id(this.id)
-//                .imgUrl(this.imgUrl)
-//                .name(this.name)
-//                .description(this.description)
-//                .build();
-//    }
 }
