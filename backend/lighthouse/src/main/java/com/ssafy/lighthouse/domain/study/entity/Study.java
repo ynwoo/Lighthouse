@@ -50,6 +50,8 @@ public class Study extends BaseEntity {
     public void addMember() {this.currentMember++;}
     public void removeMember() {this.currentMember--;}
 
+    public void changeBadge(Badge badge) {this.badge = badge;}
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sidoId")
     private Sido sido;
