@@ -516,13 +516,16 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long prevBadgeId) {
-        if(prevBadgeId != null) {
-            // 기존 badge 삭제
-            badgeService.removeBadge(prevBadgeId);
+    public void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long studyId) {
+        Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+        Badge badge = study.getBadge();
+
+        // 기존 badge 삭제
+        if(badge != null) {
+            badgeService.removeBadge(badge.getId());
         }
-        
-        // 새로운 badge 생성
-        badgeService.createBadge(badgeRequest, img);
+
+        // 새로운 badge 생성 & 스터디 badgeId 변경
+        study.changeBadge(badgeService.createBadge(badgeRequest, img));
     }
 }
