@@ -9,7 +9,7 @@ import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 
 public interface StudyMaterialService {
 	List<StudyMaterial> findAllByStudyId(Long studyId);
-	Long createMaterial(StudyMaterialDto.Req dto, MultipartFile file);
+	Long createMaterial(StudyMaterialDto.Req dto);
 
 	Long updateMaterialFromId(Long id, StudyMaterialDto.Req dto, MultipartFile file);
 

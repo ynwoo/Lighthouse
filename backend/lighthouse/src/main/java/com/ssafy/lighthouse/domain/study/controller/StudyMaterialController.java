@@ -32,9 +32,7 @@ public class StudyMaterialController extends HttpServlet {
 
 	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<String> createMaterial(@ModelAttribute StudyMaterialDto.Req dto) {
-		System.out.println(dto.toString());
-		System.out.println(dto.getFile().getName());
-		studyMaterialService.createMaterial(dto, dto.getFile());
+		studyMaterialService.createMaterial(dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
