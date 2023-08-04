@@ -36,7 +36,7 @@ public class StudyMaterialController extends HttpServlet {
 	@PutMapping("/{study-material-id}")
 	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
 												@RequestBody StudyMaterialDto.Req dto) {
-		studyMaterialService.updateMaterial(id, dto);
+		studyMaterialService.updateMaterialFromId(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 

@@ -18,13 +18,12 @@ public class StudyMaterialDto {
 		private Long sessionId;
 		private int type;
 		private String content;
-		private String fileUrl;
 		private MultipartFile file;
 
 		public StudyMaterial toEntity() {
 			return StudyMaterial.builder()
-					.id(id)
-					.isValid(isValid)
+				.id(id)
+				.isValid(isValid)
 				.studyId(studyId)
 				.sessionId(sessionId)
 				.type(type)

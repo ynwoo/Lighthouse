@@ -19,12 +19,19 @@ public class StudyMaterial extends BaseEntity {
 	private String content;
 	private String fileUrl;
 
-	public void update(Long studyId, Long sessionId, int type, String content, String fileUrl) {
+	public void updateWithFile(Long studyId, Long sessionId, int type, String content, String fileUrl) {
 		this.studyId = studyId;
 		this.sessionId = sessionId;
 		this.type = type;
 		this.content = content;
 		this.fileUrl = fileUrl;
+	}
+
+	public void updateWithoutFile(Long studyId, Long sessionId, int type, String content) {
+		this.studyId = studyId;
+		this.sessionId = sessionId;
+		this.type = type;
+		this.content = content;
 	}
 
 	public void setFileUrl(String fileUrl) {
