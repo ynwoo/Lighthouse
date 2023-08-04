@@ -22,6 +22,6 @@ public class UserBadge extends BaseEntity {
     private Long userId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "badgeId")
+    @JoinColumn(name = "badgeId", updatable = false)
     private Badge badge;
 }
