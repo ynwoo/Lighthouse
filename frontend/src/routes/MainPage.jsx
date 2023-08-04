@@ -22,30 +22,23 @@ const footerStyle = {
   color: '#fff',
   backgroundColor: '#7dbcea',
 }
-
 // 내부 탭
 export default function MainPage() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
-        marginTop: '-10px',
-      }}
-    >
-      <Layout style={{ backgroundColor: 'transparent' }}>
-        <Layout hasSider style={{ backgroundColor: 'transparent' }}>
-          {/* 사이드바 */}
-          <div style={{ position: 'fixed' }}>
-            <SideComponent />
-          </div>
+    <div>
+      {/* <ImageSlide imageData={imageData} /> */}
+      <div className="info_container">
+        {/* 사이드바 */}
+        <div style={{ position: 'fixed' }}>
+          <SideComponent />
+        </div>
 
-          {/* 컨텐츠 */}
+        {/* 컨텐츠 */}
+        <div className="main_item">
           <Content style={contentStyle}>
             <div
               style={{
-                margin: '10px',
+                // margin: '10px',
                 backgroundColor: 'transparent',
                 width: '100%',
               }}
@@ -55,13 +48,12 @@ export default function MainPage() {
             </div>
             <MainComponent />
           </Content>
-        </Layout>
-
-        {/* 푸터 */}
-        <Footer style={footerStyle}>
-          &copy; Lighthouse {new Date().getFullYear()}
-        </Footer>
-      </Layout>
+        </div>
+      </div>
+      {/* 푸터 */}
+      <Footer style={footerStyle}>
+        &copy; Lighthouse {new Date().getFullYear()}
+      </Footer>
     </div>
   )
 }

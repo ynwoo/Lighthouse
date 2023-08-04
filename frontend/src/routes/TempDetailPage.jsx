@@ -33,8 +33,7 @@ export default function TempDetailPage() {
       >
         <Tabs
           style={{
-            width: '90%',
-            right: '50px',
+            width: '800px',
           }}
           type="card"
           items={new Array(Object.keys(tabMenu).length)

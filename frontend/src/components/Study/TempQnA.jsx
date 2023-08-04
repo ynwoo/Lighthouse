@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import ImageSlide from '../Utils/ImageSlide'
+import dummy from '../../db/data.json'
+import TempCard from './TempCard'
 
 function TodoList() {
   const [todos, setTodos] = useState([])
@@ -32,9 +36,28 @@ function TodoList() {
   const handleDeleteTodo = id => {
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
   }
+  const text = useSelector(state => state.study.value)
+  const filterdData = dummy.study_list.filter(item => item.title.includes(text))
+
+  console.log(sessionStorage.getItem('isLoggedIn'))
+  const imageData = [
+    {
+      id: 1,
+      url: '/assets/imgs/good.jpg',
+      alt: 'Good',
+      card: <TempCard study={filterdData[0]} />,
+    },
+    {
+      id: 2,
+      url: '/assets/imgs/genius.jpg',
+      alt: 'Genius',
+      card: <TempCard study={filterdData[1]} />,
+    },
+  ]
 
   return (
     <div>
+      <ImageSlide imageData={imageData} />
       <h1>Todo List</h1>
       <div>
         <input

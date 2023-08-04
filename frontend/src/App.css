@@ -3,6 +3,7 @@ body {
   width: 100%;
   background-color: transparent;
   height: 1000px;
+  overflow-y: scroll; /* 항상 스크롤 바를 보이도록 설정 */
 }
 
 /* WaveComponent CSS */
@@ -233,7 +234,7 @@ body {
   margin: 0;
 }
 
-... 이전 CSS 스타일들 ... */ .circular-image {
+.circular-image {
   position: absolute;
   top: 0%; /* 이미지를 수직 중앙으로 정렬하려면 50%로 설정 */
   left: 50%; /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
@@ -477,7 +478,7 @@ p {
   right: 0rem;
   width: 11rem;
   border: 1px solid rgb(99, 96, 96);
-  box-shadow: 0 40px 40px rgb(0 0 0 /6%);
+  box-shadow: 0 40px 40px rgb(0 0 0 6%);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -509,7 +510,7 @@ p {
 
 .info_container {
   display: grid;
-  grid-template-columns: 1fr 9fr;
+  grid-template-columns: 10% 90%;
   background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
   margin-top: -15px;
   width: 100%;
@@ -521,8 +522,8 @@ p {
 }
 
 .info_item1 {
-  margin: 30px;
-  margin-left: 280px;
+  /* margin: 30px; */
+  margin-left: 230px;
 }
 
 .memo_box {
@@ -579,7 +580,7 @@ p {
 }
 
 .big_box {
-  width: 100%;
+  width: 1000px;
   height: 100%;
   border-radius: 20px;
   text-align: center;
@@ -591,7 +592,7 @@ p {
   padding: 20px;
   margin: -18px;
   margin-bottom: 40px;
-  left: 10px;
+  /* left: 20px; */
 }
 
 .circular-image2 {
@@ -614,6 +615,8 @@ p {
 }
 
 .sidebar {
+  left: 100px;
+  bottom: 120px;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
@@ -621,6 +624,45 @@ p {
   border-radius: 10px;
   background-color: white;
   padding: 20px;
+  padding-bottom: 40px;
+  /* margin-left: 100px;
+  margin-top: 20px; */
+}
+
+.hovered-card {
+  border: 2px solid #6181f1;
+  /* background-color: #000000; */
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.hovered-card .hovered-cover {
+  display: none; /* 커버 숨기기 */
+}
+
+.cover-wrapper {
+  width: 250px;
+}
+
+.big_box_card {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  /* position: relative; */
+  padding: 20px;
+  margin: -18px;
+  margin-bottom: 40px;
   margin-left: 100px;
-  margin-top: 20px;
+  left: 10px;
+}
+
+.main_item {
+  display: flex;
+  margin-left: 250px;
 }

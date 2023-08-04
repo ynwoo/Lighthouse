@@ -19,10 +19,10 @@ function SearchComponent() {
     <div
       style={{
         margin: '10px',
-        marginLeft: '230px',
+        marginLeft: '100px',
+        marginBottom: '20px',
       }}
     >
-      <h2>현재 모집 중인 스터디</h2>
       <div style={{ display: 'flex', width: '100%' }}>
         {/* 검색창 */}
         <div>
