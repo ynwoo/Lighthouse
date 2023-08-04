@@ -51,7 +51,9 @@ public class S3Utils {
 		//return CLOUNDFRONT_DOMAIN_NAME + filePath;
 		//S3 파일 경로 리턴
 		//return amazonS3Client.getUrl(bucket, filePath).toString();
-		return filePath;
+		String fileUrl = amazonS3Client.getUrl(bucket, filePath).toString();
+		log.debug("url: {}", fileUrl);
+		return getFilePath(fileUrl);
 	}
 
 	public byte[] downloadFile(String filePath) {
