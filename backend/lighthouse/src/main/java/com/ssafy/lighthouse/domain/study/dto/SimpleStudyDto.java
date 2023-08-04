@@ -31,6 +31,7 @@ public class SimpleStudyDto {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
+    private Long originalId;
     private SidoDto sido;
     private GugunDto gugun;
     private BadgeResponse badge;
@@ -58,6 +59,7 @@ public class SimpleStudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
+        this.originalId = study.getOriginalId();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
