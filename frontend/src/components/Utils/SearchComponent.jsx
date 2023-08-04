@@ -1,15 +1,21 @@
 import React from 'react'
 import { Input, Select, Space } from 'antd'
-import { useDispatch } from 'react-redux'
-import { setText } from '../../store/study'
+import { useDispatch, useSelector } from 'react-redux'
+import { setText, studyAction } from '../../store/study'
 
 // 검색창
 const { Search } = Input
 
 function SearchComponent() {
   const dispatch = useDispatch()
-  const onSearch = value => {
-    dispatch(setText(value))
+  const params = useSelector(state => state.study.params)
+
+  const onChange = value => {
+    console.log(value.nativeEvent.data)
+    dispatch(setText(value.nativeEvent.data))
+  }
+  const onSearch = () => {
+    dispatch(studyAction.studyList(params))
   }
   // 지역
   const handleChange = value => {
@@ -28,7 +34,9 @@ function SearchComponent() {
         <div>
           <Search
             placeholder="input search text"
+            onChange={onChange}
             onSearch={onSearch}
+            defaultValue=""
             enterButton
             style={{ width: '500px', margin: '10px' }}
           />
