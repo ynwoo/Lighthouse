@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.dto;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class ProfileResponse {
     private List<SimpleStudyDto> progressStudies;    // 진행 중 스터디
     private List<SimpleStudyDto> terminatedStudies;   // 완료 된 스터디
     private List<SimpleStudyDto> bookmarkStudies;
-    //    private List<BadgeDto> badges;
+    private List<BadgeResponse> badges;
     private Double score;   // 유저 평점 평균
     private Long following;
     private Long follower;

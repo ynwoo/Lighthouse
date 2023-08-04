@@ -2,11 +2,16 @@ package com.ssafy.lighthouse.domain.study.service;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
+import com.ssafy.lighthouse.domain.common.entity.Badge;
+import com.ssafy.lighthouse.domain.common.exception.BadgeException;
+import com.ssafy.lighthouse.domain.common.repository.BadgeRepository;
 import com.ssafy.lighthouse.domain.common.service.BadgeService;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.entity.*;
 import com.ssafy.lighthouse.domain.study.exception.*;
 import com.ssafy.lighthouse.domain.study.repository.*;
+import com.ssafy.lighthouse.domain.user.entity.UserBadge;
+import com.ssafy.lighthouse.domain.user.repository.UserBadgeRepository;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.*;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +44,8 @@ public class StudyServiceImpl implements StudyService {
     private final ParticipationHistoryRepository participationHistoryRepository;
     private final UserRepository userRepository;
     private final BadgeService badgeService;
+    private final BadgeRepository badgeRepository;
+    private final UserBadgeRepository userBadgeRepository;
     private final EntityManager em;
 
     private final StudyMaterialService studyMaterialService;
@@ -389,10 +394,23 @@ public class StudyServiceImpl implements StudyService {
 
         // 스터디가 끝나면 팀 전원의 기록 수정 & 뱃지 지급
         else if(studyRequest.getStatus() == STATUS.TERMINATED) {
+            Badge badge = badgeRepository.findByBadgeId(studyRequest.getBadge().getId()).orElseThrow(BadgeException::new);
+            List<UserBadge> newUserBadges = new ArrayList<>();
+            
             participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
-                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.TERMINATED));
+                    .forEach(participationHistory -> {
+                        // 기록 수정
+                        participationHistory.changeStatus(STATUS.TERMINATED);
 
-            // 뱃지 지급 로직 추가 필요
+                        // 뱃지 지급
+                        newUserBadges.add(UserBadge.builder()
+                                .badge(badge)
+                                .userId(participationHistory.getUserId())
+                                .build());
+                    });
+            
+            // 뱃지 지급
+            userBadgeRepository.saveAll(newUserBadges);
         }
 
         em.flush();
