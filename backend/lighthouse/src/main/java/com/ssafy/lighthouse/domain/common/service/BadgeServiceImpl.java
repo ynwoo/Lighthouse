@@ -32,12 +32,12 @@ public class BadgeServiceImpl implements BadgeService {
     }
 
     @Override
-    public void removeBadge(Long badgeId, String imgUrl) {
-        // aws에서 삭제
-        s3Utils.deleteFile(imgUrl);
-        
+    public void removeBadge(Long badgeId) {
         // db에서 삭제
         Badge badge = badgeRepository.findByBadgeId(badgeId).orElseThrow(BadgeException::new);
         badge.changeIsValid(0);
+
+        // aws에서 삭제
+        s3Utils.deleteFile(badge.getImgUrl());
     }
 }

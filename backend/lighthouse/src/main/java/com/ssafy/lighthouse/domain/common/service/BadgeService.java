@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface BadgeService {
     void createBadge(BadgeRequest badgeRequest, MultipartFile img);
-    void removeBadge(Long badgeId, String imgUrl);
+    void removeBadge(Long badgeId);
 }
