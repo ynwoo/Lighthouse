@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.user.dto.*;
 import com.ssafy.lighthouse.domain.user.service.JwtService;
 import com.ssafy.lighthouse.domain.user.service.UserService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -287,6 +289,17 @@ public class UserController {
 		Long followerId = (Long) request.getAttribute("userId");
 		log.debug("followerId : {}", followerId);
 		userService.removeFollow(followeeId, followerId);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	// profile img 저장
+	@PutMapping("/profile")
+	public ResponseEntity<?> updateProfileImage(@RequestPart(value = "img") MultipartFile img,
+												HttpServletRequest request) {
+		// session에서 userId 가져오기
+		Long userId = (Long) request.getAttribute("userId");
+		log.debug("followerId : {}", userId);
+		userService.updateProfileImage(img, userId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 }
