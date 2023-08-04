@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
 import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
@@ -194,9 +195,28 @@ public class UserServiceImpl implements UserService {
 		// 구현 예정
 		List<AlertQueue> alertQueues = alertQueueRepository.findByConsumerIdAndIsValidOrderByCreatedAtDesc(
 			id, 1);
-		for(AlertQueue alertQueue : alertQueues) {
+		for (AlertQueue alertQueue : alertQueues) {
 			result.add(alertQueueEntityToAlertDto(alertQueue));
 		}
 		return result;
+	}
+
+	@Override
+	public User getUserByProviderId(String providerId) {
+		return userRepository.findByProviderId(providerId);
+	}
+
+	@Override
+	public User addOAuthUser(OAuthUserInfoDto oauthUser) {
+		User newUser = User.builder()
+			.name(oauthUser.getName())
+			.email(oauthUser.getEmail())
+			.providerId(oauthUser.getProviderId())
+			.nickname(oauthUser.getEmail())
+			.password(oauthUser.getProviderId())
+			.isValid(1)
+			.profileImgUrl(oauthUser.getProfileImg())
+			.build();
+		return userRepository.save(newUser);
 	}
 }

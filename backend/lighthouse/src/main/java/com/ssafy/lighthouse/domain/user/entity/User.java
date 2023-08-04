@@ -30,9 +30,10 @@ public class User extends BaseEntity {
 	private Long gugunId;
 	private String phoneNumber;
 	private String description;
-    private String token;
-    //@OneToMany(mappedBy = "user")
-    //private List<UserTag> userTags = new ArrayList<>();
+	private String token;
+	private String providerId;
+	//@OneToMany(mappedBy = "user")
+	//private List<UserTag> userTags = new ArrayList<>();
 
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,
@@ -47,18 +48,23 @@ public class User extends BaseEntity {
 		this.phoneNumber = phoneNumber;
 		this.description = description;
 	}
-    public static User from(UserMyPageDto userMyPageDto) {
-        return User.builder()
-            .email(userMyPageDto.getEmail())
-            .password(userMyPageDto.getPassword())
-            .name(userMyPageDto.getName())
-            .nickname(userMyPageDto.getNickname())
-            .age(userMyPageDto.getAge())
-            .sidoId(userMyPageDto.getSidoId())
-            .gugunId(userMyPageDto.getGugunId())
-            .phoneNumber(userMyPageDto.getPhoneNumber())
-            .description(userMyPageDto.getDescription())
-            //.userTags(userMyPageDto.getUserTagList())
-            .build();
-    }
+
+	public static User from(UserMyPageDto userMyPageDto) {
+		return User.builder()
+			.email(userMyPageDto.getEmail())
+			.password(userMyPageDto.getPassword())
+			.name(userMyPageDto.getName())
+			.nickname(userMyPageDto.getNickname())
+			.age(userMyPageDto.getAge())
+			.sidoId(userMyPageDto.getSidoId())
+			.gugunId(userMyPageDto.getGugunId())
+			.phoneNumber(userMyPageDto.getPhoneNumber())
+			.description(userMyPageDto.getDescription())
+			//.userTags(userMyPageDto.getUserTagList())
+			.build();
+	}
+
+	public void updateIsvalid() {
+		recover();
+	}
 }

@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.user.service;
 
 import java.util.List;
 
+import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
 import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
@@ -50,6 +51,11 @@ public interface UserService {
 
 
 	List<AlertDto> getAlertDtoList(Long id);
+
+	// google login
+	User getUserByProviderId(String providerId);
+
+	User addOAuthUser(OAuthUserInfoDto oauthUser);
 
 	default UserMyPageDto entityToDto(User userEntity) {
 		UserMyPageDto dto = UserMyPageDto.builder()
