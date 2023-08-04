@@ -7,10 +7,14 @@ import com.ssafy.lighthouse.domain.study.entity.StudyMaterial;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 public class StudyMaterialDto {
 	@Getter
+	@Setter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@ToString
 	public static class Req {
 		private Long id;
 		private int isValid;
@@ -19,6 +23,7 @@ public class StudyMaterialDto {
 		private int type;
 		private String content;
 		private String fileUrl;
+		private MultipartFile file;
 
 		public StudyMaterial toEntity() {
 			return StudyMaterial.builder()
