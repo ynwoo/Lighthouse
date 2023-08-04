@@ -31,6 +31,7 @@ public class AmazonS3Service {
 	public String upload(MultipartFile file) {
 		String originalFileName = file.getOriginalFilename();
 		String filePath = getFilePath(originalFileName);
+		log.debug("filePath : {}", filePath);
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
 		objectMetadata.setContentLength(file.getSize());

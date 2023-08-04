@@ -7,8 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @NoArgsConstructor
 public class BadgeRequest {
-    private Long id;
-    private MultipartFile img;
     private String name;
     private String description;
 }
