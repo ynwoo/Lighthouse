@@ -233,7 +233,8 @@ body {
   margin: 0;
 }
 
-... 이전 CSS 스타일들 ... */ .circular-image {
+/*... 이전 CSS 스타일들 ... */
+.circular-image {
   position: absolute;
   top: 0%; /* 이미지를 수직 중앙으로 정렬하려면 50%로 설정 */
   left: 50%; /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
