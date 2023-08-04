@@ -32,6 +32,7 @@ public class StudyRequest {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
+    private Long originalId;
     private BadgeRequest badge;
     private SidoDto sido;
     private GugunDto gugun;
@@ -58,6 +59,7 @@ public class StudyRequest {
                 .likeCnt(this.likeCnt)
                 .bookmarkCnt(this.bookmarkCnt)
                 .status(this.status)
+                .originalId(this.originalId)
                 .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())

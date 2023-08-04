@@ -34,6 +34,7 @@ public class Study extends BaseEntity {
     private int bookmarkCnt;
     private int status;
     private Long leaderId;
+    private Long originalId;
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
@@ -48,10 +49,6 @@ public class Study extends BaseEntity {
 
     public void addMember() {this.currentMember++;}
     public void removeMember() {this.currentMember--;}
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "originalId", updatable = false)
-    private Study original;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sidoId")
