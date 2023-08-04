@@ -29,9 +29,8 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	}
 
 	@Override
-	public Long createMaterial(final StudyMaterialDto.Req dto) {
+	public Long createMaterial(final StudyMaterialDto.Req dto, final MultipartFile file) {
 		StudyMaterial entity = dto.toEntity();
-		MultipartFile file = dto.getFile();
 		if (!file.isEmpty()) {
 			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
 			entity.setFileUrl(fileUrl);
@@ -41,14 +40,14 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	}
 
 	@Override
-	public Long updateMaterialFromId(final Long id, final StudyMaterialDto.Req dto) {
+	public Long updateMaterialFromId(final Long id, final StudyMaterialDto.Req dto, final MultipartFile file) {
 		StudyMaterial targetStudyMaterial = findById(id);
-		return updateMaterial(targetStudyMaterial, dto);
+		return updateMaterial(targetStudyMaterial, dto, file);
 	}
 
 	@Override
-	public Long updateMaterial(final StudyMaterial targetStudyMaterial, final StudyMaterialDto.Req dto) {
-		MultipartFile file = dto.getFile();
+	public Long updateMaterial(final StudyMaterial targetStudyMaterial, final StudyMaterialDto.Req dto,
+		final MultipartFile file) {
 		if (!file.isEmpty()) {
 			//이전 파일 삭제
 			s3Utils.deleteFile(targetStudyMaterial.getFileUrl());
