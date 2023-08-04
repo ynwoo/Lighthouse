@@ -55,6 +55,7 @@ function SignUpPage() {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
           delete value.confirm
+          value.userTagList = []
           // 비어있는 요소를 undefined => null로 바꾸어주는 작업
           Object.keys(value).forEach(key => {
             if (value[key] === undefined) {
