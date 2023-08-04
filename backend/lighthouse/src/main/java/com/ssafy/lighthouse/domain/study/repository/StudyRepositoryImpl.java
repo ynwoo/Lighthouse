@@ -55,6 +55,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                         isOnline(options),
                         checkByTagIds(options),
                         searchByKeyword(options))
+                .groupBy(study)
                 .orderBy(orderSpecifier)
                 .offset(options.getOffset())
                 .limit(options.getLimit())
@@ -69,9 +70,15 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         // total 구하기
         Long total = jpaQueryFactory.select(study.count())
                 .from(study)
-                .where(isValid())
+                .where(
+                        isValid(),
+                        checkStatus(options),
+                        isOnline(options),
+                        checkByTagIds(options),
+                        searchByKeyword(options))
                 .fetchOne();
         if(total == null) total = 0L;
+        log.debug("total : {}", total);
 
         // Page<SimpleStudyDto>로 변환
         Sort sort = Sort.by(orderSpecifier.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC,

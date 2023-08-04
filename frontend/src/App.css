@@ -233,7 +233,8 @@ body {
   margin: 0;
 }
 
-... 이전 CSS 스타일들 ... */ .circular-image {
+/*... 이전 CSS 스타일들 ... */
+.circular-image {
   position: absolute;
   top: 0%; /* 이미지를 수직 중앙으로 정렬하려면 50%로 설정 */
   left: 50%; /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
@@ -477,7 +478,7 @@ p {
   right: 0rem;
   width: 11rem;
   border: 1px solid rgb(99, 96, 96);
-  box-shadow: 0 40px 40px rgb(0 0 0 /6%);
+  box-shadow: 0 40px 40px rgb(0 0 0 6%);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);

@@ -39,6 +39,8 @@ public class StudyServiceImpl implements StudyService {
     private final UserRepository userRepository;
     private final EntityManager em;
 
+    private final StudyMaterialService studyMaterialService;
+
 
     @Override
     @Transactional(readOnly = true)
@@ -342,15 +344,9 @@ public class StudyServiceImpl implements StudyService {
 
                     // 있으면 update
                     if(checkResult.isPresent()) {
-                        StudyMaterial studyMaterial = checkResult.get();
-                        studyMaterial.update(
-                                changedStudyMaterial.getStudyId(),
-                                changedStudyMaterial.getSessionId(),
-                                changedStudyMaterial.getType(),
-                                changedStudyMaterial.getContent(),
-                                changedStudyMaterial.getFileUrl()
-                        );
-                        studyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
+                        StudyMaterial targetStudyMaterial = checkResult.get();
+                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial);
+                        targetStudyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
                     }
 
                     // 없으면 save
