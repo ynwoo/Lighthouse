@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.common.service;
 
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
+import com.ssafy.lighthouse.domain.common.exception.BadgeException;
 import com.ssafy.lighthouse.domain.common.repository.BadgeRepository;
 import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,15 @@ public class BadgeServiceImpl implements BadgeService {
                 .description(badgeRequest.getDescription())
                 .imgUrl(imgUrl)
                 .build());
+    }
+
+    @Override
+    public void removeBadge(Long badgeId) {
+        // db에서 삭제
+        Badge badge = badgeRepository.findByBadgeId(badgeId).orElseThrow(BadgeException::new);
+        badge.changeIsValid(0);
+
+        // aws에서 삭제
+        s3Utils.deleteFile(badge.getImgUrl());
     }
 }

@@ -21,7 +21,15 @@ public class BadgeController {
     public ResponseEntity<?> createBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
                                          @RequestPart(value = "img") MultipartFile img) {
         log.debug("badge name : {} ", badgeRequest.getName());
+        log.debug("badge description : {} ", badgeRequest.getDescription());
         badgeService.createBadge(badgeRequest, img);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{badge-id}")
+    public ResponseEntity<?> removeBadge(@PathVariable(value = "badge-id") Long badgeId) {
+        log.debug("badge id : {} ", badgeId);
+        badgeService.removeBadge(badgeId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
