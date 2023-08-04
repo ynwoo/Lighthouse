@@ -6,7 +6,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
-import com.ssafy.lighthouse.domain.common.repository.BadgeRepository;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
@@ -14,7 +13,6 @@ import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryReposito
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
-import com.ssafy.lighthouse.domain.user.entity.UserBadge;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -101,19 +99,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .fetchOne();
 
         // badgeList
-        List<BadgeResponse> badgeResponses = userBadgeRepository.findBadgeIdAllByUserId(userId).stream()
-                .filter(userBadge -> userBadge.getBadge().isValid())
-                .map(userBadge -> {
-                    Badge badge = userBadge.getBadge();
-                    return BadgeResponse.builder()
-                            .name(badge.getName())
-                            .imgUrl(badge.getImgUrl())
-                            .description(badge.getDescription())
-                            .id(badge.getId())
-                            .build();
-                })
-                .collect(Collectors.toList());
-
+        List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         return ProfileResponse.builder()
                 .id(result.getId())
@@ -149,6 +135,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
 
+        // badgeList
+        List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         return SimpleProfileResponse.builder()
                 .id(result.getId())
@@ -157,6 +145,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .profileImgUrl(result.getProfileImgUrl())
                 .description(result.getDescription())
                 .tags(tags)
+                .badges(badgeResponses)
                 .score(result.getScore())
                 .build();
     }
@@ -188,5 +177,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(simpleProfileResponse.getScore())
                 .build())
                 .collect(Collectors.toList());
+    }
+
+    // badgeList
+    private List<BadgeResponse> getBadgeResponsesByUserId(Long userId) {
+        return userBadgeRepository.findBadgeIdAllByUserId(userId).stream()
+                        .filter(userBadge -> userBadge.getBadge().isValid())
+                        .map(userBadge -> {
+                            Badge badge = userBadge.getBadge();
+                            return BadgeResponse.builder()
+                                    .name(badge.getName())
+                                    .imgUrl(badge.getImgUrl())
+                                    .description(badge.getDescription())
+                                    .id(badge.getId())
+                                    .build();
+                        })
+                        .collect(Collectors.toList());
     }
 }
