@@ -5,6 +5,7 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.lighthouse.domain.common.entity.QBadge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ssafy.lighthouse.domain.common.entity.QBadge.badge;
 import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
@@ -46,6 +48,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .leftJoin(study.studyTags, studyTag).on(studyTag.isValid.eq(1))
                 .leftJoin(study.sido, sido).on(sido.isValid.eq(1))
                 .leftJoin(study.gugun, gugun).on(gugun.isValid.eq(1))
+                .leftJoin(study.badge, badge).on(badge.isValid.eq(1))
                 .where(
                         isValid(),
                         checkStatus(options),

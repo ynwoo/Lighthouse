@@ -75,7 +75,7 @@ public class StudyServiceImpl implements StudyService {
     
     // 스터디 복제
     @Override
-    public StudyResponse createStudyByStudyId(Long studyId) {
+    public StudyResponse createStudyByStudyId(Long studyId, Long userId) {
         Optional<Study> findDetail = studyRepository.findSimpleDetailById(studyId);
         log.debug("service1 - findDetailById : {}", findDetail);
         Study study = findDetail.orElseThrow(() -> new StudyNotFoundException(ERROR.CREATE));
@@ -147,6 +147,16 @@ public class StudyServiceImpl implements StudyService {
                         .build())
                 .collect(Collectors.toSet()));
 
+        // 스터디 참여 기록 등록(팀장)
+        participationHistoryRepository.save(ParticipationHistory
+                .builder()
+                .userId(userId)
+                .studyId(studyId)
+                .status(STATUS.PREPARING)
+                .userRole(ROLE.TEAM_LEADER)
+                .joinedAt(LocalDateTime.now())
+                .build());
+
         return new StudyResponse(newStudy);
     }
 
@@ -166,47 +176,207 @@ public class StudyServiceImpl implements StudyService {
 
     // 변경사항이 있으면 update 진행
     @Override
-    public void updateStudyByStudyId(StudyRequest studyRequest, Long userId) {
-        Study study = studyRequest.toEntity();
+    public StudyResponse updateStudyByStudyId(StudyRequest studyRequest, Long userId) {
+        Study changedStudy = studyRequest.toEntity();
+        Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
         log.debug("studyId : {}", study.getId());
-        studyRepository.save(study);
-        studyTagRepository.saveAll(study.getStudyTags());
-        studyEvalRepository.saveAll(study.getStudyEvals());
-        
+
+        study.update(changedStudy);
+
+        // studyEval
+        Set<StudyEval> studyEvals = study.getStudyEvals();
+        Set<StudyEval> newStudyEvals = new HashSet<>();
+        studyRequest.getStudyEvals().forEach(changedStudyEval -> {
+            Optional<StudyEval> result = studyEvals
+                    .stream()
+                    .filter(studyEval -> studyEval.getId().equals(changedStudyEval.getId()))
+                    .findFirst();
+
+            // 있으면 update
+            if(result.isPresent()) {
+                StudyEval studyEval = result.get();
+                studyEval.update(
+                        changedStudyEval.getStudyId(),
+                        changedStudyEval.getUserId(),
+                        changedStudyEval.getComment(),
+                        changedStudyEval.getScore());
+                studyEval.changeIsValid(changedStudyEval.getIsValid());
+            }
+            // 없으면 save
+            else {
+                newStudyEvals.add(changedStudyEval.toEntity());
+            }
+        });
+        studyEvalRepository.saveAll(newStudyEvals);
+
+        // studyTag
+        Set<StudyTag> studyTags = study.getStudyTags();
+        Set<StudyTag> newStudyTags = new HashSet<>();
+        studyRequest.getStudyTags().forEach(changedStudyTag -> {
+            Optional<StudyTag> result = studyTags
+                    .stream()
+                    .filter(studyTag -> studyTag.getId().equals(changedStudyTag.getId()))
+                    .findFirst();
+
+            // 있으면 update
+            if(result.isPresent()) {
+                StudyTag studyTag = result.get();
+                studyTag.update(
+                        changedStudyTag.getStudyId(),
+                        changedStudyTag.getTag().toEntity());
+                studyTag.changeIsValid(changedStudyTag.getIsValid());
+            }
+            // 없으면 save
+            else {
+                newStudyTags.add(changedStudyTag.toEntity());
+            }
+        });
+        studyTagRepository.saveAll(newStudyTags);
+
         // studyNotice & studyNoticeCheck
         Set<StudyNotice> studyNotices = study.getStudyNotices();
-        Set<StudyNoticeCheck> studyNoticeChecks = new HashSet<>();
-        studyNotices.forEach(studyNotice -> studyNoticeChecks.addAll(studyNotice.getStudyNoticeChecks()));
-        
-        studyNoticeRepository.saveAll(studyNotices);
-        studyNoticeCheckRepository.saveAll(studyNoticeChecks);
-        
+        Set<StudyNotice> newStudyNotices = new HashSet<>();
+        Set<StudyNoticeCheck> newStudyNoticeChecks = new HashSet<>();
+        studyRequest.getStudyNotices().forEach(changedStudyNotice -> {
+            Optional<StudyNotice> result = studyNotices
+                    .stream()
+                    .filter(studyNotice -> studyNotice.getId().equals(changedStudyNotice.getId()))
+                    .findFirst();
+
+            // 있으면 update
+            if(result.isPresent()) {
+                StudyNotice studyNotice = result.get();
+                studyNotice.update(
+                        changedStudyNotice.getStudyId(),
+                        changedStudyNotice.getContent());
+                studyNotice.changeIsValid(changedStudyNotice.getIsValid());
+
+                Set<StudyNoticeCheck> studyNoticeChecks = studyNotice.getStudyNoticeChecks();
+                changedStudyNotice.getStudyNoticeChecks().forEach(changedStudyNoticeCheck -> {
+                    Optional<StudyNoticeCheck> checkResult = studyNoticeChecks
+                            .stream()
+                            .filter(studyNoticeCheck -> studyNoticeCheck.getId().equals(changedStudyNoticeCheck.getId()))
+                            .findFirst();
+
+                    // 있으면 update
+                    if(checkResult.isPresent()) {
+                        StudyNoticeCheck studyNoticeCheck = checkResult.get();
+                        studyNoticeCheck.changeIsValid(changedStudyNoticeCheck.getIsValid());
+                    }
+
+                    // 없으면 save
+                    else {
+                        newStudyNoticeChecks.add(changedStudyNoticeCheck.toEntity());
+                    }
+                });
+            }
+            // 없으면 save
+            else {
+                newStudyNotices.add(changedStudyNotice.toEntity());
+            }
+        });
+        studyNoticeRepository.saveAll(newStudyNotices);
+        studyNoticeCheckRepository.saveAll(newStudyNoticeChecks);
+
         // session & sessionCheck & studyMaterial
         Set<Session> sessions = study.getSessions();
-        Set<SessionCheck> sessionChecks = new HashSet<>();
-        Set<StudyMaterial> studyMaterials = new HashSet<>();
-        sessions.forEach(session -> {
-            sessionChecks.addAll(session.getSessionChecks());
-            studyMaterials.addAll(session.getStudyMaterials());
+        Set<Session> newSessions = new HashSet<>();
+        Set<SessionCheck> newSessionChecks = new HashSet<>();
+        Set<StudyMaterial> newStudyMaterials = new HashSet<>();
+        studyRequest.getSessions().forEach(changedSession -> {
+            Optional<Session> result = sessions
+                    .stream()
+                    .filter(session -> session.getId().equals(changedSession.getId()))
+                    .findFirst();
+
+            // 있으면 update
+            if(result.isPresent()) {
+                Session session = result.get();
+                session.update(
+                        changedSession.getStartedAt(),
+                        changedSession.getEndedAt(),
+                        changedSession.getStudyId(),
+                        changedSession.getTitle(),
+                        changedSession.getDescription(),
+                        changedSession.getComment(),
+                        changedSession.getStatus(),
+                        changedSession.getSeqNum());
+                session.changeIsValid(changedSession.getIsValid());
+
+                // sessionCheck 시작
+                Set<SessionCheck> sessionChecks = session.getSessionChecks();
+                changedSession.getSessionChecks().forEach(changedSessionCheck -> {
+                    Optional<SessionCheck> checkResult = sessionChecks
+                            .stream()
+                            .filter(sessionCheck -> sessionCheck.getId().equals(changedSessionCheck.getId()))
+                            .findFirst();
+
+                    // 있으면 update
+                    if(checkResult.isPresent()) {
+                        SessionCheck sessionCheck = checkResult.get();
+                        sessionCheck.update(
+                                changedSessionCheck.getUserId(),
+                                changedSessionCheck.getSessionId(),
+                                changedSessionCheck.getContent()
+                        );
+                        sessionCheck.changeIsValid(changedSessionCheck.getIsValid());
+                    }
+
+                    // 없으면 save
+                    else {
+                        newSessionChecks.add(changedSessionCheck.toEntity());
+                    }
+                });
+                // sessionCheck 끝
+
+                // studyMaterial 시작
+                Set<StudyMaterial> studyMaterials = session.getStudyMaterials();
+                changedSession.getStudyMaterials().forEach(changedStudyMaterial -> {
+                    Optional<StudyMaterial> checkResult = studyMaterials
+                            .stream()
+                            .filter(studyMaterial -> studyMaterial.getId().equals(changedStudyMaterial.getId()))
+                            .findFirst();
+
+                    // 있으면 update
+                    if(checkResult.isPresent()) {
+                        StudyMaterial studyMaterial = checkResult.get();
+                        studyMaterial.update(
+                                changedStudyMaterial.getStudyId(),
+                                changedStudyMaterial.getSessionId(),
+                                changedStudyMaterial.getType(),
+                                changedStudyMaterial.getContent(),
+                                changedStudyMaterial.getFileUrl()
+                        );
+                        studyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
+                    }
+
+                    // 없으면 save
+                    else {
+                        newStudyMaterials.add(changedStudyMaterial.toEntity());
+                    }
+                });
+                // studyMaterial 끝
+
+            }
+            // 없으면 save
+            else {
+                Session session = changedSession.toEntity();
+                newSessions.add(session);
+                newSessionChecks.addAll(session.getSessionChecks());
+                newStudyMaterials.addAll(session.getStudyMaterials());
+            }
         });
-        
-        sessionRepository.saveAll(sessions);
-        sessionCheckRepository.saveAll(sessionChecks);
-        studyMaterialRepository.saveAll(studyMaterials);
+        sessionRepository.saveAll(newSessions);
+        sessionCheckRepository.saveAll(newSessionChecks);
+        studyMaterialRepository.saveAll(newStudyMaterials);
 
         log.debug("status : {}", studyRequest.getStatus());
         log.debug("studyRequest.getId() : {}", studyRequest.getId());
 
-        // 스터디 참여 기록 등록(팀장)
+        // 스터디가 모집 시작하면 팀장 기록 수정
         if(studyRequest.getStatus() == STATUS.RECRUITING) {
-            participationHistoryRepository.saveAndFlush(ParticipationHistory
-                    .builder()
-                    .userId(userId)
-                            .studyId(studyRequest.getId())
-                            .status(STATUS.RECRUITING)
-                            .userRole(ROLE.TEAM_LEADER)
-                            .joinedAt(LocalDateTime.now())
-                    .build());
+            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PREPARING)
+                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.RECRUITING));
         }
         // 스터디가 시작하면 팀 전원의 기록 수정
         else if(studyRequest.getStatus() == STATUS.PROGRESS) {
@@ -221,6 +391,12 @@ public class StudyServiceImpl implements StudyService {
 
             // 뱃지 지급 로직 추가 필요
         }
+
+        em.flush();
+        em.clear();
+
+        return new StudyResponse(studyRepository.findDetailById(studyRequest.getId())
+                .orElseThrow(StudyNotFoundException::new));
     }
 
     @Override

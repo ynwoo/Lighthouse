@@ -20,10 +20,17 @@ public class StudyEval extends BaseEntity {
     private String comment;
     private int score;
 
-    public StudyEval(StudyEval studyEval) {
+    public void update(StudyEval studyEval) {
         this.studyId = studyEval.getStudyId();
         this.userId = studyEval.getUserId();
         this.comment = studyEval.getComment();
         this.score = studyEval.getScore();
+    }
+
+    public void update(Long studyId, Long userId, String comment, int score) {
+        this.studyId = studyId;
+        this.userId = userId;
+        this.comment = comment;
+        this.score = score;
     }
 }

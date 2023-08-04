@@ -47,9 +47,11 @@ public class StudyController {
 
     // 템플릿 복제
     @PostMapping("/{study-id}")
-    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                  HttpServletRequest request) {
         log.debug("studyId : {}", studyId);
-        StudyResponse result = studyService.createStudyByStudyId(studyId);
+        Long userId = (Long) request.getAttribute("userId");
+        StudyResponse result = studyService.createStudyByStudyId(studyId, userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -68,8 +70,8 @@ public class StudyController {
         Long userId = (Long) request.getAttribute("userId");
         log.debug("studyId : {}", studyRequest.getId());
         log.debug("userId : {}", userId);
-        studyService.updateStudyByStudyId(studyRequest, userId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest, userId);
+        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
 
     // 스터디 삭제

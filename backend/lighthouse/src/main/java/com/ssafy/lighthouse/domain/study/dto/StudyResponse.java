@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.BadgeDto;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
@@ -36,6 +37,7 @@ public class StudyResponse {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
+    private BadgeDto badge;
     private StudyResponse original;
     private SimpleProfileResponse leaderProfile;
     private List<SimpleProfileResponse> memberProfiles;
@@ -73,6 +75,7 @@ public class StudyResponse {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
+        this.badge = study.getBadge() != null ? new BadgeDto(study.getBadge()) : null;
         this.original = study.getOriginal() != null ? new StudyResponse(study.getOriginal()) : null;
         this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
         this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
