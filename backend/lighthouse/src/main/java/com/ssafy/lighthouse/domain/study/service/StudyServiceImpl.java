@@ -102,7 +102,7 @@ public class StudyServiceImpl implements StudyService {
                 .hit(study.getHit())
                 .rule(study.getRule())
                 .isOnline(study.getIsOnline())
-                .original(study)
+                .originalId(study.getId())
                 .build());
 
         log.debug("service2 - studyId : {}", study.getId());
@@ -194,6 +194,11 @@ public class StudyServiceImpl implements StudyService {
         Study changedStudy = studyRequest.toEntity();
         Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
         log.debug("studyId : {}", study.getId());
+
+        int prevStatus = study.getStatus();
+        int curStatus = studyRequest.getStatus();
+        log.debug("prevStatus : {}", prevStatus);
+        log.debug("curStatus : {}", curStatus);
 
         study.update(changedStudy);
 
@@ -378,40 +383,48 @@ public class StudyServiceImpl implements StudyService {
         sessionCheckRepository.saveAll(newSessionChecks);
         studyMaterialRepository.saveAll(newStudyMaterials);
 
-        log.debug("status : {}", studyRequest.getStatus());
         log.debug("studyRequest.getId() : {}", studyRequest.getId());
 
-        // 스터디가 모집 시작하면 팀장 기록 수정
-        if(studyRequest.getStatus() == STATUS.RECRUITING) {
-            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PREPARING)
-                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.RECRUITING));
-        }
-        // 스터디가 시작하면 팀 전원의 기록 수정
-        else if(studyRequest.getStatus() == STATUS.PROGRESS) {
-            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.RECRUITING)
-                    .forEach(participationHistory -> participationHistory.changeStatus(STATUS.PROGRESS));
+
+        // status 변동 없으면 그냥 두기
+        if(prevStatus != curStatus) {
+            
+            // 스터디가 모집 시작하면 팀장 기록 수정
+            if(curStatus == STATUS.RECRUITING) {
+                participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PREPARING)
+                        .forEach(participationHistory -> participationHistory.changeStatus(STATUS.RECRUITING));
+            }
+
+            // 스터디가 시작하면 팀 전원의 기록 수정
+            else if(curStatus == STATUS.PROGRESS) {
+                participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.RECRUITING)
+                        .forEach(participationHistory -> participationHistory.changeStatus(STATUS.PROGRESS));
+            }
+
+            // 스터디가 끝나면 팀 전원의 기록 수정 & 뱃지 지급
+            else if(curStatus == STATUS.TERMINATED) {
+
+                // 스터디에 해당하는 뱃지 확인
+                Badge badge = badgeRepository.findByBadgeId(studyRequest.getBadge().getId()).orElseThrow(BadgeException::new);
+                List<UserBadge> newUserBadges = new ArrayList<>();
+
+                participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
+                        .forEach(participationHistory -> {
+                            // 기록 수정
+                            participationHistory.changeStatus(STATUS.TERMINATED);
+
+                            // 뱃지 지급
+                            newUserBadges.add(UserBadge.builder()
+                                    .badge(badge)
+                                    .userId(participationHistory.getUserId())
+                                    .build());
+                        });
+
+                // 뱃지 지급
+                userBadgeRepository.saveAll(newUserBadges);
+            }
         }
 
-        // 스터디가 끝나면 팀 전원의 기록 수정 & 뱃지 지급
-        else if(studyRequest.getStatus() == STATUS.TERMINATED) {
-            Badge badge = badgeRepository.findByBadgeId(studyRequest.getBadge().getId()).orElseThrow(BadgeException::new);
-            List<UserBadge> newUserBadges = new ArrayList<>();
-            
-            participationHistoryRepository.findAllByStudyId(studyRequest.getId(), STATUS.PROGRESS)
-                    .forEach(participationHistory -> {
-                        // 기록 수정
-                        participationHistory.changeStatus(STATUS.TERMINATED);
-
-                        // 뱃지 지급
-                        newUserBadges.add(UserBadge.builder()
-                                .badge(badge)
-                                .userId(participationHistory.getUserId())
-                                .build());
-                    });
-            
-            // 뱃지 지급
-            userBadgeRepository.saveAll(newUserBadges);
-        }
 
         em.flush();
         em.clear();
