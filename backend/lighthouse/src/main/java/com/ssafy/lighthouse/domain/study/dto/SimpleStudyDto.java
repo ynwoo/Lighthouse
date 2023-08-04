@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.BadgeDto;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
@@ -33,6 +34,7 @@ public class SimpleStudyDto {
     private int bookmarkCnt;
     private SidoDto sido;
     private GugunDto gugun;
+    private BadgeDto badge;
     private List<StudyTagDto> studyTags;
     private SimpleProfileResponse leaderProfile;
 
@@ -57,6 +59,7 @@ public class SimpleStudyDto {
         this.isOnline = study.getIsOnline();
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
+        this.badge = study.getBadge() != null ? new BadgeDto(study.getBadge()) : null;
         this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
         this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList());
