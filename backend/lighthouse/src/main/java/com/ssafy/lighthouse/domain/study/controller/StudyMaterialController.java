@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import com.ssafy.lighthouse.domain.study.dto.StudyMaterialDto;
 import com.ssafy.lighthouse.domain.study.service.StudyMaterialService;
 
@@ -24,6 +25,7 @@ public class StudyMaterialController extends HttpServlet {
 	private static final String SUCCESS= "success";
 
 	private StudyMaterialService studyMaterialService;
+	private final S3Utils s3Utils;
 
 	@PostMapping
 	public ResponseEntity<String> createMaterial(@RequestBody StudyMaterialDto.Req dto) {
@@ -34,7 +36,7 @@ public class StudyMaterialController extends HttpServlet {
 	@PutMapping("/{study-material-id}")
 	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
 												@RequestBody StudyMaterialDto.Req dto) {
-		studyMaterialService.updateMaterial(id, dto);
+		studyMaterialService.updateMaterialFromId(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
