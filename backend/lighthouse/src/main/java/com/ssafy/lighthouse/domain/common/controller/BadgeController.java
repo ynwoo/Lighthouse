@@ -27,7 +27,7 @@ public class BadgeController {
     }
 
     @DeleteMapping("/{badge-id}")
-    public ResponseEntity<?> createBadge(@PathVariable(value = "badge-id") Long badgeId) {
+    public ResponseEntity<?> removeBadge(@PathVariable(value = "badge-id") Long badgeId) {
         log.debug("badge id : {} ", badgeId);
         badgeService.removeBadge(badgeId);
         return new ResponseEntity<Void>(HttpStatus.OK);
