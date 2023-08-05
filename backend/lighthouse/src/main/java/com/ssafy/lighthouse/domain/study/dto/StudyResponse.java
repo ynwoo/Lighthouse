@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
@@ -35,8 +36,10 @@ public class StudyResponse {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
-    private StudyResponse original;
+    private Long originalId;
+    private BadgeResponse badge;
     private SimpleProfileResponse leaderProfile;
+    private List<SimpleProfileResponse> memberProfiles;
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
@@ -47,6 +50,10 @@ public class StudyResponse {
 
     public void setLeaderProfile(SimpleProfileResponse leaderProfile) {
         this.leaderProfile = leaderProfile;
+    }
+
+    public void setMemberProfiles(List<SimpleProfileResponse> memberProfiles) {
+        this.memberProfiles = memberProfiles;
     }
 
     public StudyResponse(Study study) {
@@ -67,7 +74,8 @@ public class StudyResponse {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
-        this.original = study.getOriginal() != null ? new StudyResponse(study.getOriginal()) : null;
+        this.originalId = study.getOriginalId();
+        this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
         this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;

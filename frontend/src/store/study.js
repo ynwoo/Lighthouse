@@ -9,15 +9,24 @@ const initialState = {
     page: 0,
     key: 'title',
     word: '',
+    isOnline: 0,
   },
   studies: [],
-  studyDetail: null,
+  studyDetail: {},
 }
 
 export const studyAction = {
   studyList: createAsyncThunk('study/list', async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}/study`, { params: payload })
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  studyDetail: createAsyncThunk('study/detail', async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/study/${payload}`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -35,14 +44,25 @@ export const studySlice = createSlice({
       }
       state.params.word = action.payload
     },
+    setOnline: (state, action) => {
+      console.log(action.payload)
+      if (state.params.isOnline) {
+        state.params.isOnline = 0
+      } else {
+        state.params.isOnline = 1
+      }
+    },
   },
   extraReducers: {
     [studyAction.studyList.fulfilled]: (state, action) => {
       state.studies = action.payload.content
     },
+    [studyAction.studyDetail.fulfilled]: (state, action) => {
+      state.studyDetail = action.payload
+    },
   },
 })
 
-export const { setText } = studySlice.actions
+export const { setText, setOnline } = studySlice.actions
 
 export default studySlice.reducer
