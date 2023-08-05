@@ -13,6 +13,7 @@ const initialState = {
   },
   studies: [],
   studyDetail: {},
+  tags: [],
 }
 
 export const studyAction = {
@@ -27,6 +28,15 @@ export const studyAction = {
   studyDetail: createAsyncThunk('study/detail', async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}/study/${payload}`)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  // 태그 리스트
+  getTags: createAsyncThunk('study/getTags', async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/tags`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -59,6 +69,10 @@ export const studySlice = createSlice({
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
       state.studyDetail = action.payload
+    },
+    [studyAction.getTags.fulfilled]: (state, action) => {
+      console.log(action.payload.tagList)
+      state.tags = action.payload.tagList
     },
   },
 })

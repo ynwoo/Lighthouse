@@ -11,6 +11,7 @@ function MainComponent() {
   useEffect(() => {
     console.log(params)
     dispatch(studyAction.studyList(params))
+    dispatch(studyAction.getTags())
   }, [])
 
   console.log(sessionStorage.getItem('isLoggedIn'))
