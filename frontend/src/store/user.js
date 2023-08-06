@@ -5,20 +5,21 @@ const API_URL = process.env.REACT_APP_API_URL
 
 // custom axios for axios interceptor
 const authApi = axios.create({
-  baseURL: 'url',
+  baseURL: API_URL,
   headers: {
-    'content-type': 'application/json;charset=UTF-8',
-    accept: 'application/json,',
+    'Content-Type': 'application/json;charset=UTF-8',
+    Accept: 'application/json,',
   },
   withCredentials: true,
 })
 
-const accessToken = sessionStorage.getItem('access_token')
-const refreshToken = sessionStorage.getItem('refresh_token')
+authApi.interceptors.request.use(config => {
+  const accessToken = sessionStorage.getItem('access_token')
+  const refreshToken = sessionStorage.getItem('refresh_token')
 
-authApi.interceptors.request.use(function (config) {
-  axios.defaults.headers.common['access-token'] = accessToken
-  axios.defaults.headers.common['refresh-token'] = refreshToken
+  config.headers['access-token'] = accessToken
+  config.headers['refresh-token'] = refreshToken
+  console.log(config.headers['Content-Type'])
   return config
 })
 
@@ -27,16 +28,14 @@ authApi.interceptors.response.use(
     return response
   },
   async function (err) {
+    console.log(axios.defaults.headers)
     console.log(err)
     if (err.response && err.response.status === 404) {
       try {
         console.log('try 진입')
-        const getRefreshToken = await sessionStorage.getItem('refresh_token')
-        axios.defaults.headers.common['refresh-token'] = getRefreshToken
-        // delete axios.defaults.headers.common.Accept
         delete axios.defaults.headers.common['access-token']
         console.log(axios.defaults.headers.common)
-        const response = await axios.post(`${API_URL}/users/refresh`)
+        const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
         const newAccessToken = response.headers.Authorization
         sessionStorage.setItem('access_token', newAccessToken)
@@ -149,6 +148,7 @@ export const userAction = {
   login: createAsyncThunk('user/login', async (payload, thunkAPI) => {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -158,7 +158,7 @@ export const userAction = {
   // 내 정보 불러오기
   myPage: createAsyncThunk('user/mypage', async (_, thunkAPI) => {
     try {
-      const response = await authApi.get(`${API_URL}/users/mypage`)
+      const response = await authApi.get(`/users/mypage`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
