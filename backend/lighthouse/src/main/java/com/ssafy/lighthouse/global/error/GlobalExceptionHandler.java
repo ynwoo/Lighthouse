@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<String> handleUnAuthorizedException(UnAuthorizedException e) {
         log.debug("handleUnAuthorizedException : {}", e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(StudyNotFoundException.class)
