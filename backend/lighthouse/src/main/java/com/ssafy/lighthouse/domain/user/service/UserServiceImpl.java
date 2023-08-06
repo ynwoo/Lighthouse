@@ -6,6 +6,10 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.lighthouse.domain.common.entity.Badge;
+import com.ssafy.lighthouse.domain.common.util.S3Utils;
+import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,7 @@ import com.ssafy.lighthouse.global.util.ERROR;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -40,6 +45,7 @@ public class UserServiceImpl implements UserService {
 	private final UserEvalRepository userEvalRepository;
 	private final FollowRepository followRepository;
 	private final AlertQueueRepository alertQueueRepository;
+	private final S3Utils s3Utils;
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
@@ -174,6 +180,20 @@ public class UserServiceImpl implements UserService {
 		log.debug("followeeId : {}", result.get().getFolloweeId());
 		log.debug("followerId : {}", result.get().getFollowerId());
 		result.orElseThrow(() -> new UserNotFoundException(ERROR.REMOVE)).remove();
+	}
+
+	@Override
+	public void updateProfileImage(MultipartFile img, Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+		String profileImgUrl = user.getProfileImgUrl();
+
+		// 기존 프로필 이미지 삭제
+		if(profileImgUrl != null) {
+			s3Utils.deleteFile(profileImgUrl);
+		}
+
+		// s3에 파일 업로드 & user의 profileImgUrl 변경
+		user.changeProfileImgUrl(s3Utils.uploadFile("profile", img));
 	}
 
 	@Override
