@@ -1,22 +1,37 @@
 package com.ssafy.lighthouse.domain.user.controller;
 
-import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
-import com.ssafy.lighthouse.domain.user.dto.*;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import static org.springframework.http.HttpStatus.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.ACCEPTED;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ssafy.lighthouse.domain.user.dto.AlertDto;
+import com.ssafy.lighthouse.domain.user.dto.EmailDto;
+import com.ssafy.lighthouse.domain.user.dto.LoginDto;
+import com.ssafy.lighthouse.domain.user.dto.NicknameDto;
+import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
+import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
+import com.ssafy.lighthouse.domain.user.service.JwtService;
+import com.ssafy.lighthouse.domain.user.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
