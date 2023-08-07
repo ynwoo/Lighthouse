@@ -102,24 +102,24 @@ function SignUpPage() {
               setEmail(e.target.value)
             }}
           />
-          <Button
-            type="button"
-            onClick={() => {
-              if (emailInput) {
-                dispatch(userAction.checkEmail(emailInput))
-              }
-            }}
-          >
-            중복확인
-          </Button>
-          <p>
-            {emailIsValid
-              ? '사용 가능한 닉네임 입니다!'
-              : emailIsValid === null
-              ? ''
-              : '중복된 닉네임입니다!'}
-          </p>
         </Form.Item>
+        <Button
+          type="button"
+          onClick={() => {
+            if (emailInput) {
+              dispatch(userAction.checkEmail(emailInput))
+            }
+          }}
+        >
+          중복확인
+        </Button>
+        <p>
+          {emailIsValid
+            ? '사용 가능한 이메일 입니다!'
+            : emailIsValid === null
+            ? ''
+            : '중복된 이메일입니다!'}
+        </p>
 
         <Form.Item
           name="password"
@@ -184,24 +184,24 @@ function SignUpPage() {
               setNickname(e.target.value)
             }}
           />
-          <Button
-            type="button"
-            onClick={() => {
-              if (nicknameInput) {
-                dispatch(userAction.checkNickname(nicknameInput))
-              }
-            }}
-          >
-            중복 확인
-          </Button>
-          <p>
-            {nicknameIsValid
-              ? '사용 가능한 닉네임 입니다!'
-              : nicknameIsValid === null
-              ? ''
-              : '중복된 닉네임입니다!'}
-          </p>
         </Form.Item>
+        <Button
+          type="button"
+          onClick={() => {
+            if (nicknameInput) {
+              dispatch(userAction.checkNickname(nicknameInput))
+            }
+          }}
+        >
+          중복 확인
+        </Button>
+        <p>
+          {nicknameIsValid
+            ? '사용 가능한 닉네임 입니다!'
+            : nicknameIsValid === null
+            ? ''
+            : '중복된 닉네임입니다!'}
+        </p>
 
         <Form.Item label="나이" name="age">
           <InputNumber />

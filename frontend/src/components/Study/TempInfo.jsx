@@ -186,17 +186,6 @@ export default function TempMember({ study }) {
             {/* </div> */}
           </div>
         </div>
-        <div>
-          <p>규칙 - {study.rule}</p>
-          <p>배지 - {study.badge}</p>
-          <p>tags - {study.studyTags}</p>
-          <p>
-            {' '}
-            {study.isOnline
-              ? '온라인'
-              : `장소 - ${study.sido}, ${study.gugun}`}{' '}
-          </p>
-        </div>
       </div>
     </div>
   )

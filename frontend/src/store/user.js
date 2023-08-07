@@ -90,9 +90,7 @@ export const userAction = {
       const response = await axios.post(
         `${API_URL}/users/check-email`,
         {
-          data: {
-            email: payload,
-          },
+          email: payload,
         },
         {
           headers: {
@@ -113,11 +111,9 @@ export const userAction = {
       try {
         console.log(payload)
         const response = await axios.post(
-          `${API_URL}/users/check-email`,
+          `${API_URL}/users/check-nickname`,
           {
-            data: {
-              nickname: payload,
-            },
+            nickname: payload,
           },
           {
             headers: {
