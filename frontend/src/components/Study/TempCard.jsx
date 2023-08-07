@@ -51,14 +51,14 @@ function TempCard({ study }) {
                 </>
               ) : (
                 // 호버 상태가 아닐 때 보여질 내용
-                `${study.is_online ? '온라인' : '오프라인'}
-                ${study.current_member}/${study.max_member}
-                ${study.like_cnt}개의 따봉`
+                `${study.isOnline ? '온라인' : '오프라인'}
+                ${study.currentMember}/${study.maxMember}
+                ${study.likeCnt}개의 따봉`
               )
             }
           />
           {study.studyTags.map(tag => {
-            return <span key={tag.id}>#{tag.keyword}</span>
+            return <span key={tag.id}>#{tag.tag.keyword} </span>
           })}
         </Card>
       </div>

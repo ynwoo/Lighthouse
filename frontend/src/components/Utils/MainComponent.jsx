@@ -30,16 +30,11 @@ function MainComponent() {
           }}
         >
           <div className="big_box_card">
-            {filterdData.map(study => (
-              <TempCard study={study} key={study.id} />
-            ))}
+            {studies
+              ? studies.map(study => <TempCard study={study} key={study.id} />)
+              : 'loading...'}
           </div>
         </div>
-        {/* 렌더링 이전에 배열 메서드(filter)를 통해 필터링을 하고 보여준다. */}
-        {studies.map(study => (
-          <TempCard study={study} key={study.id} />
-        ))}
-
       </div>
     </div>
   )
