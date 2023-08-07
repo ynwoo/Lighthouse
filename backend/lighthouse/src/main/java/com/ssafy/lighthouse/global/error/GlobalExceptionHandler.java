@@ -35,6 +35,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StudyException.class)
     public ResponseEntity<String> handleStudyException(StudyException e) {
         log.debug("handleStudyException : {}", e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
