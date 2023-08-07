@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
 import TempTodoList from './TempTodoList'
 import TempList from './TempList'
@@ -7,8 +6,6 @@ import MemoInput from './memo/MemoInput'
 import MemoList from './memo/MemoList'
 import TempCurri from './TempCurri'
 import Slider from '../Slider'
-
-const { createRoot } = ReactDOM
 
 const data = []
 for (let i = 0; i < 5; i += 1) {
@@ -18,7 +15,7 @@ for (let i = 0; i < 5; i += 1) {
   })
 }
 
-export default function App() {
+export default function TempMember() {
   const [visible, setVisible] = useState(false)
   const [form] = Form.useForm()
   const [events, setEvents] = useState([
@@ -55,10 +52,7 @@ export default function App() {
           <li key={item.id}>
             {' '}
             {/* 고유한 식별자를 key로 사용합니다. */}
-            <Badge
-              status={item.type}
-              text=<span style={{ fontSize: '10px' }}>{item.content}</span>
-            />
+            <Badge status={item.type} text={item.content} />
             <Button
               onClick={() => handleDelete(item)}
               style={{
@@ -171,6 +165,3 @@ export default function App() {
     </div>
   )
 }
-
-const mountNode = document.getElementById('root')
-createRoot(mountNode).render(<App />)

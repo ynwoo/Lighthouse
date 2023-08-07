@@ -53,6 +53,7 @@ function DateRangePicker() {
   const [endDate, setEndDate] = useState(null)
 
   const handleStartDateChange = date => {
+    console.log(date)
     setStartDate(date)
   }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Tree } from 'antd'
 
 const { DirectoryTree } = Tree
@@ -58,7 +57,3 @@ export default function App() {
     />
   )
 }
-
-const ComponentDemo = App
-const mountNode = document.getElementById('root')
-ReactDOM.createRoot(mountNode).render(<ComponentDemo />)
