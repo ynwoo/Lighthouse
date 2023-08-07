@@ -21,15 +21,4 @@ public class MessageDto implements Serializable {
     private String message;
     private Long time;
 
-    public Chat convertMessageDtoToChat() {
-        Chat chat = new Chat();
-        chat.setType(this.type);
-        chat.setRoomId(this.roomId);
-        chat.setSenderId(this.senderId);
-        chat.setSenderName(this.senderName);
-        chat.setMessage(this.message);
-        chat.setTime(this.time);
-        return chat;
-    }
-
 }

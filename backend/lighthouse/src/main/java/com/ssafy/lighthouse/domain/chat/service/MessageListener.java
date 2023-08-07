@@ -34,7 +34,7 @@ public class MessageListener {
 
         ChatRecord record = chatRepository.findById(messageDto.getRoomId()).get();
         List<Chat> recordLog = record.getLog();
-        recordLog.add(messageDto.convertMessageDtoToChat());
+        recordLog.add(new Chat(messageDto));
         record.setLog(recordLog);
 
         chatRepository.save(record);
