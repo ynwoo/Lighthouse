@@ -3,7 +3,8 @@ body {
   width: 100%;
   background-color: transparent;
   height: 1000px;
-  overflow-y: scroll; /* 항상 스크롤 바를 보이도록 설정 */
+  /* overflow-y: scroll; */
+  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
 }
 
 /* WaveComponent CSS */
@@ -12,10 +13,11 @@ body {
 .waves {
   position: relative;
   width: 100%;
-  height: 15vh;
+  height: 17vh;
   margin-bottom: -7px; /*Fix for safari gap*/
   min-height: 100px;
-  max-height: 150px;
+  max-height: 250px;
+  top: -50px;
 }
 
 /* Animation */
@@ -512,8 +514,13 @@ p {
   display: grid;
   grid-template-columns: 10% 90%;
   background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
-  margin-top: -15px;
+  margin-top: -80px;
   width: 100%;
+}
+
+.info_inner {
+  display: grid;
+  grid-template-rows: 10% 10% 80%;
 }
 
 .info_item {
@@ -615,8 +622,8 @@ p {
 }
 
 .sidebar {
-  left: 100px;
-  bottom: 120px;
+  left: 70px;
+  bottom: 200px;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
@@ -664,5 +671,113 @@ p {
 
 .main_item {
   display: flex;
-  margin-left: 250px;
+  margin-left: 80px;
+  /* margin-top: 50px; */
+}
+
+@font-face {
+  font-family: 'EF_Hyunygothic';
+  font-weight: normal;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.eot');
+  src:
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.eot?#iefix')
+      format('embedded-opentype'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.woff')
+      format('woff'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.ttf')
+      format('truetype');
+  font-display: swap;
+}
+h1 {
+  height: 100px;
+}
+
+h1 span {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  animation: bounce 0.7s ease infinite alternate;
+  font-family: 'Titan One', cursive;
+  font-size: 70px;
+  padding: 10px;
+  font-family: 'EF_Hyunygothic';
+  color: #001880;
+  text-shadow:
+    0 1px 0 #020d34,
+    0 2px 0 #020d34,
+    0 3px 0 #020d34,
+    0 4px 0 #020d34,
+    0 5px 0 #020d34,
+    0 6px 0 transparent,
+    0 7px 0 transparent,
+    0 8px 0 transparent,
+    0 9px 0 transparent,
+    0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+h1 span:nth-child(9) {
+  animation-delay: 0.8s;
+}
+
+@keyframes bounce {
+  100% {
+    top: -20px;
+    text-shadow:
+      0 1px 0 #bbc6f0,
+      0 2px 0 #bbc6f0,
+      0 3px 0 #bbc6f0,
+      0 4px 0 #bbc6f0,
+      0 5px 0 #bbc6f0,
+      0 6px 0 #bbc6f0,
+      0 7px 0 #bbc6f0,
+      0 8px 0 #bbc6f0,
+      0 9px 0 #bbc6f0,
+      0 50px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.fadein {
+  font-size: medium;
+  position: relative;
+  overflow: hidden;
+  animation: fadein 7s ease-in-out;
+  display: flex;
+  font-size: 40px;
+  color: #201b69;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }

@@ -48,7 +48,7 @@ export default function SideComponent() {
             <img src={Pic} alt="안뜸" />
           </div>
         </div>
-
+        {/* <h1>${study.id}</h1> */}
         <div>
           <div>
             <Button

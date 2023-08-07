@@ -3,6 +3,8 @@ import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 import SearchComponent from '../components/Utils/SearchComponent'
+// import Slider from '../components/Slider'
+import dummy from '../db/data.json'
 
 const { Footer, Content } = Layout
 
@@ -24,14 +26,26 @@ const footerStyle = {
 }
 // 내부 탭
 export default function MainPage() {
+  const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
+
   return (
     <div>
-      {/* <ImageSlide imageData={imageData} /> */}
+      {/* <div
+        style={{
+          backgroundImage: 'linear-gradient(to bottom, #74a3ff, #ffffff 25%)',
+          marginBottom: '-460px',
+        }}
+      >
+        <Slider />
+      </div> */}
       <div className="info_container">
         {/* 사이드바 */}
-        <div style={{ position: 'fixed' }}>
-          <SideComponent />
+        <div style={{ height: '100px' }}>
+          <div>
+            <SideComponent study={study} />
+          </div>
         </div>
+        {/* <div className="info_inner"> */}
 
         {/* 컨텐츠 */}
         <div className="main_item">
@@ -50,6 +64,7 @@ export default function MainPage() {
           </Content>
         </div>
       </div>
+      {/* </div> */}
       {/* 푸터 */}
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}

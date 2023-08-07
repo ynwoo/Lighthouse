@@ -1,16 +1,60 @@
 import React from 'react'
-import logo from '../../static/logo.png'
-
+import relogo from '../../static/relogo.png'
+// import logo from './'
 export default function WaveComponent() {
   return (
     <div>
+      <div
+        style={{
+          top: '50px',
+          left: '380px',
+          position: 'absolute',
+          // zIndex: '99',
+          margin: '0px',
+        }}
+      >
+        <div className="fadein">
+          <h1>L</h1>
+          <h1>I</h1>
+          <h1>G</h1>
+          <h1>H</h1>
+          <h1>T</h1>
+          <h1>H</h1>
+          <h1>O</h1>
+          <h1>U</h1>
+          <h1>S</h1>
+          <h1>E</h1>
+        </div>
+        {/* <h1
+          style={{
+            width: '100%',
+            height: '100%',
+            webkitFontSmoothing: 'antialiased',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <span>L</span>
+          <span>I</span>
+          <span>G</span>
+          <span>H</span>
+          <span>T</span>
+          <span>H</span>
+          <span>O</span>
+          <span>U</span>
+          <span>S</span>
+          <span>E</span>
+        </h1> */}
+      </div>
+
       <img
-        src={logo}
+        src={relogo}
         alt="엑박"
         style={{
           // width: '450x',
-          height: '180px',
-          marginBottom: '-50px',
+          height: '170px',
+          marginBottom: '-40px',
           display: 'flex',
         }}
       />
@@ -22,10 +66,6 @@ export default function WaveComponent() {
         viewBox="0 25 150 28"
         preserveAspectRatio="none"
         shapeRendering="auto"
-        style={{
-          //   원래 없었던 녀석
-          marginBottom: '0px',
-        }}
       >
         <defs>
           <path
