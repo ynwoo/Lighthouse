@@ -1,7 +1,11 @@
 package com.ssafy.lighthouse.domain.common.util;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.ssafy.lighthouse.domain.common.exception.FileUploadException;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,11 +18,9 @@ import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.amazonaws.util.IOUtils;
 import com.ssafy.lighthouse.domain.common.exception.S3FileNotFoundException;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
 public class S3Utils {
 	public static final String CLOUNDFRONT_DOMAIN_NAME = "${CLOUDFRONT_DOMAIN_NAME}";
@@ -26,14 +28,24 @@ public class S3Utils {
 	private static final String FOLDER_SEPARATOR = "/";
 	private static final String TIME_SEPARATOR = "_";
 	private static final String URL_SEPARATOR = ".com/"; //cloudfront 사용시 ".net/"
-	private final AmazonS3Client amazonS3Client;
+	private static AmazonS3Client amazonS3Client;
+	private static String bucket = "a409bucket";
 
-	@Value("${cloud.aws.s3.bucket}")
-	private String bucket;
+	static {
+		String accessKey = System.getenv("AWS_ACCESSKEY");
+		String secretKey = System.getenv("AWS_SECRETKEY");
+		String region = "ap-northeast-2";
+		AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+		amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()
+			.withCredentials(new AWSStaticCredentialsProvider(credentials))
+			.withRegion(region)
+			.build();
+	}
 
-
-
-	public String uploadFile(String category, MultipartFile file) {
+	public static String uploadFile(String category, MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			return "";
+		}
 		String filePath = buildFileName(category, file.getOriginalFilename());
 
 		ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -56,8 +68,8 @@ public class S3Utils {
 		return getFilePath(fileUrl);
 	}
 
-	public byte[] downloadFile(String filePath) {
-		//String filePath = getFilePath(fileUrl);
+	public static byte[] downloadFile(String filePath) {
+		//String filePath = getFilePath(fileUrl)
 		try {
 			validateFileExists(filePath);
 
@@ -71,8 +83,9 @@ public class S3Utils {
 		}
 	}
 
-	public void deleteFile(String filePath) {
+	public static void deleteFile(String filePath) {
 		//String filePath = getFilePath(fileUrl);
+
 		try {
 			validateFileExists(filePath);
 			amazonS3Client.deleteObject(bucket, filePath);
@@ -82,7 +95,7 @@ public class S3Utils {
 		}
 	}
 
-	private void validateFileExists(String filePath) {
+	private static void validateFileExists(String filePath) {
 		if (!amazonS3Client.doesObjectExist(bucket, filePath)) {
 			throw new S3FileNotFoundException(filePath);
 		}
