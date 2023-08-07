@@ -43,8 +43,6 @@ authApi.interceptors.response.use(
         alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
-      alert('로그인이 필요합니다!')
-      window.location.href = '/login'
       return Promise.reject(err)
     }
     console.log('hmm...')
@@ -180,83 +178,72 @@ export const userAction = {
       const response = await axios.get(`${API_URL}/user`, {
         'user-id': payload,
       })
-
-      // 프로필 불러오기
-      profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
-        try {
-          console.log(
-            'profile - payload : ',
-            payload,
-            `${API_URL}/users/${payload ?? 1}`,
-          )
-          const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
-          console.log(response)
-          return thunkAPI.fulfillWithValue(response.data)
-        } catch (error) {
-          return thunkAPI.rejectWithValue(error)
-        }
-      }),
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const userSlice = createSlice({
-        name: 'userSlice',
-        initialState,
-        reducers: {
-          logout: () => {
-            sessionStorage.removeItem('refresh_token')
-          },
-        },
-        extraReducers: {
-          // 시도 성공 시 store에 저장
-          [userAction.sido.fulfilled]: (state, action) => {
-            state.sido = action.payload
-          },
-          // 구군 성공 시 store에 저장
-          [userAction.gugun.fulfilled]: (state, action) => {
-            state.gugun = action.payload
-          },
-          // email 중복 체크 시 결과 저장
-          [userAction.checkEmail.fulfilled]: (state, action) => {
-            console.log(action.payload.available)
-            state.emailIsValid = action.payload.available
-          },
-          // nickname 중복 체크 시 결과 저장
-          [userAction.checkNickname.fulfilled]: (state, action) => {
-            console.log(action.payload.available)
-            state.nicknameIsValid = action.payload.available
-          },
-          // 회원가입 성공 시 확인용
-          [userAction.signUp.fulfilled]: (state, action) => {
-            console.log(action.payload)
-          },
-          // 로그인 성공 시
-          [userAction.login.fulfilled]: (state, action) => {
-            // tokens save in session storage
-            sessionStorage.setItem('access_token', action.payload['access-token'])
-            sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
-            sessionStorage.setItem('isLoggedIn', true)
-            console.log(sessionStorage.getItem('refresh_token'))
-          },
-          [userAction.logout.fulfilled]: (state, action) => {
-            // tokens save in session storage
-            sessionStorage.removeItem('access_token', action.payload['access-token'])
-            sessionStorage.removeItem(
-              'refresh_token',
-              action.payload['refresh-token'],
-            )
-            sessionStorage.removeItem('isLoggedIn', true)
-          },
-          [userAction.myPage.fulfilled]: (state, action) => {
-            console.log(action.payload.userInfo)
-            state.myInfo = action.payload.userInfo
-          },
-          [userAction.userInfo.fulfilled]: (state, action) => {
-            console.log(action.payload.userInfo)
-            state.userInfo = action.payload
-          },
-        },
-      })
+  name: 'userSlice',
+  initialState,
+  reducers: {
+    logout: () => {
+      sessionStorage.removeItem('refresh_token')
+    },
+  },
+  extraReducers: {
+    // 시도 성공 시 store에 저장
+    [userAction.sido.fulfilled]: (state, action) => {
+      state.sido = action.payload
+    },
+    // 구군 성공 시 store에 저장
+    [userAction.gugun.fulfilled]: (state, action) => {
+      state.gugun = action.payload
+    },
+    // email 중복 체크 시 결과 저장
+    [userAction.checkEmail.fulfilled]: (state, action) => {
+      console.log(action.payload.available)
+      state.emailIsValid = action.payload.available
+    },
+    // nickname 중복 체크 시 결과 저장
+    [userAction.checkNickname.fulfilled]: (state, action) => {
+      console.log(action.payload.available)
+      state.nicknameIsValid = action.payload.available
+    },
+    // 회원가입 성공 시 확인용
+    [userAction.signUp.fulfilled]: (state, action) => {
+      console.log(action.payload)
+    },
+    // 로그인 성공 시
+    [userAction.login.fulfilled]: (state, action) => {
+      // tokens save in session storage
+      sessionStorage.setItem('access_token', action.payload['access-token'])
+      sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
+      sessionStorage.setItem('isLoggedIn', true)
+      console.log(sessionStorage.getItem('refresh_token'))
+    },
+    [userAction.logout.fulfilled]: (state, action) => {
+      // tokens save in session storage
+      sessionStorage.removeItem('access_token', action.payload['access-token'])
+      sessionStorage.removeItem(
+        'refresh_token',
+        action.payload['refresh-token'],
+      )
+      sessionStorage.removeItem('isLoggedIn', true)
+    },
+    [userAction.myPage.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo)
+      state.myInfo = action.payload.userInfo
+    },
+    [userAction.userInfo.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo)
+      state.userInfo = action.payload
+    },
+  },
+})
 
-    // export const { logout } = userSlice.actions
+export const { logout } = userSlice.actions
 
-    export default userSlice.reducer
+export default userSlice.reducer
