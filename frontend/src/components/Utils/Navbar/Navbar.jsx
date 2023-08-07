@@ -1,9 +1,12 @@
 import React from 'react'
 // import { Tabs } from 'antd'
 import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import logo from '../../../static/main_logo.PNG'
+import { userAction } from '../../../store/user'
 
 export default function App() {
+  const dispatch = useDispatch
   return (
     <div
       style={{
@@ -36,6 +39,9 @@ export default function App() {
               MYPAGE
             </Link>
           </div>
+          <button onClick={dispatch(userAction.logout())} type="button">
+            응애
+          </button>
         </div>
       </div>
     </div>
