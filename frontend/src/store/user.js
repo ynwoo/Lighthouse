@@ -29,24 +29,22 @@ authApi.interceptors.response.use(
   async function (err) {
     console.log(axios.defaults.headers)
     console.log(err)
-    if (
-      err.response &&
-      err.response.status === 401 &&
-      sessionStorage.getItem('access_token') !== null
-    ) {
+    if (err.response && err.response.status === 401) {
       try {
         console.log('try 진입')
         delete axios.defaults.headers.common['access-token']
         console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
-        const newAccessToken = response.headers.Authorization
+        const newAccessToken = response.headers['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
         alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
+      alert('로그인이 필요합니다!')
+      window.location.href = '/login'
       return Promise.reject(err)
     }
     console.log('hmm...')
@@ -65,6 +63,7 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
+  userInfo: {},
 }
 
 export const userAction = {
@@ -156,12 +155,29 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-
+  // 로그아웃
+  logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
+    try {
+      const response = await authApi.get(`/users/logout`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
   // 내 정보 불러오기
   myPage: createAsyncThunk('user/mypage', async (_, thunkAPI) => {
     try {
       const response = await authApi.get(`/users/mypage`)
       console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/user/`, payload)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -208,9 +224,22 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       console.log(sessionStorage.getItem('refresh_token'))
     },
+    [userAction.logout.fulfilled]: (state, action) => {
+      // tokens save in session storage
+      sessionStorage.removeItem('access_token', action.payload['access-token'])
+      sessionStorage.removeItem(
+        'refresh_token',
+        action.payload['refresh-token'],
+      )
+      sessionStorage.removeItem('isLoggedIn', true)
+    },
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
+    },
+    [userAction.userInfo.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo)
+      state.userInfo = action.payload
     },
   },
 })
