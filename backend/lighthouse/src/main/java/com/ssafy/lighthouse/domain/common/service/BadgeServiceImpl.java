@@ -14,14 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @Transactional
 public class BadgeServiceImpl implements BadgeService {
-
-    private final S3Utils s3Utils;
     private final BadgeRepository badgeRepository;
 
     @Override
     public void createBadge(BadgeRequest badgeRequest, MultipartFile img) {
         // aws에 업로드
-        String imgUrl = s3Utils.uploadFile("badge", img);
+        String imgUrl = S3Utils.uploadFile("badge", img);
 
         // db에 badge정보 저장
         badgeRepository.save(Badge.builder()
@@ -38,6 +36,6 @@ public class BadgeServiceImpl implements BadgeService {
         badge.changeIsValid(0);
 
         // aws에서 삭제
-        s3Utils.deleteFile(badge.getImgUrl());
+        S3Utils.deleteFile(badge.getImgUrl());
     }
 }

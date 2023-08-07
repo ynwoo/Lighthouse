@@ -28,17 +28,16 @@ public class FileController {
 	private static final String FOLDER_SEPARATOR = "/";
 	private static final int UNDER_BAR_INDEX = 1;
 	private static final String SUCCESS = "success";
-	private final S3Utils s3s3Utils;
 
 	@PostMapping(name = "S3 파일 업로드", value = "/file")
 	public ResponseEntity<?> uploadFile(@RequestPart("file") MultipartFile multipartFile) {
-		String fileUrl = s3s3Utils.uploadFile("test", multipartFile);
+		String fileUrl = S3Utils.uploadFile("test", multipartFile);
 		return new ResponseEntity<String>(fileUrl, HttpStatus.OK);
 	}
 
 	@GetMapping(name = "S3 파일 다운로드", value ="/file")
 	public ResponseEntity<?> downloadFile(@RequestParam("filePath") String filePath) {
-		byte[] data = s3s3Utils.downloadFile(filePath);
+		byte[] data = S3Utils.downloadFile(filePath);
 
 		ByteArrayResource resource = new ByteArrayResource(data);
 		HttpHeaders headers = buildHeaders(filePath, data);
@@ -51,7 +50,7 @@ public class FileController {
 
 	@DeleteMapping(name = "S3 파일 삭제", value = "/file")
 	public ResponseEntity<?> deleteFile(@RequestParam("filePath") String filePath) {
-		s3s3Utils.deleteFile(filePath);
+		S3Utils.deleteFile(filePath);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 

@@ -27,10 +27,10 @@ public class SessionController extends HttpServlet {
 
 	private SessionService sessionService;
 
-	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE }) //(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<String> createSession(@ModelAttribute SessionDto.SessionReq dto) {
 		System.out.println(dto.toString());
-		//sessionService.createSession(dto);
+		sessionService.createSession(dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
