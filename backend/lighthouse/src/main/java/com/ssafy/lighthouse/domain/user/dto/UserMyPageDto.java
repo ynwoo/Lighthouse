@@ -32,7 +32,7 @@ public class UserMyPageDto {
 
 	@Builder
 	public UserMyPageDto(Long id, String password, String name, String email, String nickname, String profileImgUrl,
-		int age,
+		Integer age,
 		Long sidoId, Long gugunId, String phoneNumber, String description, List<Long> userTagList) {
 		this.id = id;
 		this.password = password;
