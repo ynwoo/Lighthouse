@@ -59,7 +59,10 @@ const initialState = {
   gugun: { 0: '시/도를 선택하세요' },
   emailIsValid: null,
   nicknameIsValid: null,
+<<<<<<< HEAD
   myInfo: null,
+=======
+>>>>>>> ff5fbb36691753512f8dfe94227406e2fcc14cfd
 }
 
 export const userAction = {
