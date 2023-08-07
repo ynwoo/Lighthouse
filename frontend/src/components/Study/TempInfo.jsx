@@ -9,7 +9,7 @@ import Calendar from './Calendar'
 
 export default function TempMember({ study }) {
   const [memos, setMemos] = useState([])
-
+  console.log(study)
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
       ...prevMemos,
@@ -30,9 +30,9 @@ export default function TempMember({ study }) {
         <img src={photo} alt="아리스" style={{ width: '100%' }} />
         <div className="study_box">
           <h1>
-            {study.title}( {study.min_member} / {study.max_member})
+            {study.title}( {study.minMember} / {study.maxMember})
           </h1>
-          <h3>스터디장 : {study.leader_id}</h3>
+          <h3>스터디장 : adsfasdfjasdf</h3>
           <h3>{study.description}</h3>
           {/* <p>모집기간 : {study.recruit_finished_at}</p> */}
           <h3>해시태그</h3>
