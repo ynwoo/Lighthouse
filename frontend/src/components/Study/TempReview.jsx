@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
+import { participateStudy } from '../../api/participation'
 // import readerLogo from '../../static/crown.png'
 // 템플릿 상세의 인원정보(멤버)
 
@@ -15,8 +16,17 @@ export default function TempMember({ study }) {
   const handleOk = () => {
     // Handle the submission of the message (you can send it to the server or perform any action)
     console.log('Message:', message)
-    setIsModalVisible(false)
-    setIsConfirmationVisible(true)
+    participateStudy(
+      study.id,
+      () => {
+        // alert('회원 등록 성공')
+        setIsModalVisible(false)
+        setIsConfirmationVisible(true)
+      },
+      ({ response }) => {
+        alert(response.data)
+      },
+    )
   }
 
   const handleCancel = () => {
