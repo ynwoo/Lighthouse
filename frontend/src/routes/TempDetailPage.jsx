@@ -11,12 +11,13 @@ import { studyAction } from '../store/study'
 
 export default function TempDetailPage() {
   const dispatch = useDispatch()
+  const study = useSelector(state => state.study.studyDetail)
+
   useEffect(() => {
     console.log(window.location.pathname.split('/')[2])
     dispatch(studyAction.studyDetail(window.location.pathname.split('/')[2]))
   }, [])
 
-  const study = useSelector(state => state.study.studyDetail)
   console.log(study)
   const tabMenu = {
     TempInfo: <TempInfo study={study} />,

@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`user` (
   `phone_number` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(1024) NULL DEFAULT NULL,
   `token` VARCHAR(1024) NULL,
+  `provider_id` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
@@ -128,6 +129,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`study` (
   `like_cnt` INT NULL DEFAULT NULL,
   `bookmark_cnt` INT NULL DEFAULT NULL,
   `status` INT NOT NULL,
+  `badge_id` INT NULL,
   PRIMARY KEY (`id`, `status`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;

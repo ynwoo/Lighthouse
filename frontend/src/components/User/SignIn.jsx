@@ -130,24 +130,27 @@ function SignIn() {
                   <p style={{ margin: '0', fontSize: '8px' }}>카카오</p>
                   <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
                 </div>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    margin: '10px',
-                    marginTop: '20px',
-                  }}
+                <a
+                  href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`}
                 >
-                  <img
-                    src="/google.png"
-                    alt="구글 로그인"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                  <p style={{ margin: '0', fontSize: '8px' }}>구글</p>
-                  <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
-                </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      margin: '10px',
+                      marginTop: '20px',
+                    }}
+                  >
+                    <img
+                      src="/google.png"
+                      alt="구글 로그인"
+                      style={{ width: '50px', height: '50px' }}
+                    />
+                    <p style={{ margin: '0', fontSize: '8px' }}>google</p>
+                    <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
+                  </div>
+                </a>
               </div>
             </Form.Item>
 

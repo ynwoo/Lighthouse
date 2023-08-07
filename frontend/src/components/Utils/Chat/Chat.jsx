@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { chatAction, receiveMessage } from '../../../store/chat'
 
 const client = new Client({
-  brokerURL: `ws://i9a409.p.ssafy.io:8081/ws/chat`,
+  brokerURL: `ws://i9a409.p.ssafy.io:8082/ws/chat`,
   connectHeaders: {
     login: 'user',
     passcode: 'password',

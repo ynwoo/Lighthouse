@@ -4,7 +4,7 @@ import { participateStudy } from '../../api/participation'
 // import readerLogo from '../../static/crown.png'
 // 템플릿 상세의 인원정보(멤버)
 
-export default function TempMember({ study }) {
+export default function TempReview({ study }) {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')

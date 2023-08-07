@@ -4,10 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  // const [userId, setUserId] = useState(0)
-
   const dispatch = useDispatch()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  // const userInfo = useSelector(state => state.user.myInfo)
+
+  useEffect(() => {
+    dispatch(userAction.myPage()).then(res => {
+      console.log(res.payload.userInfo.id)
+    })
+  }, [])
+  const studyTags = JSON.parse(localStorage.getItem('tags'))
+  console.log(studyTags)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -65,7 +72,7 @@ export default function UserPage() {
             <div
               style={{
                 position: 'absolute',
-                display: 'flex',
+
                 // alignItems: 'center', // Center the text vertically
                 border: '1px solid #177AEE',
                 backgroundColor: '#177AEE',
