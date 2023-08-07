@@ -14,7 +14,7 @@ import TempMore from './routes/TempMorePage'
 import TempCreatePage from './routes/TempCreatePage'
 import RouteSwitch from './components/RouteSwitch'
 import ChatList from './components/Utils/Chat/ChatList'
-import SignIn from './components/User/SignIn'
+import LogIn from './components/User/LogIn'
 import SignUp from './components/User/SignUp'
 
 function App() {
@@ -51,7 +51,7 @@ function App() {
               <Route exact path="/" element={<MainPage />} />
               <Route path="/temp/:id" element={<TempDetailPage />} />
               <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<SignIn />} />
+              <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />

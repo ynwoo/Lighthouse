@@ -15,7 +15,7 @@ const onFinishFailed = errorInfo => {
 }
 //
 
-function SignIn() {
+function LogIn() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -153,4 +153,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default LogIn
