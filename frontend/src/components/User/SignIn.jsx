@@ -147,7 +147,7 @@ function SignIn() {
                       alt="구글 로그인"
                       style={{ width: '50px', height: '50px' }}
                     />
-                    <p style={{ margin: '0', fontSize: '8px' }}>구글</p>
+                    <p style={{ margin: '0', fontSize: '8px' }}>google</p>
                     <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
                   </div>
                 </a>
