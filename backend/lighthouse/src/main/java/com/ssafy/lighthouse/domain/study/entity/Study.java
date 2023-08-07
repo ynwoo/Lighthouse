@@ -34,6 +34,9 @@ public class Study extends BaseEntity {
     private int bookmarkCnt;
     private int status;
     private Long leaderId;
+    private Long originalId;
+    private Long sidoId;
+    private Long gugunId;
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
@@ -49,17 +52,7 @@ public class Study extends BaseEntity {
     public void addMember() {this.currentMember++;}
     public void removeMember() {this.currentMember--;}
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "originalId", updatable = false)
-    private Study original;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sidoId")
-    private Sido sido;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gugunId")
-    private Gugun gugun;
+    public void changeBadge(Badge badge) {this.badge = badge;}
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badgeId")
@@ -104,5 +97,7 @@ public class Study extends BaseEntity {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
+        this.sidoId = study.getSidoId();
+        this.gugunId = study.getGugunId();
     }
 }
