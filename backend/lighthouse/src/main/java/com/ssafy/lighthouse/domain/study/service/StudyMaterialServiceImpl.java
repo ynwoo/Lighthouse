@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 public class StudyMaterialServiceImpl implements StudyMaterialService {
 	private static final String CATEGORY = "studymaterials";
 	private StudyMaterialRepository studyMaterialRepository;
-	private S3Utils s3Utils;
 
 	@Override
 	public List<StudyMaterial> findAllByStudyId(Long studyId) {
@@ -31,11 +30,9 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	@Override
 	public Long createMaterial(final StudyMaterialDto.Req dto) {
 		StudyMaterial entity = dto.toEntity();
-		MultipartFile file = dto.getFile();
-		if (file != null && !file.isEmpty()) {
-			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
-			entity.setFileUrl(fileUrl);
-		}
+		//MultipartFile file = dto.getFile();
+		//String fileUrl = S3Utils.uploadFile(CATEGORY, file);
+		//entity.setFileUrl(fileUrl);
 		studyMaterialRepository.save(entity);
 		return entity.getId();
 	}
@@ -51,8 +48,8 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 		final MultipartFile file) {
 		if (!file.isEmpty()) {
 			//이전 파일 삭제
-			s3Utils.deleteFile(targetStudyMaterial.getFileUrl());
-			String fileUrl = s3Utils.uploadFile(CATEGORY, file);
+			S3Utils.deleteFile(targetStudyMaterial.getFileUrl());
+			String fileUrl = S3Utils.uploadFile(CATEGORY, file);
 			targetStudyMaterial.updateWithFile(dto.getStudyId(), dto.getSessionId(), dto.getType(),
 				dto.getContent(), fileUrl);
 			return dto.getStudyId();
@@ -64,7 +61,7 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	@Override
 	public Long removeMaterial(final Long id) {
 		StudyMaterial studyMaterial = findById(id);
-		s3Utils.deleteFile(studyMaterial.getFileUrl());
+		S3Utils.deleteFile(studyMaterial.getFileUrl());
 		studyMaterial.remove();
 		return id;
 	}

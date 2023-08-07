@@ -3,8 +3,10 @@ package com.ssafy.lighthouse.domain.study.controller;
 import javax.servlet.http.HttpServlet;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,8 +27,9 @@ public class SessionController extends HttpServlet {
 
 	private SessionService sessionService;
 
-	@PostMapping
-	public ResponseEntity<String> createSession(@RequestBody SessionDto.SessionReq dto) {
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<String> createSession(@ModelAttribute SessionDto.SessionReq dto) {
+		System.out.println(dto.toString());
 		sessionService.createSession(dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
