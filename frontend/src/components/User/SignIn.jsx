@@ -130,7 +130,9 @@ function SignIn() {
                   <p style={{ margin: '0', fontSize: '8px' }}>카카오</p>
                   <p style={{ margin: '0', fontSize: '8px' }}>로그인</p>
                 </div>
-                <a href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`}>
+                <a
+                  href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`}
+                >
                   <div
                     style={{
                       display: 'flex',
