@@ -14,6 +14,7 @@ import TempMore from './routes/TempMorePage'
 import TempCreatePage from './routes/TempCreatePage'
 import RouteSwitch from './components/RouteSwitch'
 import ChatList from './components/Utils/Chat/ChatList'
+import SignIn from './components/User/SignIn'
 
 function App() {
   // const [showChat, setShowChat] = useState(false)
@@ -49,8 +50,8 @@ function App() {
               <Route exact path="/" element={<MainPage />} />
               <Route path="/temp/:id" element={<TempDetailPage />} />
               <Route path="/user/:id" element={<UserPage />} />
-              {/* <Route path="/login" element={<SignInPage />} /> */}
-              {/* <Route path="/signup" element={<SignUpPage />} /> */}
+              <Route path="/login" element={<SignIn />} />
+              {/* <Route path="/signup" element={<SignUp />} /> */}
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/tempmore" element={<TempMore />} />
