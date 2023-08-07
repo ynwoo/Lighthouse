@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import profilePic from '../../logo.svg'
+import logo from '../../static/LOGO1.png'
 
-export default function SideComponent() {
+export default function SideComponent(props) {
+  console.log(props)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
@@ -39,37 +41,67 @@ export default function SideComponent() {
 
   const Pic = profilePic
   const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+  const location = useLocation()
+  // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
+  const isTempPath = location.pathname.includes('/temp')
 
   if (!isLoggedIn) {
     return (
-      <div className="sidebar">
+      <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
         <div>
           <div className="circular-image2">
             <img src={Pic} alt="안뜸" />
           </div>
         </div>
-        {/* <h1>${study.id}</h1> */}
-        <div>
+        <div style={{ textAlign: 'center', marginBottom: '10px' }}>
+          <p>00님 환영합니다 !</p>
+          <p>현재 가입된 스터디는 0개입니다.</p>
+        </div>
+
+        <div style={{ marginTop: '20px' }}>
+          <Button
+            type="primary"
+            style={{
+              backgroundColor: '#A4C3FF',
+              color: 'black',
+              border: '1px solid #A4C3FF',
+              borderRadius: '20px',
+              padding: '10px',
+              fontWeight: 'bold',
+              width: '200px',
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '10px',
+              marginTop: '10px',
+            }}
+            onClick={showModal}
+          >
+            가입한 스터디 바로가기
+          </Button>
           <div>
-            <Button
-              type="primary"
-              style={{
-                backgroundColor: '#FFF1A9',
-                color: 'black',
-                border: '1px solid #FFF1A9',
-                borderRadius: '20px',
-                padding: '8px',
-                fontWeight: 'bold',
-                width: '200px',
-                display: 'flex',
-                alignContent: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onClick={showModal}
-            >
-              JOIN
-            </Button>
+            {isTempPath && (
+              <Button
+                type="primary"
+                style={{
+                  backgroundColor: '#FFF1A9',
+                  color: 'black',
+                  border: '1px solid #FFF1A9',
+                  borderRadius: '20px',
+                  padding: '8px',
+                  fontWeight: 'bold',
+                  width: '200px',
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                onClick={showModal}
+              >
+                JOIN
+              </Button>
+            )}
 
             <Modal
               title="스터디 신청"
@@ -95,102 +127,89 @@ export default function SideComponent() {
               <p>Thank you for submitting your message!</p>
             </Modal>
           </div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button
-            type="primary"
+          <div
             style={{
-              backgroundColor: '#FFDFEB',
-              color: 'black',
-              border: '1px solid #FFDFEB',
-              borderRadius: '20px',
-              padding: '8px',
-              fontWeight: 'bold',
-              width: '95px',
               display: 'flex',
-              alignContent: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: '10px',
+              justifyContent: 'space-between',
+              marginBottom: '10px',
             }}
           >
-            좋아요
-          </Button>
-          <Button
-            type="primary"
-            style={{
-              backgroundColor: '#DFEEFF',
-              color: 'black',
-              border: '1px solid #DFEEFF',
-              borderRadius: '20px',
-              padding: '8px',
-              fontWeight: 'bold',
-              width: '95px',
-              display: 'flex',
-              alignContent: 'center',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: '10px',
-            }}
-          >
-            북마크
-          </Button>
+            {isTempPath && (
+              <Button
+                type="primary"
+                style={{
+                  backgroundColor: '#FFDFEB',
+                  color: 'black',
+                  border: '1px solid #FFDFEB',
+                  borderRadius: '20px',
+                  padding: '8px',
+                  fontWeight: 'bold',
+                  width: '95px',
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: '10px',
+                }}
+              >
+                좋아요
+              </Button>
+            )}
+            {isTempPath && (
+              <Button
+                type="primary"
+                style={{
+                  backgroundColor: '#DFEEFF',
+                  color: 'black',
+                  border: '1px solid #DFEEFF',
+                  borderRadius: '20px',
+                  padding: '8px',
+                  fontWeight: 'bold',
+                  width: '95px',
+                  display: 'flex',
+                  alignContent: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: '10px',
+                }}
+              >
+                북마크
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     )
   }
   return (
-    // <Sider style={siderStyle}>
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'Column',
-        alignItems: 'center',
-        padding: '10px',
-        borderRadius: '10px',
-        backgroundColor: 'white',
-      }}
-    >
-      <Link to="/login">
-        <Button type="primary" style={{ width: '150px', margin: '10px' }}>
-          LOGIN
-        </Button>
-      </Link>
-      <Link to="/signup">
-        <Button
-          type="primary"
-          style={{ width: '150px', margin: '10px' }}
-          danger
-        >
-          SIGNUP
-        </Button>
-      </Link>
-
+    <div className="sidebar">
+      <img src={logo} alt="" style={{ width: '210px' }} />
+      <p>회원가입해주라</p>
+      <p>어쩌구 스터디 sns입니다 . .</p>
       <div
         style={{
-          border: '1px solid',
+          display: 'flex',
+          flexDirection: 'Column',
+          alignItems: 'center',
+          padding: '10px',
           borderRadius: '10px',
-          width: '80%',
-          margin: '10px',
+          backgroundColor: 'white',
         }}
       >
-        <h4>베스트 스터디</h4>
-        <p>1. </p>
-        <p>2. </p>
-        <p>3. </p>
-      </div>
-      <div
-        style={{
-          border: '1px solid',
-          borderRadius: '10px',
-          width: '80%',
-          margin: '10px',
-        }}
-      >
-        <h4>베스트 템플릿</h4>
-        <p>1. </p>
-        <p>2. </p>
-        <p>3. </p>
+        <Link to="/login">
+          <Button type="primary" style={{ width: '150px', margin: '10px' }}>
+            LOGIN
+          </Button>
+        </Link>
+        <Link to="/signup">
+          <Button
+            type="primary"
+            style={{ width: '150px', margin: '10px' }}
+            danger
+          >
+            SIGNUP
+          </Button>
+        </Link>
       </div>
     </div>
     // </Sider>

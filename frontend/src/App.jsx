@@ -1,6 +1,7 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import LoadingComponent from './components/LoadingComponent'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
@@ -12,7 +13,9 @@ import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
-import TempMore from './components/Study/TempMore'
+import TempMore from './routes/TempMorePage'
+import TempCreatePage from './routes/TempCreatePage'
+import RouteSwitch from './components/RouteSwitch'
 
 function App() {
   const [showChat, setShowChat] = useState(false)
@@ -20,6 +23,14 @@ function App() {
   const handleChatClick = () => {
     setShowChat(!showChat)
   }
+
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    // 비동기 작업 완료 후 로딩 상태 변경
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000) // 예시로 2초 후에 로딩 완료로 설정
+  }, [])
 
   return (
     <div
@@ -32,16 +43,24 @@ function App() {
         <ScrollToTop />
         <Navbar />
         <WaveComponent />
-        <Routes>
-          <Route exact path="/" element={<MainPage />} />
-          <Route path="/temp/:id" element={<TempDetailPage />} />
-          <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/login" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/user_edit/:id" element={<UserEditPage />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/tempmore" element={<TempMore />} />
-        </Routes>
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
+          <>
+            <RouteSwitch>
+              <Route exact path="/" element={<MainPage />} />
+              <Route path="/temp/:id" element={<TempDetailPage />} />
+              <Route path="/user/:id" element={<UserPage />} />
+              <Route path="/login" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/user_edit/:id" element={<UserEditPage />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/tempmore" element={<TempMore />} />
+              <Route path="/tempcreate" element={<TempCreatePage />} />
+            </RouteSwitch>
+            <Routes /> {/* 이곳에서 Routes 컴포넌트가 위치해야 함 */}
+          </>
+        )}
       </Router>
       <button
         type="submit"

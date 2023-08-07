@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
-import TempTodoList from './TempTodoList'
-import TempList from './TempList'
-import MemoInput from './memo/MemoInput'
-import MemoList from './memo/MemoList'
-import TempCurri from './TempCurri'
+import TempTodoList from './utils/StudyTodoList'
+import TempList from './StudyList'
+import MemoInput from './utils/memo/MemoInput'
+import MemoList from './utils/memo/MemoList'
+import StudyCurriculum from './StudyCurriculum'
 import Slider from '../Slider'
-
-const { createRoot } = ReactDOM
 
 const data = []
 for (let i = 0; i < 5; i += 1) {
@@ -121,7 +118,7 @@ export default function App() {
     <div className="big_box">
       <div className="memo_box">
         <TempTodoList />
-        <TempCurri />
+        <StudyCurriculum />
 
         <div
           style={{
@@ -171,6 +168,3 @@ export default function App() {
     </div>
   )
 }
-
-const mountNode = document.getElementById('root')
-createRoot(mountNode).render(<App />)

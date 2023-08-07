@@ -1,6 +1,7 @@
 import React from 'react'
-import { Input, Select, Space } from 'antd'
+import { Input, Select, Space, Button } from 'antd'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { setText } from '../../store/study'
 
 // 검색창
@@ -92,6 +93,25 @@ function SearchComponent() {
             />
           </Space>
         </div>
+        <Button
+          type="primary"
+          style={{
+            backgroundColor: '#FFDFEB',
+            color: 'black',
+            border: '1px solid #FFDFEB',
+            borderRadius: '20px',
+            padding: '8px',
+            fontWeight: 'bold',
+            width: '95px',
+            display: 'flex',
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '10px',
+          }}
+        >
+          <Link to="tempcreate">스터디 생성</Link>
+        </Button>
       </div>
     </div>
   )

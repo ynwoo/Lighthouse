@@ -1,11 +1,21 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import TempCard from '../Study/TempCard'
-import dummy from '../../db/data.json'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import StudyCard from '../Study/StudyCard'
+import { studyAction } from '../../store/study'
 
 function MainComponent() {
-  const text = useSelector(state => state.study.value)
-  const filterdData = dummy.study_list.filter(item => item.title.includes(text))
+  const dispatch = useDispatch()
+  const params = useSelector(state => state.study.params)
+  const studies = useSelector(state => state.study.studies)
+
+  useEffect(() => {
+    console.log(params)
+    dispatch(studyAction.studyList(params))
+    dispatch(studyAction.getTags())
+  }, [])
+
+  console.log(sessionStorage.getItem('isLoggedIn'))
+  console.log(studies)
 
   return (
     <div>
@@ -20,8 +30,8 @@ function MainComponent() {
           }}
         >
           <div className="big_box_card">
-            {filterdData.map(study => (
-              <TempCard study={study} key={study.id} />
+            {studies.map(study => (
+              <StudyCard study={study} key={study.id} />
             ))}
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import TempInfo from './TempInfo'
+import TempInfo from './StudyInfo'
 // import TempMember from './TempMember'
 // import TempQnA from './TempQnA'
 // import TempRecord from './TempRecord'

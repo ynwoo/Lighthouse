@@ -1,27 +1,29 @@
 import React from 'react'
 import { Tabs } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
-import TempInfo from '../components/Study/TempInfo'
-import TempMember from '../components/Study/TempMember'
-import TempQnA from '../components/Study/TempQnA'
-import TempRecord from '../components/Study/TempRecord'
-import TempReview from '../components/Study/TempReview'
+import StudyInfo from '../components/Study/StudyInfo'
+import StudyMember from '../components/Study/StudyMember'
+import StudyQnA from '../components/Study/StudyQnA'
+import StudyRecord from '../components/Study/StudyRecord'
+import StudyReview from '../components/Study/StudyReview'
 import dummy from '../db/data.json'
+import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 
 export default function TempDetailPage() {
   const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
   const tabMenu = {
-    TempInfo: <TempInfo study={study} />,
-    건들면X: <TempMember study={study} />,
-    TempQnA: <TempQnA study={study} />,
-    회원정보: <TempRecord study={study} />,
-    TempReview: <TempReview study={study} />,
+    TempInfo: <StudyInfo study={study} />,
+    건들면X: <StudyMember study={study} />,
+    TempQnA: <StudyQnA study={study} />,
+    회원정보: <StudyRecord study={study} />,
+    TempReview: <StudyReview study={study} />,
+    가입했을때정보: <JoinTempInfo study={study} />,
   }
 
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
-        <SideComponent />
+        <SideComponent study={study} />
       </div>
 
       {/* Tabs */}
