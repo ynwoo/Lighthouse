@@ -222,6 +222,7 @@ export const userSlice = createSlice({
       sessionStorage.setItem('access_token', action.payload['access-token'])
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
+      state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
     [userAction.logout.fulfilled]: (state, action) => {
@@ -232,6 +233,7 @@ export const userSlice = createSlice({
         action.payload['refresh-token'],
       )
       sessionStorage.removeItem('isLoggedIn', true)
+      state.isLoggedIn = false
     },
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
