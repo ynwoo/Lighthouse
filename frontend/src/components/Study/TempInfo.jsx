@@ -115,7 +115,7 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.leader_id}</p>
+              {/* <p>{study.leaderProfile.nickname}</p> */}
             </div>
           </div>
           <div className="item">
@@ -136,7 +136,7 @@ export default function TempMember({ study }) {
           <div className="item">
             <div className="temp_detail2">
               <p>
-                {study.min_member} / {study.max_member}
+                {study.currentMember} / {study.maxMember}({study.minMember})
               </p>
             </div>
           </div>
@@ -147,7 +147,7 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.recruit_finished_at} 까지</p>
+              <p>{study.recruitFinishedAt} 까지</p>
             </div>
           </div>
           <div className="item1">
@@ -158,10 +158,10 @@ export default function TempMember({ study }) {
           <div className="item1">
             {/* <div className="temp_detail3_1"> */}
             <div className="temp_detail3">
-              <p>{study.started_at}</p>
+              <p>{study.startedAt}</p>
             </div>
             <div className="temp_detail3">
-              <p>{study.ended_at}</p>
+              <p>{study.endedAt}</p>
               {/* </div> */}
             </div>
           </div>
@@ -176,12 +176,12 @@ export default function TempMember({ study }) {
             {/* 북마크 */}
             <div className="temp_detail4">
               <p>북마크</p>
-              <p>{study.bookmark_cnt}</p>
+              <p>{study.bookmarkCnt}</p>
             </div>
             {/* 좋아요 */}
             <div className="temp_detail4">
               <p>좋아요</p>
-              <p>{study.like_cnt}</p>
+              <p>{study.likeCnt}</p>
             </div>
             {/* </div> */}
           </div>

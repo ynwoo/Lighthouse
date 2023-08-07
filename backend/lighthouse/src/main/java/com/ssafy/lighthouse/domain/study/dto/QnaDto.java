@@ -12,13 +12,13 @@ public class QnaDto {
 	public static class Req {
 		private Long id;
 		private int isValid;
-		private long userId;
-		private long studyId;
+		private Long userId;
+		private Long studyId;
 		private String question;
 		private String answer;
 
 		@Builder
-		public Req(long userId, long studyId, String question, String answer) {
+		public Req(Long userId, Long studyId, String question, String answer) {
 			this.userId = userId;
 			this.studyId = studyId;
 			this.question = question;
@@ -39,11 +39,11 @@ public class QnaDto {
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class Res {
-		private long id;
+		private Long id;
 		private int isValid;
 		private String createdAt;
-		private long userId;
-		private long studyId;
+		private Long userId;
+		private Long studyId;
 		private String question;
 		private String answer;
 

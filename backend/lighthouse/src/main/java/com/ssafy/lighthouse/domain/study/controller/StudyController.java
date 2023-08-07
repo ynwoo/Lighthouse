@@ -1,5 +1,6 @@
 package com.ssafy.lighthouse.domain.study.controller;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/study")
@@ -34,11 +38,22 @@ public class StudyController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    // original study를 사용한 스터디들 조회
+    @GetMapping("/use/{original-id}")
+    public ResponseEntity<?> findAllByOriginalId(@PathVariable(name = "original-id") Long originalId,
+                                                 StudySearchOption options) {
+        log.debug("originalId : {}", originalId);
+        Page<SimpleStudyDto> result = studyService.findAllByOriginalId(originalId, options);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     // 템플릿 복제
     @PostMapping("/{study-id}")
-    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                  HttpServletRequest request) {
         log.debug("studyId : {}", studyId);
-        StudyResponse result = studyService.createStudyByStudyId(studyId);
+        Long userId = (Long) request.getAttribute("userId");
+        StudyResponse result = studyService.createStudyByStudyId(studyId, userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -52,10 +67,13 @@ public class StudyController {
 
     // 스터디 정보 수정
     @PutMapping
-    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest) {
+    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest,
+                                         HttpServletRequest request) {
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("studyId : {}", studyRequest.getId());
-        studyService.updateStudyByStudyId(studyRequest);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        log.debug("userId : {}", userId);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest, userId);
+        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
 
     // 스터디 삭제
@@ -67,36 +85,40 @@ public class StudyController {
     }
 
     @PostMapping("/like/{study-id}")
-    public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyLike(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.createStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/like/{study-id}")
-    public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyLike(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyLike(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @PostMapping("/bookmark/{study-id}")
-    public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyBookmark(@PathVariable(name = "study-id") Long studyId,
+                                                 HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.createStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @DeleteMapping("/bookmark/{study-id}")
-    public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyBookmark(@PathVariable(name = "study-id") Long studyId,
+                                                 HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyBookmark(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -117,9 +139,10 @@ public class StudyController {
     }
 
     @PostMapping("/eval")
-    public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto) {
+    public ResponseEntity<?> createStudyEval(@RequestBody StudyEvalDto studyEvalDto,
+                                             HttpServletRequest request) {
         // session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyEvalDto.setUserId(userId);
         studyService.createStudyEval(studyEvalDto);
@@ -127,16 +150,21 @@ public class StudyController {
     }
 
     @DeleteMapping("/eval/{study-id}")
-    public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> removeStudyEval(@PathVariable(name = "study-id") Long studyId,
+                                             HttpServletRequest request) {
 //         session에서 userId 가져오기
-        Long userId = getUserId();
+        Long userId = (Long) request.getAttribute("userId");
         log.debug("userId : {}", userId);
         studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    private Long getUserId() {
-        return 1L;
+    // studyBadge 교체
+    @PutMapping("/badge")
+    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+                                              @RequestPart(value = "img") MultipartFile img,
+                                              @RequestPart(value = "studyId") Long studyId) {
+        studyService.updateStudyBadge(badgeRequest, img, studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
-
 }

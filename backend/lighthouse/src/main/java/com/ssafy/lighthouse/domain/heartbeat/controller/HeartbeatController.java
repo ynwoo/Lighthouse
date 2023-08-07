@@ -17,7 +17,7 @@ public class HeartbeatController {
 
     @GetMapping("/heartbeat/{id}")
     public ResponseEntity<Object> heartbeat(@PathVariable("id") Long id) {
-        log.debug("heartbeat: " + id + " " + System.currentTimeMillis());
+//        log.debug("heartbeat: " + id + " " + System.currentTimeMillis());
         heartbeatService.updateHeartbeat(id);
         return ResponseEntity.ok().build();
     }

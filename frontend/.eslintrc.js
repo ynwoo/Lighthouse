@@ -44,5 +44,6 @@ module.exports = {
     ],
     'no-param-reassign': 'off',
     'import/no-unresolved': 'off',
+    'no-nested-ternary': 'off',
   },
 }

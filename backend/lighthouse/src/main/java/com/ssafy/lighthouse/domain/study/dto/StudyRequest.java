@@ -1,11 +1,15 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,8 @@ public class StudyRequest {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
+    private Long originalId;
+    private BadgeRequest badge;
     private SidoDto sido;
     private GugunDto gugun;
     private List<StudyTagDto> studyTags;
@@ -53,10 +59,11 @@ public class StudyRequest {
                 .likeCnt(this.likeCnt)
                 .bookmarkCnt(this.bookmarkCnt)
                 .status(this.status)
-                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : null)
-                .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : null)
-                .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : null)
-                .sessions(this.sessions != null ? this.sessions.stream().map(SessionDto.SessionReq::toEntity).collect(Collectors.toSet()) : null)
+                .originalId(this.originalId)
+                .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+                .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+                .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+                .sessions(this.sessions != null ? this.sessions.stream().map(SessionDto.SessionReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .build();
     }
 }
