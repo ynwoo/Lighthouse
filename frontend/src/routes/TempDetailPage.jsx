@@ -9,14 +9,15 @@ import StudyRecord from '../components/Study/StudyRecord'
 import StudyReview from '../components/Study/StudyReview'
 import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 import { studyAction } from '../store/study'
+import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 
 export default function TempDetailPage() {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
 
   useEffect(() => {
-    console.log(window.location.pathname.split('/')[2])
-    dispatch(studyAction.studyDetail(window.location.pathname.split('/')[2]))
+    console.log(window.location.pathname?.split('/')[2])
+    dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
 
   console.log(study)
@@ -27,6 +28,7 @@ export default function TempDetailPage() {
     회원정보: <StudyRecord study={study} />,
     TempReview: <StudyReview study={study} />,
     가입했을때정보: <JoinTempInfo study={study} />,
+    로그인Xinfo: <NologinStudyInfo study={study} />,
   }
 
   return (

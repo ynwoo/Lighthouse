@@ -831,6 +831,7 @@ h1 span:nth-child(9) {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  bottom: 10px;
 }
 
 .loading-spinner {
@@ -846,4 +847,9 @@ h1 span:nth-child(9) {
   to {
     transform: rotate(360deg);
   }
+}
+
+.mark_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
