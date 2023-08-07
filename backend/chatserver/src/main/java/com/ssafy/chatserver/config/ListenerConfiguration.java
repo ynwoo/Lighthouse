@@ -4,6 +4,7 @@ import com.ssafy.chatserver.chat.dto.MessageDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.StickyAssignor;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -18,6 +19,9 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class ListenerConfiguration {
+
+    @Value("${KAFKA_BROKER}")
+    private String kafkaBroker;
 
     // Propagation consumer group configuration
     @Bean
@@ -35,7 +39,7 @@ public class ListenerConfiguration {
     @Bean
     public Map<String, Object> propConsumerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
-        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKER);
+        configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBroker);
         configurations.put(ConsumerConfig.GROUP_ID_CONFIG, KafkaConstants.GROUP_PROPAGATE);
         configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
