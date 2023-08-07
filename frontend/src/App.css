@@ -3,6 +3,8 @@ body {
   width: 100%;
   background-color: transparent;
   height: 1000px;
+  /* overflow-y: scroll; */
+  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
 }
 
 /* WaveComponent CSS */
@@ -11,10 +13,11 @@ body {
 .waves {
   position: relative;
   width: 100%;
-  height: 15vh;
+  height: 17vh;
   margin-bottom: -7px; /*Fix for safari gap*/
   min-height: 100px;
-  max-height: 150px;
+  max-height: 250px;
+  top: -50px;
 }
 
 /* Animation */
@@ -233,7 +236,6 @@ body {
   margin: 0;
 }
 
-/*... 이전 CSS 스타일들 ... */
 .circular-image {
   position: absolute;
   top: 0%; /* 이미지를 수직 중앙으로 정렬하려면 50%로 설정 */
@@ -510,10 +512,15 @@ p {
 
 .info_container {
   display: grid;
-  grid-template-columns: 1fr 9fr;
+  grid-template-columns: 10% 90%;
   background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
-  margin-top: -15px;
+  margin-top: -50px;
   width: 100%;
+}
+
+.info_inner {
+  display: grid;
+  grid-template-rows: 10% 10% 80%;
 }
 
 .info_item {
@@ -522,8 +529,8 @@ p {
 }
 
 .info_item1 {
-  margin: 30px;
-  margin-left: 280px;
+  /* margin: 30px; */
+  margin-left: 230px;
 }
 
 .memo_box {
@@ -580,7 +587,7 @@ p {
 }
 
 .big_box {
-  width: 100%;
+  width: 1000px;
   height: 100%;
   border-radius: 20px;
   text-align: center;
@@ -592,7 +599,7 @@ p {
   padding: 20px;
   margin: -18px;
   margin-bottom: 40px;
-  left: 10px;
+  /* left: 20px; */
 }
 
 .circular-image2 {
@@ -615,6 +622,8 @@ p {
 }
 
 .sidebar {
+  left: 5%;
+  bottom: 13%;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
@@ -622,6 +631,153 @@ p {
   border-radius: 10px;
   background-color: white;
   padding: 20px;
+  padding-bottom: 40px;
+  /* margin-left: 100px;
+  margin-top: 20px; */
+}
+
+.hovered-card {
+  border: 2px solid #6181f1;
+  /* background-color: #000000; */
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.hovered-card .hovered-cover {
+  display: none; /* 커버 숨기기 */
+}
+
+.cover-wrapper {
+  width: 250px;
+}
+
+.big_box_card {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  /* position: relative; */
+  padding: 20px;
+  margin: -18px;
+  margin-bottom: 40px;
   margin-left: 100px;
-  margin-top: 20px;
+  left: 10px;
+}
+
+.main_item {
+  display: flex;
+  margin-left: 80px;
+  /* margin-top: 50px; */
+}
+
+@font-face {
+  font-family: 'EF_Hyunygothic';
+  font-weight: normal;
+  font-style: normal;
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.eot');
+  src:
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.eot?#iefix')
+      format('embedded-opentype'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.woff2')
+      format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.woff')
+      format('woff'),
+    url('https://cdn.jsdelivr.net/gh/webfontworld/earlyfont/EF_Hyunygothic.ttf')
+      format('truetype');
+  font-display: swap;
+}
+h1 {
+  height: 100px;
+}
+
+h1 span {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  animation: bounce 0.7s ease infinite alternate;
+  font-family: 'Titan One', cursive;
+  font-size: 70px;
+  padding: 10px;
+  font-family: 'EF_Hyunygothic';
+  color: #001880;
+  text-shadow:
+    0 1px 0 #020d34,
+    0 2px 0 #020d34,
+    0 3px 0 #020d34,
+    0 4px 0 #020d34,
+    0 5px 0 #020d34,
+    0 6px 0 transparent,
+    0 7px 0 transparent,
+    0 8px 0 transparent,
+    0 9px 0 transparent,
+    0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+
+h1 span:nth-child(9) {
+  animation-delay: 0.8s;
+}
+
+@keyframes bounce {
+  100% {
+    top: -20px;
+    text-shadow:
+      0 1px 0 #bbc6f0,
+      0 2px 0 #bbc6f0,
+      0 3px 0 #bbc6f0,
+      0 4px 0 #bbc6f0,
+      0 5px 0 #bbc6f0,
+      0 6px 0 #bbc6f0,
+      0 7px 0 #bbc6f0,
+      0 8px 0 #bbc6f0,
+      0 9px 0 #bbc6f0,
+      0 50px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.fadein {
+  font-size: medium;
+  position: relative;
+  overflow: hidden;
+  animation: fadein 7s ease-in-out;
+  display: flex;
+  font-size: 40px;
+  color: #201b69;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
