@@ -30,6 +30,14 @@ export default function TempMember({ study }) {
   const handleChangeMessage = e => {
     setMessage(e.target.value)
   }
+  const API_URL = process.env.REACT_APP_API_URL
+  const { REACT_APP_S3_DOMAIN_URL } = process.env
+  console.log(
+    'img src : ',
+    `${process.env.S3_DOMAIN_URL}/${study.leaderProfile?.badges[0]?.imgUrl}.png`,
+  )
+  console.log('S3_DOMAIN_URL', REACT_APP_S3_DOMAIN_URL, API_URL)
+
   return (
     <div className="big_box">
       {/* 만약 팀장이면 띄우기 */}
@@ -115,7 +123,14 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.leaderProfile?.nickname}</p>
+              <p>
+                {study.leaderProfile?.nickname}
+                <img
+                  src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${study.leaderProfile?.badges[0]?.imgUrl}`}
+                  alt={study.leaderProfile?.badges[0]?.name}
+                  style={{ width: '10px', height: '10px' }}
+                />
+              </p>
             </div>
           </div>
           <div className="item">
@@ -147,7 +162,7 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.recruitFinishedAt} 까지</p>
+              <p>{study.recruitFinishedAt.split(' ')[0]} 까지</p>
             </div>
           </div>
           <div className="item1">
@@ -158,10 +173,10 @@ export default function TempMember({ study }) {
           <div className="item1">
             {/* <div className="temp_detail3_1"> */}
             <div className="temp_detail3">
-              <p>{study.startedAt}</p>
+              <p>{study.startedAt.split(' ')[0]}</p>
             </div>
             <div className="temp_detail3">
-              <p>{study.endedAt}</p>
+              <p>{study.endedAt.split(' ')[0]}</p>
               {/* </div> */}
             </div>
           </div>
