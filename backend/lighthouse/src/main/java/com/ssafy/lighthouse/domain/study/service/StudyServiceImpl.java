@@ -96,13 +96,14 @@ public class StudyServiceImpl implements StudyService {
         
         // 새로운 스터디 만들기
         Study newStudy = studyRepository.save(Study.builder()
-                        .isValid(study.getIsValid())
+                .isValid(study.getIsValid())
                 .title(study.getTitle())
                 .description(study.getDescription())
                 .hit(study.getHit())
                 .rule(study.getRule())
                 .isOnline(study.getIsOnline())
                 .originalId(study.getId())
+                .leaderId(userId)
                 .build());
 
         log.debug("service2 - studyId : {}", study.getId());

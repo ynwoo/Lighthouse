@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,8 +67,8 @@ public class StudyController {
     }
 
     // 스터디 정보 수정
-    @PutMapping
-    public ResponseEntity<?> updateStudy(@RequestBody StudyRequest studyRequest,
+    @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest,
                                          HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
         log.debug("studyId : {}", studyRequest.getId());

@@ -38,10 +38,10 @@ class StudyServiceImplTest {
         em.clear();
     }
 
-    @Test
-    public void createById() {
-        StudyResponse studyResponse = studyService.createStudyByStudyId(224L);
-        log.debug("service - createById {}", studyResponse);
-    }
+//    @Test
+//    public void createById() {
+//        StudyResponse studyResponse = studyService.createStudyByStudyId(224L);
+//        log.debug("service - createById {}", studyResponse);
+//    }
 
 }

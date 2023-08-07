@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 
 public class SessionDto {
 	@Getter
+	@Setter
+	@ToString
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionReq {
 		private Long id;
@@ -24,14 +28,14 @@ public class SessionDto {
 		private String title;
 		private String description;
 		private String comment;
-		private int status;
-		private int seqNum;
+		private Integer status;
+		private Integer seqNum;
 		private List<StudyMaterialDto.Req> studyMaterials;
 		private List<SessionCheckReq> sessionChecks;
 
 		@Builder
 		public SessionReq(String startedAt, String endedAt, Long studyId, String title, String description,
-			String comment, int status, int seqNum) {
+			String comment, Integer status, Integer seqNum) {
 			this.startedAt = startedAt;
 			this.endedAt = endedAt;
 			this.studyId = studyId;
@@ -65,7 +69,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionRes {
 		private Long id;
-		private int isValid;
+		private Integer isValid;
 		private String createdAt;
 		private String startedAt;
 		private String endedAt;
@@ -73,8 +77,8 @@ public class SessionDto {
 		private String title;
 		private String description;
 		private String comment;
-		private int status;
-		private int seqNum;
+		private Integer status;
+		private Integer seqNum;
 		private List<StudyMaterialDto.Res> studyMaterials;
 		private List<SessionCheckRes> sessionChecks;
 
@@ -96,10 +100,12 @@ public class SessionDto {
 	}
 
 	@Getter
+	@Setter
+	@ToString
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckReq {
 		private Long id;
-		private int isValid;
+		private Integer isValid;
 		private Long userId;
 		private Long sessionId;
 		private String content;
@@ -113,8 +119,8 @@ public class SessionDto {
 
 		public SessionCheck toEntity() {
 			return SessionCheck.builder()
-					.id(id)
-					.isValid(isValid)
+				.id(id)
+				.isValid(isValid)
 				.userId(userId)
 				.sessionId(sessionId)
 				.content(content)
@@ -126,7 +132,7 @@ public class SessionDto {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckRes {
 		private Long id;
-		private int isValid;
+		private Integer isValid;
 		private String createdAt;
 		private Long userId;
 		private Long sessionId;

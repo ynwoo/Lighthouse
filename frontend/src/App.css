@@ -4,7 +4,7 @@ body {
   background-color: transparent;
   height: 1000px;
   /* overflow-y: scroll; */
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
 /* WaveComponent CSS */
@@ -513,7 +513,7 @@ p {
 .info_container {
   display: grid;
   grid-template-columns: 10% 90%;
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
   margin-top: -50px;
   width: 100%;
 }
