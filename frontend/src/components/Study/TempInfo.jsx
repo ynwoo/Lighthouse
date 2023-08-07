@@ -1,191 +1,91 @@
 import React, { useState } from 'react'
-import { Button, Modal, Input } from 'antd'
-// import readerLogo from '../../static/crown.png'
-// 템플릿 상세의 인원정보(멤버)
+import photo from '../../static/aris.png'
+import TempCurri from './TempCurri'
+// import TempList from './TempList'
+import MemoInput from './memo/MemoInput'
+import MemoList from './memo/MemoList'
+import DatePicker from './DatePicker'
+import Calendar from './Calendar'
 
 export default function TempMember({ study }) {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
-  const [message, setMessage] = useState('')
-
-  const showModal = () => {
-    setIsModalVisible(true)
+  const [memos, setMemos] = useState([])
+  console.log(study)
+  const handleAddMemo = memo => {
+    setMemos(prevMemos => [
+      ...prevMemos,
+      {
+        id: Date.now(), // 랜덤 ID 대신 현재 시간을 ID로 사용
+        text: memo,
+      },
+    ])
+  }
+  const handleDeleteMemo = memoId => {
+    const updatedMemos = memos.filter(memo => memo.id !== memoId)
+    setMemos(updatedMemos)
   }
 
-  const handleOk = () => {
-    // Handle the submission of the message (you can send it to the server or perform any action)
-    console.log('Message:', message)
-    setIsModalVisible(false)
-    setIsConfirmationVisible(true)
-  }
-
-  const handleCancel = () => {
-    setIsModalVisible(false)
-  }
-
-  const handleConfirmationOk = () => {
-    setIsConfirmationVisible(false)
-  }
-
-  const handleChangeMessage = e => {
-    setMessage(e.target.value)
-  }
   return (
     <div className="big_box">
-      {/* 만약 팀장이면 띄우기 */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'row-reverse',
-          margin: '20px',
-        }}
-      >
-        <Button
-          type="primary"
-          style={{
-            backgroundColor: '#FFF1A9',
-            color: 'black',
-            border: '1px solid #FFF1A9',
-            borderRadius: '20px',
-            padding: '8px',
-            fontWeight: 'bold',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '200px',
-          }}
-          onClick={showModal}
-        >
-          JOIN
-        </Button>
-
-        <Modal
-          title="스터디 신청"
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          {/* 신청 창에 들어갈 내용 */}
-          <p>스터디장에게 하고 싶은 말을 남겨주세요!</p>
-          <Input
-            placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
-            value={message}
-            onChange={handleChangeMessage}
-          />
-        </Modal>
-        {/* Confirmation Modal */}
-        <Modal
-          title="신청이 완료되었습니다."
-          visible={isConfirmationVisible}
-          onOk={handleConfirmationOk}
-          onCancel={handleConfirmationOk} // Set onCancel to handle the "X" button click
-        >
-          {/* Confirmation message */}
-          <p>스터디 신청이 성공적으로 완료되었습니다.</p>
-          <p>Thank you for submitting your message!</p>
-        </Modal>
-      </div>
-      <div
-        className="container"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          marginLeft: '60px',
-          marginBottom: '60px',
-        }}
-      >
-        <div className="container">
-          <div className="item1">
-            <div className="temp_mini">
-              <p>스터디 이름</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_detail2">
-              <p>{study.title}</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_mini">
-              <p>팀장</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_detail2">
-              <p>{study.leader_id}</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_mini">
-              <p>스터디 소개</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_detail2">
-              <p>{study.description}</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_mini">
-              <p>총원</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_detail2">
-              <p>
-                {study.min_member} / {study.max_member}
-              </p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_mini">
-              <p>모집기간</p>
-            </div>
-          </div>
-          <div className="item">
-            <div className="temp_detail2">
-              <p>{study.recruit_finished_at} 까지</p>
-            </div>
-          </div>
-          <div className="item1">
-            <div className="temp_mini">
-              <p>시작 ~ 종료 기간</p>
-            </div>
-          </div>
-          <div className="item1">
-            {/* <div className="temp_detail3_1"> */}
-            <div className="temp_detail3">
-              <p>{study.started_at}</p>
-            </div>
-            <div className="temp_detail3">
-              <p>{study.ended_at}</p>
-              {/* </div> */}
-            </div>
-          </div>
-          <div className="item" />
-          <div className="item2">
-            {/* <div className="temp_detail4_1"> */}
-            {/* 조회수 */}
-            <div className="temp_detail4">
-              <p>조회수</p>
-              <p>{study.hit}</p>
-            </div>
-            {/* 북마크 */}
-            <div className="temp_detail4">
-              <p>북마크</p>
-              <p>{study.bookmark_cnt}</p>
-            </div>
-            {/* 좋아요 */}
-            <div className="temp_detail4">
-              <p>좋아요</p>
-              <p>{study.like_cnt}</p>
-            </div>
-            {/* </div> */}
-          </div>
+      <div className="study_container">
+        <img src={photo} alt="아리스" style={{ width: '100%' }} />
+        <div className="study_box">
+          <h1>
+            {study.title}( {study.minMember} / {study.maxMember})
+          </h1>
+          <h3>스터디장 : adsfasdfjasdf</h3>
+          <h3>{study.description}</h3>
+          {/* <p>모집기간 : {study.recruit_finished_at}</p> */}
+          <h3>해시태그</h3>
         </div>
+      </div>
+      <div className="info_text">
+        <ul>
+          <p>커리큘럼</p>
+        </ul>
+      </div>
+      <div style={{ textAlign: 'left', margin: '10px' }}>
+        <TempCurri />
+      </div>
+      <div>
+        <div className="info_text">
+          <ul>
+            <p>모집대상</p>
+          </ul>
+        </div>
+        <div>
+          {/* Memo Input */}
+          <MemoInput onAddMemo={handleAddMemo} />
+          {/* Memo List */}
+          {/* <MemoList memos={memos} /> */}
+          <MemoList memos={memos} onDeleteMemo={handleDeleteMemo} />
+          {/* ... (rest of the code) */}
+        </div>
+      </div>
+      <div>
+        <div className="info_text">
+          <ul>
+            <p>스터디 기간</p>
+          </ul>
+        </div>
+        <div>
+          <DatePicker />
+        </div>
+      </div>
+      <div>
+        <div className="info_text">
+          <ul>
+            <p>모집 기간</p>
+          </ul>
+        </div>
+      </div>
+      <DatePicker />
+      <div className="info_text">
+        <ul>
+          <p>월간 계획</p>
+        </ul>
+      </div>
+      <div style={{ marginTop: '30px' }}>
+        <Calendar />
       </div>
     </div>
   )

@@ -28,21 +28,20 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/react-in-jsx-scope': 'off',
-    // 'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
-    'jsx-a11y': 0,
-    'react/prop-types': 'off',
-    'react/jsx-no-bind': 'off',
-    'default-param-last': 'off',
-    'no-use-before-define': [
+    // ...
+    'jsx-a11y/label-has-associated-control': [
       'error',
       {
-        functions: false,
-        classes: true,
-        variables: true,
-        allowNamedExports: false,
+        labelComponents: ['label'], // <label> 요소를 사용할 때
+        labelAttributes: ['htmlFor'], // htmlFor 속성을 사용할 때
+        controlComponents: ['input'], // <input> 요소를 사용할 때
+        assert: 'either', // 라벨과 컨트롤 중 하나만 존재해도 허용
+        depth: 3, // 최대 3단계 깊이의 DOM 구조 검사
       },
     ],
     'no-param-reassign': 'off',
     'import/no-unresolved': 'off',
+    'no-nested-ternary': 'off',
+    'react/prop-types': 'off',
   },
 }

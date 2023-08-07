@@ -2,22 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-// import UserProfileSide from '../User/UserProfileSide'
 import profilePic from '../../logo.svg'
-
-// const { Sider } = Layout
-
-// 사이드
-// const siderStyle = {
-//   textAlign: 'center',
-//   lineHeight: '100%',
-//   color: 'black',
-//   backgroundColor: 'transparent',
-//   margin: '10px',
-//   top: '50%',
-//   left: '2.5%',
-//   position: 'fixed',
-// }
 
 export default function SideComponent() {
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -26,10 +11,11 @@ export default function SideComponent() {
 
   const showModal = () => {
     setIsModalVisible(true)
+    // Body 스크롤 방지
+    document.body.style.overflow = 'hidden'
   }
 
   const handleOk = () => {
-    // Handle the submission of the message (you can send it to the server or perform any action)
     console.log('Message:', message)
     setIsModalVisible(false)
     setIsConfirmationVisible(true)
@@ -37,27 +23,32 @@ export default function SideComponent() {
 
   const handleCancel = () => {
     setIsModalVisible(false)
+    // Body 스크롤 재개
+    document.body.style.overflow = 'auto'
   }
 
   const handleConfirmationOk = () => {
     setIsConfirmationVisible(false)
+    // Body 스크롤 재개
+    document.body.style.overflow = 'auto'
   }
 
   const handleChangeMessage = e => {
     setMessage(e.target.value)
   }
+
   const Pic = profilePic
   const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+
   if (!isLoggedIn) {
     return (
       <div className="sidebar">
-        {/* <Sider style={siderStyle}> */}
         <div>
           <div className="circular-image2">
             <img src={Pic} alt="안뜸" />
           </div>
         </div>
-
+        {/* <h1>${study.id}</h1> */}
         <div>
           <div>
             <Button
@@ -86,7 +77,6 @@ export default function SideComponent() {
               onOk={handleOk}
               onCancel={handleCancel}
             >
-              {/* 신청 창에 들어갈 내용 */}
               <p>스터디장에게 하고 싶은 말을 남겨주세요!</p>
               <Input
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
@@ -94,24 +84,61 @@ export default function SideComponent() {
                 onChange={handleChangeMessage}
               />
             </Modal>
-            {/* Confirmation Modal */}
+
             <Modal
               title="신청이 완료되었습니다."
               visible={isConfirmationVisible}
               onOk={handleConfirmationOk}
-              onCancel={handleConfirmationOk} // Set onCancel to handle the "X" button click
+              onCancel={handleConfirmationOk}
             >
-              {/* Confirmation message */}
               <p>스터디 신청이 성공적으로 완료되었습니다.</p>
               <p>Thank you for submitting your message!</p>
             </Modal>
           </div>
         </div>
-        {/* </Sider> */}
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Button
+            type="primary"
+            style={{
+              backgroundColor: '#FFDFEB',
+              color: 'black',
+              border: '1px solid #FFDFEB',
+              borderRadius: '20px',
+              padding: '8px',
+              fontWeight: 'bold',
+              width: '95px',
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: '10px',
+            }}
+          >
+            좋아요
+          </Button>
+          <Button
+            type="primary"
+            style={{
+              backgroundColor: '#DFEEFF',
+              color: 'black',
+              border: '1px solid #DFEEFF',
+              borderRadius: '20px',
+              padding: '8px',
+              fontWeight: 'bold',
+              width: '95px',
+              display: 'flex',
+              alignContent: 'center',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: '10px',
+            }}
+          >
+            북마크
+          </Button>
+        </div>
       </div>
     )
   }
-
   return (
     // <Sider style={siderStyle}>
     <div

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body style="margin: 0">
+    <div style="overflow: hidden">
+      <div class="slider_container">
+        <div class="slider_inner_container">
+          <img src="/src//static/aris.png" alt="" />
+        </div>
+        <div class="slider_inner_container">
+          <img src="/src//static/aris.png" alt="" />
+        </div>
+        <div class="slider_inner_container">
+          <img src="/src//static/aris.png" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <button class="btn1">1</button>
+    <button class="btn2">2</button>
+    <button class="btn3">3</button>
+
+    <script>
+      document.querySelector('.btn2').addEventListener('click', function () {
+        document.querySelector('.slider_container').style.transform =
+          'translate(-100vw)'
+      })
+
+      document.querySelector('.btn3').addEventListener('click', function () {
+        document.querySelector('.slider_container').style.transform =
+          'translate(-200vw)'
+      })
+    </script>
+  </body>
+</html>
