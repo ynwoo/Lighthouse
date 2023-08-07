@@ -4,7 +4,6 @@ import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 import SearchComponent from '../components/Utils/SearchComponent'
 // import Slider from '../components/Slider'
-import dummy from '../db/data.json'
 
 const { Footer, Content } = Layout
 
@@ -26,15 +25,13 @@ const footerStyle = {
 }
 // 내부 탭
 export default function MainPage() {
-  const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
-
   return (
     <div>
       <div className="info_container">
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
           <div>
-            <SideComponent study={study} />
+            <SideComponent />
           </div>
         </div>
 
