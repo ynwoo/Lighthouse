@@ -6,7 +6,7 @@ import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
 export default function App() {
-  const dispatch = useDispatch
+  const dispatch = useDispatch()
   return (
     <div
       style={{
