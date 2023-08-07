@@ -12,7 +12,7 @@ const initialState = {
     isOnline: 0,
   },
   studies: [],
-  studyDetail: {},
+  studyDetail: [],
   tags: [],
 }
 
@@ -73,6 +73,7 @@ export const studySlice = createSlice({
     [studyAction.getTags.fulfilled]: (state, action) => {
       console.log(action.payload.tagList)
       state.tags = action.payload.tagList
+      localStorage.setItem('tags', JSON.stringify(action.payload.tagList))
     },
   },
 })
