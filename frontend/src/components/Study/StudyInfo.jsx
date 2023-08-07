@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import photo from '../../static/aris.png'
-import TempCurri from './StudyCurriculum'
-// import TempList from './TempList'
+import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
 import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
-// import Calendar from './Calendar'
 
 export default function TempInfo({ study }) {
   const [memos, setMemos] = useState([])
@@ -35,8 +33,6 @@ export default function TempInfo({ study }) {
             스터디장 :{' '}
             {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
           </h3>
-          <h3>{study.description}</h3>
-          {/* <p>모집기간 : {study.recruit_finished_at}</p> */}
           <h3>해시태그</h3>
           <div style={{ display: 'flex' }}>
             {study.studyTags ? (
@@ -47,30 +43,35 @@ export default function TempInfo({ study }) {
           </div>
           <hr />
           <p>조회수 - {study.hit}</p>
-          <div>모집 마감 - {study.recruitFinishedAt} 까지</div>
-          <div>시작 - {study.startedAt}</div>
-          <div>끝 - {study.endedAt}</div>
-          <p>북마크 - {study.bookmarkCnt}</p>
-          <div>Tabom - {study.likeCnt}</div>
-          <p>규칙 - {study.rule}</p>
-          <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
-          <p>asdf</p>
-          <p>tags - {study.studyTags}</p>
-          <p>
-            {' '}
-            {study.isOnline
-              ? '온라인'
-              : `장소 - ${study.sido}, ${study.gugun}`}{' '}
-          </p>
         </div>
       </div>
+      <div className="info_text">
+        <ul>
+          <p>스터디 정보</p>
+        </ul>
+      </div>
+      <h3>{study.description}</h3>
+      <div>모집 마감 - {study.recruitFinishedAt?.split(' ')[0]} 까지</div>
+      <div>시작 - {study.startedAt?.split(' ')[0]}</div>
+      <div>끝 - {study.endedAt?.split(' ')[0]}</div>
+      <p>북마크 - {study.bookmarkCnt}</p>
+      <div>Tabom - {study.likeCnt}</div>
+      <p>규칙 - {study.rule}</p>
+      <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
+      <p>tags - {study.studyTags}</p>
+      <p>
+        {' '}
+        {study.isOnline
+          ? '온라인'
+          : `장소 - ${study.sido}, ${study.gugun}`}{' '}
+      </p>
       <div className="info_text">
         <ul>
           <p>커리큘럼</p>
         </ul>
       </div>
       <div style={{ textAlign: 'left', margin: '10px' }}>
-        <TempCurri />
+        <StudyCurriculum />
       </div>
       <div>
         <div className="info_text">
@@ -79,12 +80,8 @@ export default function TempInfo({ study }) {
           </ul>
         </div>
         <div>
-          {/* Memo Input */}
           <MemoInput onAddMemo={handleAddMemo} />
-          {/* Memo List */}
-          {/* <MemoList memos={memos} /> */}
           <MemoList memos={memos} onDeleteMemo={handleDeleteMemo} />
-          {/* ... (rest of the code) */}
         </div>
       </div>
       <div>
@@ -105,14 +102,6 @@ export default function TempInfo({ study }) {
         </div>
       </div>
       <DatePicker />
-      {/* <div className="info_text">
-        <ul>
-          <p>월간 계획</p>
-        </ul>
-      </div>
-      <div style={{ marginTop: '30px' }}>
-        <Calendar />
-      </div> */}
     </div>
   )
 }
