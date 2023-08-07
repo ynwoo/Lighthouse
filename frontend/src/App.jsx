@@ -40,7 +40,6 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/user_edit/:id" element={<UserEditPage />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/tempmore" element={<TempMore />} />
         </Routes>
       </Router>
       <button

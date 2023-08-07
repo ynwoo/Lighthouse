@@ -19,7 +19,6 @@ authApi.interceptors.request.use(config => {
 
   config.headers['access-token'] = accessToken
   config.headers['refresh-token'] = refreshToken
-  console.log(config.headers['Content-Type'])
   return config
 })
 
@@ -30,7 +29,11 @@ authApi.interceptors.response.use(
   async function (err) {
     console.log(axios.defaults.headers)
     console.log(err)
-    if (err.response && err.response.status === 404) {
+    if (
+      err.response &&
+      err.response.status === 401 &&
+      sessionStorage.getItem('access_token') !== null
+    ) {
       try {
         console.log('try 진입')
         delete axios.defaults.headers.common['access-token']
@@ -47,6 +50,8 @@ authApi.interceptors.response.use(
       return Promise.reject(err)
     }
     console.log('hmm...')
+    alert('로그인이 필요합니다!')
+    window.location.href = '/login'
     return Promise.reject(err)
   },
 )
@@ -59,6 +64,7 @@ const initialState = {
   gugun: { 0: '시/도를 선택하세요' },
   emailIsValid: null,
   nicknameIsValid: null,
+  myInfo: {},
 }
 
 export const userAction = {
@@ -161,6 +167,22 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+
+  // 프로필 불러오기
+  profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
+    try {
+      console.log(
+        'profile - payload : ',
+        payload,
+        `${API_URL}/users/${payload ?? 1}`,
+      )
+      const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const userSlice = createSlice({
@@ -201,6 +223,10 @@ export const userSlice = createSlice({
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
       console.log(sessionStorage.getItem('refresh_token'))
+    },
+    [userAction.myPage.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo)
+      state.myInfo = action.payload.userInfo
     },
   },
 })

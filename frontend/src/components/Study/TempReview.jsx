@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
+import { participateStudy } from '../../api/participation'
 // import readerLogo from '../../static/crown.png'
 // 템플릿 상세의 인원정보(멤버)
 
-export default function TempMember({ study }) {
+export default function TempReview({ study }) {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
@@ -15,8 +16,17 @@ export default function TempMember({ study }) {
   const handleOk = () => {
     // Handle the submission of the message (you can send it to the server or perform any action)
     console.log('Message:', message)
-    setIsModalVisible(false)
-    setIsConfirmationVisible(true)
+    participateStudy(
+      study.id,
+      () => {
+        // alert('회원 등록 성공')
+        setIsModalVisible(false)
+        setIsConfirmationVisible(true)
+      },
+      ({ response }) => {
+        alert(response.data)
+      },
+    )
   }
 
   const handleCancel = () => {
@@ -30,6 +40,14 @@ export default function TempMember({ study }) {
   const handleChangeMessage = e => {
     setMessage(e.target.value)
   }
+  const API_URL = process.env.REACT_APP_API_URL
+  const { REACT_APP_S3_DOMAIN_URL } = process.env
+  console.log(
+    'img src : ',
+    `${process.env.S3_DOMAIN_URL}/${study.leaderProfile?.badges[0]?.imgUrl}.png`,
+  )
+  console.log('S3_DOMAIN_URL', REACT_APP_S3_DOMAIN_URL, API_URL)
+
   return (
     <div className="big_box">
       {/* 만약 팀장이면 띄우기 */}
@@ -115,7 +133,14 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.leader_id}</p>
+              <p>
+                {study.leaderProfile?.nickname}
+                <img
+                  src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${study.leaderProfile?.badges[0]?.imgUrl}`}
+                  alt={study.leaderProfile?.badges[0]?.name}
+                  style={{ width: '10px', height: '10px' }}
+                />
+              </p>
             </div>
           </div>
           <div className="item">
@@ -136,7 +161,7 @@ export default function TempMember({ study }) {
           <div className="item">
             <div className="temp_detail2">
               <p>
-                {study.min_member} / {study.max_member}
+                {study.currentMember} / {study.minMember} ~ {study.maxMember}
               </p>
             </div>
           </div>
@@ -147,7 +172,7 @@ export default function TempMember({ study }) {
           </div>
           <div className="item">
             <div className="temp_detail2">
-              <p>{study.recruit_finished_at} 까지</p>
+              <p>{study.recruitFinishedAt.split(' ')[0]} 까지</p>
             </div>
           </div>
           <div className="item1">
@@ -158,10 +183,10 @@ export default function TempMember({ study }) {
           <div className="item1">
             {/* <div className="temp_detail3_1"> */}
             <div className="temp_detail3">
-              <p>{study.started_at}</p>
+              <p>{study.startedAt.split(' ')[0]}</p>
             </div>
             <div className="temp_detail3">
-              <p>{study.ended_at}</p>
+              <p>{study.endedAt.split(' ')[0]}</p>
               {/* </div> */}
             </div>
           </div>
@@ -176,12 +201,12 @@ export default function TempMember({ study }) {
             {/* 북마크 */}
             <div className="temp_detail4">
               <p>북마크</p>
-              <p>{study.bookmark_cnt}</p>
+              <p>{study.bookmarkCnt}</p>
             </div>
             {/* 좋아요 */}
             <div className="temp_detail4">
               <p>좋아요</p>
-              <p>{study.like_cnt}</p>
+              <p>{study.likeCnt}</p>
             </div>
             {/* </div> */}
           </div>

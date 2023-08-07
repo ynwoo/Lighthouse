@@ -8,7 +8,6 @@ import com.ssafy.lighthouse.domain.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -19,20 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageListener {
 
-    private final SimpMessagingTemplate template;
     private final ChatRepository chatRepository;
 
-//    @KafkaListener(
-//            topics = KafkaConstants.KAFKA_TOPIC,
-//            groupId = KafkaConstants.GROUP_PROPAGATE,
-//            containerFactory = "propKafkaListenerContainerFactory"
-//    )
-//    public void listenAndSend(MessageDto messageDto) {
-//        log.info("Propagation consumer working with : " + messageDto.toString());
-//        String roomId = messageDto.getRoomId();
-//        // propagation
-//        template.convertAndSend("/sub/"+roomId, messageDto);
-//    }
 
     @KafkaListener(
             topics = KafkaConstants.KAFKA_TOPIC,
@@ -47,7 +34,7 @@ public class MessageListener {
 
         ChatRecord record = chatRepository.findById(messageDto.getRoomId()).get();
         List<Chat> recordLog = record.getLog();
-        recordLog.add(messageDto.convertMessageDtoToChat());
+        recordLog.add(new Chat(messageDto));
         record.setLog(recordLog);
 
         chatRepository.save(record);
