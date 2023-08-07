@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import photo from '../../static/aris.png'
-import TempCurri from './TempCurri'
+import TempCurri from './StudyCurriculum'
 // import TempList from './TempList'
-import MemoInput from './memo/MemoInput'
-import MemoList from './memo/MemoList'
-import DatePicker from './DatePicker'
-import Calendar from './Calendar'
+import MemoInput from './utils/memo/MemoInput'
+import MemoList from './utils/memo/MemoList'
+import DatePicker from './utils/DatePicker'
+// import Calendar from './Calendar'
 
 export default function TempInfo({ study }) {
   const [memos, setMemos] = useState([])
@@ -105,14 +105,14 @@ export default function TempInfo({ study }) {
         </div>
       </div>
       <DatePicker />
-      <div className="info_text">
+      {/* <div className="info_text">
         <ul>
           <p>월간 계획</p>
         </ul>
       </div>
       <div style={{ marginTop: '30px' }}>
         <Calendar />
-      </div>
+      </div> */}
     </div>
   )
 }
