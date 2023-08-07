@@ -37,7 +37,6 @@ function SignIn() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
       }}
     >
       <Card style={{ width: 500 }}>

@@ -10,6 +10,8 @@ import {
   Select,
   Upload,
   Typography,
+  Row,
+  Col,
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 
@@ -60,7 +62,7 @@ function SignUp() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        // height: '100vh',
       }}
     >
       <Card style={{ width: 500 }}>
@@ -106,23 +108,34 @@ function SignUp() {
               },
             ]}
           >
-            <Input
-              onChange={e => {
-                setEmail(e.target.value)
-              }}
-              placeholder="example@lighthouse.com"
-            />
+            <Row>
+              <Col span={20}>
+                <Input
+                  onChange={e => {
+                    setEmail(e.target.value)
+                  }}
+                  placeholder="example@lighthouse.com"
+                />
+              </Col>
+              <Col span={4}>
+                <Button
+                  style={{
+                    color: 'rgb(113, 113, 113)',
+                    border: '1px solid rgba(187, 187, 187, 0.3)',
+                  }}
+                  type="button"
+                  onClick={() => {
+                    if (emailInput) {
+                      dispatch(userAction.checkEmail(emailInput))
+                    }
+                  }}
+                >
+                  중복확인
+                </Button>
+              </Col>
+            </Row>
           </Form.Item>
-          <Button
-            type="button"
-            onClick={() => {
-              if (emailInput) {
-                dispatch(userAction.checkEmail(emailInput))
-              }
-            }}
-          >
-            중복확인
-          </Button>
+
           <p>
             {emailIsValid
               ? '사용 가능한 이메일 입니다!'
@@ -189,22 +202,33 @@ function SignUp() {
               },
             ]}
           >
-            <Input
-              onChange={e => {
-                setNickname(e.target.value)
-              }}
-            />
+            <Row>
+              <Col span={20}>
+                <Input
+                  onChange={e => {
+                    setNickname(e.target.value)
+                  }}
+                />
+              </Col>
+
+              <Col span={4}>
+                <Button
+                  style={{
+                    color: 'rgb(113, 113, 113)',
+                    border: '1px solid rgba(187, 187, 187, 0.3)',
+                  }}
+                  type="button"
+                  onClick={() => {
+                    if (nicknameInput) {
+                      dispatch(userAction.checkNickname(nicknameInput))
+                    }
+                  }}
+                >
+                  중복확인
+                </Button>
+              </Col>
+            </Row>
           </Form.Item>
-          <Button
-            type="button"
-            onClick={() => {
-              if (nicknameInput) {
-                dispatch(userAction.checkNickname(nicknameInput))
-              }
-            }}
-          >
-            중복 확인
-          </Button>
           <p>
             {nicknameIsValid
               ? '사용 가능한 닉네임 입니다!'

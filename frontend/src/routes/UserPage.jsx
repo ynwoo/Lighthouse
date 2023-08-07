@@ -27,7 +27,7 @@ export default function UserPage() {
       style={{
         display: 'flex',
         justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
+        // backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
         marginTop: '-47px',
       }}
     >
