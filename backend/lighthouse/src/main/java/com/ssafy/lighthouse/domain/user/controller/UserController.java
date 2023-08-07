@@ -108,7 +108,7 @@ public class UserController {
 
 				log.debug("로그인 accessToken 정보 : {}", accessToken);
 				log.debug("로그인 refreshToken 정보 : {}", refreshToken);
-
+				resultMap.put("user-id", loginUser.getId());
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
