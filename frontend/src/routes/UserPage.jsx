@@ -10,7 +10,8 @@ export default function UserPage() {
 
   useEffect(() => {
     dispatch(userAction.myPage()).then(res => {
-      console.log(res.payload.userInfo.id)
+      const { id } = res.payload.userInfo
+      dispatch(userAction.userInfo(id))
     })
   }, [])
   const studyTags = JSON.parse(localStorage.getItem('tags'))

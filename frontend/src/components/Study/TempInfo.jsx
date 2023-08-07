@@ -53,7 +53,8 @@ export default function TempInfo({ study }) {
           <p>북마크 - {study.bookmarkCnt}</p>
           <div>Tabom - {study.likeCnt}</div>
           <p>규칙 - {study.rule}</p>
-          <p>배지 - {study.badge}</p>
+          <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
+          <p>asdf</p>
           <p>tags - {study.studyTags}</p>
           <p>
             {' '}
