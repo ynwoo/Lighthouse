@@ -167,6 +167,22 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+
+  // 프로필 불러오기
+  profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
+    try {
+      console.log(
+        'profile - payload : ',
+        payload,
+        `${API_URL}/users/${payload ?? 1}`,
+      )
+      const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const userSlice = createSlice({
