@@ -47,7 +47,6 @@ public class ParticipationHistoryServiceImpl implements ParticipationHistoryServ
 
         // 스터디 가입 (status = STATUS.ON_PROGRESS)
         participationHistory.changeStatus(STATUS.PROGRESS);
-        participationHistory.initJoinedAt();
 
         // 스터디 인원 증가
         Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
@@ -65,7 +64,6 @@ public class ParticipationHistoryServiceImpl implements ParticipationHistoryServ
 
         // 스터디 탈퇴 (status = STATUS.LEAVED)
         participationHistory.changeStatus(STATUS.LEAVED);
-        participationHistory.initLeavedAt();
 
         // 스터디 인원 감소
         Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));

@@ -1,16 +1,14 @@
 package com.ssafy.lighthouse.domain.user.dto;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
-import com.ssafy.lighthouse.domain.common.entity.Tag;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
-import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -23,10 +21,11 @@ public class ProfileResponse {
     private String profileImgUrl;
     private String description;
     private List<TagDto> tags;
-    private List<SimpleStudyDto> studies;    // 진행 중 스터디
-    private List<SimpleStudyDto> participatedStudies;   // 참여했던 스터디
+    private List<SimpleStudyDto> participatedStudies;    // 신청한 스터디 (본인 프로필에서만 조회 가능)
+    private List<SimpleStudyDto> progressStudies;    // 진행 중 스터디
+    private List<SimpleStudyDto> terminatedStudies;   // 완료 된 스터디
     private List<SimpleStudyDto> bookmarkStudies;
-    //    private List<BadgeDto> badges;
+    private List<BadgeResponse> badges;
     private Double score;   // 유저 평점 평균
     private Long following;
     private Long follower;
