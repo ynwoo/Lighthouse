@@ -28,8 +28,9 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
 		log.info(request.getRequestURI());
 		String requestURI = request.getRequestURI();
 		String method = request.getMethod();
-
-		if (method.equals("OPTIONS")) {
+        
+        // options 요청 항상 허용
+		if (method.equals(HttpMethod.OPTIONS.name())) {
 			return true;
 		}
 
