@@ -6,6 +6,7 @@ import TempList from './TempList'
 import MemoInput from './memo/MemoInput'
 import MemoList from './memo/MemoList'
 import TempCurri from './TempCurri'
+import Slider from '../Slider'
 
 const { createRoot } = ReactDOM
 
@@ -49,6 +50,7 @@ export default function App() {
     const listData = getListData(value)
     return (
       <div className="events">
+        <Slider />
         {listData.map(item => (
           <li key={item.id}>
             {' '}

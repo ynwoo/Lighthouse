@@ -1,6 +1,6 @@
 import React from 'react'
 import logo from '../../static/logo.png'
-
+// import logo from './'
 export default function WaveComponent() {
   return (
     <div>
@@ -9,8 +9,8 @@ export default function WaveComponent() {
         alt="엑박"
         style={{
           // width: '450x',
-          height: '180px',
-          marginBottom: '-50px',
+          height: '170px',
+          marginBottom: '10px',
           display: 'flex',
         }}
       />
@@ -22,10 +22,6 @@ export default function WaveComponent() {
         viewBox="0 25 150 28"
         preserveAspectRatio="none"
         shapeRendering="auto"
-        style={{
-          //   원래 없었던 녀석
-          marginBottom: '0px',
-        }}
       >
         <defs>
           <path
