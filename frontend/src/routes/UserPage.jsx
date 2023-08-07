@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Select, Modal, Button, Tooltip } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
   const dispatch = useDispatch()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const userInfo = useSelector(state => state.user.myInfo)
+
+  useEffect(() => {
+    dispatch(userAction.myPage()).then(res => {
+      console.log(res.payload.userInfo.id)
+    })
+  }, [])
+  const studyTags = JSON.parse(localStorage.getItem('tags'))
+  console.log(studyTags)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -19,9 +27,7 @@ export default function UserPage() {
   const handleCancel = () => {
     setIsModalVisible(false)
   }
-  useEffect(() => {
-    dispatch(userAction.myPage())
-  })
+
   return (
     <div
       style={{
@@ -57,7 +63,7 @@ export default function UserPage() {
             <div
               style={{
                 position: 'absolute',
-                display: 'flex',
+
                 // alignItems: 'center', // Center the text vertically
                 border: '1px solid #177AEE',
                 backgroundColor: '#177AEE',
@@ -69,6 +75,7 @@ export default function UserPage() {
               }}
             >
               <div>#해시태그</div>
+              <div>asdf</div>
             </div>
           </div>
           <div className="item">
@@ -120,11 +127,11 @@ export default function UserPage() {
         </div>
         <div className="container1">
           <div className="u_item">닉네임</div>
-          <div className="u_item1">닉네임</div>
+          <div className="u_item1">{userInfo.nickname}</div>
           <div className="u_item">별점</div>
           <div className="u_item1">별점</div>
           <div className="u_item">자기소개</div>
-          <div className="u_item1">자기소개</div>
+          <div className="u_item1">{userInfo.description}</div>
           <div className="u_item">뱃지 목록</div>
           <div className="u_item1">뱃지 목록</div>
           <div className="u_item">진행 중</div>

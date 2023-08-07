@@ -12,7 +12,6 @@ import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
-import TempMore from './components/Study/TempMore'
 
 function App() {
   const [showChat, setShowChat] = useState(false)
@@ -40,7 +39,6 @@ function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user_edit/:id" element={<UserEditPage />} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/tempmore" element={<TempMore />} />
         </Routes>
       </Router>
       <button
