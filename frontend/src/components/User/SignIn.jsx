@@ -44,7 +44,7 @@ function SignIn() {
         borderRadius: '20px',
         border: '1px solid',
         backgroundColor: 'white',
-        width: '60%',
+        // width: '60%',
       }}
     >
       <Layout>

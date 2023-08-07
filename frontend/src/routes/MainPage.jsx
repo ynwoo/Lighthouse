@@ -3,6 +3,8 @@ import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 import SearchComponent from '../components/Utils/SearchComponent'
+// import Slider from '../components/Slider'
+import dummy from '../db/data.json'
 
 const { Footer, Content } = Layout
 
@@ -22,30 +24,26 @@ const footerStyle = {
   color: '#fff',
   backgroundColor: '#7dbcea',
 }
-
 // 내부 탭
 export default function MainPage() {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
-        marginTop: '-10px',
-      }}
-    >
-      <Layout style={{ backgroundColor: 'transparent' }}>
-        <Layout hasSider style={{ backgroundColor: 'transparent' }}>
-          {/* 사이드바 */}
-          <div style={{ position: 'fixed' }}>
-            <SideComponent />
-          </div>
+  const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
 
-          {/* 컨텐츠 */}
+  return (
+    <div>
+      <div className="info_container">
+        {/* 사이드바 */}
+        <div style={{ height: '100px' }}>
+          <div>
+            <SideComponent study={study} />
+          </div>
+        </div>
+
+        {/* 컨텐츠 */}
+        <div className="main_item">
           <Content style={contentStyle}>
             <div
               style={{
-                margin: '10px',
+                // margin: '10px',
                 backgroundColor: 'transparent',
                 width: '100%',
               }}
@@ -55,13 +53,13 @@ export default function MainPage() {
             </div>
             <MainComponent />
           </Content>
-        </Layout>
-
-        {/* 푸터 */}
-        <Footer style={footerStyle}>
-          &copy; Lighthouse {new Date().getFullYear()}
-        </Footer>
-      </Layout>
+        </div>
+      </div>
+      {/* </div> */}
+      {/* 푸터 */}
+      <Footer style={footerStyle}>
+        &copy; Lighthouse {new Date().getFullYear()}
+      </Footer>
     </div>
   )
 }
