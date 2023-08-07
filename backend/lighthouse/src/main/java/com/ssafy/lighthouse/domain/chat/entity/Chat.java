@@ -27,4 +27,13 @@ public class Chat {
     private String senderName;
     private String message;
     private Long time;
+
+    public Chat(MessageDto messageDto) {
+        this.type = messageDto.getType();
+        this.roomId = messageDto.getRoomId();
+        this.senderId = messageDto.getSenderId();
+        this.senderName = messageDto.getSenderName();
+        this.message = messageDto.getMessage();
+        this.time = messageDto.getTime();
+    }
 }
