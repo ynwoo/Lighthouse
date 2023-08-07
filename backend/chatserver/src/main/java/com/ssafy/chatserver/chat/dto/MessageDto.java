@@ -3,9 +3,11 @@ package com.ssafy.chatserver.chat.dto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @RequiredArgsConstructor
-public class MessageDto {
+public class MessageDto implements Serializable {
 
     public enum MessageType {
         ENTER, TALK, LEAVE
@@ -17,4 +19,5 @@ public class MessageDto {
     private String senderName;
     private String message;
     private Long time;
+
 }
