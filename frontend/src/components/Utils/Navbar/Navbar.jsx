@@ -1,12 +1,19 @@
 import React from 'react'
 // import { Tabs } from 'antd'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
 export default function App() {
   const dispatch = useDispatch()
+
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+
+  const handleLogout = () => {
+    dispatch(userAction.logout())
+  }
+
   return (
     <div
       style={{
@@ -39,7 +46,7 @@ export default function App() {
               MYPAGE
             </Link>
           </div>
-          <button onClick={dispatch(userAction.logout())} type="button">
+          <button disabled={!isLoggedIn} onClick={handleLogout} type="button">
             응애
           </button>
         </div>
