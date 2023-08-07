@@ -8,6 +8,7 @@ import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
 import com.ssafy.lighthouse.domain.user.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -43,6 +44,8 @@ public interface UserService {
 	void createFollow(Long followeeId, Long followerId);
 
 	void removeFollow(Long followeeId, Long followerId);
+
+	void updateProfileImage(MultipartFile img, Long userId);
 
 	boolean isEmailUnique(String emailToValidate);
 
