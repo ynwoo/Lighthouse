@@ -109,7 +109,7 @@ function SignUp() {
             ]}
           >
             <Row>
-              <Col span={20}>
+              <Col span={19}>
                 <Input
                   onChange={e => {
                     setEmail(e.target.value)
@@ -122,6 +122,7 @@ function SignUp() {
                   style={{
                     color: 'rgb(113, 113, 113)',
                     border: '1px solid rgba(187, 187, 187, 0.3)',
+                    marginLeft: '11px',
                   }}
                   type="button"
                   onClick={() => {
@@ -203,7 +204,7 @@ function SignUp() {
             ]}
           >
             <Row>
-              <Col span={20}>
+              <Col span={19}>
                 <Input
                   onChange={e => {
                     setNickname(e.target.value)
@@ -216,6 +217,7 @@ function SignUp() {
                   style={{
                     color: 'rgb(113, 113, 113)',
                     border: '1px solid rgba(187, 187, 187, 0.3)',
+                    marginLeft: '11px',
                   }}
                   type="button"
                   onClick={() => {

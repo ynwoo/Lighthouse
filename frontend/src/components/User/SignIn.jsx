@@ -47,7 +47,7 @@ function SignIn() {
             marginBottom: '5vh',
           }}
         >
-          <Title level={2}>LIGHTHOUSE </Title>
+          <Title level={2}>로그인 </Title>
         </div>
         <Form
           form={form}
@@ -60,13 +60,13 @@ function SignIn() {
         >
           <Form.Item
             name="userEmail"
-            rules={[{ required: true, message: 'Please input your Username!' }]}
+            rules={[{ required: true, message: '이메일을 입력해주세요.' }]}
           >
             <Input placeholder="이메일" />
           </Form.Item>
           <Form.Item
             name="userPwd"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: '비밀번호를 입력해주세요.' }]}
           >
             <Input.Password type="password" placeholder="비밀번호" />
             {/* <a
