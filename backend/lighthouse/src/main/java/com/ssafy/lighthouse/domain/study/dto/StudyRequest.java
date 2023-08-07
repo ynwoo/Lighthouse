@@ -1,19 +1,19 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
-import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class StudyRequest {
     private Long id;

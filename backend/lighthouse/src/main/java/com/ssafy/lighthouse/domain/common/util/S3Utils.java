@@ -36,7 +36,6 @@ public class S3Utils {
 		String secretKey = System.getenv("AWS_SECRETKEY");
 		String region = "ap-northeast-2";
 		AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-		log.debug("----------------{}", accessKey);
 		amazonS3Client = (AmazonS3Client) AmazonS3ClientBuilder.standard()
 			.withCredentials(new AWSStaticCredentialsProvider(credentials))
 			.withRegion(region)

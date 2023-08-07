@@ -100,6 +100,8 @@ public class SessionDto {
 	}
 
 	@Getter
+	@Setter
+	@ToString
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class SessionCheckReq {
 		private Long id;
@@ -117,8 +119,8 @@ public class SessionDto {
 
 		public SessionCheck toEntity() {
 			return SessionCheck.builder()
-					.id(id)
-					.isValid(isValid)
+				.id(id)
+				.isValid(isValid)
 				.userId(userId)
 				.sessionId(sessionId)
 				.content(content)
