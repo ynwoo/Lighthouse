@@ -14,7 +14,7 @@ body {
   position: relative;
   width: 100%;
   height: 17vh;
-  margin-bottom: -7px; /*Fix for safari gap*/
+  margin-bottom: 0px;
   min-height: 100px;
   max-height: 250px;
   top: -50px;
@@ -602,6 +602,19 @@ p {
   /* left: 20px; */
 }
 
+.big_box2 {
+  width: 1000px;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: 20px;
+}
+
 .circular-image2 {
   position: absolute;
   /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
@@ -623,7 +636,8 @@ p {
 
 .sidebar {
   left: 5%;
-  bottom: 13%;
+  bottom: 12%;
+  height: 280px;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
@@ -631,9 +645,19 @@ p {
   border-radius: 10px;
   background-color: white;
   padding: 20px;
-  padding-bottom: 40px;
-  /* margin-left: 100px;
-  margin-top: 20px; */
+}
+
+.sidebar1 {
+  left: 5%;
+  bottom: %;
+  height: 350px;
+  position: fixed;
+  display: grid;
+  grid-template-rows: 170px 30px 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
 }
 
 .hovered-card {
@@ -779,5 +803,47 @@ h1 span:nth-child(9) {
   100% {
     opacity: 1;
     transform: none;
+  }
+}
+
+.review_box {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  font-size: 20px;
+}
+
+.review_mini {
+  border: 2px solid #6181f1;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.review_mini2 {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+}
+
+/* LoadingComponent.css */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #333;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

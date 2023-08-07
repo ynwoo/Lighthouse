@@ -2,11 +2,12 @@ import React, { useEffect } from 'react'
 import { Tabs } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
-import TempInfo from '../components/Study/TempInfo'
-import TempMember from '../components/Study/TempMember'
-import TempQnA from '../components/Study/TempQnA'
-import TempRecord from '../components/Study/TempRecord'
-import TempReview from '../components/Study/TempReview'
+import StudyInfo from '../components/Study/StudyInfo'
+import StudyMember from '../components/Study/StudyMember'
+import StudyQnA from '../components/Study/StudyQnA'
+import StudyRecord from '../components/Study/StudyRecord'
+import StudyReview from '../components/Study/StudyReview'
+import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 import { studyAction } from '../store/study'
 
 export default function TempDetailPage() {
@@ -20,17 +21,18 @@ export default function TempDetailPage() {
 
   console.log(study)
   const tabMenu = {
-    TempInfo: <TempInfo study={study} />,
-    TempMember: <TempMember study={study.memberProfiles} />,
-    TempQnA: <TempQnA study={study.qnas} />,
-    TempRecord: <TempRecord study={study} />,
-    TempReview: <TempReview study={study} />,
+    TempInfo: <StudyInfo study={study} />,
+    건들면X: <StudyMember study={study} />,
+    TempQnA: <StudyQnA study={study} />,
+    회원정보: <StudyRecord study={study} />,
+    TempReview: <StudyReview study={study} />,
+    가입했을때정보: <JoinTempInfo study={study} />,
   }
 
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
-        <SideComponent />
+        <SideComponent study={study} />
       </div>
 
       {/* Tabs */}
