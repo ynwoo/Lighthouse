@@ -30,9 +30,9 @@ function MainComponent() {
           }}
         >
           <div className="big_box_card">
-            {studies.map(study => (
-              <TempCard study={study} key={study.id} />
-            ))}
+            {studies
+              ? studies.map(study => <TempCard study={study} key={study.id} />)
+              : 'loading...'}
           </div>
         </div>
       </div>
