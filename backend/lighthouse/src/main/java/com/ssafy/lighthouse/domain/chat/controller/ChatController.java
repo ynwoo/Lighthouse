@@ -35,7 +35,7 @@ public class ChatController {
         log.info("Produce message : " + messageDto.toString());
         messageDto.setTime(System.currentTimeMillis());
         try {
-            ListenableFuture<SendResult<String, MessageDto>> future = kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, messageDto);
+            ListenableFuture<SendResult<String, MessageDto>> future = kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, messageDto.getRoomId(), messageDto);
             future.addCallback(new ListenableFutureCallback<SendResult<String, MessageDto>>() {
                 @Override
                 public void onFailure(Throwable ex) {

@@ -7,9 +7,8 @@ import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
 // import Calendar from './Calendar'
 
-export default function TempMember({ study }) {
+export default function TempInfo({ study }) {
   const [memos, setMemos] = useState([])
-
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
       ...prevMemos,
@@ -30,12 +29,39 @@ export default function TempMember({ study }) {
         <img src={photo} alt="아리스" style={{ width: '100%' }} />
         <div className="study_box">
           <h1>
-            {study.title}( {study.min_member} / {study.max_member})
+            {study.title}( {study.currentMember} / {study.maxMember} )
           </h1>
-          <h3>스터디장 : {study.leader_id}</h3>
+          <h3>
+            스터디장 :{' '}
+            {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+          </h3>
           <h3>{study.description}</h3>
           {/* <p>모집기간 : {study.recruit_finished_at}</p> */}
           <h3>해시태그</h3>
+          <div style={{ display: 'flex' }}>
+            {study.studyTags ? (
+              study.studyTags.map(tag => <p key={tag.id}>#{tag.tag.keyword}</p>)
+            ) : (
+              <p>loading...</p>
+            )}
+          </div>
+          <hr />
+          <p>조회수 - {study.hit}</p>
+          <div>모집 마감 - {study.recruitFinishedAt} 까지</div>
+          <div>시작 - {study.startedAt}</div>
+          <div>끝 - {study.endedAt}</div>
+          <p>북마크 - {study.bookmarkCnt}</p>
+          <div>Tabom - {study.likeCnt}</div>
+          <p>규칙 - {study.rule}</p>
+          <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
+          <p>asdf</p>
+          <p>tags - {study.studyTags}</p>
+          <p>
+            {' '}
+            {study.isOnline
+              ? '온라인'
+              : `장소 - ${study.sido}, ${study.gugun}`}{' '}
+          </p>
         </div>
       </div>
       <div className="info_text">

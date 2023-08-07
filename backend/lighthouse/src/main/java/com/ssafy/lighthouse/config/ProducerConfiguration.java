@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.config;
 
 import com.ssafy.lighthouse.domain.chat.dto.MessageDto;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -16,6 +17,10 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class ProducerConfiguration {
+
+    @Value("${KAFKA_BROKER}")
+    private String kafkaBroker;
+
     @Bean
     public ProducerFactory<String, MessageDto> producerFactory() {
         return new DefaultKafkaProducerFactory<>(ProducerConfigurations());
@@ -24,7 +29,7 @@ public class ProducerConfiguration {
     @Bean
     public Map<String, Object> ProducerConfigurations() {
         Map<String, Object> configurations = new HashMap<>();
-        configurations.put(org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaConstants.KAFKA_BROKER);
+        configurations.put(org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBroker);
         configurations.put(org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configurations.put(org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return configurations;

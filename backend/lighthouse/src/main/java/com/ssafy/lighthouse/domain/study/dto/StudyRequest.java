@@ -1,19 +1,19 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
-import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class StudyRequest {
     private Long id;
@@ -34,8 +34,8 @@ public class StudyRequest {
     private int status;
     private Long originalId;
     private BadgeRequest badge;
-    private SidoDto sido;
-    private GugunDto gugun;
+    private Long sidoId;
+    private Long gugunId;
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeReq> studyNotices;
@@ -60,6 +60,8 @@ public class StudyRequest {
                 .bookmarkCnt(this.bookmarkCnt)
                 .status(this.status)
                 .originalId(this.originalId)
+                .sidoId(this.sidoId)
+                .gugunId(this.gugunId)
                 .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())

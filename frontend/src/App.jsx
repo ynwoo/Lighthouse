@@ -7,8 +7,6 @@ import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import TempDetailPage from './routes/TempDetailPage'
 import UserPage from './routes/UserPage'
-import SignInPage from './routes/SignInPage'
-import SignUpPage from './routes/SignUpPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
@@ -51,8 +49,8 @@ function App() {
               <Route exact path="/" element={<MainPage />} />
               <Route path="/temp/:id" element={<TempDetailPage />} />
               <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<SignInPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
+              {/* <Route path="/login" element={<SignInPage />} /> */}
+              {/* <Route path="/signup" element={<SignUpPage />} /> */}
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/tempmore" element={<TempMore />} />

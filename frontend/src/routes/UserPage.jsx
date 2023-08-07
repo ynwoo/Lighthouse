@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Select, Modal, Button, Tooltip } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
   const dispatch = useDispatch()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  // const userInfo = useSelector(state => state.user.myInfo)
+
+  useEffect(() => {
+    dispatch(userAction.myPage()).then(res => {
+      const { id } = res.payload.userInfo
+      dispatch(userAction.userInfo(id))
+    })
+  }, [])
+  const studyTags = JSON.parse(localStorage.getItem('tags'))
+  console.log(studyTags)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -20,14 +29,21 @@ export default function UserPage() {
     setIsModalVisible(false)
   }
   useEffect(() => {
-    dispatch(userAction.myPage())
-  })
+    // dispatch(userAction.myPage())
+    console.log(window.location.pathname)
+    dispatch(userAction.profile(35))
+  }, [])
+
+  const user = useSelector(state => state.user)
+  console.log('user', user)
+  const profile = useSelector(state => state.user.profile)
+  console.log('profile', profile)
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
+        // backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
         marginTop: '-47px',
       }}
     >
@@ -57,7 +73,7 @@ export default function UserPage() {
             <div
               style={{
                 position: 'absolute',
-                display: 'flex',
+
                 // alignItems: 'center', // Center the text vertically
                 border: '1px solid #177AEE',
                 backgroundColor: '#177AEE',
@@ -68,7 +84,11 @@ export default function UserPage() {
                 marginTop: '20px',
               }}
             >
-              <div>#해시태그</div>
+              <div>
+                {profile.tags.map(tag => (
+                  <li>#{tag.keyword}</li>
+                ))}
+              </div>
             </div>
           </div>
           <div className="item">
@@ -110,27 +130,34 @@ export default function UserPage() {
           <div className="item">
             <div style={{ position: 'absolute', top: '10px', right: '30px' }}>
               <Tooltip title="팔로워 목록 보기" placement="bottom">
-                <div>팔로워 000</div>
+                <div>팔로워 {profile.follower}</div>
               </Tooltip>
               <Tooltip title="팔로잉 목록 보기" placement="bottom">
-                <div>팔로잉 000</div>
+                <div>팔로잉 {profile.following}</div>
               </Tooltip>
             </div>
           </div>
         </div>
         <div className="container1">
           <div className="u_item">닉네임</div>
-          <div className="u_item1">닉네임</div>
+          <div className="u_item1">{profile.nickname}</div>
           <div className="u_item">별점</div>
-          <div className="u_item1">별점</div>
+          <div className="u_item1">{profile.score ?? 0}</div>
           <div className="u_item">자기소개</div>
-          <div className="u_item1">자기소개</div>
+          <div className="u_item1">{profile.description ?? ''}</div>
           <div className="u_item">뱃지 목록</div>
-          <div className="u_item1">뱃지 목록</div>
+          <div className="u_item1">
+            {profile.badges.map(badge => (
+              <img
+                src={process.env.S3_DOMAIN_URL + badge.imgUrl}
+                alt={badge.description}
+              />
+            ))}
+          </div>
           <div className="u_item">진행 중</div>
-          <div className="u_item1">진행 중</div>
+          <div className="u_item1">{profile.nickname}</div>
           <div className="u_item">통계</div>
-          <div className="u_item1">통계</div>
+          <div className="u_item1">{profile.nickname}</div>
           <div className="u_item">참여했던 스터디</div>
 
           <Form.Item>

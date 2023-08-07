@@ -40,8 +40,8 @@ public class StudyResponse {
     private BadgeResponse badge;
     private SimpleProfileResponse leaderProfile;
     private List<SimpleProfileResponse> memberProfiles;
-    private SidoDto sido;
-    private GugunDto gugun;
+    private Long sidoId;
+    private Long gugunId;
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
@@ -75,9 +75,9 @@ public class StudyResponse {
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
         this.originalId = study.getOriginalId();
+        this.sidoId = study.getSidoId();
+        this.gugunId = study.getGugunId();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
-        this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
-        this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
         this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
         this.studyNotices = study.getStudyNotices() != null ? study.getStudyNotices().stream().filter(BaseEntity::isValid).map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList()) : null;
