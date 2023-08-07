@@ -30,14 +30,6 @@ export default function MainPage() {
 
   return (
     <div>
-      {/* <div
-        style={{
-          backgroundImage: 'linear-gradient(to bottom, #74a3ff, #ffffff 25%)',
-          marginBottom: '-460px',
-        }}
-      >
-        <Slider />
-      </div> */}
       <div className="info_container">
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
@@ -45,7 +37,6 @@ export default function MainPage() {
             <SideComponent study={study} />
           </div>
         </div>
-        {/* <div className="info_inner"> */}
 
         {/* 컨텐츠 */}
         <div className="main_item">

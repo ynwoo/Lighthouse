@@ -12,9 +12,9 @@ export default function TempDetailPage() {
   const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
   const tabMenu = {
     TempInfo: <TempInfo study={study} />,
-    TempMember: <TempMember study={study} />,
+    건들면X: <TempMember study={study} />,
     TempQnA: <TempQnA study={study} />,
-    TempRecord: <TempRecord study={study} />,
+    회원정보: <TempRecord study={study} />,
     TempReview: <TempReview study={study} />,
   }
 

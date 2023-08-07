@@ -514,7 +514,7 @@ p {
   display: grid;
   grid-template-columns: 10% 90%;
   background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
-  margin-top: -80px;
+  margin-top: -50px;
   width: 100%;
 }
 
@@ -622,8 +622,8 @@ p {
 }
 
 .sidebar {
-  left: 70px;
-  bottom: 200px;
+  left: 5%;
+  bottom: 13%;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
