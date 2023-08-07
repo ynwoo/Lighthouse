@@ -45,7 +45,6 @@ public class UserController {
 
 	@Autowired
 	public UserController(UserService userService, JwtService jwtService) {
-
 		this.userService = userService;
 		this.jwtService = jwtService;
 	}
