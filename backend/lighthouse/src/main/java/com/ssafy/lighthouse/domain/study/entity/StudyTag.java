@@ -24,4 +24,9 @@ public class StudyTag extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tagId")
     private Tag tag;
+
+    public void update(Long studyId, Tag tag) {
+        this.studyId = studyId;
+        this.tag = tag;
+    }
 }

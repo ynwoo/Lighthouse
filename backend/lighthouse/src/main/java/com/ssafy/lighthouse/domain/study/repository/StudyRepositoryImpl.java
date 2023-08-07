@@ -5,13 +5,14 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.lighthouse.domain.common.entity.QBadge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
-import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.PAGE;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +22,14 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ssafy.lighthouse.domain.common.entity.QBadge.badge;
 import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
 
 @Repository
+@Slf4j
 @RequiredArgsConstructor
 public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
@@ -42,14 +45,17 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         List<Study> studyList = jpaQueryFactory
                 .select(study)
                 .from(study)
-                .leftJoin(study.studyTags, studyTag)
-                .leftJoin(study.sido, sido)
-                .leftJoin(study.gugun, gugun)
+                .leftJoin(study.studyTags, studyTag).on(studyTag.isValid.eq(1))
+                .leftJoin(study.sido, sido).on(sido.isValid.eq(1))
+                .leftJoin(study.gugun, gugun).on(gugun.isValid.eq(1))
+                .leftJoin(study.badge, badge).on(badge.isValid.eq(1))
                 .where(
                         isValid(),
                         checkStatus(options),
                         isOnline(options),
+                        checkByTagIds(options),
                         searchByKeyword(options))
+                .groupBy(study)
                 .orderBy(orderSpecifier)
                 .offset(options.getOffset())
                 .limit(options.getLimit())
@@ -64,15 +70,26 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         // total 구하기
         Long total = jpaQueryFactory.select(study.count())
                 .from(study)
-                .where(isValid())
+                .where(
+                        isValid(),
+                        checkStatus(options),
+                        isOnline(options),
+                        checkByTagIds(options),
+                        searchByKeyword(options))
                 .fetchOne();
         if(total == null) total = 0L;
+        log.debug("total : {}", total);
 
         // Page<SimpleStudyDto>로 변환
         Sort sort = Sort.by(orderSpecifier.isAscending() ? Sort.Direction.ASC : Sort.Direction.DESC,
                 options.getOrderKey() == null ? "createdAt" : options.getOrderKey());
         PageRequest pageable = PageRequest.of(options.getPage(), PAGE.LIMIT, sort);
         return new PageImpl<>(contents, pageable, total);
+    }
+    
+    // tag 일치 여부 확인
+    private BooleanExpression checkByTagIds(StudySearchOption options) {
+        return options.getTagIds() != null ? studyTag.tag.id.in(options.getTagIds()) : null;
     }
 
     // 유효한 스터디 인지 확인

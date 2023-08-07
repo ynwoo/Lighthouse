@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Form, Input, InputNumber, Select, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { userAction } from '../store/user'
 
 const { TextArea } = Input
@@ -28,11 +28,16 @@ function SignUpPage() {
   // sido와 gugun을 store에서 불러 와주는 선언문
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
+  const emailIsValid = useSelector(state => state.user.emailIsValid)
+  const nicknameIsValid = useSelector(state => state.user.nicknameIsValid)
 
   // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
   const sidoChange = e => {
     dispatch(userAction.gugun(e))
   }
+
+  const [emailInput, setEmail] = useState('')
+  const [nicknameInput, setNickname] = useState('')
 
   return (
     <div
@@ -55,6 +60,7 @@ function SignUpPage() {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
           delete value.confirm
+          value.userTagList = []
           // 비어있는 요소를 undefined => null로 바꾸어주는 작업
           Object.keys(value).forEach(key => {
             if (value[key] === undefined) {
@@ -91,8 +97,29 @@ function SignUpPage() {
           ]}
           style={{ width: '800px', backgroundColor: 'transparent' }}
         >
-          <Input />
+          <Input
+            onChange={e => {
+              setEmail(e.target.value)
+            }}
+          />
         </Form.Item>
+        <Button
+          type="button"
+          onClick={() => {
+            if (emailInput) {
+              dispatch(userAction.checkEmail(emailInput))
+            }
+          }}
+        >
+          중복확인
+        </Button>
+        <p>
+          {emailIsValid
+            ? '사용 가능한 이메일 입니다!'
+            : emailIsValid === null
+            ? ''
+            : '중복된 이메일입니다!'}
+        </p>
 
         <Form.Item
           name="password"
@@ -152,8 +179,29 @@ function SignUpPage() {
           ]}
           style={{ width: '800px', backgroundColor: 'transparent' }}
         >
-          <Input />
+          <Input
+            onChange={e => {
+              setNickname(e.target.value)
+            }}
+          />
         </Form.Item>
+        <Button
+          type="button"
+          onClick={() => {
+            if (nicknameInput) {
+              dispatch(userAction.checkNickname(nicknameInput))
+            }
+          }}
+        >
+          중복 확인
+        </Button>
+        <p>
+          {nicknameIsValid
+            ? '사용 가능한 닉네임 입니다!'
+            : nicknameIsValid === null
+            ? ''
+            : '중복된 닉네임입니다!'}
+        </p>
 
         <Form.Item label="나이" name="age">
           <InputNumber />
@@ -198,7 +246,7 @@ function SignUpPage() {
         </Form.Item>
 
         <Form.Item label="주소(시/도)" name="sidoId">
-          <Select onChange={sidoChange} defaultValue={null}>
+          <Select onChange={sidoChange} defaultValue="도시를 선택해주세요">
             {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
             {Object.keys(sido).map(key => {
               return (
@@ -211,7 +259,7 @@ function SignUpPage() {
         </Form.Item>
 
         <Form.Item label="주소(구/군)" name="gugunId">
-          <Select defaultValue={null}>
+          <Select defaultValue="세부 위치를 선택해주세요">
             {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
             {Object.keys(gugun).map(key => {
               return (

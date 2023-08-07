@@ -12,8 +12,6 @@ public interface JwtService {
 
 	Map<String, Object> get(String key);
 
-	String getUserId();
-
 	boolean checkToken(String jwt);
 
 	Long getIdByToken(String jwt);

@@ -57,6 +57,9 @@ function TempCard({ study }) {
               )
             }
           />
+          {study.studyTags.map(tag => {
+            return <span key={tag.id}>#{tag.keyword}</span>
+          })}
         </Card>
       </div>
     </Link>
