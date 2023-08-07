@@ -19,7 +19,7 @@ export default function App() {
       <div style={{ display: 'flex', flexDirection: 'end-flex', zIndex: '1' }}>
         <div className="container nav_main">
           <div className="item nav_item">
-            <Link to="/myprofile/main">템플릿 더보기</Link>
+            <Link to="/tempmore">템플릿 더보기</Link>
           </div>
 
           <div className="item nav_item">
@@ -29,6 +29,11 @@ export default function App() {
           <div className="item dropdown_king nav_item">
             <Link to="/login" className="dropdown_toggle">
               LOGIN
+            </Link>
+          </div>
+          <div className="item dropdown_king nav_item">
+            <Link to="/user/me" className="dropdown_toggle">
+              MYPAGE
             </Link>
           </div>
         </div>

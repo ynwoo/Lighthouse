@@ -1,12 +1,14 @@
 package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.common.entity.Gugun;
 import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
@@ -32,6 +34,9 @@ public class Study extends BaseEntity {
     private int bookmarkCnt;
     private int status;
     private Long leaderId;
+    private Long originalId;
+    private Long sidoId;
+    private Long gugunId;
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
@@ -47,17 +52,11 @@ public class Study extends BaseEntity {
     public void addMember() {this.currentMember++;}
     public void removeMember() {this.currentMember--;}
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "originalId")
-    private Study original;
+    public void changeBadge(Badge badge) {this.badge = badge;}
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sidoId")
-    private Sido sido;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gugunId")
-    private Gugun gugun;
+    @JoinColumn(name = "badgeId")
+    private Badge badge;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "studyId")
@@ -76,10 +75,29 @@ public class Study extends BaseEntity {
     private Set<Session> sessions;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
+    @JoinColumn(name = "studyId", updatable = false)
     private Set<Qna> qnas;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "studyId")
+    @JoinColumn(name = "studyId", updatable = false)
     private Set<ParticipationHistory> participations;
+
+    public void update(Study study) {
+        this.title = study.getTitle();
+        this.description = study.getDescription();
+        this.hit = study.getHit();
+        this.rule = study.getRule();
+        this.startedAt = study.getStartedAt();
+        this.endedAt = study.getEndedAt();
+        this.recruitFinishedAt = study.getRecruitFinishedAt();
+        this.maxMember = study.getMaxMember();
+        this.minMember = study.getMinMember();
+        this.currentMember = study.getCurrentMember();
+        this.isOnline = study.getIsOnline();
+        this.likeCnt = study.getLikeCnt();
+        this.bookmarkCnt = study.getBookmarkCnt();
+        this.status = study.getStatus();
+        this.sidoId = study.getSidoId();
+        this.gugunId = study.getGugunId();
+    }
 }

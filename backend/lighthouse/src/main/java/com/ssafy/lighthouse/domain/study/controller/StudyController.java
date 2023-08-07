@@ -1,16 +1,15 @@
 package com.ssafy.lighthouse.domain.study.controller;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import com.ssafy.lighthouse.domain.study.service.StudyService;
-import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 public class StudyController {
 
     private final StudyService studyService;
-    private final JwtService jwtService;
 
     // 검색 옵션에 대한 전체 조회
     @GetMapping
@@ -51,9 +49,11 @@ public class StudyController {
 
     // 템플릿 복제
     @PostMapping("/{study-id}")
-    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId) {
+    public ResponseEntity<?> createStudyByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                  HttpServletRequest request) {
         log.debug("studyId : {}", studyId);
-        StudyResponse result = studyService.createStudyByStudyId(studyId);
+        Long userId = (Long) request.getAttribute("userId");
+        StudyResponse result = studyService.createStudyByStudyId(studyId, userId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -72,8 +72,8 @@ public class StudyController {
         Long userId = (Long) request.getAttribute("userId");
         log.debug("studyId : {}", studyRequest.getId());
         log.debug("userId : {}", userId);
-        studyService.updateStudyByStudyId(studyRequest, userId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest, userId);
+        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
 
     // 스터디 삭제
@@ -158,22 +158,13 @@ public class StudyController {
         studyService.removeStudyEval(studyId, userId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
-//
-//    private String getToken(HttpServletRequest request) {
-//        // header에서 토큰 가져오기
-//        String token = request.getHeader("access-token");
-//        if (jwtService.checkToken(token)) {
-//            log.info("사용 가능한 토큰!!!");
-//
-//            // 로그인 사용자의 id 리턴
-//            return token;
-//        }
-//        // 사용 불가능한 토큰이면 예외처리
-//        throw new UnAuthorizedException();
-//    }
-//
-//    private Long getUserId(HttpServletRequest request) {
-//        return jwtService.getIdByToken(getToken(request));
-//    }
 
+    // studyBadge 교체
+    @PutMapping("/badge")
+    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+                                              @RequestPart(value = "img") MultipartFile img,
+                                              @RequestPart(value = "studyId") Long studyId) {
+        studyService.updateStudyBadge(badgeRequest, img, studyId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }

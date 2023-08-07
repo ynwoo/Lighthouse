@@ -2,10 +2,10 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
+import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.GugunDto;
 import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
-import com.ssafy.lighthouse.domain.study.entity.ParticipationHistory;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import lombok.AllArgsConstructor;
@@ -36,11 +36,12 @@ public class StudyResponse {
     private int likeCnt;
     private int bookmarkCnt;
     private int status;
-    private StudyResponse original;
+    private Long originalId;
+    private BadgeResponse badge;
     private SimpleProfileResponse leaderProfile;
     private List<SimpleProfileResponse> memberProfiles;
-    private SidoDto sido;
-    private GugunDto gugun;
+    private Long sidoId;
+    private Long gugunId;
     private List<StudyTagDto> studyTags;
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
@@ -73,9 +74,10 @@ public class StudyResponse {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.status = study.getStatus();
-        this.original = study.getOriginal() != null ? new StudyResponse(study.getOriginal()) : null;
-        this.sido = study.getSido() != null ? new SidoDto(study.getSido()) : null;
-        this.gugun = study.getGugun() != null ? new GugunDto(study.getGugun()) : null;
+        this.originalId = study.getOriginalId();
+        this.sidoId = study.getSidoId();
+        this.gugunId = study.getGugunId();
+        this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
         this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
         this.studyNotices = study.getStudyNotices() != null ? study.getStudyNotices().stream().filter(BaseEntity::isValid).map(StudyNoticeDto.StudyNoticeRes::new).collect(Collectors.toList()) : null;

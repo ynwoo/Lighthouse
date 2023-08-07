@@ -1,57 +1,65 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from '@ant-design/icons'
-import { Avatar, Card } from 'antd'
+import { Card } from 'antd'
 
 const { Meta } = Card
 
-// 템플릿 카드
-
 function TempCard({ study }) {
+  const [isHovered, setIsHovered] = useState(false)
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+  }
+
   return (
-    // Temp Detail로 보내주는 링크
-    // 그냥 컴포넌트 자체가 하나의 링크라고 보면 됨
     <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-        }}
-      >
+      <div>
         <Card
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={isHovered ? 'hovered-card' : ''}
           style={{
-            width: 300,
+            width: '260px',
             margin: '25px',
             whiteSpace: 'pre-line',
             height: '100%',
           }}
           cover={
-            <img
-              alt="example"
-              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            />
+            <div className="cover-wrapper">
+              {/* 이미지를 감싸는 div */}
+              <img
+                style={{ width: '240px', margin: '10px' }}
+                alt="example"
+                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+              />
+            </div>
           }
-          actions={[
-            <SettingOutlined key="setting" />,
-            <EditOutlined key="edit" />,
-            <EllipsisOutlined key="ellipsis" />,
-          ]}
         >
+          {/* 카드 내용 */}
           <Meta
-            avatar={
-              <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel" />
-            }
             title={study.title}
-            description={`${study.is_online ? '온라인' : '오프라인'}
-                            ${study.current_member}/${study.max_member}
-                            작성시간: ${study.created_at}
-                            모집 마감: ${study.recruit_finished_at}
-                            ${study.like_cnt}개의 따봉`}
+            description={
+              isHovered ? (
+                <>
+                  {/* 호버 상태일 때 보여질 다른 내용 */}
+                  <div>클릭하여</div>
+                  <div>자세한 스터디 내용을 확인하세요 !</div>
+                </>
+              ) : (
+                // 호버 상태가 아닐 때 보여질 내용
+                `${study.isOnline ? '온라인' : '오프라인'}
+                ${study.currentMember}/${study.maxMember}
+                ${study.likeCnt}개의 따봉`
+              )
+            }
           />
+          {study.studyTags.map(tag => {
+            return <span key={tag.id}>#{tag.tag.keyword} </span>
+          })}
         </Card>
       </div>
     </Link>

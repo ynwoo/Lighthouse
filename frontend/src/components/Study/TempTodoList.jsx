@@ -79,8 +79,8 @@ function TodoList() {
 
   return (
     <div>
-      <h1>Todo List</h1>
-      <div>
+      <h3>Todo List</h3>
+      <div style={{ display: 'flex' }}>
         <Input
           type="text"
           value={newTodo}

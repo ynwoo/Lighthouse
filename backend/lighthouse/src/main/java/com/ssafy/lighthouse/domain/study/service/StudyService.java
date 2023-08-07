@@ -1,17 +1,19 @@
 package com.ssafy.lighthouse.domain.study.service;
 
+import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
 import com.ssafy.lighthouse.domain.study.dto.*;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface StudyService {
     Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
     Page<SimpleStudyDto> findAllByOriginalId(Long originalId, StudySearchOption options);
     StudyResponse findDetailByStudyId(Long studyId);
-    StudyResponse createStudyByStudyId(Long studyId);
+    StudyResponse createStudyByStudyId(Long studyId, Long userId);
     void removeStudyByStudyId(Long studyId);
     void shareStudyByStudyId(Long studyId);
-    void updateStudyByStudyId(StudyRequest studyRequest, Long userId);
+    StudyResponse updateStudyByStudyId(StudyRequest studyRequest, Long userId);
 
     // study-like
     void createStudyLike(Long studyId, Long userId);
@@ -28,5 +30,8 @@ public interface StudyService {
     // study-tag
     void createStudyTag(StudyTagDto studyTagDto);
     void removeStudyTag(Long studyId, Long tagId);
+
+    // study-badge
+    void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long prevBadgeId);
 
 }

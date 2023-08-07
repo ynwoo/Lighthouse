@@ -59,6 +59,13 @@ function CurriculumTable() {
 
   return (
     <div>
+      <div className="info_text">
+        <ul>
+          <p>신청대상</p>
+        </ul>
+      </div>
+
+      <Table columns={columns} dataSource={tableData} />
       <Space style={{ marginBottom: 16 }}>
         <Input
           type="text"
@@ -70,7 +77,6 @@ function CurriculumTable() {
           Add Curriculum
         </Button>
       </Space>
-      <Table columns={columns} dataSource={tableData} />
     </div>
   )
 }

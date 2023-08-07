@@ -35,6 +35,8 @@ public class User extends BaseEntity {
 	//@OneToMany(mappedBy = "user")
 	//private List<UserTag> userTags = new ArrayList<>();
 
+	public void changeProfileImgUrl(String profileImgUrl) {this.profileImgUrl = profileImgUrl;}
+
 	public void updateUserInfo(String password, String name, String nickname,
 		String profileImgUrl, int age, Long sidoId, Long gugunId,
 		String phoneNumber, String description) {

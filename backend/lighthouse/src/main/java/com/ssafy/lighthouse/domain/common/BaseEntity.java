@@ -28,4 +28,5 @@ public abstract class BaseEntity {
 	public boolean isValid() {return isValid == 1;}
 
 	public void recover() { this.isValid = 1;}
+	public void changeIsValid(int isValid) {this.isValid = isValid;}
 }
