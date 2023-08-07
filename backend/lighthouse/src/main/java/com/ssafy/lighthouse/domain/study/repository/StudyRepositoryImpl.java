@@ -46,8 +46,6 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                 .select(study)
                 .from(study)
                 .leftJoin(study.studyTags, studyTag).on(studyTag.isValid.eq(1))
-                .leftJoin(study.sido, sido).on(sido.isValid.eq(1))
-                .leftJoin(study.gugun, gugun).on(gugun.isValid.eq(1))
                 .leftJoin(study.badge, badge).on(badge.isValid.eq(1))
                 .where(
                         isValid(),
