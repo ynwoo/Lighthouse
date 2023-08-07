@@ -1,4 +1,4 @@
-package com.example.chatserver;
+package com.ssafy.chatserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

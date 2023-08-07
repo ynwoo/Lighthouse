@@ -1,4 +1,4 @@
-package com.example.chatserver;
+package com.ssafy.chatserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
