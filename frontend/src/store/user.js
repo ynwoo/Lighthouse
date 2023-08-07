@@ -19,7 +19,6 @@ authApi.interceptors.request.use(config => {
 
   config.headers['access-token'] = accessToken
   config.headers['refresh-token'] = refreshToken
-  console.log(config.headers['Content-Type'])
   return config
 })
 
@@ -47,6 +46,8 @@ authApi.interceptors.response.use(
       return Promise.reject(err)
     }
     console.log('hmm...')
+    alert('로그인이 필요합니다!')
+    window.location.href = '/login'
     return Promise.reject(err)
   },
 )
@@ -59,7 +60,8 @@ const initialState = {
   gugun: { 0: '시/도를 선택하세요' },
   emailIsValid: null,
   nicknameIsValid: null,
-  myInfo: null,
+  myInfo: {},
+  userInfo: {},
 }
 
 export const userAction = {
@@ -151,12 +153,31 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-
+  // 로그아웃
+  logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
+    try {
+      const response = await authApi.get(`/users/logout`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
   // 내 정보 불러오기
   myPage: createAsyncThunk('user/mypage', async (_, thunkAPI) => {
     try {
       const response = await authApi.get(`/users/mypage`)
       console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/user`, {
+        'user-id': payload,
+      })
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -203,9 +224,22 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       console.log(sessionStorage.getItem('refresh_token'))
     },
+    [userAction.logout.fulfilled]: (state, action) => {
+      // tokens save in session storage
+      sessionStorage.removeItem('access_token', action.payload['access-token'])
+      sessionStorage.removeItem(
+        'refresh_token',
+        action.payload['refresh-token'],
+      )
+      sessionStorage.removeItem('isLoggedIn', true)
+    },
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
+    },
+    [userAction.userInfo.fulfilled]: (state, action) => {
+      console.log(action.payload.userInfo)
+      state.userInfo = action.payload
     },
   },
 })
