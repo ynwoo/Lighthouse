@@ -25,6 +25,7 @@ export default function UserPage() {
     console.log(window.location.pathname)
     dispatch(userAction.profile(35))
   }, [])
+
   const user = useSelector(state => state.user)
   console.log('user', user)
   const profile = useSelector(state => state.user.profile)
