@@ -6,13 +6,13 @@ import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import TempDetailPage from './routes/TempDetailPage'
 import UserPage from './routes/UserPage'
-import SignInPage from './routes/SignInPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
 import TempMore from './components/Study/TempMore'
 import SignUp from './components/User/SingUp'
+import SignIn from './components/User/SignIn'
 
 function App() {
   const [showChat, setShowChat] = useState(false)
@@ -36,7 +36,7 @@ function App() {
           <Route exact path="/" element={<MainPage />} />
           <Route path="/temp/:id" element={<TempDetailPage />} />
           <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/login" element={<SignInPage />} />
+          <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/user_edit/:id" element={<UserEditPage />} />
           <Route path="/chat" element={<Chat />} />
