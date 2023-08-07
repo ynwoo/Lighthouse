@@ -175,9 +175,17 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
+
+  // 프로필 불러오기
+  profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_URL}/user/`, payload)
+      console.log(
+        'profile - payload : ',
+        payload,
+        `${API_URL}/users/${payload ?? 1}`,
+      )
+      const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -236,10 +244,6 @@ export const userSlice = createSlice({
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
-    },
-    [userAction.userInfo.fulfilled]: (state, action) => {
-      console.log(action.payload.userInfo)
-      state.userInfo = action.payload
     },
   },
 })

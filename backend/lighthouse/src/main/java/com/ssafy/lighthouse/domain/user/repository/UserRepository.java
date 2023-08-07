@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
 	User findByIdAndIsValid(Long id, int isValid);
 
+	User findByProviderId(String providerId);
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE User u SET u.token = NULL WHERE u.id = :userId")

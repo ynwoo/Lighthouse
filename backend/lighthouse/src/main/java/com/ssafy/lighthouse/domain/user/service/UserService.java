@@ -2,12 +2,14 @@ package com.ssafy.lighthouse.domain.user.service;
 
 import java.util.List;
 
+import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
 import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
 import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
 import com.ssafy.lighthouse.domain.user.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -44,12 +46,19 @@ public interface UserService {
 
 	void removeFollow(Long followeeId, Long followerId);
 
+	void updateProfileImage(MultipartFile img, Long userId);
+
 	boolean isEmailUnique(String emailToValidate);
 
 	boolean isNicknameUnique(String nicknameToValidate);
 
 
 	List<AlertDto> getAlertDtoList(Long id);
+
+	// google login
+	User getUserByProviderId(String providerId);
+
+	User addOAuthUser(OAuthUserInfoDto oauthUser);
 
 	default UserMyPageDto entityToDto(User userEntity) {
 		UserMyPageDto dto = UserMyPageDto.builder()
