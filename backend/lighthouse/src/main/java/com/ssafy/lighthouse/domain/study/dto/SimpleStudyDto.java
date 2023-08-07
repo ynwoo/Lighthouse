@@ -32,8 +32,8 @@ public class SimpleStudyDto {
     private int likeCnt;
     private int bookmarkCnt;
     private Long originalId;
-    private SidoDto sido;
-    private GugunDto gugun;
+    private Long sidoId;
+    private Long gugunId;
     private BadgeResponse badge;
     private List<StudyTagDto> studyTags;
     private SimpleProfileResponse leaderProfile;
@@ -60,9 +60,9 @@ public class SimpleStudyDto {
         this.likeCnt = study.getLikeCnt();
         this.bookmarkCnt = study.getBookmarkCnt();
         this.originalId = study.getOriginalId();
+        this.sidoId = study.getSidoId();
+        this.gugunId = study.getGugunId();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
-        this.sido = study.getSido() == null ? null : new SidoDto(study.getSido());
-        this.gugun = study.getGugun() == null ? null : new GugunDto(study.getGugun());
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList());
     }
 }

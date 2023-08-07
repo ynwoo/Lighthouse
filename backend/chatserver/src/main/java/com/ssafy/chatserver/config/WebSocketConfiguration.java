@@ -1,4 +1,4 @@
-package com.ssafy.lighthouse.config;
+package com.ssafy.chatserver.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

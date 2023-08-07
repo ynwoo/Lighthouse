@@ -6,9 +6,12 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.lighthouse.domain.common.util.S3Utils;
+import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
 import com.ssafy.lighthouse.domain.user.dto.AlertDto;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
@@ -28,6 +31,7 @@ import com.ssafy.lighthouse.global.util.ERROR;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -177,6 +181,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void updateProfileImage(MultipartFile img, Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
+		String profileImgUrl = user.getProfileImgUrl();
+
+		// 기존 프로필 이미지 삭제
+		if(profileImgUrl != null) {
+			S3Utils.deleteFile(profileImgUrl);
+		}
+
+		// s3에 파일 업로드 & user의 profileImgUrl 변경
+		user.changeProfileImgUrl(S3Utils.uploadFile("profile", img));
+	}
+
+	@Override
 	public boolean isEmailUnique(String emailToValidate) {
 		User existingUser = userRepository.findByEmailAndIsValid(emailToValidate, 1);
 		return existingUser == null;
@@ -194,9 +212,28 @@ public class UserServiceImpl implements UserService {
 		// 구현 예정
 		List<AlertQueue> alertQueues = alertQueueRepository.findByConsumerIdAndIsValidOrderByCreatedAtDesc(
 			id, 1);
-		for(AlertQueue alertQueue : alertQueues) {
+		for (AlertQueue alertQueue : alertQueues) {
 			result.add(alertQueueEntityToAlertDto(alertQueue));
 		}
 		return result;
+	}
+
+	@Override
+	public User getUserByProviderId(String providerId) {
+		return userRepository.findByProviderId(providerId);
+	}
+
+	@Override
+	public User addOAuthUser(OAuthUserInfoDto oauthUser) {
+		User newUser = User.builder()
+			.name(oauthUser.getName())
+			.email(oauthUser.getEmail())
+			.providerId(oauthUser.getProviderId())
+			.nickname(oauthUser.getEmail())
+			.password(oauthUser.getProviderId())
+			.isValid(1)
+			.profileImgUrl(oauthUser.getProfileImg())
+			.build();
+		return userRepository.save(newUser);
 	}
 }
