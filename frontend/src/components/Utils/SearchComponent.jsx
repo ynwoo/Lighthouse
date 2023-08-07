@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import React from 'react'
-import { Input, Select, Space, Button } from 'antd'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { setText } from '../../store/study'
-=======
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+// import { Link } from 'react-router-dom'
 import { setOnline, setText, studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
->>>>>>> ff5fbb36691753512f8dfe94227406e2fcc14cfd
 
 // 검색창
 const { Search } = Input
@@ -65,10 +58,25 @@ function SearchComponent() {
           />
         </div>
         {/* 지역 */}
-        <div>
+        <div style={{}}>
           <Space wrap>
             {/* 온라인 오프라인 스위치 버튼 */}
             <button
+              style={{
+                backgroundColor: 'white',
+                color: 'black',
+                border: '1px solid #A4C3FF',
+                borderRadius: '20px',
+                padding: '10px',
+                fontWeight: 'bold',
+                width: '100px',
+                display: 'flex',
+                alignContent: 'center',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '10px',
+                marginTop: '10px',
+              }}
               type="button"
               onClick={() => {
                 dispatch(setOnline())
@@ -76,30 +84,33 @@ function SearchComponent() {
             >
               {params.isOnline ? 'Online' : 'Offline'}
             </button>
-
-            <Select onChange={sidoChange} defaultValue={selectedSido}>
-              {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
-              {Object.keys(sido).map(key => {
-                return (
-                  <Select.Option value={Number(key)} key={key}>
-                    {sido[key]}
-                  </Select.Option>
-                )
-              })}
-            </Select>
-            <Select onChange={gugunChange} defaultValue={selectedGugun}>
-              {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
-              {Object.keys(gugun).map(key => {
-                return (
-                  <Select.Option value={Number(key)} key={key}>
-                    {gugun[key]}
-                  </Select.Option>
-                )
-              })}
-            </Select>
+            {!params.isOnline && (
+              <Select onChange={sidoChange} defaultValue={selectedSido}>
+                {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
+                {Object.keys(sido).map(key => {
+                  return (
+                    <Select.Option value={Number(key)} key={key}>
+                      {sido[key]}
+                    </Select.Option>
+                  )
+                })}
+              </Select>
+            )}
+            {!params.isOnline && (
+              <Select onChange={gugunChange} defaultValue={selectedGugun}>
+                {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
+                {Object.keys(gugun).map(key => {
+                  return (
+                    <Select.Option value={Number(key)} key={key}>
+                      {gugun[key]}
+                    </Select.Option>
+                  )
+                })}
+              </Select>
+            )}
           </Space>
         </div>
-        <Button
+        {/* <Button
           type="primary"
           style={{
             backgroundColor: '#FFDFEB',
@@ -117,7 +128,7 @@ function SearchComponent() {
           }}
         >
           <Link to="tempcreate">스터디 생성</Link>
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

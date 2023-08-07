@@ -12,17 +12,17 @@ import SignUpPage from './routes/SignUpPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
-import chat from './static/chat.png'
 import TempMore from './routes/TempMorePage'
 import TempCreatePage from './routes/TempCreatePage'
 import RouteSwitch from './components/RouteSwitch'
+import ChatList from './components/Utils/Chat/ChatList'
 
 function App() {
-  const [showChat, setShowChat] = useState(false)
+  // const [showChat, setShowChat] = useState(false)
 
-  const handleChatClick = () => {
-    setShowChat(!showChat)
-  }
+  // const handleChatClick = () => {
+  //   setShowChat(!showChat)
+  // }
 
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -62,43 +62,7 @@ function App() {
           </>
         )}
       </Router>
-      <button
-        type="submit"
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          cursor: 'pointer',
-          border: 'none',
-          background: 'none',
-          padding: 0,
-          margin: 0,
-          zIndex: '1',
-        }}
-        onClick={handleChatClick}
-      >
-        <img src={chat} alt="채팅" style={{ width: '100px' }} />
-      </button>
-      {showChat && (
-        // 채팅창이 보일 때만 아래 코드가 렌더링됨
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            height: '200px',
-            bottom: '90px',
-            right: '70px',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            padding: '10px',
-            borderRadius: '5px',
-            boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          {/* 채팅창 내용 */}
-          채팅창
-        </div>
-      )}
+      <ChatList />
     </div>
   )
 }

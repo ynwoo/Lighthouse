@@ -38,10 +38,12 @@ export default function MainPage() {
 
   return (
     <div
-      style={{
-        backgroundImage: 'linear-gradient(to bottom, #74a3ff, #ffffff 25%',
-        marginTop: '-50px',
-      }}
+      style={
+        {
+          // backgroundImage: 'linear-gradient(to bottom, #74a3ff, #ffffff 25%',
+          // marginTop: '-50px',
+        }
+      }
     >
       <div className="info_container">
         {/* 사이드바 */}

@@ -37,7 +37,7 @@ authApi.interceptors.response.use(
         console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
-        const newAccessToken = response.headers.Authorization
+        const newAccessToken = response.headers['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
@@ -59,10 +59,7 @@ const initialState = {
   gugun: { 0: '시/도를 선택하세요' },
   emailIsValid: null,
   nicknameIsValid: null,
-<<<<<<< HEAD
   myInfo: null,
-=======
->>>>>>> ff5fbb36691753512f8dfe94227406e2fcc14cfd
 }
 
 export const userAction = {

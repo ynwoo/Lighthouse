@@ -4,7 +4,7 @@ body {
   background-color: transparent;
   height: 1000px;
   /* overflow-y: scroll; */
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
 /* WaveComponent CSS */
@@ -14,7 +14,7 @@ body {
   position: relative;
   width: 100%;
   height: 17vh;
-  margin-bottom: -7px; /*Fix for safari gap*/
+  margin-bottom: 0px;
   min-height: 100px;
   max-height: 250px;
   top: -50px;
@@ -513,7 +513,7 @@ p {
 .info_container {
   display: grid;
   grid-template-columns: 10% 90%;
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
   margin-top: -50px;
   width: 100%;
 }
@@ -649,7 +649,7 @@ p {
 
 .sidebar1 {
   left: 5%;
-  bottom: 7%;
+  bottom: %;
   height: 350px;
   position: fixed;
   display: grid;
