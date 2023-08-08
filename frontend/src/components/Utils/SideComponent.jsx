@@ -45,7 +45,7 @@ export default function SideComponent(props) {
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
   const isTempPath = location.pathname.includes('/temp')
 
-  if (!isLoggedIn) {
+  if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
         <div>
@@ -182,7 +182,7 @@ export default function SideComponent(props) {
     )
   }
   return (
-    <div className="sidebar">
+    <div className="sidebar2">
       <img src={logo} alt="" style={{ width: '210px' }} />
       <p>회원가입해주라</p>
       <p>어쩌구 스터디 sns입니다 . .</p>
