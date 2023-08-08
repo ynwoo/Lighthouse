@@ -6,13 +6,14 @@ import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyRecord from '../components/Study/StudyRecord'
 import StudyReview from '../components/Study/StudyReview'
-import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 import { studyAction } from '../store/study'
 import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
+import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 
 export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
 
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
@@ -22,7 +23,7 @@ export default function TempDetailPage({ isLoggedIn }) {
   const tabMenu = isLoggedIn
     ? [
         { TempInfo: <StudyInfo study={study} /> },
-        { 가입했을때정보: <JoinTempInfo study={study} /> },
+        { 가입했을때정보: <JoinStudyInfo study={study} /> },
       ]
     : [
         { 가입Xinfo: <NologinStudyInfo study={study} /> },
