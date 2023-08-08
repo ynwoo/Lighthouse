@@ -52,24 +52,35 @@ function Chat() {
   return (
     <div
       style={{
-        width: '50%',
+        width: '30%',
         height: '600px',
-        border: '3px solid black',
+        border: '1px solid black',
+        borderRadius: '20px',
       }}
     >
       <Form form={form} onFinish={sendMessage}>
-        <Form.Item id="messageInput" name="message">
-          <Input autoFocus />
-        </Form.Item>
-        <Button type="primary" htmlType="submit">
-          Send
-        </Button>
+        <div style={{ display: 'flex' }}>
+          <Form.Item id="messageInput" name="message">
+            <Input
+              autoFocus
+              style={{
+                borderRadius: '20px',
+                border: '1px solid black',
+                height: '40px',
+                width: '390px',
+              }}
+            />
+          </Form.Item>
+          <Button type="primary" htmlType="submit">
+            Send
+          </Button>
+        </div>
       </Form>
       <div
         style={{
           width: '100%',
           height: '550px',
-          border: '2px solid black',
+          // border: '1px solid black',
         }}
       >
         {!messages.length ? (
