@@ -148,23 +148,29 @@ export default function App() {
       <div>
         {treeData.map(item => (
           <div key={item.key}>
-            <Input
-              value={item.title}
-              onChange={e => handleEditNodeTitle(item.key, e.target.value)}
-            />
-            <Button onClick={() => handleDeleteNode(item.key)}>Delete</Button>
+            <div style={{ display: 'flex' }}>
+              {' '}
+              <Input
+                value={item.title}
+                onChange={e => handleEditNodeTitle(item.key, e.target.value)}
+              />
+              <Button onClick={() => handleDeleteNode(item.key)}>Delete</Button>
+            </div>
+
             {item.children &&
               item.children.map(child => (
                 <div key={child.key}>
-                  <Input
-                    value={child.title}
-                    onChange={e =>
-                      handleEditNodeTitle(child.key, e.target.value)
-                    }
-                  />
-                  <Button onClick={() => handleDeleteNode(child.key)}>
-                    Delete
-                  </Button>
+                  <div style={{ display: 'flex' }}>
+                    <Input
+                      value={child.title}
+                      onChange={e =>
+                        handleEditNodeTitle(child.key, e.target.value)
+                      }
+                    />
+                    <Button onClick={() => handleDeleteNode(child.key)}>
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               ))}
           </div>
