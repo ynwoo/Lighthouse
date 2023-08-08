@@ -31,7 +31,7 @@ export default function TempDetailPage({ isLoggedIn }) {
     : [
         { 가입Xinfo: <NologinStudyInfo study={study} /> },
         { TempQnA: <StudyQnA study={study} /> },
-        { 회원정보: <StudyRecord study={study} /> },
+        { 회원정보: <StudyRecord members={study?.memberProfiles} /> },
         { TempReview: <StudyReview study={study} /> },
       ]
 
