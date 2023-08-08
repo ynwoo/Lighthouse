@@ -67,7 +67,11 @@ export default function App() {
           </div>
 
           <div className="item dropdown_king nav_item">
-            <Link to="/user/me" className="dropdown_toggle">
+            <Link
+              to="/user/me"
+              state={{ userId: sessionStorage.getItem('userId') }}
+              className="dropdown_toggle"
+            >
               MYPAGE
             </Link>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
@@ -31,15 +32,19 @@ export default function TempInfo({ study }) {
           </h1>
           <h3>
             스터디장 :{' '}
-            {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            <Link
+              to={`/user/${study.leaderProfile.id}`}
+              state={{ userId: study.leaderProfile.id }}
+              className="dropdown_toggle"
+            >
+              {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            </Link>
           </h3>
           <h3>해시태그</h3>
           <div style={{ display: 'flex' }}>
-            {study.studyTags ? (
-              study.studyTags.map(tag => <p key={tag.id}>#{tag.tag.keyword}</p>)
-            ) : (
-              <p>loading...</p>
-            )}
+            {study.studyTags?.map(tag => (
+              <p key={tag.id}>#{tag.tag?.keyword}</p>
+            ))}
           </div>
           <hr />
           <p>조회수 - {study.hit}</p>
@@ -57,8 +62,7 @@ export default function TempInfo({ study }) {
       <p>북마크 - {study.bookmarkCnt}</p>
       <div>Tabom - {study.likeCnt}</div>
       <p>규칙 - {study.rule}</p>
-      <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
-      <p>tags - {study.studyTags}</p>
+      <p>배지 - {study.badge?.name}</p>
       <p>
         {' '}
         {study.isOnline

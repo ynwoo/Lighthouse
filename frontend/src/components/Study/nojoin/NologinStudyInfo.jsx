@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import photo from '../../../static/aris.png'
 import StudyCurriculum from '../StudyCurriculum'
 import likemark from '../../../static/mark/like.png'
@@ -16,7 +17,13 @@ export default function TempInfo({ study }) {
           </h1>
           <h3>
             스터디장 :{' '}
-            {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            <Link
+              to={`/user/${study.leaderProfile?.id}`}
+              state={{ userId: study.leaderProfile?.id }}
+              className="dropdown_toggle"
+            >
+              {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            </Link>
           </h3>
           <h3>해시태그</h3>
           <div style={{ display: 'flex' }}>
