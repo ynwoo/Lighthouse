@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Select, Modal, Button, Tooltip } from 'antd'
+import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  // const userInfo = useSelector(state => state.user.myInfo)
 
   useEffect(() => {
-    dispatch(userAction.myPage()).then(res => {
-      const { id } = res.payload.userInfo
-      dispatch(userAction.userInfo(id))
-    })
+    const userId = sessionStorage.getItem('id')
+    console.log('asdfasdfasdfasdf', userId)
+    dispatch(userAction.profile(userId))
   }, [])
-  const studyTags = JSON.parse(localStorage.getItem('tags'))
-  console.log(studyTags)
+  const profile = useSelector(state => state.user.profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -28,16 +25,7 @@ export default function UserPage() {
   const handleCancel = () => {
     setIsModalVisible(false)
   }
-  useEffect(() => {
-    // dispatch(userAction.myPage())
-    console.log(window.location.pathname)
-    dispatch(userAction.profile(35))
-  }, [])
 
-  const user = useSelector(state => state.user)
-  console.log('user', user)
-  const profile = useSelector(state => state.user.profile)
-  console.log('profile', profile)
   return (
     <div
       style={{
@@ -84,9 +72,9 @@ export default function UserPage() {
                 marginTop: '20px',
               }}
             >
-              <div>
-                {profile.tags.map(tag => (
-                  <li>#{tag.keyword}</li>
+              <div style={{ textAlign: 'left' }}>
+                {profile.tags?.map(tag => (
+                  <li key={tag.id}># {tag.keyword}</li>
                 ))}
               </div>
             </div>
@@ -142,33 +130,66 @@ export default function UserPage() {
           <div className="u_item">닉네임</div>
           <div className="u_item1">{profile.nickname}</div>
           <div className="u_item">별점</div>
-          <div className="u_item1">{profile.score ?? 0}</div>
+          <div className="u_item1">{profile.score}</div>
           <div className="u_item">자기소개</div>
-          <div className="u_item1">{profile.description ?? ''}</div>
+          <div className="u_item1">{profile.description}</div>
+
           <div className="u_item">뱃지 목록</div>
           <div className="u_item1">
-            {profile.badges.map(badge => (
+            {profile.badges?.map(badge => (
               <img
-                src={process.env.S3_DOMAIN_URL + badge.imgUrl}
+                key={badge.id}
+                src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${badge.imgUrl}`}
                 alt={badge.description}
               />
             ))}
           </div>
-          <div className="u_item">진행 중</div>
-          <div className="u_item1">{profile.nickname}</div>
-          <div className="u_item">통계</div>
-          <div className="u_item1">{profile.nickname}</div>
-          <div className="u_item">참여했던 스터디</div>
 
-          <Form.Item>
-            <div style={{ width: '70%' }}>
-              <Select className="u_item2" value="참여했던 스터디">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </div>
-          </Form.Item>
+          <div className="u_item">신청 중</div>
+          <div>
+            <Select className="u_item2" value="신청중인 스터디">
+              {profile.participatedStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="u_item">진행 중</div>
+          <div>
+            <Select className="u_item2" value="진행중인 스터디">
+              {profile.progressStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          {/* <div className="u_item">통계</div>
+          <div className="u_item1">{profile.nickname}</div> */}
+
+          <div className="u_item">참여했던 스터디</div>
+          <div>
+            <Select className="u_item2" value="참여했던 스터디">
+              {profile.terminatedStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
           <div className="u_item">북마크</div>
-          <div className="u_item1">북마크</div>
+          <div>
+            <Select className="u_item2" value="북마크한 스터디">
+              {profile.bookmarkStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
         </div>
       </div>
     </div>
