@@ -46,17 +46,9 @@ export default function App() {
               MYPAGE
             </Link>
           </div>
-          <div className="item dropdown_king nav_item">
-            <Link
-              to={false}
-              className="dropdown_toggle"
-              disabled={!isLoggedIn}
-              onClick={handleLogout}
-              type="button"
-            >
-              LOGOUT
-            </Link>
-          </div>
+          <button disabled={!isLoggedIn} onClick={handleLogout} type="button">
+            응애
+          </button>
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ package com.ssafy.lighthouse.global.config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ssafy.lighthouse.domain.user.exception.AccessTokenException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -67,6 +66,6 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
 			}
 		}
 		// 사용 불가능한 토큰이면 예외처리
-		throw new AccessTokenException();
+		throw new UnAuthorizedException();
 	}
 }

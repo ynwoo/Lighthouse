@@ -4,35 +4,9 @@ import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
 import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
-import {
-  endDateToString,
-  startDateToString,
-} from '../../utils/FormateDateToString'
-import { updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
 
-export default function StudyInfo({ study }) {
+export default function TempInfo({ study }) {
   const [memos, setMemos] = useState([])
-  const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
-  const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
-  const [recruitFinishedDate, setRecruitFinishedDate] = useState(
-    StringToDate(study.recruitFinishedAt),
-  )
-  const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
-
-  const handleStartDateChange = date => {
-    setStartDate(date)
-  }
-
-  const handleEndDateChange = date => {
-    setEndDate(date)
-  }
-  const handleRecruitFinishedDateChange = date => {
-    setRecruitFinishedDate(date)
-  }
-  const handleCreatedDateChange = date => {
-    setCreatedDate(date)
-  }
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
       ...prevMemos,
@@ -42,36 +16,6 @@ export default function StudyInfo({ study }) {
       },
     ])
   }
-
-  const handleUpdateStudy = () => {
-    const studyRequest = {
-      ...study,
-      sessions: [...study.sessions],
-      studyTags: [...study.studyTags],
-      studyNotices: [...study.studyNotices],
-      startedAt: startDateToString(startDate),
-      endedAt: endDateToString(endDate),
-      recruitFinishedAt: endDateToString(recruitFinishedDate),
-      createdAt: startDateToString(createdDate),
-    }
-    const blob = new Blob([JSON.stringify(studyRequest)], {
-      type: 'application/json',
-    })
-    const formData = new FormData()
-    formData.append('studyRequest', blob)
-    formData.append('studyId', study.id)
-    console.log('blob', blob)
-    updateStudy(
-      formData,
-      ({ data }) => {
-        console.log(data)
-      },
-      ({ data }) => {
-        console.log(data)
-      },
-    )
-  }
-
   const handleDeleteMemo = memoId => {
     const updatedMemos = memos.filter(memo => memo.id !== memoId)
     setMemos(updatedMemos)
@@ -147,12 +91,7 @@ export default function StudyInfo({ study }) {
           </ul>
         </div>
         <div>
-          <DatePicker
-            changeStartDate={handleStartDateChange}
-            changeEndDate={handleEndDateChange}
-            initStartDate={study.startDate}
-            initEndDate={study.endDate}
-          />
+          <DatePicker />
         </div>
       </div>
       <div>
@@ -162,15 +101,7 @@ export default function StudyInfo({ study }) {
           </ul>
         </div>
       </div>
-      <DatePicker
-        changeStartDate={handleCreatedDateChange}
-        changeEndDate={handleRecruitFinishedDateChange}
-        initStartDate={study.createdAt}
-        initEndDate={study.recruitFinishedDate}
-      />
-      <button type="button" onClick={handleUpdateStudy}>
-        수정
-      </button>
+      <DatePicker />
     </div>
   )
 }

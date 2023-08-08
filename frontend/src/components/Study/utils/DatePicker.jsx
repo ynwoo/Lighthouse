@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import styled from 'styled-components'
-import StringToDate from '../../../utils/FormateStringToDate'
 
 const DatePickerContainer = styled.div`
   .react-datepicker-wrapper,
@@ -49,27 +48,17 @@ const DatePickerContainer = styled.div`
   }
 `
 
-function DateRangePicker({
-  changeStartDate,
-  changeEndDate,
-  initStartDate,
-  initEndDate,
-}) {
-  const [startDate, setStartDate] = useState(
-    initStartDate ? StringToDate(initStartDate) : null,
-  )
-  const [endDate, setEndDate] = useState(
-    initEndDate ? StringToDate(initEndDate) : null,
-  )
+function DateRangePicker() {
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
 
   const handleStartDateChange = date => {
+    console.log(date)
     setStartDate(date)
-    changeStartDate(date)
   }
 
   const handleEndDateChange = date => {
     setEndDate(date)
-    changeEndDate(date)
   }
 
   return (

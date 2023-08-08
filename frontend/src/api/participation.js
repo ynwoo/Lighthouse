@@ -1,4 +1,4 @@
-import { authApiInstance } from '.'
+import authApiInstance from '.'
 
 const authApi = authApiInstance()
 
