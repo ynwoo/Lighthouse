@@ -3,7 +3,6 @@ import { Tabs } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfo'
-// import StudyMember from '../components/Study/StudyMember'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyRecord from '../components/Study/StudyRecord'
 import StudyReview from '../components/Study/StudyReview'
@@ -14,22 +13,25 @@ import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 export default function TempDetailPage() {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
-  // const isLogined = true // Replace with actual login status
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
 
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
 
-  const tabMenu = {
-    ...(isLoggedIn ? { TempInfo: <StudyInfo study={study} /> } : {}),
-    ...(isLoggedIn ? { 가입했을때정보: <JoinTempInfo study={study} /> } : {}),
-    ...(isLoggedIn ? {} : { 가입Xinfo: <NologinStudyInfo study={study} /> }),
-    ...(isLoggedIn ? {} : { TempQnA: <StudyQnA study={study} /> }),
-    ...(isLoggedIn ? {} : { 회원정보: <StudyRecord study={study} /> }),
-    ...(isLoggedIn ? {} : { TempReview: <StudyReview study={study} /> }),
-  }
+  const tabMenu = isLoggedIn
+    ? [
+        { TempInfo: <StudyInfo study={study} /> },
+        { 가입했을때정보: <JoinTempInfo study={study} /> },
+      ]
+    : [
+        { 가입Xinfo: <NologinStudyInfo study={study} /> },
+        { TempQnA: <StudyQnA study={study} /> },
+        { 회원정보: <StudyRecord study={study} /> },
+        { TempReview: <StudyReview study={study} /> },
+      ]
+
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
@@ -48,15 +50,13 @@ export default function TempDetailPage() {
             width: '800px',
           }}
           type="card"
-          items={new Array(Object.keys(tabMenu).length)
-            .fill(null)
-            .map((_, i) => {
-              return {
-                label: Object.keys(tabMenu)[i],
-                key: i,
-                children: Object.values(tabMenu)[i],
-              }
-            })}
+          items={tabMenu.map((menu, index) => {
+            return {
+              label: Object.keys(menu),
+              key: index,
+              children: Object.values(menu),
+            }
+          })}
         />
       </div>
     </div>
