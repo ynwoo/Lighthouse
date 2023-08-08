@@ -62,6 +62,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   userInfo: {},
+  profile: {},
 }
 
 export const userAction = {
@@ -153,6 +154,20 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  googleOauth: createAsyncThunk(
+    'user/googleLogin',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await axios.post(
+          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
   // 로그아웃
   logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
     try {
@@ -175,9 +190,8 @@ export const userAction = {
   }),
   userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_URL}/user`, {
-        'user-id': payload,
-      })
+      const response = await authApi.get(`${API_URL}/users/${payload}`)
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -225,6 +239,7 @@ export const userSlice = createSlice({
       state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
+    // 로그아웃 성공 시 토큰 삭제
     [userAction.logout.fulfilled]: (state, action) => {
       // tokens save in session storage
       sessionStorage.removeItem('access_token', action.payload['access-token'])
@@ -235,13 +250,15 @@ export const userSlice = createSlice({
       sessionStorage.removeItem('isLoggedIn', true)
       state.isLoggedIn = false
     },
+    // 마이페이지
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
     },
-    [userAction.userInfo.fulfilled]: (state, action) => {
-      console.log(action.payload.userInfo)
-      state.userInfo = action.payload
+    // 마이페이지
+    [userAction.profile.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.profile = action.payload
     },
   },
 })
