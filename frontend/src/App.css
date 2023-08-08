@@ -865,4 +865,5 @@ h1 span:nth-child(9) {
 .mark_container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 10px;
 }
