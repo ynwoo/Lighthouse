@@ -71,25 +71,6 @@ public class AuthController {
             session.setAttribute("refresh_token", refreshToken);
             session.setAttribute("userId", userEntity.getId().toString());
             session.setAttribute("alerts", alertDtoList);
-//            Cookie c1 = makeCookie("access_token", accessToken);
-//            response.addCookie(c1);
-//
-//            Cookie c2 = makeCookie("refresh_token", refreshToken);
-//            response.addCookie(c2);
-//
-//            Cookie c3 = makeCookie("user_id", userEntity.getId().toString());
-//            response.addCookie(c3);
-
-            // StringBuilder sb = new StringBuilder();
-            // for (AlertDto alertDto : alertDtoList) {
-            // 	System.out.println(alertDto);
-            // 	sb.append(alertDto);
-            // }
-            // System.out.println(sb);
-            // log.debug(sb.toString());
-            // Cookie c4 = makeCookie("alerts", sb.toString());
-            // response.addCookie(c4);
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -99,14 +80,4 @@ public class AuthController {
         headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
-
-//    private Cookie makeCookie(String name, String value) {
-//        Cookie cookie = new Cookie(name, value);
-//        cookie.setMaxAge(60 * 60 * 24 * 7);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-//
-//        return cookie;
-//    }
-
 }
