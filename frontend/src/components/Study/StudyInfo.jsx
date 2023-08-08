@@ -150,8 +150,8 @@ export default function StudyInfo({ study }) {
           <DatePicker
             changeStartDate={handleStartDateChange}
             changeEndDate={handleEndDateChange}
-            initStartDate={study.startDate}
-            initEndDate={study.endDate}
+            initStartDate={study.startedAt}
+            initEndDate={study.endedAt}
           />
         </div>
       </div>
@@ -166,7 +166,7 @@ export default function StudyInfo({ study }) {
         changeStartDate={handleCreatedDateChange}
         changeEndDate={handleRecruitFinishedDateChange}
         initStartDate={study.createdAt}
-        initEndDate={study.recruitFinishedDate}
+        initEndDate={study.recruitFinishedAt}
       />
       <button type="button" onClick={handleUpdateStudy}>
         수정
