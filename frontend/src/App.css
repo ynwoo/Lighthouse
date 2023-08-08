@@ -633,7 +633,7 @@ p {
   height: 100%;
   object-fit: cover;
 }
-
+/* 로그인O */
 .sidebar {
   left: 5%;
   bottom: 12%;
@@ -646,10 +646,23 @@ p {
   background-color: white;
   padding: 20px;
 }
-
+/* 템플릿 들어갔을 때 */
 .sidebar1 {
   left: 5%;
-  bottom: %;
+  bottom: 4%;
+  height: 350px;
+  position: fixed;
+  display: grid;
+  grid-template-rows: 170px 30px 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+}
+/* 로그인 X */
+.sidebar2 {
+  left: 5%;
+  bottom: 2%;
   height: 350px;
   position: fixed;
   display: grid;
@@ -727,8 +740,8 @@ h1 span {
   font-family: 'Titan One', cursive;
   font-size: 70px;
   padding: 10px;
-  font-family: 'EF_Hyunygothic';
-  color: #001880;
+  font-family: 'Pretendard-Regular';
+  color: #040815;
   text-shadow:
     0 1px 0 #020d34,
     0 2px 0 #020d34,
@@ -765,7 +778,7 @@ h1 span:nth-child(8) {
 }
 
 h1 span:nth-child(9) {
-  animation-delay: 0.8s;
+  animation-delay: 0.4s;
 }
 
 @keyframes bounce {
@@ -852,4 +865,5 @@ h1 span:nth-child(9) {
 .mark_container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 10px;
 }
