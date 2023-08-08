@@ -4,11 +4,8 @@ import { useDispatch } from 'react-redux'
 import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
-export default function App() {
+export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
-
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
-  console.log('navbar', isLoggedIn)
 
   const handleLogout = () => {
     dispatch(userAction.logout())
@@ -44,7 +41,11 @@ export default function App() {
           ) : (
             <>
               <div className="item dropdown_king nav_item">
-                <Link to="/user/me" className="dropdown_toggle">
+                <Link
+                  to="/user/me"
+                  state={{ userId: sessionStorage.getItem('userId') }}
+                  className="dropdown_toggle"
+                >
                   MYPAGE
                 </Link>
               </div>
