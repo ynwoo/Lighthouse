@@ -207,6 +207,10 @@ export const userSlice = createSlice({
       console.log(action.payload.available)
       state.emailIsValid = action.payload.available
     },
+    [userAction.checkEmail.rejected]: (state, action) => {
+      console.log(action.payload.available)
+      state.emailIsValid = action.payload.available
+    },
     // nickname 중복 체크 시 결과 저장
     [userAction.checkNickname.fulfilled]: (state, action) => {
       console.log(action.payload.available)

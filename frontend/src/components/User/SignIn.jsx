@@ -26,7 +26,7 @@ function SignIn() {
       if (res.type === 'user/login/fulfilled') {
         navigate('/')
       } else {
-        alert('안돼')
+        alert('이메일 또는 비밀번호를 확인해주세요.')
       }
     })
   }

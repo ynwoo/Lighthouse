@@ -94,56 +94,61 @@ function SignUp() {
             dispatch(userAction.signUp(value))
           }}
         >
-          <Form.Item
-            name="email"
-            label="이메일"
-            rules={[
-              {
-                type: 'email',
-                message: '이메일 형식이 올바르지 않습니다.',
-              },
-              {
-                required: true,
-                message: '이메일 형식이 올바르지 않습니다.',
-              },
-            ]}
-          >
-            <Row>
-              <Col span={19}>
-                <Input
-                  onChange={e => {
-                    setEmail(e.target.value)
-                  }}
-                  placeholder="example@lighthouse.com"
-                />
-              </Col>
-              <Col span={4}>
-                <Button
-                  style={{
-                    color: 'rgb(113, 113, 113)',
-                    border: '1px solid rgba(187, 187, 187, 0.3)',
-                    marginLeft: '11px',
-                  }}
-                  type="button"
-                  onClick={() => {
-                    if (emailInput) {
-                      dispatch(userAction.checkEmail(emailInput))
-                    }
-                  }}
-                >
-                  중복확인
-                </Button>
-              </Col>
-            </Row>
+          <Form.Item label="이메일">
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  type: 'email',
+                  message: '이메일 형식이 올바르지 않습니다.',
+                },
+                {
+                  required: true,
+                  message: '이메일을 입력해주세요.',
+                },
+              ]}
+              style={{
+                display: 'inline-block',
+                width: 'calc(50% - 8px)',
+              }}
+            >
+              <Input
+                onChange={e => {
+                  setEmail(e.target.value)
+                }}
+                placeholder="example@lighthouse.com"
+                style={{
+                  width: emailInput ? 'calc(80% - 8px)' : '',
+                }}
+              />
+            </Form.Item>
+            <Button
+              style={{
+                color: 'rgb(113, 113, 113)',
+                border: '1px solid rgba(187, 187, 187, 0.3)',
+                marginLeft: '11px',
+              }}
+              type="button"
+              onClick={() => {
+                if (emailInput) {
+                  dispatch(userAction.checkEmail(emailInput))
+                }
+              }}
+            >
+              중복확인
+              <p
+                style={{
+                  color: emailIsValid ? 'rgb(0, 130, 255)' : 'rgb(199, 55, 55)',
+                }}
+              >
+                {emailIsValid
+                  ? '사용 가능한 이메일 입니다.'
+                  : emailIsValid === null
+                  ? ''
+                  : '이미 가입한 이메일 입니다.'}
+              </p>
+            </Button>
           </Form.Item>
-
-          <p>
-            {emailIsValid
-              ? '사용 가능한 이메일 입니다!'
-              : emailIsValid === null
-              ? ''
-              : '중복된 이메일입니다!'}
-          </p>
 
           <Form.Item
             name="password"
@@ -199,7 +204,7 @@ function SignUp() {
               },
               {
                 required: true,
-                message: '닉네임을 작성해주세요 !',
+                message: '닉네임을 입력해주세요.',
               },
             ]}
           >
@@ -230,14 +235,20 @@ function SignUp() {
                 </Button>
               </Col>
             </Row>
+            <p
+              style={{
+                color: nicknameIsValid
+                  ? 'rgb(0, 130, 255)'
+                  : 'rgb(199, 55, 55)',
+              }}
+            >
+              {nicknameIsValid
+                ? '사용 가능한 닉네임 입니다.'
+                : nicknameIsValid === null
+                ? ''
+                : '이미 사용 중인 닉네임 입니다.'}
+            </p>
           </Form.Item>
-          <p>
-            {nicknameIsValid
-              ? '사용 가능한 닉네임 입니다!'
-              : nicknameIsValid === null
-              ? ''
-              : '중복된 닉네임입니다!'}
-          </p>
 
           <Form.Item label="나이" name="age">
             <InputNumber />
