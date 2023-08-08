@@ -1,17 +1,10 @@
 package com.ssafy.lighthouse.domain.auth.controller;
 
-import com.ssafy.lighthouse.domain.auth.dto.OAuthTokenDto;
-import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
-import com.ssafy.lighthouse.domain.auth.service.OAuthService;
-import com.ssafy.lighthouse.domain.user.dto.AlertDto;
-import com.ssafy.lighthouse.domain.user.entity.User;
-import com.ssafy.lighthouse.domain.user.service.JwtService;
-import com.ssafy.lighthouse.domain.user.service.UserService;
 import java.net.URI;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ssafy.lighthouse.domain.auth.dto.OAuthTokenDto;
+import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
+import com.ssafy.lighthouse.domain.auth.service.OAuthService;
+import com.ssafy.lighthouse.domain.user.entity.User;
+import com.ssafy.lighthouse.domain.user.service.JwtService;
+import com.ssafy.lighthouse.domain.user.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
@@ -41,10 +43,11 @@ public class AuthController {
     @GetMapping("/callback/google")
     public ResponseEntity<?> successGoogleLogin(
             @RequestParam("code") String accessCode,
-            HttpServletRequest request) {
+            HttpServletResponse response) {
 
         OAuthTokenDto oAuthTokenDto = oAuthService.getGoogleAccessToken(accessCode);
         OAuthUserInfoDto userInitialInfo = oAuthService.getUserInfo(oAuthTokenDto);
+        System.out.println(userInitialInfo);
 
         // providerID로 User 존재하는지 확인
         User userEntity = userService.getUserByProviderId(userInitialInfo.getProviderId());
@@ -64,13 +67,34 @@ public class AuthController {
             log.debug("소셜 로그인 refreshToken 정보 : {}", refreshToken);
 
             // 알림 목록 불러오기
-            List<AlertDto> alertDtoList = userService.getAlertDtoList(userEntity.getId());
-            HttpSession session = request.getSession();
-            // 세션에 로그인 회원정보 보관
-            session.setAttribute("access_token", accessToken);
-            session.setAttribute("refresh_token", refreshToken);
-            session.setAttribute("userId", userEntity.getId().toString());
-            session.setAttribute("alerts", alertDtoList);
+            // List<AlertDto> alertDtoList = userService.getAlertDtoList(userEntity.getId());
+            // resultMap.put("alerts", alertDtoList);
+
+            Cookie c1 = makeCookie("access_token", accessToken);
+            response.addCookie(c1);
+
+            Cookie c2 = makeCookie("refresh_token", refreshToken);
+            response.addCookie(c2);
+
+            Cookie c3 = makeCookie("user_id", userEntity.getId().toString());
+            response.addCookie(c3);
+
+            // StringBuilder sb = new StringBuilder();
+            // for (AlertDto alertDto : alertDtoList) {
+            // 	System.out.println(alertDto);
+            // 	sb.append(alertDto);
+            // }
+            // System.out.println(sb);
+            // log.debug(sb.toString());
+            // Cookie c4 = makeCookie("alerts", sb.toString());
+            // response.addCookie(c4);
+
+            // resultMap.put("user-id", userEntity.getId());
+            // resultMap.put("access-token", accessToken);
+            // resultMap.put("refresh-token", refreshToken);
+            // resultMap.put("message", SUCCESS);
+
+            // status = HttpStatus.OK;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -80,4 +104,14 @@ public class AuthController {
         headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
+
+    private Cookie makeCookie(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        return cookie;
+    }
+
 }
