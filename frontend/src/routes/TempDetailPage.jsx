@@ -13,7 +13,6 @@ import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
 
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
