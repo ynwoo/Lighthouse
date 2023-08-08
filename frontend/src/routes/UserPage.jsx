@@ -8,7 +8,7 @@ export default function UserPage() {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(() => {
-    const userId = sessionStorage.getItem('id')
+    const userId = sessionStorage.getItem('userId')
     console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
   }, [])
