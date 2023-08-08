@@ -39,13 +39,13 @@ function App() {
       }}
     >
       <Router>
-        <ScrollToTop />
-        <Navbar />
-        <WaveComponent />
         {isLoading ? (
           <LoadingComponent />
         ) : (
           <>
+            <ScrollToTop />
+            <Navbar />
+            <WaveComponent />
             <RouteSwitch>
               <Route exact path="/" element={<MainPage />} />
               <Route path="/temp/:id" element={<TempDetailPage />} />

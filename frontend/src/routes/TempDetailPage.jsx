@@ -3,7 +3,7 @@ import { Tabs } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfo'
-import StudyMember from '../components/Study/StudyMember'
+// import StudyMember from '../components/Study/StudyMember'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyRecord from '../components/Study/StudyRecord'
 import StudyReview from '../components/Study/StudyReview'
@@ -14,23 +14,22 @@ import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 export default function TempDetailPage() {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
+  // const isLogined = true // Replace with actual login status
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
 
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
 
-  console.log(study)
   const tabMenu = {
-    TempInfo: <StudyInfo study={study} />,
-    건들면X: <StudyMember study={study} />,
-    TempQnA: <StudyQnA study={study} />,
-    회원정보: <StudyRecord study={study} />,
-    TempReview: <StudyReview study={study} />,
-    가입했을때정보: <JoinTempInfo study={study} />,
-    로그인Xinfo: <NologinStudyInfo study={study} />,
+    ...(isLoggedIn ? { TempInfo: <StudyInfo study={study} /> } : {}),
+    ...(isLoggedIn ? { 가입했을때정보: <JoinTempInfo study={study} /> } : {}),
+    ...(isLoggedIn ? {} : { 가입Xinfo: <NologinStudyInfo study={study} /> }),
+    ...(isLoggedIn ? {} : { TempQnA: <StudyQnA study={study} /> }),
+    ...(isLoggedIn ? {} : { 회원정보: <StudyRecord study={study} /> }),
+    ...(isLoggedIn ? {} : { TempReview: <StudyReview study={study} /> }),
   }
-
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
