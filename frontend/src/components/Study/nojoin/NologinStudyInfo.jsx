@@ -7,6 +7,7 @@ import bookmark from '../../../static/mark/bookmark-white.png'
 import view from '../../../static/mark/view.png'
 
 export default function TempInfo({ study }) {
+  console.log(study)
   return (
     <div className="big_box">
       <div className="study_container">
@@ -26,6 +27,11 @@ export default function TempInfo({ study }) {
             </Link>
           </h3>
           <h3>해시태그</h3>
+          <div style={{ display: 'flex' }}>
+            {study.studyTags?.map(tag => (
+              <p key={tag.id}>#{tag.tag?.keyword}</p>
+            ))}
+          </div>
           <div
             style={{
               display: 'flex',
