@@ -4,9 +4,27 @@ import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
 import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
+import {
+  endDateToString,
+  startDateToString,
+} from '../../utils/FormateDateToString'
+import { updateStudy } from '../../api/study'
+import StringToDate from '../../utils/FormateStringToDate'
 
-export default function TempInfo({ study }) {
+export default function StudyInfo({ study }) {
   const [memos, setMemos] = useState([])
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+
+  const handleStartDateChange = date => {
+    console.log(date.toUTCString())
+    console.log(startDateToString(date))
+    setStartDate(date)
+  }
+
+  const handleEndDateChange = date => {
+    setEndDate(date)
+  }
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
       ...prevMemos,
@@ -16,6 +34,29 @@ export default function TempInfo({ study }) {
       },
     ])
   }
+  console.log('study : ', study)
+  const newStudy = {
+    ...study,
+    // sessions: [...study.sessions],
+    studyTags: [...study.studyTags],
+    studyNotices: [...study.studyNotices],
+  }
+  console.log(newStudy)
+
+  const handleUpdateStudy = () => {
+    newStudy.startedAt = startDateToString(startDate)
+    newStudy.endedAt = endDateToString(endDate)
+    updateStudy(
+      newStudy,
+      ({ data }) => {
+        console.log(data)
+      },
+      ({ data }) => {
+        console.log(data)
+      },
+    )
+  }
+
   const handleDeleteMemo = memoId => {
     const updatedMemos = memos.filter(memo => memo.id !== memoId)
     setMemos(updatedMemos)
@@ -91,7 +132,10 @@ export default function TempInfo({ study }) {
           </ul>
         </div>
         <div>
-          <DatePicker />
+          <DatePicker
+            changeStartDate={handleStartDateChange}
+            changeEndDate={handleEndDateChange}
+          />
         </div>
       </div>
       <div>
@@ -101,7 +145,15 @@ export default function TempInfo({ study }) {
           </ul>
         </div>
       </div>
-      <DatePicker />
+      <DatePicker
+        changeStartDate={handleStartDateChange}
+        changeEndDate={handleEndDateChange}
+        initStartDate={StringToDate(study.startedAt)}
+        initEndDate={StringToDate(study.endedAt)}
+      />
+      <button type="button" onClick={handleUpdateStudy}>
+        수정
+      </button>
     </div>
   )
 }
