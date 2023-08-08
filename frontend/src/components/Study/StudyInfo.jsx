@@ -33,8 +33,8 @@ export default function TempInfo({ study }) {
           <h3>
             스터디장 :{' '}
             <Link
-              to={`/user/${study.leaderProfile.id}`}
-              state={{ userId: study.leaderProfile.id }}
+              to={`/user/${study.leaderProfile?.id}`}
+              state={{ userId: study.leaderProfile?.id }}
               className="dropdown_toggle"
             >
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
@@ -51,9 +51,7 @@ export default function TempInfo({ study }) {
         </div>
       </div>
       <div className="info_text">
-        <ul>
-          <p>스터디 정보</p>
-        </ul>
+        <p>스터디 정보</p>
       </div>
       <h3>{study.description}</h3>
       <div>모집 마감 - {study.recruitFinishedAt?.split(' ')[0]} 까지</div>
@@ -70,18 +68,14 @@ export default function TempInfo({ study }) {
           : `장소 - ${study.sido}, ${study.gugun}`}{' '}
       </p>
       <div className="info_text">
-        <ul>
-          <p>커리큘럼</p>
-        </ul>
+        <p>커리큘럼</p>
       </div>
       <div style={{ textAlign: 'left', margin: '10px' }}>
         <StudyCurriculum />
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>모집대상</p>
-          </ul>
+          <p>모집대상</p>
         </div>
         <div>
           <MemoInput onAddMemo={handleAddMemo} />
@@ -90,9 +84,7 @@ export default function TempInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>스터디 기간</p>
-          </ul>
+          <p>스터디 기간</p>
         </div>
         <div>
           <DatePicker />
@@ -100,9 +92,7 @@ export default function TempInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>모집 기간</p>
-          </ul>
+          <p>모집 기간</p>
         </div>
       </div>
       <DatePicker />

@@ -1,14 +1,12 @@
 import React from 'react'
 // import { Tabs } from 'antd'
 import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
-export default function App() {
+export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
-
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
 
   const handleLogout = () => {
     dispatch(userAction.logout())

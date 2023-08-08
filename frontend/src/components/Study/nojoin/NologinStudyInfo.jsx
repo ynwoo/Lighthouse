@@ -60,14 +60,11 @@ export default function TempInfo({ study }) {
         </ul>
       </div>
       <p style={{ margin: '0 auto' }}>{study.description}</p>
-      {study.rule?.split('\n')?.map(rulee => (
-        <p>{rulee}</p>
+      {study.rule?.split('\n')?.map((rulee, i) => (
+        <p key={i}>{rulee}</p>
       ))}
 
       <p>{study.badge && `배지 - ${study.badge.name}`}</p>
-      {typeof study.studyTags === 'string' && study.studyTags.trim() !== '' && (
-        <p>tags - {study.studyTags}</p>
-      )}
 
       <p>
         {' '}

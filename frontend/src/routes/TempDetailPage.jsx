@@ -11,11 +11,10 @@ import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 import { studyAction } from '../store/study'
 import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 
-export default function TempDetailPage() {
+export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
   // const isLogined = true // Replace with actual login status
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
 
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
@@ -33,7 +32,7 @@ export default function TempDetailPage() {
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
-        <SideComponent study={study} />
+        <SideComponent study={study} isLoggedIn={isLoggedIn} />
       </div>
 
       {/* Tabs */}

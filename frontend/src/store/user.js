@@ -148,6 +148,7 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
+      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -172,6 +173,7 @@ export const userAction = {
     try {
       const response = await authApi.get(`/users/logout`)
       console.log(response)
+      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -248,7 +250,8 @@ export const userSlice = createSlice({
         'refresh_token',
         action.payload['refresh-token'],
       )
-      sessionStorage.removeItem('isLoggedIn', true)
+      sessionStorage.removeItem('isLoggedIn')
+      sessionStorage.removeItem('userId')
       state.isLoggedIn = false
     },
     // 마이페이지

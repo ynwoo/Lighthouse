@@ -14,6 +14,7 @@ import SignUp from './components/User/SignUp'
 import SignIn from './components/User/LogIn'
 
 function App() {
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
   const [showChat, setShowChat] = useState(false)
 
   const handleChatClick = () => {
@@ -29,11 +30,18 @@ function App() {
     >
       <Router>
         <ScrollToTop />
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} />
         <WaveComponent />
         <Routes>
-          <Route exact path="/" element={<MainPage />} />
-          <Route path="/temp/:id" element={<TempDetailPage />} />
+          <Route
+            exact
+            path="/"
+            element={<MainPage isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/temp/:id"
+            element={<TempDetailPage isLoggedIn={isLoggedIn} />}
+          />
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
