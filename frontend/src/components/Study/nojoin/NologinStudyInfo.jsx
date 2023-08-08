@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import photo from '../../../static/aris.png'
 import StudyCurriculum from '../StudyCurriculum'
