@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
@@ -87,24 +88,26 @@ export default function StudyInfo({ study }) {
           </h1>
           <h3>
             스터디장 :{' '}
-            {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            <Link
+              to={`/user/${study.leaderProfile?.id}`}
+              state={{ userId: study.leaderProfile?.id }}
+              className="dropdown_toggle"
+            >
+              {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
+            </Link>
           </h3>
           <h3>해시태그</h3>
           <div style={{ display: 'flex' }}>
-            {study.studyTags ? (
-              study.studyTags.map(tag => <p key={tag.id}>#{tag.tag.keyword}</p>)
-            ) : (
-              <p>loading...</p>
-            )}
+            {study.studyTags?.map(tag => (
+              <p key={tag.id}>#{tag.tag?.keyword}</p>
+            ))}
           </div>
           <hr />
           <p>조회수 - {study.hit}</p>
         </div>
       </div>
       <div className="info_text">
-        <ul>
-          <p>스터디 정보</p>
-        </ul>
+        <p>스터디 정보</p>
       </div>
       <h3>{study.description}</h3>
       <div>모집 마감 - {study.recruitFinishedAt?.split(' ')[0]} 까지</div>
@@ -113,8 +116,7 @@ export default function StudyInfo({ study }) {
       <p>북마크 - {study.bookmarkCnt}</p>
       <div>Tabom - {study.likeCnt}</div>
       <p>규칙 - {study.rule}</p>
-      <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
-      <p>tags - {study.studyTags}</p>
+      <p>배지 - {study.badge?.name}</p>
       <p>
         {' '}
         {study.isOnline
@@ -122,18 +124,14 @@ export default function StudyInfo({ study }) {
           : `장소 - ${study.sido}, ${study.gugun}`}{' '}
       </p>
       <div className="info_text">
-        <ul>
-          <p>커리큘럼</p>
-        </ul>
+        <p>커리큘럼</p>
       </div>
       <div style={{ textAlign: 'left', margin: '10px' }}>
         <StudyCurriculum />
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>모집대상</p>
-          </ul>
+          <p>모집대상</p>
         </div>
         <div>
           <MemoInput onAddMemo={handleAddMemo} />
@@ -142,9 +140,7 @@ export default function StudyInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>스터디 기간</p>
-          </ul>
+          <p>스터디 기간</p>
         </div>
         <div>
           <DatePicker
@@ -157,9 +153,7 @@ export default function StudyInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <ul>
-            <p>모집 기간</p>
-          </ul>
+          <p>모집 기간</p>
         </div>
       </div>
       <DatePicker
