@@ -1,39 +1,39 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import MemoInput from './utils/memo/MemoInput'
 import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
-import {
-  endDateToString,
-  startDateToString,
-} from '../../utils/FormateDateToString'
+// import {
+//   endDateToString,
+//   startDateToString,
+// } from '../../utils/FormateDateToString'
 import { updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
+// import StringToDate from '../../utils/FormateStringToDate'
 
 export default function StudyInfo({ study }) {
   const [memos, setMemos] = useState([])
-  const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
-  const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
-  const [recruitFinishedDate, setRecruitFinishedDate] = useState(
-    StringToDate(study.recruitFinishedAt),
-  )
-  const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
+  // const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
+  // const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
+  // const [recruitFinishedDate, setRecruitFinishedDate] = useState(
+  //   StringToDate(study.recruitFinishedAt),
+  // )
+  // const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
 
-  const handleStartDateChange = date => {
-    setStartDate(date)
-  }
+  // const handleStartDateChange = date => {
+  //   setStartDate(date)
+  // }
 
-  const handleEndDateChange = date => {
-    setEndDate(date)
-  }
-  const handleRecruitFinishedDateChange = date => {
-    setRecruitFinishedDate(date)
-  }
-  const handleCreatedDateChange = date => {
-    setCreatedDate(date)
-  }
+  // const handleEndDateChange = date => {
+  //   setEndDate(date)
+  // }
+  // const handleRecruitFinishedDateChange = date => {
+  //   setRecruitFinishedDate(date)
+  // }
+  // const handleCreatedDateChange = date => {
+  //   setCreatedDate(date)
+  // }
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
       ...prevMemos,
@@ -45,23 +45,38 @@ export default function StudyInfo({ study }) {
   }
 
   const handleUpdateStudy = () => {
-    const studyRequest = {
-      ...study,
-      sessions: [...study.sessions],
-      studyTags: [...study.studyTags],
-      studyNotices: [...study.studyNotices],
-      startedAt: startDateToString(startDate),
-      endedAt: endDateToString(endDate),
-      recruitFinishedAt: endDateToString(recruitFinishedDate),
-      createdAt: startDateToString(createdDate),
+    // const studyRequest = {
+    //   ...study,
+    //   // sessions: [...study.sessions],
+    //   // studyTags: [...study.studyTags],
+    //   // studyNotices: [...study.studyNotices],
+    //   // startedAt: startDateToString(startDate),
+    //   // endedAt: endDateToString(endDate),
+    //   // recruitFinishedAt: endDateToString(recruitFinishedDate),
+    //   // createdAt: startDateToString(createdDate),
+    // }
+    const studytest = {
+      id: 7,
+      title: 'test',
     }
-    const blob = new Blob([JSON.stringify(studyRequest)], {
-      type: 'application/json',
-    })
+
+    // const blob = new Blob([JSON.stringify(studytest)], {
+    //   type: 'application/json',
+    // })
+
     const formData = new FormData()
-    formData.append('studyRequest', blob)
-    formData.append('studyId', study.id)
-    console.log('blob', blob)
+    // formData.append(studytest.id, studytest[studytest.id])
+    // formData.append(studytest.title, studytest[studytest.title])
+    formData.append(
+      'saveData',
+      new Blob([JSON.stringify(studytest)], {
+        type: 'application/json',
+      }),
+    )
+    axios.put('http://localhost:8080/study', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    console.log(studytest)
     updateStudy(
       formData,
       ({ data }) => {
@@ -88,26 +103,24 @@ export default function StudyInfo({ study }) {
           </h1>
           <h3>
             스터디장 :{' '}
-            <Link
-              to={`/user/${study.leaderProfile?.id}`}
-              state={{ userId: study.leaderProfile?.id }}
-              className="dropdown_toggle"
-            >
-              {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
-            </Link>
+            {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
           </h3>
           <h3>해시태그</h3>
           <div style={{ display: 'flex' }}>
-            {study.studyTags?.map(tag => (
-              <p key={tag.id}>#{tag.tag?.keyword}</p>
-            ))}
+            {study.studyTags ? (
+              study.studyTags.map(tag => <p key={tag.id}>#{tag.tag.keyword}</p>)
+            ) : (
+              <p>loading...</p>
+            )}
           </div>
           <hr />
           <p>조회수 - {study.hit}</p>
         </div>
       </div>
       <div className="info_text">
-        <p>스터디 정보</p>
+        <ul>
+          <p>스터디 정보</p>
+        </ul>
       </div>
       <h3>{study.description}</h3>
       <div>모집 마감 - {study.recruitFinishedAt?.split(' ')[0]} 까지</div>
@@ -116,7 +129,8 @@ export default function StudyInfo({ study }) {
       <p>북마크 - {study.bookmarkCnt}</p>
       <div>Tabom - {study.likeCnt}</div>
       <p>규칙 - {study.rule}</p>
-      <p>배지 - {study.badge?.name}</p>
+      <p>배지 - {study.badge ? study.badge.name : 'loading...'}</p>
+      <p>tags - {study.studyTags}</p>
       <p>
         {' '}
         {study.isOnline
@@ -124,14 +138,18 @@ export default function StudyInfo({ study }) {
           : `장소 - ${study.sido}, ${study.gugun}`}{' '}
       </p>
       <div className="info_text">
-        <p>커리큘럼</p>
+        <ul>
+          <p>커리큘럼</p>
+        </ul>
       </div>
       <div style={{ textAlign: 'left', margin: '10px' }}>
         <StudyCurriculum />
       </div>
       <div>
         <div className="info_text">
-          <p>모집대상</p>
+          <ul>
+            <p>모집대상</p>
+          </ul>
         </div>
         <div>
           <MemoInput onAddMemo={handleAddMemo} />
@@ -140,12 +158,14 @@ export default function StudyInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <p>스터디 기간</p>
+          <ul>
+            <p>스터디 기간</p>
+          </ul>
         </div>
         <div>
           <DatePicker
-            changeStartDate={handleStartDateChange}
-            changeEndDate={handleEndDateChange}
+            // changeStartDate={handleStartDateChange}
+            // changeEndDate={handleEndDateChange}
             initStartDate={study.startedAt}
             initEndDate={study.endedAt}
           />
@@ -153,13 +173,15 @@ export default function StudyInfo({ study }) {
       </div>
       <div>
         <div className="info_text">
-          <p>모집 기간</p>
+          <ul>
+            <p>모집 기간</p>
+          </ul>
         </div>
       </div>
       <DatePicker
-        changeStartDate={handleCreatedDateChange}
-        changeEndDate={handleRecruitFinishedDateChange}
-        initStartDate={study.createdAt}
+        // changeStartDate={handleCreatedDateChange}
+        // changeEndDate={handleRecruitFinishedDateChange}
+        // initStartDate={study.createdAt}
         initEndDate={study.recruitFinishedAt}
       />
       <button type="button" onClick={handleUpdateStudy}>
