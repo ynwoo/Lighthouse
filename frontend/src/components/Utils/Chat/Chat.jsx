@@ -1,9 +1,10 @@
 import { Button, Form, Input } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 // import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
 import { useDispatch, useSelector } from 'react-redux'
 import { chatAction, receiveMessage } from '../../../store/chat'
+import { userAction } from '../../../store/user'
 
 const client = new Client({
   brokerURL: `ws://i9a409.p.ssafy.io:8082/ws/chat`,
@@ -11,8 +12,8 @@ const client = new Client({
     login: 'user',
     passcode: 'password',
   },
-  debug(str) {
-    console.log(str)
+  debug(callbackLog) {
+    console.log(`connection:  ${callbackLog}`)
   },
   reconnectDelay: 5000, // 자동 재 연결
   heartbeatIncoming: 4000,
@@ -23,12 +24,19 @@ client.activate()
 
 function Chat() {
   const dispatch = useDispatch()
+  const userInfo = useSelector(state => state.user.myInfo)
   const messages = useSelector(state => state.chat.messages)
+
+  useEffect(() => {
+    dispatch(userAction.myPage())
+  }, [])
+  console.log(userInfo)
+  console.log(userInfo.id)
 
   client.onConnect = frame => {
     // Do something, all subscribes must be done is this callback
     // This is needed because this will be executed after a (re)connect
-    console.log(frame)
+    console.log(`connection established: ${frame}`)
     client.subscribe('/sub/1', data => {
       const messageData = JSON.parse(data.body)
       dispatch(receiveMessage(messageData.message))
