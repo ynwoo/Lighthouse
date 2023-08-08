@@ -51,8 +51,8 @@ function App() {
               <Route exact path="/" element={<MainPage />} />
               <Route path="/temp/:id" element={<TempDetailPage />} />
               <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<SignIn />} />
+              {/* <Route path="/signup" element={<SignUp />} /> */}
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />
               <Route path="/tempmore" element={<TempMore />} />
