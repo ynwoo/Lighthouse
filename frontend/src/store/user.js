@@ -216,6 +216,10 @@ export const userSlice = createSlice({
       console.log(action.payload.available)
       state.nicknameIsValid = action.payload.available
     },
+    [userAction.checkNickname.rejected]: (state, action) => {
+      console.log(action.payload.available)
+      state.nicknameIsValid = action.payload.available
+    },
     // 회원가입 성공 시 확인용
     [userAction.signUp.fulfilled]: (state, action) => {
       console.log(action.payload)
