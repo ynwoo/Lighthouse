@@ -2,35 +2,38 @@ import React, { useEffect } from 'react'
 import { Tabs } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
-import TempInfo from '../components/Study/TempInfo'
-import TempMember from '../components/Study/TempMember'
-import TempQnA from '../components/Study/TempQnA'
-import TempRecord from '../components/Study/TempRecord'
-import TempReview from '../components/Study/TempReview'
+import StudyInfo from '../components/Study/StudyInfo'
+// import StudyMember from '../components/Study/StudyMember'
+import StudyQnA from '../components/Study/StudyQnA'
+import StudyRecord from '../components/Study/StudyRecord'
+import StudyReview from '../components/Study/StudyReview'
+import JoinTempInfo from '../components/Study/join/JoinTempInfo'
 import { studyAction } from '../store/study'
+import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 
 export default function TempDetailPage() {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
+  // const isLogined = true // Replace with actual login status
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
 
   useEffect(() => {
-    console.log(window.location.pathname.split('/')[2])
-    dispatch(studyAction.studyDetail(window.location.pathname.split('/')[2]))
+    console.log(window.location.pathname?.split('/')[2])
+    dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
 
-  console.log(study)
   const tabMenu = {
-    TempInfo: <TempInfo study={study} />,
-    TempMember: <TempMember study={study.memberProfiles} />,
-    TempQnA: <TempQnA study={study.qnas} />,
-    TempRecord: <TempRecord study={study} />,
-    TempReview: <TempReview study={study} />,
+    ...(isLoggedIn ? { TempInfo: <StudyInfo study={study} /> } : {}),
+    ...(isLoggedIn ? { 가입했을때정보: <JoinTempInfo study={study} /> } : {}),
+    ...(isLoggedIn ? {} : { 가입Xinfo: <NologinStudyInfo study={study} /> }),
+    ...(isLoggedIn ? {} : { TempQnA: <StudyQnA study={study} /> }),
+    ...(isLoggedIn ? {} : { 회원정보: <StudyRecord study={study} /> }),
+    ...(isLoggedIn ? {} : { TempReview: <StudyReview study={study} /> }),
   }
-
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
-        <SideComponent />
+        <SideComponent study={study} />
       </div>
 
       {/* Tabs */}

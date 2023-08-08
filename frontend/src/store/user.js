@@ -43,8 +43,6 @@ authApi.interceptors.response.use(
         alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
-      alert('로그인이 필요합니다!')
-      window.location.href = '/login'
       return Promise.reject(err)
     }
     console.log('hmm...')
@@ -190,9 +188,7 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-
-  // 프로필 불러오기
-  profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
+  userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/users/${payload}`)
       console.log(response)
@@ -240,7 +236,7 @@ export const userSlice = createSlice({
       sessionStorage.setItem('access_token', action.payload['access-token'])
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
-      sessionStorage.setItem('id', action.payload['user-id'])
+      state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
@@ -252,6 +248,7 @@ export const userSlice = createSlice({
         action.payload['refresh-token'],
       )
       sessionStorage.removeItem('isLoggedIn', true)
+      state.isLoggedIn = false
     },
     // 마이페이지
     [userAction.myPage.fulfilled]: (state, action) => {
