@@ -29,7 +29,8 @@ export default function MainPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
-
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
+  console.log(studies)
   useEffect(() => {
     console.log(studies)
     dispatch(studyAction.studyList(params))
