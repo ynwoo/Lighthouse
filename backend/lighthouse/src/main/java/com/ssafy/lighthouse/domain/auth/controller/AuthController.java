@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +44,9 @@ public class AuthController {
 	}
 
 	@GetMapping("/callback/google")
-	public ResponseEntity<?> successGoogleLogin(@RequestParam("code") String accessCode) {
+	public ResponseEntity<?> successGoogleLogin(
+		@RequestParam("code") String accessCode,
+		HttpServletResponse response) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 
@@ -65,20 +70,49 @@ public class AuthController {
 			userService.saveRefreshToken(userEntity.getId(), refreshToken);
 			log.debug("소셜 로그인 accessToken 정보 : {}", accessToken);
 			log.debug("소셜 로그인 refreshToken 정보 : {}", refreshToken);
-			resultMap.put("user-id", userEntity.getId());
-			resultMap.put("access-token", accessToken);
-			resultMap.put("refresh-token", refreshToken);
-			resultMap.put("message", SUCCESS);
 
 			// 알림 목록 불러오기
 			List<AlertDto> alertDtoList = userService.getAlertDtoList(userEntity.getId());
 			resultMap.put("alerts", alertDtoList);
+
+			Cookie c1 = makeCookie("access_token", accessToken);
+			response.addCookie(c1);
+
+			Cookie c2 = makeCookie("refresh_token", refreshToken);
+			response.addCookie(c2);
+
+			Cookie c3 = makeCookie("user_id", userEntity.getId().toString());
+			response.addCookie(c3);
+
+			// StringBuilder sb = new StringBuilder();
+			// for (AlertDto alertDto : alertDtoList) {
+			// 	System.out.println(alertDto);
+			// 	sb.append(alertDto);
+			// }
+			// System.out.println(sb);
+			// log.debug(sb.toString());
+			// Cookie c4 = makeCookie("alerts", sb.toString());
+			// response.addCookie(c4);
+
+			resultMap.put("user-id", userEntity.getId());
+			resultMap.put("access-token", accessToken);
+			resultMap.put("refresh-token", refreshToken);
+			resultMap.put("message", SUCCESS);
 
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return new ResponseEntity<>(resultMap, status);
+	}
+
+	private Cookie makeCookie(String name, String value) {
+		Cookie cookie = new Cookie(name, value);
+		cookie.setMaxAge(60 * 60 * 24 * 7);
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+
+		return cookie;
 	}
 
 }
