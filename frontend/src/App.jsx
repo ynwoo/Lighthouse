@@ -10,7 +10,6 @@ import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
-import TempMore from './components/Study/TempMore'
 import SignUp from './components/User/SingUp'
 import SignIn from './components/User/SignIn'
 

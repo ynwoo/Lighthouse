@@ -64,6 +64,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   userInfo: {},
+  profile: {},
 }
 
 export const userAction = {
@@ -155,6 +156,20 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  googleOauth: createAsyncThunk(
+    'user/googleLogin',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await axios.post(
+          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
   // 로그아웃
   logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
     try {
@@ -179,12 +194,7 @@ export const userAction = {
   // 프로필 불러오기
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
-      console.log(
-        'profile - payload : ',
-        payload,
-        `${API_URL}/users/${payload ?? 1}`,
-      )
-      const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
+      const response = await authApi.get(`${API_URL}/users/${payload}`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -230,8 +240,10 @@ export const userSlice = createSlice({
       sessionStorage.setItem('access_token', action.payload['access-token'])
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
+      sessionStorage.setItem('id', action.payload['user-id'])
       console.log(sessionStorage.getItem('refresh_token'))
     },
+    // 로그아웃 성공 시 토큰 삭제
     [userAction.logout.fulfilled]: (state, action) => {
       // tokens save in session storage
       sessionStorage.removeItem('access_token', action.payload['access-token'])
@@ -241,9 +253,15 @@ export const userSlice = createSlice({
       )
       sessionStorage.removeItem('isLoggedIn', true)
     },
+    // 마이페이지
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
+    },
+    // 마이페이지
+    [userAction.profile.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.profile = action.payload
     },
   },
 })
