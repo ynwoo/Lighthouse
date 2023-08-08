@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 
-export default function SideComponent(props) {
-  console.log(props)
+export default function SideComponent({ isLoggedIn }) {
+  console.log(isLoggedIn)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
@@ -40,7 +39,6 @@ export default function SideComponent(props) {
   }
 
   const Pic = profilePic
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
   const location = useLocation()
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
   const isTempPath = location.pathname.includes('/temp')

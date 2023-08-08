@@ -29,6 +29,7 @@ export default function MainPage() {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
   console.log(studies)
   useEffect(() => {
     console.log(studies)
@@ -49,7 +50,7 @@ export default function MainPage() {
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
           <div>
-            <SideComponent />
+            <SideComponent isLoggedIn={isLoggedIn} />
           </div>
         </div>
 
