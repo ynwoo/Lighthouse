@@ -1,5 +1,5 @@
 import React, { useState } from 'react' // useState를 추가로 import
-
+import ChatRoom from './ChatRoom'
 import chat from '../../../static/chat.png'
 
 export default function ChatList() {
