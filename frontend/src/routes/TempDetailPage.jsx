@@ -10,7 +10,7 @@ import { studyAction } from '../store/study'
 import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 
-export default function TempDetailPage() {
+export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
   const isLoggedIn = sessionStorage.getItem('isLoggedIn')
@@ -35,7 +35,7 @@ export default function TempDetailPage() {
   return (
     <div className="info_container">
       <div className="info_item" style={{ flex: '2' }}>
-        <SideComponent study={study} />
+        <SideComponent study={study} isLoggedIn={isLoggedIn} />
       </div>
 
       {/* Tabs */}

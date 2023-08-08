@@ -5,7 +5,6 @@ import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 
 export default function SideComponent({ isLoggedIn }) {
-  console.log(isLoggedIn)
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')

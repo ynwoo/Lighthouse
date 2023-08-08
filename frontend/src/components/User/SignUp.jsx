@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Card,
@@ -35,6 +35,7 @@ function SignUp() {
   // dispatch와 form을 사용하기 위한 두 줄
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+  const navigate = useNavigate()
 
   // 컴포넌트가 mount되는 과정에서 서버에 요청을 보내 store에 sido를 추가해줌
   // 저 아래에 [dispatch] 부분이 없으면 인생 끝날 때 까지 요청함
@@ -79,19 +80,23 @@ function SignUp() {
           form={form}
           name="register"
           layout="vertical"
-          onFinish={value => {
+          onFinish={values => {
             // submit버튼을 누르면 이루어지는 동작
             // 비밀번호 확인 지우기
-            delete value.confirm
-            value.userTagList = []
-            // 비어있는 요소를 undefined => null로 바꾸어주는 작업
-            Object.keys(value).forEach(key => {
-              if (value[key] === undefined) {
-                value[key] = null
-              }
-            })
-            // redux => server
-            dispatch(userAction.signUp(value))
+            if (emailIsValid && nicknameIsValid) {
+              delete values.confirm
+              values.userTagList = []
+              // 비어있는 요소를 undefined => null로 바꾸어주는 작업
+              Object.keys(values).forEach(key => {
+                if (values[key] === undefined) {
+                  values[key] = null
+                }
+              })
+              // redux => server
+              dispatch(userAction.signUp(values))
+              navigate('/')
+            }
+            alert('이메일, 닉네임 중복확인을 해주세요.')
           }}
         >
           <Form.Item
@@ -104,7 +109,7 @@ function SignUp() {
               },
               {
                 required: true,
-                message: '이메일 형식이 올바르지 않습니다.',
+                message: '이메일을 입력해주세요.',
               },
             ]}
           >
@@ -136,15 +141,17 @@ function SignUp() {
               </Col>
             </Row>
           </Form.Item>
-
-          <p>
+          <p
+            style={{
+              color: emailIsValid ? 'rgb(0, 130, 255)' : 'rgb(199, 55, 55)',
+            }}
+          >
             {emailIsValid
-              ? '사용 가능한 이메일 입니다!'
+              ? '사용 가능한 이메일 입니다.'
               : emailIsValid === null
               ? ''
-              : '중복된 이메일입니다!'}
+              : '이미 사용 중인 이메일 입니다.'}
           </p>
-
           <Form.Item
             name="password"
             label="비밀번호"
@@ -199,7 +206,7 @@ function SignUp() {
               },
               {
                 required: true,
-                message: '닉네임을 작성해주세요 !',
+                message: '닉네임을 입력해주세요.',
               },
             ]}
           >
@@ -231,12 +238,16 @@ function SignUp() {
               </Col>
             </Row>
           </Form.Item>
-          <p>
+          <p
+            style={{
+              color: nicknameIsValid ? 'rgb(0, 130, 255)' : 'rgb(199, 55, 55)',
+            }}
+          >
             {nicknameIsValid
-              ? '사용 가능한 닉네임 입니다!'
+              ? '사용 가능한 닉네임 입니다.'
               : nicknameIsValid === null
               ? ''
-              : '중복된 닉네임입니다!'}
+              : '이미 사용 중인 닉네임 입니다.'}
           </p>
 
           <Form.Item label="나이" name="age">
