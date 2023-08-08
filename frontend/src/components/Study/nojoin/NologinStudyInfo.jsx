@@ -19,9 +19,17 @@ export default function TempInfo({ study }) {
             {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
           </h3>
           <h3>해시태그</h3>
-          <div style={{ display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '20px',
+            }}
+          >
             {study.studyTags ? (
-              study.studyTags.map(tag => <p key={tag.id}>#{tag.tag.keyword}</p>)
+              study.studyTags.map(tag => (
+                <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
+              ))
             ) : (
               <p>loading...</p>
             )}
@@ -35,7 +43,6 @@ export default function TempInfo({ study }) {
               <img src={view} alt="" style={{ width: '20px' }} />
             </div>
             <div> {study.bookmarkCnt}</div>
-            {/* <div>{study.bookmarkCnt}</div> */}
             <div>
               <img src={bookmark} alt="" style={{ width: '20px' }} />
             </div>
