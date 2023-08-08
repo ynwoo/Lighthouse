@@ -25,10 +25,11 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 }
 // 내부 탭
-export default function MainPage() {
+export default function MainPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
   console.log(studies)
   useEffect(() => {
     console.log(studies)
@@ -49,10 +50,9 @@ export default function MainPage() {
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
           <div>
-            <SideComponent />
+            <SideComponent isLoggedIn={isLoggedIn} />
           </div>
         </div>
-
         {/* 컨텐츠 */}
         <div className="main_item">
           <Content style={contentStyle}>
@@ -66,7 +66,7 @@ export default function MainPage() {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <MainComponent />
+            <MainComponent isLoggedIn={isLoggedIn} />
           </Content>
         </div>
         {/* </div> */}

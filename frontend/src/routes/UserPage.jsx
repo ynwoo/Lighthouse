@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
   const dispatch = useDispatch()
+  const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   useEffect(() => {
-    const userId = sessionStorage.getItem('userId')
+    const { userId } = location.state
     console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
   }, [])

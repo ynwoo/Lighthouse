@@ -1,7 +1,7 @@
 import React from 'react'
 // import { Layout, Button, Checkbox, Form, Input } from 'antd'
 import { Form, Input, Button, Checkbox, Card, Typography, Col, Row } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
@@ -16,7 +16,6 @@ const onFinishFailed = errorInfo => {
 //
 
 function LogIn() {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
   const onFinish = value => {
@@ -24,9 +23,7 @@ function LogIn() {
     dispatch(userAction.login(value)).then(res => {
       // 로그인 성공하면 메인으로 보내주는 코드
       // 실패하면 안된다 함
-      if (res.type === 'user/login/fulfilled') {
-        navigate('/')
-      } else {
+      if (res.type === 'user/login/rejected') {
         alert('안돼')
       }
     })
