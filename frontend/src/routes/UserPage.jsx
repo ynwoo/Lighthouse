@@ -74,9 +74,9 @@ export default function UserPage() {
                 marginTop: '20px',
               }}
             >
-              <div style={{ textAlign: 'left' }}>
+              <div style={{ textAlign: 'left', display: 'flex' }}>
                 {profile.tags?.map(tag => (
-                  <li key={tag.id}># {tag.keyword}</li>
+                  <p key={tag.id}>&nbsp;#{tag.keyword} &nbsp;</p>
                 ))}
               </div>
             </div>
@@ -143,6 +143,7 @@ export default function UserPage() {
                 key={badge.id}
                 src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${badge.imgUrl}`}
                 alt={badge.description}
+                style={{ width: '40px' }}
               />
             ))}
           </div>

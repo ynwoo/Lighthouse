@@ -29,7 +29,7 @@ export default function MainPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
-
+  console.log(studies)
   useEffect(() => {
     console.log(studies)
     dispatch(studyAction.studyList(params))

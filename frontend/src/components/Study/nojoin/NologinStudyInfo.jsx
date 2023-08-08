@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import photo from '../../../static/aris.png'
 import StudyCurriculum from '../StudyCurriculum'
@@ -7,11 +7,23 @@ import bookmark from '../../../static/mark/bookmark-white.png'
 import view from '../../../static/mark/view.png'
 
 export default function TempInfo({ study }) {
-  console.log(study)
+  const [uploadedImage, setUploadedImage] = useState(null)
+
+  const handleImageUpload = event => {
+    const imageFile = event.target.files[0]
+    if (imageFile) {
+      const imageUrl = URL.createObjectURL(imageFile)
+      setUploadedImage(imageUrl)
+    }
+  }
   return (
     <div className="big_box">
       <div className="study_container">
-        <img src={photo} alt="아리스" style={{ width: '100%' }} />
+        <img
+          src={uploadedImage || photo}
+          alt="아리스"
+          style={{ width: '100%' }}
+        />
         <div className="study_box">
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
@@ -67,6 +79,7 @@ export default function TempInfo({ study }) {
           </div>
         </div>
       </div>
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
       <div className="info_text">
         <ul>
           <p>스터디 정보</p>

@@ -375,7 +375,8 @@ p {
   align-items: center;
   margin: 10px;
   width: 70%;
-  height: 40px;
+  /* height: 40px; */
+  height: auto;
 }
 
 .u_item2 {
