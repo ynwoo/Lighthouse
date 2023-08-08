@@ -18,26 +18,9 @@ export default function StudyInfo({ study }) {
   const [recruitFinishedDate, setRecruitFinishedDate] = useState(
     StringToDate(study.recruitFinishedAt),
   )
-
-  // const [getStudy, setGetStudy] = useState(null)
-  // console.log('url', window.location.pathname.split('temp/')[1])
-  // useEffect(() => {
-  //   getDetailStudy(
-  //     window.location.pathname.split('temp/')[1],
-  //     ({ data }) => {
-  //       setGetStudy(data)
-  //     },
-  //     ({ data }) => {
-  //       console.log(data)
-  //     },
-  //   )
-  // }, [])
-  console.log('study', study)
-  console.log(StringToDate(study.startedAt))
-  console.log(startDate, endDate, recruitFinishedDate)
+  const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
 
   const handleStartDateChange = date => {
-    console.log(startDateToString(date))
     setStartDate(date)
   }
 
@@ -46,6 +29,9 @@ export default function StudyInfo({ study }) {
   }
   const handleRecruitFinishedDateChange = date => {
     setRecruitFinishedDate(date)
+  }
+  const handleCreatedDateChange = date => {
+    setCreatedDate(date)
   }
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
@@ -56,22 +42,27 @@ export default function StudyInfo({ study }) {
       },
     ])
   }
-  console.log('study : ', study)
-  const newStudy = {
-    ...study,
-    // sessions: [...study.sessions],
-    // studyTags: [...study.studyTags],
-    // studyNotices: [...study.studyNotices],
-  }
-  console.log('newStudy', newStudy)
 
   const handleUpdateStudy = () => {
-    console.log(startDate)
-    newStudy.startedAt = startDateToString(startDate)
-    newStudy.endedAt = endDateToString(endDate)
-    newStudy.recruitFinishedAt = endDateToString(recruitFinishedDate)
+    const studyRequest = {
+      ...study,
+      sessions: [...study.sessions],
+      studyTags: [...study.studyTags],
+      studyNotices: [...study.studyNotices],
+      startedAt: startDateToString(startDate),
+      endedAt: endDateToString(endDate),
+      recruitFinishedAt: endDateToString(recruitFinishedDate),
+      createdAt: startDateToString(createdDate),
+    }
+    const blob = new Blob([JSON.stringify(studyRequest)], {
+      type: 'application/json',
+    })
+    const formData = new FormData()
+    formData.append('studyRequest', blob)
+    formData.append('studyId', study.id)
+    console.log('blob', blob)
     updateStudy(
-      newStudy,
+      formData,
       ({ data }) => {
         console.log(data)
       },
@@ -159,8 +150,8 @@ export default function StudyInfo({ study }) {
           <DatePicker
             changeStartDate={handleStartDateChange}
             changeEndDate={handleEndDateChange}
-            // initStartDate={startDate}
-            // initEndDate={endDate}
+            initStartDate={study.startDate}
+            initEndDate={study.endDate}
           />
         </div>
       </div>
@@ -172,10 +163,10 @@ export default function StudyInfo({ study }) {
         </div>
       </div>
       <DatePicker
-        // changeStartDate={handleStartDateChange}
+        changeStartDate={handleCreatedDateChange}
         changeEndDate={handleRecruitFinishedDateChange}
-        // initStartDate={StringToDate(study.createdAt)}
-        // initEndDate={recruitFinishedDate}
+        initStartDate={study.createdAt}
+        initEndDate={study.recruitFinishedDate}
       />
       <button type="button" onClick={handleUpdateStudy}>
         수정
