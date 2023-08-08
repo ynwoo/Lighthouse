@@ -18,8 +18,12 @@ export default function TempDetailPage({ isLoggedIn }) {
     console.log(window.location.pathname?.split('/')[2])
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
+  const userId = sessionStorage.getItem('userId')
 
-  const tabMenu = isLoggedIn
+  // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
+  const tabMenu = study.memberProfiles?.find(
+    memberProfile => memberProfile.id === Number(userId),
+  )?.id
     ? [
         { TempInfo: <StudyInfo study={study} /> },
         { 가입했을때정보: <JoinStudyInfo study={study} /> },
