@@ -61,7 +61,6 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
-  userInfo: {},
   profile: {},
 }
 
@@ -188,7 +187,8 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  userInfo: createAsyncThunk('user/userid', async (payload, thunkAPI) => {
+  // 프로필 불러오기
+  profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/users/${payload}`)
       console.log(response)
@@ -255,7 +255,7 @@ export const userSlice = createSlice({
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
     },
-    // 마이페이지
+    // 프로필
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload)
       state.profile = action.payload
