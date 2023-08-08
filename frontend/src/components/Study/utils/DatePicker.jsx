@@ -54,11 +54,10 @@ function DateRangePicker({
   initStartDate,
   initEndDate,
 }) {
-  const [startDate, setStartDate] = useState(initStartDate ?? null)
-  const [endDate, setEndDate] = useState(initEndDate ?? null)
+  const [startDate, setStartDate] = useState(initStartDate)
+  const [endDate, setEndDate] = useState(initEndDate)
 
   const handleStartDateChange = date => {
-    console.log(date)
     setStartDate(date)
     changeStartDate(date)
   }

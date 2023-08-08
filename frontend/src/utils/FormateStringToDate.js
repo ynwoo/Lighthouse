@@ -1,5 +1,5 @@
 const StringToDate = date => {
-  return Date.parse(date)
+  return new Date(date)
 }
 
 export default StringToDate

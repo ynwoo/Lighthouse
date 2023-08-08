@@ -13,17 +13,39 @@ import StringToDate from '../../utils/FormateStringToDate'
 
 export default function StudyInfo({ study }) {
   const [memos, setMemos] = useState([])
-  const [startDate, setStartDate] = useState(null)
-  const [endDate, setEndDate] = useState(null)
+  const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
+  const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
+  const [recruitFinishedDate, setRecruitFinishedDate] = useState(
+    StringToDate(study.recruitFinishedAt),
+  )
+
+  // const [getStudy, setGetStudy] = useState(null)
+  // console.log('url', window.location.pathname.split('temp/')[1])
+  // useEffect(() => {
+  //   getDetailStudy(
+  //     window.location.pathname.split('temp/')[1],
+  //     ({ data }) => {
+  //       setGetStudy(data)
+  //     },
+  //     ({ data }) => {
+  //       console.log(data)
+  //     },
+  //   )
+  // }, [])
+  console.log('study', study)
+  console.log(StringToDate(study.startedAt))
+  console.log(startDate, endDate, recruitFinishedDate)
 
   const handleStartDateChange = date => {
-    console.log(date.toUTCString())
     console.log(startDateToString(date))
     setStartDate(date)
   }
 
   const handleEndDateChange = date => {
     setEndDate(date)
+  }
+  const handleRecruitFinishedDateChange = date => {
+    setRecruitFinishedDate(date)
   }
   const handleAddMemo = memo => {
     setMemos(prevMemos => [
@@ -38,14 +60,16 @@ export default function StudyInfo({ study }) {
   const newStudy = {
     ...study,
     // sessions: [...study.sessions],
-    studyTags: [...study.studyTags],
-    studyNotices: [...study.studyNotices],
+    // studyTags: [...study.studyTags],
+    // studyNotices: [...study.studyNotices],
   }
-  console.log(newStudy)
+  console.log('newStudy', newStudy)
 
   const handleUpdateStudy = () => {
+    console.log(startDate)
     newStudy.startedAt = startDateToString(startDate)
     newStudy.endedAt = endDateToString(endDate)
+    newStudy.recruitFinishedAt = endDateToString(recruitFinishedDate)
     updateStudy(
       newStudy,
       ({ data }) => {
@@ -135,6 +159,8 @@ export default function StudyInfo({ study }) {
           <DatePicker
             changeStartDate={handleStartDateChange}
             changeEndDate={handleEndDateChange}
+            // initStartDate={startDate}
+            // initEndDate={endDate}
           />
         </div>
       </div>
@@ -146,10 +172,10 @@ export default function StudyInfo({ study }) {
         </div>
       </div>
       <DatePicker
-        changeStartDate={handleStartDateChange}
-        changeEndDate={handleEndDateChange}
-        initStartDate={StringToDate(study.startedAt)}
-        initEndDate={StringToDate(study.endedAt)}
+        // changeStartDate={handleStartDateChange}
+        changeEndDate={handleRecruitFinishedDateChange}
+        // initStartDate={StringToDate(study.createdAt)}
+        // initEndDate={recruitFinishedDate}
       />
       <button type="button" onClick={handleUpdateStudy}>
         수정
