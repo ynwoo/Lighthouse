@@ -112,6 +112,7 @@ public class UserController {
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
+				resultMap.put("nickname", loginUser.getNickname());
 
 				// 알림 목록 불러오기
 				List<AlertDto> alertDtoList = userService.getAlertDtoList(loginUser.getId());
