@@ -1,9 +1,40 @@
 import React from 'react'
-
+import { Table } from 'antd'
+import { Link } from 'react-router-dom'
 // 템플릿 상세의 인원정보(멤버)
 
 export default function JoinStudyInfo({ study }) {
   console.log(study)
+  const dataSource = study.memberProfiles.map(member => {
+    return {
+      key: member.id,
+      nickname: (
+        <Link to={`/user/${member?.id}`} state={{ userId: member?.id }}>
+          {member.nickname}
+        </Link>
+      ),
+      description: member.description,
+      score: member.score,
+    }
+  })
+
+  const columns = [
+    {
+      title: '닉네임',
+      dataIndex: 'nickname',
+      key: 'nickname',
+    },
+    {
+      title: '자기소개',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: '점수',
+      dataIndex: 'score',
+      key: 'score',
+    },
+  ]
   return (
     <div className="big_box">
       <div className="review_box">
@@ -64,29 +95,10 @@ export default function JoinStudyInfo({ study }) {
               ))}
             </p>
           </li>
-        </div>
-
-        <div>
-          참여인원
-          {study.memberProfiles?.map(member => (
-            <li key={member.id}>
-              <p>
-                {member.nickname}{' '}
-                <img
-                  src={
-                    process.env.REACT_APP_S3_DOMAIN_URL + member.prfileImgUrl
-                  }
-                  alt=""
-                />
-                {member.badges?.map(badge => (
-                  <img
-                    src={process.env.REACT_APP_S3_DOMAIN_URL + badge.imgUrl}
-                    alt={badge.description}
-                  />
-                ))}
-              </p>
-            </li>
-          ))}
+          <div>
+            참여인원
+            <Table dataSource={dataSource} columns={columns} />
+          </div>
         </div>
       </div>
     </div>
