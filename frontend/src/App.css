@@ -4,7 +4,7 @@ body {
   background-color: transparent;
   height: 1000px;
   /* overflow-y: scroll; */
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
 /* WaveComponent CSS */
@@ -14,7 +14,7 @@ body {
   position: relative;
   width: 100%;
   height: 17vh;
-  margin-bottom: -7px; /*Fix for safari gap*/
+  margin-bottom: 0px;
   min-height: 100px;
   max-height: 250px;
   top: -50px;
@@ -375,7 +375,8 @@ p {
   align-items: center;
   margin: 10px;
   width: 70%;
-  height: 40px;
+  /* height: 40px; */
+  height: auto;
 }
 
 .u_item2 {
@@ -513,7 +514,7 @@ p {
 .info_container {
   display: grid;
   grid-template-columns: 10% 90%;
-  background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%);
+  /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
   margin-top: -50px;
   width: 100%;
 }
@@ -602,6 +603,19 @@ p {
   /* left: 20px; */
 }
 
+.big_box2 {
+  width: 1000px;
+  height: 100%;
+  border-radius: 20px;
+  text-align: center;
+  background-color: white;
+  justify-content: center;
+  align-content: center;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  position: relative;
+  padding: 20px;
+}
+
 .circular-image2 {
   position: absolute;
   /* 이미지를 수평 중앙으로 정렬하려면 50%로 설정 */
@@ -620,10 +634,11 @@ p {
   height: 100%;
   object-fit: cover;
 }
-
+/* 로그인O */
 .sidebar {
   left: 5%;
-  bottom: 13%;
+  bottom: 12%;
+  height: 280px;
   position: fixed;
   display: grid;
   grid-template-rows: 170px 30px 30px;
@@ -631,9 +646,32 @@ p {
   border-radius: 10px;
   background-color: white;
   padding: 20px;
-  padding-bottom: 40px;
-  /* margin-left: 100px;
-  margin-top: 20px; */
+}
+/* 템플릿 들어갔을 때 */
+.sidebar1 {
+  left: 5%;
+  bottom: 4%;
+  height: 350px;
+  position: fixed;
+  display: grid;
+  grid-template-rows: 170px 30px 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
+}
+/* 로그인 X */
+.sidebar2 {
+  left: 5%;
+  bottom: 2%;
+  height: 350px;
+  position: fixed;
+  display: grid;
+  grid-template-rows: 170px 30px 30px;
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: white;
+  padding: 20px;
 }
 
 .hovered-card {
@@ -703,8 +741,8 @@ h1 span {
   font-family: 'Titan One', cursive;
   font-size: 70px;
   padding: 10px;
-  font-family: 'EF_Hyunygothic';
-  color: #001880;
+  font-family: 'Pretendard-Regular';
+  color: #040815;
   text-shadow:
     0 1px 0 #020d34,
     0 2px 0 #020d34,
@@ -741,7 +779,7 @@ h1 span:nth-child(8) {
 }
 
 h1 span:nth-child(9) {
-  animation-delay: 0.8s;
+  animation-delay: 0.4s;
 }
 
 @keyframes bounce {
@@ -780,4 +818,53 @@ h1 span:nth-child(9) {
     opacity: 1;
     transform: none;
   }
+}
+
+.review_box {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  font-size: 20px;
+}
+
+.review_mini {
+  border: 2px solid #6181f1;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.review_mini2 {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  align-items: center;
+}
+
+/* LoadingComponent.css */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  bottom: 10px;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #333;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mark_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  margin-top: 10px;
 }
