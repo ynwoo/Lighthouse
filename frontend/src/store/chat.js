@@ -10,13 +10,13 @@ export const chatAction = {
     try {
       const response = await axios
         .post(`http://i9a409.p.ssafy.io:8081/kafka/publish`, {
-          type: 'TALK',
-          roomId: '1',
-          senderId: '777',
-          senderName: 'shin',
-          message: payload,
+          type: payload.type,
+          roomId: payload.roomId,
+          senderId: payload.senderId,
+          senderName: payload.userName,
+          message: payload.text,
         })
-        .then(console.log('발송 성공'))
+        .then(console.log('payload 발송 성공 +=> \n', payload))
       return thunkAPI.fulfillWithValue(response.data)
     } catch (err) {
       return thunkAPI.rejectWithValue(err)
