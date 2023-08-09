@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
-import MainComponent from '../components/Utils/MainComponent'
+import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { studyAction } from '../store/study'
 
