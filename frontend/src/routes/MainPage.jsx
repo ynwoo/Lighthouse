@@ -65,7 +65,7 @@ export default function MainPage({ isLoggedIn }) {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <MainComponent isLoggedIn={isLoggedIn} />
+            <MainComponent studies={studies} isLoggedIn={isLoggedIn} />
           </Content>
         </div>
         {/* </div> */}
