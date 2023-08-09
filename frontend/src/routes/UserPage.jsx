@@ -2,16 +2,47 @@ import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
+// import axios from 'axios'
 import { userAction } from '../store/user'
+import { authApiInstance } from '../api'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(false)
+  const followeeId = location.state.userId
+  console.log(followeeId)
+  const authApi = authApiInstance()
+
+  const handleFollowClick = async () => {
+    try {
+      if (isFollowing) {
+        // 언팔로우 API 요청
+        await authApi.delete(`/users/follow/${followeeId}`)
+      } else {
+        // 팔로우 API 요청
+        await authApi.post(`/users/follow/${followeeId}`)
+      }
+      setIsFollowing(!isFollowing) // 팔로우 상태 변경
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error)
+    }
+  }
+
+  const handleUnFollowClick = async () => {
+    try {
+      // 언팔로우 API 요청
+      await authApi.delete(`/users/follow/${followeeId}`)
+      // setIsFollowing(!isFollowing) // 팔로우 상태 변경
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error)
+    }
+  }
 
   useEffect(() => {
     const { userId } = location.state
-    console.log('asdfasdfasdfasdf', userId)
+    // console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
   }, [])
   const profile = useSelector(state => state.user.profile)
@@ -37,6 +68,21 @@ export default function UserPage() {
         marginTop: '-47px',
       }}
     >
+      <div>
+        {/* 버튼 렌더링 */}
+        <Button
+          type={isFollowing ? 'default' : 'primary'}
+          onClick={handleFollowClick}
+        >
+          {isFollowing ? '언팔로우' : '팔로우'}
+        </Button>
+        <Button
+          type={!isFollowing ? 'default' : 'primary'}
+          onClick={handleUnFollowClick}
+        >
+          {!isFollowing ? '언팔로우' : '팔로우'}
+        </Button>
+      </div>
       <div
         className="comp"
         style={{

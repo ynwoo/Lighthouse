@@ -3,7 +3,7 @@ import { Form, Select } from 'antd'
 
 // 템플릿 상세의 질의응답
 
-export default function TempQnA() {
+export default function UserEdit() {
   const [checkboxValues, setCheckboxValues] = useState({
     개발: false,
     알고리즘: false,
@@ -44,6 +44,7 @@ export default function TempQnA() {
         alignItems: 'center',
       }}
     >
+      ;
       <div className="circular-image">
         <img src="/logo192.png" alt="안뜸" />
       </div>
