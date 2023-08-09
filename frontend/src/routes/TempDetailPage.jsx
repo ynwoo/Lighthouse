@@ -26,9 +26,7 @@ export default function TempDetailPage({ isLoggedIn }) {
   )?.id
     ? [
         { TempInfo: <StudyInfo study={study} /> },
-        {
-          가입했을때정보: <JoinStudyInfo study={study} />,
-        },
+        { 가입했을때정보: <JoinStudyInfo study={study} /> },
       ]
     : [
         { 가입Xinfo: <NologinStudyInfo study={study} /> },
