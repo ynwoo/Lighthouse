@@ -101,14 +101,14 @@ public class AuthController {
         HttpHeaders headers = new HttpHeaders();
 
         // 프론트 서버로 리다이렉트
-        headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
+        headers.setLocation(URI.create("http://127.0.0.1:3000/"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     private Cookie makeCookie(String name, String value) {
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(60 * 60 * 24 * 7);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         cookie.setPath("/");
 
         return cookie;
