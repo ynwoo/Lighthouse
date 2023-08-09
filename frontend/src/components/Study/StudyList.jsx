@@ -1,84 +1,43 @@
-import React, { useState } from 'react'
-import { Table, Input, Button, Space } from 'antd'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import StudyCard from './StudyCard'
+import { studyAction } from '../../store/study'
 
-function CurriculumTable() {
-  const [curriculum, setCurriculum] = useState('')
-  const [todos, setTodos] = useState([])
+function MainComponent() {
+  const dispatch = useDispatch()
+  const params = useSelector(state => state.study.params)
+  const studies = useSelector(state => state.study.studies)
 
-  const handleAddCurriculum = () => {
-    if (curriculum.trim() === '') {
-      return
-    }
+  useEffect(() => {
+    console.log(params)
+    dispatch(studyAction.studyList(params))
+    dispatch(studyAction.getTags())
+  }, [])
 
-    setTodos(prevTodos => [
-      ...prevTodos,
-      {
-        id: Date.now(),
-        text: curriculum,
-        completed: false,
-      },
-    ])
-
-    setCurriculum('')
-  }
-
-  const handleDeleteTodo = id => {
-    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id))
-  }
-
-  const columns = [
-    {
-      title: 'Curriculum',
-      dataIndex: 'text',
-      key: 'text',
-      render: (text, record) => (
-        <span
-          style={{
-            textDecoration: record.completed ? 'line-through' : 'none',
-          }}
-        >
-          {text}
-        </span>
-      ),
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space>
-          <Button onClick={() => handleDeleteTodo(record.id)}>Delete</Button>
-        </Space>
-      ),
-    },
-  ]
-
-  const tableData = todos.map(todo => ({
-    ...todo,
-    key: todo.id,
-  }))
+  console.log(sessionStorage.getItem('isLoggedIn'))
+  console.log(studies)
 
   return (
     <div>
-      <div className="info_text">
-        <ul>
-          <p>신청대상</p>
-        </ul>
+      <div style={{ width: '1000px' }}>
+        <div
+          style={{
+            margin: '10px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            width: '1100px',
+          }}
+        >
+          <div className="big_box_card">
+            {studies
+              ? studies.map(study => <StudyCard study={study} key={study.id} />)
+              : 'loading...'}
+          </div>
+        </div>
       </div>
-
-      <Table columns={columns} dataSource={tableData} />
-      <Space style={{ marginBottom: 16 }}>
-        <Input
-          type="text"
-          value={curriculum}
-          onChange={e => setCurriculum(e.target.value)}
-          placeholder="Enter a new curriculum..."
-        />
-        <Button type="primary" onClick={handleAddCurriculum}>
-          Add Curriculum
-        </Button>
-      </Space>
     </div>
   )
 }
 
-export default CurriculumTable
+export default MainComponent

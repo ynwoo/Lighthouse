@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
-import MainComponent from '../components/Utils/MainComponent'
+import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import dummy from '../db/data.json'
 
@@ -50,7 +50,7 @@ export default function MainPage() {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <MainComponent />
+            <StudyList />
           </Content>
         </div>
       </div>
