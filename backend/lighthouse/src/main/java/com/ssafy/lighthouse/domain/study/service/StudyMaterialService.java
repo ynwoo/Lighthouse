@@ -11,10 +11,10 @@ public interface StudyMaterialService {
 	List<StudyMaterial> findAllByStudyId(Long studyId);
 	Long createMaterial(StudyMaterialDto.Req dto);
 
-	Long updateMaterialFromId(Long id, StudyMaterialDto.Req dto, MultipartFile file);
+	Long updateMaterialFromId(Long id, StudyMaterialDto.Req dto);
 
-	Long updateMaterial(StudyMaterial targetStudyMaterial, StudyMaterialDto.Req dto,
-		MultipartFile file);
+	Long updateMaterial(StudyMaterial targetStudyMaterial, StudyMaterialDto.Req dto);
+
 	Long removeMaterial(Long id);
 	StudyMaterial findById(Long id);
 }

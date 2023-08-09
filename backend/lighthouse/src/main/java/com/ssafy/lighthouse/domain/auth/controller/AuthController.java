@@ -27,92 +27,91 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/auth")
 public class AuthController {
-	private final UserService userService;
-	private final OAuthService oAuthService;
-	private final JwtService jwtService;
 
-	@Autowired
-	public AuthController(OAuthService oAuthService, UserService userService, JwtService jwtService) {
-		this.oAuthService = oAuthService;
-		this.userService = userService;
-		this.jwtService = jwtService;
-	}
+    private final UserService userService;
+    private final OAuthService oAuthService;
+    private final JwtService jwtService;
 
-	@GetMapping("/callback/google")
-	public ResponseEntity<?> successGoogleLogin(
-		@RequestParam("code") String accessCode,
-		HttpServletResponse response) {
-		// Map<String, Object> resultMap = new HashMap<>();
-		// HttpStatus status;
+    @Autowired
+    public AuthController(OAuthService oAuthService, UserService userService,
+            JwtService jwtService) {
+        this.oAuthService = oAuthService;
+        this.userService = userService;
+        this.jwtService = jwtService;
+    }
 
-		OAuthTokenDto oAuthTokenDto = oAuthService.getGoogleAccessToken(accessCode);
-		OAuthUserInfoDto userInitialInfo = oAuthService.getUserInfo(oAuthTokenDto);
-		System.out.println(userInitialInfo);
+    @GetMapping("/callback/google")
+    public ResponseEntity<?> successGoogleLogin(
+            @RequestParam("code") String accessCode,
+            HttpServletResponse response) {
 
-		// providerID로 User 존재하는지 확인
-		User userEntity = userService.getUserByProviderId(userInitialInfo.getProviderId());
-		if (userEntity == null) { // 새로운 유저 -> User 테이블에 저장
-			userEntity = userService.addOAuthUser(userInitialInfo);
-		} else if (userEntity.getIsValid() == 0) {
-			userEntity.updateIsvalid();
-		}
+        OAuthTokenDto oAuthTokenDto = oAuthService.getGoogleAccessToken(accessCode);
+        OAuthUserInfoDto userInitialInfo = oAuthService.getUserInfo(oAuthTokenDto);
+        System.out.println(userInitialInfo);
 
-		// jwt 토큰 발급
-		String accessToken = jwtService.createAccessToken("userId", userEntity.getId());
-		String refreshToken = jwtService.createRefreshToken("userId", userEntity.getId());
+        // providerID로 User 존재하는지 확인
+        User userEntity = userService.getUserByProviderId(userInitialInfo.getProviderId());
+        if (userEntity == null) { // 새로운 유저 -> User 테이블에 저장
+            userEntity = userService.addOAuthUser(userInitialInfo);
+        } else if (userEntity.getIsValid() == 0) { // 회원탈퇴했던 유저라면 복귀
+            userEntity.updateIsvalid();
+        }
 
-		try {
-			userService.saveRefreshToken(userEntity.getId(), refreshToken);
-			log.debug("소셜 로그인 accessToken 정보 : {}", accessToken);
-			log.debug("소셜 로그인 refreshToken 정보 : {}", refreshToken);
+        // jwt 토큰 발급
+        String accessToken = jwtService.createAccessToken("userId", userEntity.getId());
+        String refreshToken = jwtService.createRefreshToken("userId", userEntity.getId());
 
-			// 알림 목록 불러오기
-			// List<AlertDto> alertDtoList = userService.getAlertDtoList(userEntity.getId());
-			// resultMap.put("alerts", alertDtoList);
+        try {
+            userService.saveRefreshToken(userEntity.getId(), refreshToken);
+            log.debug("소셜 로그인 accessToken 정보 : {}", accessToken);
+            log.debug("소셜 로그인 refreshToken 정보 : {}", refreshToken);
 
-			Cookie c1 = makeCookie("access_token", accessToken);
-			response.addCookie(c1);
+            // 알림 목록 불러오기
+            // List<AlertDto> alertDtoList = userService.getAlertDtoList(userEntity.getId());
+            // resultMap.put("alerts", alertDtoList);
 
-			Cookie c2 = makeCookie("refresh_token", refreshToken);
-			response.addCookie(c2);
+            Cookie c1 = makeCookie("access_token", accessToken);
+            response.addCookie(c1);
 
-			Cookie c3 = makeCookie("user_id", userEntity.getId().toString());
-			response.addCookie(c3);
+            Cookie c2 = makeCookie("refresh_token", refreshToken);
+            response.addCookie(c2);
 
-			// StringBuilder sb = new StringBuilder();
-			// for (AlertDto alertDto : alertDtoList) {
-			// 	System.out.println(alertDto);
-			// 	sb.append(alertDto);
-			// }
-			// System.out.println(sb);
-			// log.debug(sb.toString());
-			// Cookie c4 = makeCookie("alerts", sb.toString());
-			// response.addCookie(c4);
+            Cookie c3 = makeCookie("user_id", userEntity.getId().toString());
+            response.addCookie(c3);
 
-			// resultMap.put("user-id", userEntity.getId());
-			// resultMap.put("access-token", accessToken);
-			// resultMap.put("refresh-token", refreshToken);
-			// resultMap.put("message", SUCCESS);
+            // StringBuilder sb = new StringBuilder();
+            // for (AlertDto alertDto : alertDtoList) {
+            // 	System.out.println(alertDto);
+            // 	sb.append(alertDto);
+            // }
+            // System.out.println(sb);
+            // log.debug(sb.toString());
+            // Cookie c4 = makeCookie("alerts", sb.toString());
+            // response.addCookie(c4);
 
-			// status = HttpStatus.OK;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		HttpHeaders headers = new HttpHeaders();
+            // resultMap.put("user-id", userEntity.getId());
+            // resultMap.put("access-token", accessToken);
+            // resultMap.put("refresh-token", refreshToken);
+            // resultMap.put("message", SUCCESS);
 
-		// 프론트 서버로 리다이렉트
-		headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
-		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-		// return new ResponseEntity<>(resultMap, status);
-	}
+            // status = HttpStatus.OK;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        HttpHeaders headers = new HttpHeaders();
 
-	private Cookie makeCookie(String name, String value) {
-		Cookie cookie = new Cookie(name, value);
-		cookie.setMaxAge(60 * 60 * 24 * 7);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
+        // 프론트 서버로 리다이렉트
+        headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    }
 
-		return cookie;
-	}
+    private Cookie makeCookie(String name, String value) {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setMaxAge(60 * 60 * 24 * 7);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        return cookie;
+    }
 
 }

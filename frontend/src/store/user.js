@@ -29,18 +29,14 @@ authApi.interceptors.response.use(
   async function (err) {
     console.log(axios.defaults.headers)
     console.log(err)
-    if (
-      err.response &&
-      err.response.status === 401 &&
-      sessionStorage.getItem('access_token') !== null
-    ) {
+    if (err.response && err.response.status === 401) {
       try {
         console.log('try 진입')
         delete axios.defaults.headers.common['access-token']
         console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
-        const newAccessToken = response.headers.Authorization
+        const newAccessToken = response.headers['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
@@ -65,6 +61,7 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
+  profile: {},
 }
 
 export const userAction = {
@@ -151,12 +148,37 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
+      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-
+  googleOauth: createAsyncThunk(
+    'user/googleLogin',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await axios.post(
+          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
+  // 로그아웃
+  logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
+    try {
+      const response = await authApi.get(`/users/logout`)
+      console.log(response)
+      window.location.href = '/'
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
   // 내 정보 불러오기
   myPage: createAsyncThunk('user/mypage', async (_, thunkAPI) => {
     try {
@@ -167,16 +189,10 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-
   // 프로필 불러오기
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
-      console.log(
-        'profile - payload : ',
-        payload,
-        `${API_URL}/users/${payload ?? 1}`,
-      )
-      const response = await authApi.get(`${API_URL}/users/${payload ?? 1}`)
+      const response = await authApi.get(`${API_URL}/users/${payload}`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -207,8 +223,16 @@ export const userSlice = createSlice({
       console.log(action.payload.available)
       state.emailIsValid = action.payload.available
     },
+    [userAction.checkEmail.rejected]: (state, action) => {
+      console.log(action.payload.available)
+      state.emailIsValid = action.payload.available
+    },
     // nickname 중복 체크 시 결과 저장
     [userAction.checkNickname.fulfilled]: (state, action) => {
+      console.log(action.payload.available)
+      state.nicknameIsValid = action.payload.available
+    },
+    [userAction.checkNickname.rejected]: (state, action) => {
       console.log(action.payload.available)
       state.nicknameIsValid = action.payload.available
     },
@@ -222,11 +246,31 @@ export const userSlice = createSlice({
       sessionStorage.setItem('access_token', action.payload['access-token'])
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
+      sessionStorage.setItem('userId', action.payload['user-id'])
+      state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
+    // 로그아웃 성공 시 토큰 삭제
+    [userAction.logout.fulfilled]: (state, action) => {
+      // tokens save in session storage
+      sessionStorage.removeItem('access_token', action.payload['access-token'])
+      sessionStorage.removeItem(
+        'refresh_token',
+        action.payload['refresh-token'],
+      )
+      sessionStorage.removeItem('isLoggedIn')
+      sessionStorage.removeItem('userId')
+      state.isLoggedIn = false
+    },
+    // 마이페이지
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
+    },
+    // 프로필
+    [userAction.profile.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.profile = action.payload
     },
   },
 })

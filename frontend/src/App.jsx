@@ -6,14 +6,15 @@ import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import TempDetailPage from './routes/TempDetailPage'
 import UserPage from './routes/UserPage'
-import SignInPage from './routes/SignInPage'
-import SignUpPage from './routes/SignUpPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
+import SignUp from './components/User/SignUp'
+import SignIn from './components/User/LogIn'
 
 function App() {
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
   const [showChat, setShowChat] = useState(false)
 
   const handleChatClick = () => {
@@ -29,14 +30,21 @@ function App() {
     >
       <Router>
         <ScrollToTop />
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} />
         <WaveComponent />
         <Routes>
-          <Route exact path="/" element={<MainPage />} />
-          <Route path="/temp/:id" element={<TempDetailPage />} />
+          <Route
+            exact
+            path="/"
+            element={<MainPage isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/temp/:id"
+            element={<TempDetailPage isLoggedIn={isLoggedIn} />}
+          />
           <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/login" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/user_edit/:id" element={<UserEditPage />} />
           <Route path="/chat" element={<Chat />} />
         </Routes>

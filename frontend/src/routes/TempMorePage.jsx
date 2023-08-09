@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Layout } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Utils/MainComponent'
 import SearchComponent from '../components/Utils/SearchComponent'
-import { studyAction } from '../store/study'
+import dummy from '../db/data.json'
 
 const { Footer, Content } = Layout
 
@@ -25,33 +24,19 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 }
 // 내부 탭
-export default function MainPage({ isLoggedIn }) {
-  const dispatch = useDispatch()
-  const params = useSelector(state => state.study.params)
-  const studies = useSelector(state => state.study.studies)
-  console.log(studies)
-  useEffect(() => {
-    console.log(studies)
-    dispatch(studyAction.studyList(params))
-    dispatch(studyAction.getTags())
-  }, [])
+export default function MainPage() {
+  const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
 
   return (
-    <div
-      style={
-        {
-          // backgroundImage: 'linear-gradient(to bottom, #74a3ff, #ffffff 25%',
-          // marginTop: '-50px',
-        }
-      }
-    >
+    <div>
       <div className="info_container">
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
           <div>
-            <SideComponent isLoggedIn={isLoggedIn} />
+            <SideComponent study={study} />
           </div>
         </div>
+
         {/* 컨텐츠 */}
         <div className="main_item">
           <Content style={contentStyle}>
@@ -65,11 +50,11 @@ export default function MainPage({ isLoggedIn }) {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <MainComponent isLoggedIn={isLoggedIn} />
+            <MainComponent />
           </Content>
         </div>
-        {/* </div> */}
       </div>
+      {/* </div> */}
       {/* 푸터 */}
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}
