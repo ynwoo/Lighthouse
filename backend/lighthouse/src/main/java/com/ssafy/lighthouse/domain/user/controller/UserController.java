@@ -306,6 +306,16 @@ public class UserController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	// 내가 팔로우한 아이디 리스트
+	@GetMapping("/follow")
+	public ResponseEntity<?> findFollowAllByFollowerId(HttpServletRequest request) {
+		// session에서 userId 가져오기
+		Long followerId = (Long) request.getAttribute("userId");
+		log.debug("followerId : {}", followerId);
+		List<Long> followingList = userService.findFollowAllByFollowerId(followerId);
+		return new ResponseEntity<>(followingList, HttpStatus.OK);
+	}
+
 	// profile img 저장
 	@PutMapping("/profile")
 	public ResponseEntity<?> updateProfileImage(@RequestPart(value = "img") MultipartFile img,
