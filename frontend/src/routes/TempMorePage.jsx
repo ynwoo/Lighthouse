@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from 'antd'
 import SideComponent from '../components/Utils/SideComponent'
 import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
-import dummy from '../db/data.json'
+import { getStudyAll } from '../api/study'
 
 const { Footer, Content } = Layout
 
@@ -25,7 +25,35 @@ const footerStyle = {
 }
 // 내부 탭
 export default function MainPage() {
-  const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
+  // const study = dummy.study_detail[window.location.pathname.split('/')[2] - 1]
+  const [templates, setTemplates] = useState(null)
+  const params = new URLSearchParams(window.location.search)
+  const options = {
+    page: params.get('page') || 0,
+    key: params.get('key'),
+    word: params.get('word'),
+    orderKey: params.get('order-key') || 'like',
+    orderBy: params.get('order-by') || 'desc',
+    isOnline: params.get('is-online') || 0,
+    tagIds: params.getAll('tagIds') ?? [],
+    status: 5,
+  }
+  console.log('options', options)
+
+  useEffect(() => {
+    getStudyAll(
+      options,
+      ({ data }) => {
+        console.log(data)
+        setTemplates(data.content)
+      },
+      ({ data }) => {
+        console.log(data)
+      },
+    )
+  }, [options.page])
+
+  console.log(templates)
 
   return (
     <div>
@@ -33,7 +61,7 @@ export default function MainPage() {
         {/* 사이드바 */}
         <div style={{ height: '100px' }}>
           <div>
-            <SideComponent study={study} />
+            <SideComponent study={templates} />
           </div>
         </div>
 
@@ -50,7 +78,7 @@ export default function MainPage() {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <StudyList />
+            <StudyList studies={templates} />
           </Content>
         </div>
       </div>

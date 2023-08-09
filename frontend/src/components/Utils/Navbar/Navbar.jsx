@@ -25,7 +25,9 @@ export default function Navbar({ isLoggedIn }) {
       <div style={{ display: 'flex', flexDirection: 'end-flex', zIndex: '1' }}>
         <div className="container nav_main">
           <div className="item nav_item">
-            <Link to="/">템플릿 더보기</Link>
+            <Link to="/temp?key=&word=&page=0&order-key=&order-by=&isOnline=0&status=5">
+              템플릿 더보기
+            </Link>
           </div>
           {!isLoggedIn ? (
             <>
