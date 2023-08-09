@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessTokenException.class)
-    public ResponseEntity<String> handleAccessTokenException(StudyException e) {
+    public ResponseEntity<String> handleAccessTokenException(AccessTokenException e) {
         log.debug("handleAccessTokenException : {}", e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }

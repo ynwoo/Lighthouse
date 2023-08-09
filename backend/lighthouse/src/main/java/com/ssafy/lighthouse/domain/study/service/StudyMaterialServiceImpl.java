@@ -38,17 +38,19 @@ public class StudyMaterialServiceImpl implements StudyMaterialService {
 	}
 
 	@Override
-	public Long updateMaterialFromId(final Long id, final StudyMaterialDto.Req dto, final MultipartFile file) {
+	public Long updateMaterialFromId(final Long id, final StudyMaterialDto.Req dto) {
 		StudyMaterial targetStudyMaterial = findById(id);
-		return updateMaterial(targetStudyMaterial, dto, file);
+		return updateMaterial(targetStudyMaterial, dto);
 	}
 
 	@Override
-	public Long updateMaterial(final StudyMaterial targetStudyMaterial, final StudyMaterialDto.Req dto,
-		final MultipartFile file) {
-		if (!file.isEmpty()) {
+	public Long updateMaterial(final StudyMaterial targetStudyMaterial, final StudyMaterialDto.Req dto) {
+		MultipartFile file = dto.getFile();
+		if (file != null && !file.isEmpty()) {
 			//이전 파일 삭제
-			S3Utils.deleteFile(targetStudyMaterial.getFileUrl());
+			if (targetStudyMaterial.getFileUrl() != null) {
+				S3Utils.deleteFile(targetStudyMaterial.getFileUrl());
+			}
 			String fileUrl = S3Utils.uploadFile(CATEGORY, file);
 			targetStudyMaterial.updateWithFile(dto.getStudyId(), dto.getSessionId(), dto.getType(),
 				dto.getContent(), fileUrl);
