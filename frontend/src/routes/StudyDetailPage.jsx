@@ -1,30 +1,41 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+// import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyReview from '../components/Study/StudyReview'
-import { studyAction } from '../store/study'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 import StudyMember from '../components/Study/StudyMember'
+import { getDetailStudy } from '../api/study'
 
 export default function TempDetailPage({ isLoggedIn }) {
-  const dispatch = useDispatch()
-  const study = useSelector(state => state.study.studyDetail)
-
-  console.log(study)
+  // const dispatch = useDispatch()
+  // const study = useSelector(state => state.study.studyDetail)
+  const [study, setStudy] = useState(null)
 
   useEffect(() => {
-    console.log(window.location.pathname?.split('/')[2])
-    dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
+    const studyId = window.location.pathname?.split('/')[2]
+    console.log(studyId)
+    // dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
+    getDetailStudy(
+      studyId,
+      ({ data }) => {
+        setStudy(data)
+      },
+      ({ data }) => {
+        console.log(data)
+        alert(data)
+      },
+    )
   }, [])
+  console.log(study)
   const userId = sessionStorage.getItem('userId')
 
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { TempInfo: <StudyInfo study={study} /> },
-    ...(study.memberProfiles?.find(
+    ...(study?.memberProfiles?.find(
       memberProfile => memberProfile.id === Number(userId),
     )?.id
       ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]

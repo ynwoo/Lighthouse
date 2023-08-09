@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
@@ -7,12 +7,12 @@ import {
   endDateToString,
   startDateToString,
 } from '../../utils/FormateDateToString'
-import { updateStudy } from '../../api/study'
+import { createStudy, updateStudy } from '../../api/study'
 import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
-import { CreateButton, UpdateButton } from './utils/button'
+import { CreateButton } from './utils/button'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -23,6 +23,8 @@ export default function StudyInfo({ study }) {
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
 
   const [uploadedImage, setUploadedImage] = useState(null)
+
+  const navigate = useNavigate()
 
   const handleImageUpload = event => {
     const imageFile = event.target.files[0]
@@ -72,6 +74,17 @@ export default function StudyInfo({ study }) {
 
   const handleCreateStudy = () => {
     // 생성 해야함
+    createStudy(
+      study.id,
+      ({ data }) => {
+        console.log(data)
+        navigate(`/temp/${data.id}`)
+      },
+      ({ data }) => {
+        console.log(data)
+        alert(data)
+      },
+    )
   }
 
   return (
@@ -83,10 +96,12 @@ export default function StudyInfo({ study }) {
           style={{ width: '100%' }}
         />
         <div className="study_box">
-          <CreateButton onClick={handleCreateStudy}>생성버튼이다</CreateButton>
-          <UpdateButton onClick={() => console.log('button 클릭')}>
-            수정버튼이다
-          </UpdateButton>
+          {study.status === 5 && (
+            <CreateButton onClick={handleCreateStudy}>
+              생성버튼이다
+            </CreateButton>
+          )}
+
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
           </h1>
