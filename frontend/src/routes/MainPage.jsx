@@ -47,6 +47,10 @@ function getCookie(name) {
   return '' // 빈값 리턴
 }
 
+function deleteCookie(name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+}
+
 // 내부 탭
 export default function MainPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -74,7 +78,10 @@ export default function MainPage({ isLoggedIn }) {
   if (refreshToken !== '') {
     sessionStorage.setItem('refresh_token', refreshToken)
   }
-
+  // 쿠키 삭제
+  deleteCookie('user_id')
+  deleteCookie('access_token')
+  deleteCookie('refresh_token')
   return (
     <div
       style={
