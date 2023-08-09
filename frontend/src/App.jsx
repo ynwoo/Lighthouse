@@ -57,6 +57,10 @@ function App() {
                 path="/temp/:id"
                 element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
               />
+              <Route
+                path="/temp"
+                element={<TempMorePage isLoggedIn={isLoggedIn} />}
+              />
               <Route path="/user/:id" element={<UserPage />} />
               <Route path="/login" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
