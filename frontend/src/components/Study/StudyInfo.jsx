@@ -55,20 +55,20 @@ export default function StudyInfo({ study }) {
       recruitFinishedAt: endDateToString(recruitFinishedDate),
       createdAt: startDateToString(createdDate),
     }
-    const blob = new Blob([JSON.stringify(studyRequest)], {
-      type: 'application/json',
-    })
-    const formData = new FormData()
-    formData.append('studyRequest', blob)
-    formData.append('studyId', study.id)
-    console.log('blob', blob)
+    // const blob = new Blob([JSON.stringify(studyRequest)], {
+    //   type: 'application/json',
+    // })
+    // const formData = new FormData()
+    // formData.append('studyRequest', blob)
+    // formData.append('studyId', study.id)
+    // console.log('blob', blob)
     updateStudy(
-      formData,
-      ({ data }) => {
-        console.log(data)
+      studyRequest,
+      ({ response }) => {
+        console.log(response)
       },
-      ({ data }) => {
-        console.log(data)
+      ({ error }) => {
+        console.log(error)
       },
     )
   }

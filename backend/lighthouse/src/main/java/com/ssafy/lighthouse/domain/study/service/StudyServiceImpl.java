@@ -360,7 +360,7 @@ public class StudyServiceImpl implements StudyService {
                     // 있으면 update
                     if(checkResult.isPresent()) {
                         StudyMaterial targetStudyMaterial = checkResult.get();
-                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial, null);
+                        studyMaterialService.updateMaterial(targetStudyMaterial, changedStudyMaterial);
                         targetStudyMaterial.changeIsValid(changedStudyMaterial.getIsValid());
                     }
 
