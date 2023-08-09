@@ -51,7 +51,7 @@ export default function MainPage() {
         console.log(data)
       },
     )
-  }, options)
+  }, [options.page])
 
   console.log(templates)
 

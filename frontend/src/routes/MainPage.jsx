@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Layout } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { studyAction } from '../store/study'
+import { getStudyAll } from '../api/study'
 
 const { Footer, Content } = Layout
 
@@ -27,8 +28,33 @@ const footerStyle = {
 // 내부 탭
 export default function MainPage({ isLoggedIn }) {
   const dispatch = useDispatch()
-  const params = useSelector(state => state.study.params)
-  const studies = useSelector(state => state.study.studies)
+  const [studies, setStudies] = useState(null)
+  const params = new URLSearchParams(window.location.search)
+  const options = {
+    page: params.get('page') || 0,
+    key: params.get('key'),
+    word: params.get('word'),
+    orderKey: params.get('order-key') || 'like',
+    orderBy: params.get('order-by') || 'desc',
+    isOnline: params.get('is-online') || 0,
+    tagIds: params.getAll('tagIds') ?? [],
+    status: 1,
+  }
+  console.log('options', options)
+
+  useEffect(() => {
+    getStudyAll(
+      options,
+      ({ data }) => {
+        console.log(data)
+        setStudies(data.content)
+      },
+      ({ data }) => {
+        console.log(data)
+      },
+    )
+  }, [options])
+
   console.log(studies)
   useEffect(() => {
     console.log(studies)
