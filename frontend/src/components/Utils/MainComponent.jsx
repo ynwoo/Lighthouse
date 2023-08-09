@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import TempCard from '../Study/TempCard'
+import StudyCard from '../Study/StudyCard'
 import { studyAction } from '../../store/study'
 
 function MainComponent() {
@@ -31,7 +31,7 @@ function MainComponent() {
         >
           <div className="big_box_card">
             {studies
-              ? studies.map(study => <TempCard study={study} key={study.id} />)
+              ? studies.map(study => <StudyCard study={study} key={study.id} />)
               : 'loading...'}
           </div>
         </div>

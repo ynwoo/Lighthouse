@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Badge, Calendar, Modal, Form, Input, Button, DatePicker } from 'antd'
-import TempTodoList from './TempTodoList'
-import TempList from './TempList'
-import MemoInput from './memo/MemoInput'
-import MemoList from './memo/MemoList'
-import TempCurri from './TempCurri'
+import TempTodoList from './utils/StudyTodoList'
+import TempList from './StudyList'
+import MemoInput from './utils/memo/MemoInput'
+import MemoList from './utils/memo/MemoList'
+import StudyCurriculum from './StudyCurriculum'
 import Slider from '../Slider'
 
 const data = []
@@ -115,7 +115,7 @@ export default function TempMember() {
     <div className="big_box">
       <div className="memo_box">
         <TempTodoList />
-        <TempCurri />
+        <StudyCurriculum />
 
         <div
           style={{

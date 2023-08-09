@@ -10,7 +10,7 @@ export default function WaveComponent() {
         style={{
           // width: '450x',
           height: '170px',
-          marginBottom: '10px',
+          marginBottom: '-10px',
           display: 'flex',
         }}
       />

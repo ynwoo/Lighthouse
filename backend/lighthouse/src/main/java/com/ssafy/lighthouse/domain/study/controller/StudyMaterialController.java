@@ -34,11 +34,10 @@ public class StudyMaterialController extends HttpServlet {
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 
-	@PutMapping("/{study-material-id}")
+	@PutMapping(value="/{study-material-id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
 	public ResponseEntity<String> updateMaterial(@PathVariable("study-material-id") final Long id,
-												@RequestPart(value = "studymaterial") StudyMaterialDto.Req dto,
-												@RequestPart MultipartFile file) {
-		studyMaterialService.updateMaterialFromId(id, dto, file);
+		@ModelAttribute StudyMaterialDto.Req dto) {
+		studyMaterialService.updateMaterialFromId(id, dto);
 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 	}
 

@@ -68,13 +68,12 @@ public class StudyController {
 
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest,
-                                         HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
+    public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
+
         log.debug("studyId : {}", studyRequest.getId());
-        log.debug("userId : {}", userId);
-        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest, userId);
-        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
+        log.debug(studyRequest.toString());
+        //StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 스터디 삭제
