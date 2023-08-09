@@ -38,12 +38,7 @@ export default function TempInfo({ study }) {
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
           </h3>
-          <h3>해시태그</h3>
-          <div style={{ display: 'flex' }}>
-            {study.studyTags?.map(tag => (
-              <p key={tag.id}>#{tag.tag?.keyword}</p>
-            ))}
-          </div>
+
           <div
             style={{
               display: 'flex',
@@ -59,7 +54,7 @@ export default function TempInfo({ study }) {
               <p>loading...</p>
             )}
           </div>
-          <hr />
+          <br />
           <div className="mark_container">
             <div />
             <div />
@@ -101,12 +96,6 @@ export default function TempInfo({ study }) {
           : ''}{' '}
       </p>
 
-      {/* <p>
-        {' '}
-        {study.isOnline
-          ? '온라인'
-          : `장소 - ${study.sido}, ${study.gugun}`}{' '}
-      </p> */}
       <div>
         <div className="info_text">
           <ul>
