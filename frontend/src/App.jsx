@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
-import TempDetailPage from './routes/TempDetailPage'
+import StudyDetailPage from './routes/StudyDetailPage'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
@@ -40,7 +40,7 @@ function App() {
           />
           <Route
             path="/temp/:id"
-            element={<TempDetailPage isLoggedIn={isLoggedIn} />}
+            element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
           />
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/login" element={<SignIn />} />
