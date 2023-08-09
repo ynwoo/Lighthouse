@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.global.error;
 
 import com.ssafy.lighthouse.domain.study.exception.StudyException;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
+import com.ssafy.lighthouse.domain.user.exception.AccessTokenException;
 import com.ssafy.lighthouse.domain.user.exception.UnAuthorizedException;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(StudyException.class)
     public ResponseEntity<String> handleStudyException(StudyException e) {
         log.debug("handleStudyException : {}", e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AccessTokenException.class)
+    public ResponseEntity<String> handleAccessTokenException(AccessTokenException e) {
+        log.debug("handleAccessTokenException : {}", e.getMessage());
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

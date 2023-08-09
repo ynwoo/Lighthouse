@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 // import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
 import { useDispatch, useSelector } from 'react-redux'
-// import ChatMessage from './ChatMessage'
 import { chatAction, receiveMessage } from '../../../store/chat'
 import { userAction } from '../../../store/user'
 import ChatContainer from './ChatContainer'
@@ -76,18 +75,29 @@ function Chat() {
   return (
     <div
       style={{
-        width: '50%',
+        width: '30%',
         height: '600px',
-        border: '3px solid black',
+        border: '1px solid black',
+        borderRadius: '20px',
       }}
     >
       <Form form={form} onFinish={sendMessage}>
-        <Form.Item id="messageInput" name="message">
-          <Input autoFocus />
-        </Form.Item>
-        <Button type="primary" htmlType="submit">
-          Send
-        </Button>
+        <div style={{ display: 'flex' }}>
+          <Form.Item id="messageInput" name="message">
+            <Input
+              autoFocus
+              style={{
+                borderRadius: '20px',
+                border: '1px solid black',
+                height: '40px',
+                width: '390px',
+              }}
+            />
+          </Form.Item>
+          <Button type="primary" htmlType="submit">
+            Send
+          </Button>
+        </div>
       </Form>
       <div
         style={{

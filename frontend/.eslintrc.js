@@ -27,6 +27,7 @@ module.exports = {
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
+    'react/no-array-index-key': 'off',
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y': 'off',
     'react/prop-types': 'off',
@@ -35,5 +36,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'import/no-unresolved': 'off',
     'no-nested-ternary': 'off',
+    'react/no-array-index-key': 'off',
   },
 }

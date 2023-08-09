@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Select, Modal, Button, Tooltip } from 'antd'
+import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
   const dispatch = useDispatch()
+  const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const userInfo = useSelector(state => state.user.myInfo)
 
   useEffect(() => {
-    dispatch(userAction.myPage()).then(res => {
-      console.log(res.payload.userInfo.id)
-    })
+    const { userId } = location.state
+    console.log('asdfasdfasdfasdf', userId)
+    dispatch(userAction.profile(userId))
   }, [])
-  const studyTags = JSON.parse(localStorage.getItem('tags'))
-  console.log(studyTags)
+  const profile = useSelector(state => state.user.profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -33,7 +33,7 @@ export default function UserPage() {
       style={{
         display: 'flex',
         justifyContent: 'space-around',
-        backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
+        // backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
         marginTop: '-47px',
       }}
     >
@@ -74,8 +74,11 @@ export default function UserPage() {
                 marginTop: '20px',
               }}
             >
-              <div>#해시태그</div>
-              <div>asdf</div>
+              <div style={{ textAlign: 'left', display: 'flex' }}>
+                {profile.tags?.map(tag => (
+                  <p key={tag.id}>&nbsp;#{tag.keyword} &nbsp;</p>
+                ))}
+              </div>
             </div>
           </div>
           <div className="item">
@@ -117,38 +120,79 @@ export default function UserPage() {
           <div className="item">
             <div style={{ position: 'absolute', top: '10px', right: '30px' }}>
               <Tooltip title="팔로워 목록 보기" placement="bottom">
-                <div>팔로워 000</div>
+                <div>팔로워 {profile.follower}</div>
               </Tooltip>
               <Tooltip title="팔로잉 목록 보기" placement="bottom">
-                <div>팔로잉 000</div>
+                <div>팔로잉 {profile.following}</div>
               </Tooltip>
             </div>
           </div>
         </div>
         <div className="container1">
           <div className="u_item">닉네임</div>
-          <div className="u_item1">{userInfo.nickname}</div>
+          <div className="u_item1">{profile.nickname}</div>
           <div className="u_item">별점</div>
-          <div className="u_item1">별점</div>
+          <div className="u_item1">{profile.score}</div>
           <div className="u_item">자기소개</div>
-          <div className="u_item1">{userInfo.description}</div>
-          <div className="u_item">뱃지 목록</div>
-          <div className="u_item1">뱃지 목록</div>
-          <div className="u_item">진행 중</div>
-          <div className="u_item1">진행 중</div>
-          <div className="u_item">통계</div>
-          <div className="u_item1">통계</div>
-          <div className="u_item">참여했던 스터디</div>
+          <div className="u_item1">{profile.description}</div>
 
-          <Form.Item>
-            <div style={{ width: '70%' }}>
-              <Select className="u_item2" value="참여했던 스터디">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </div>
-          </Form.Item>
+          <div className="u_item">뱃지 목록</div>
+          <div className="u_item1">
+            {profile.badges?.map(badge => (
+              <img
+                key={badge.id}
+                src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${badge.imgUrl}`}
+                alt={badge.description}
+                style={{ width: '40px' }}
+              />
+            ))}
+          </div>
+
+          <div className="u_item">신청 중</div>
+          <div>
+            <Select className="u_item2" value="신청중인 스터디">
+              {profile.participatedStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="u_item">진행 중</div>
+          <div>
+            <Select className="u_item2" value="진행중인 스터디">
+              {profile.progressStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          {/* <div className="u_item">통계</div>
+          <div className="u_item1">{profile.nickname}</div> */}
+
+          <div className="u_item">참여했던 스터디</div>
+          <div>
+            <Select className="u_item2" value="참여했던 스터디">
+              {profile.terminatedStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+
           <div className="u_item">북마크</div>
-          <div className="u_item1">북마크</div>
+          <div>
+            <Select className="u_item2" value="북마크한 스터디">
+              {profile.bookmarkStudies?.map(study => (
+                <Select.Option value={study.name} key={study.name}>
+                  {study.name}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
         </div>
       </div>
     </div>

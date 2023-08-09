@@ -108,10 +108,11 @@ public class UserController {
 
 				log.debug("로그인 accessToken 정보 : {}", accessToken);
 				log.debug("로그인 refreshToken 정보 : {}", refreshToken);
-
+				resultMap.put("user-id", loginUser.getId());
 				resultMap.put("access-token", accessToken);
 				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("message", SUCCESS);
+				resultMap.put("nickname", loginUser.getNickname());
 
 				// 알림 목록 불러오기
 				List<AlertDto> alertDtoList = userService.getAlertDtoList(loginUser.getId());
@@ -304,6 +305,16 @@ public class UserController {
 		log.debug("followerId : {}", followerId);
 		userService.removeFollow(followeeId, followerId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	// 내가 팔로우한 아이디 리스트
+	@GetMapping("/follow")
+	public ResponseEntity<?> findFollowAllByFollowerId(HttpServletRequest request) {
+		// session에서 userId 가져오기
+		Long followerId = (Long) request.getAttribute("userId");
+		log.debug("followerId : {}", followerId);
+		List<Long> followingList = userService.findFollowAllByFollowerId(followerId);
+		return new ResponseEntity<>(followingList, HttpStatus.OK);
 	}
 
 	// profile img 저장
