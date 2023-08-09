@@ -3,7 +3,7 @@ import { Tree, Button, Input } from 'antd'
 
 const { DirectoryTree } = Tree
 
-export default function App() {
+export default function StudyCurriculum() {
   const [treeData, setTreeData] = useState([
     {
       title: 'parent 0',
