@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
-import MemoInput from './utils/memo/MemoInput'
-import MemoList from './utils/memo/MemoList'
 import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
@@ -16,7 +14,6 @@ import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
 
 export default function StudyInfo({ study }) {
-  const [memos, setMemos] = useState([])
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
   const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
   const [recruitFinishedDate, setRecruitFinishedDate] = useState(
@@ -24,6 +21,15 @@ export default function StudyInfo({ study }) {
   )
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
 
+  const [uploadedImage, setUploadedImage] = useState(null)
+
+  const handleImageUpload = event => {
+    const imageFile = event.target.files[0]
+    if (imageFile) {
+      const imageUrl = URL.createObjectURL(imageFile)
+      setUploadedImage(imageUrl)
+    }
+  }
   const handleStartDateChange = date => {
     setStartDate(date)
   }
@@ -37,15 +43,6 @@ export default function StudyInfo({ study }) {
   const handleCreatedDateChange = date => {
     setCreatedDate(date)
   }
-  const handleAddMemo = memo => {
-    setMemos(prevMemos => [
-      ...prevMemos,
-      {
-        id: Date.now(), // 랜덤 ID 대신 현재 시간을 ID로 사용
-        text: memo,
-      },
-    ])
-  }
 
   const handleUpdateStudy = () => {
     const studyRequest = {
@@ -53,18 +50,14 @@ export default function StudyInfo({ study }) {
       sessions: [...study.sessions],
       studyTags: [...study.studyTags],
       studyNotices: [...study.studyNotices],
-      startedAt: startDateToString(startDate),
-      endedAt: endDateToString(endDate),
-      recruitFinishedAt: endDateToString(recruitFinishedDate),
-      createdAt: startDateToString(createdDate),
+      startedAt: startDateToString(startDate) ?? study.startedAt,
+      endedAt: endDateToString(endDate) ?? study.endedAt,
+      recruitFinishedAt:
+        endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+      createdAt: startDateToString(createdDate) ?? study.createdAt,
     }
-    // const blob = new Blob([JSON.stringify(studyRequest)], {
-    //   type: 'application/json',
-    // })
-    // const formData = new FormData()
-    // formData.append('studyRequest', blob)
-    // formData.append('studyId', study.id)
-    // console.log('blob', blob)
+
+    console.log(studyRequest)
     updateStudy(
       studyRequest,
       ({ response }) => {
@@ -76,15 +69,14 @@ export default function StudyInfo({ study }) {
     )
   }
 
-  const handleDeleteMemo = memoId => {
-    const updatedMemos = memos.filter(memo => memo.id !== memoId)
-    setMemos(updatedMemos)
-  }
-
   return (
     <div className="big_box">
       <div className="study_container">
-        <img src={photo} alt="아리스" style={{ width: '100%' }} />
+        <img
+          src={uploadedImage || photo}
+          alt="아리스"
+          style={{ width: '100%' }}
+        />
         <div className="study_box">
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
@@ -134,6 +126,7 @@ export default function StudyInfo({ study }) {
           </div>
         </div>
       </div>
+      <input type="file" accept="image/*" onChange={handleImageUpload} />
       <div className="info_text">
         <p>스터디 정보</p>
       </div>
@@ -161,10 +154,6 @@ export default function StudyInfo({ study }) {
       <div>
         <div className="info_text">
           <p>모집대상</p>
-        </div>
-        <div>
-          <MemoInput onAddMemo={handleAddMemo} />
-          <MemoList memos={memos} onDeleteMemo={handleDeleteMemo} />
         </div>
       </div>
       <div>
