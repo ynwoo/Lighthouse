@@ -14,6 +14,8 @@ export default function TempDetailPage({ isLoggedIn }) {
   // const study = useSelector(state => state.study.studyDetail)
   const [study, setStudy] = useState(null)
 
+  console.log(study)
+
   useEffect(() => {
     const studyId = window.location.pathname?.split('/')[2]
     console.log(studyId)
