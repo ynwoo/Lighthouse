@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
@@ -12,6 +12,7 @@ import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
 import SignUp from './components/User/SignUp'
 import SignIn from './components/User/LogIn'
+import LoadingComponent from './components/Utils/LoadingComponent'
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('isLoggedIn')
@@ -20,6 +21,14 @@ function App() {
   const handleChatClick = () => {
     setShowChat(!showChat)
   }
+
+  const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    // 비동기 작업 완료 후 로딩 상태 변경
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000) // 예시로 2초 후에 로딩 완료로 설정
+  }, [])
 
   return (
     <div
@@ -31,23 +40,30 @@ function App() {
       <Router>
         <ScrollToTop />
         <Navbar isLoggedIn={isLoggedIn} />
-        <WaveComponent />
-        <Routes>
-          <Route
-            exact
-            path="/"
-            element={<MainPage isLoggedIn={isLoggedIn} />}
-          />
-          <Route
-            path="/temp/:id"
-            element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
-          />
-          <Route path="/user/:id" element={<UserPage />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/user_edit/:id" element={<UserEditPage />} />
-          <Route path="/chat" element={<Chat />} />
-        </Routes>
+
+        {isLoading ? (
+          <LoadingComponent />
+        ) : (
+          <>
+            <WaveComponent />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={<MainPage isLoggedIn={isLoggedIn} />}
+              />
+              <Route
+                path="/temp/:id"
+                element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
+              />
+              <Route path="/user/:id" element={<UserPage />} />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/user_edit/:id" element={<UserEditPage />} />
+              <Route path="/chat" element={<Chat />} />
+            </Routes>
+          </>
+        )}
       </Router>
       <button
         type="submit"
