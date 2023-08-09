@@ -38,7 +38,6 @@ export default function TempInfo({ study }) {
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
           </h3>
-
           <div
             style={{
               display: 'flex',
