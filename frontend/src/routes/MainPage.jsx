@@ -53,7 +53,7 @@ export default function MainPage({ isLoggedIn }) {
         console.log(data)
       },
     )
-  }, [options])
+  }, [])
 
   console.log(studies)
   useEffect(() => {
