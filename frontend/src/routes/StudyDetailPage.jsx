@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
-import StudyRecord from '../components/Study/StudyRecord'
 import StudyReview from '../components/Study/StudyReview'
 import { studyAction } from '../store/study'
-import NologinStudyInfo from '../components/Study/nojoin/NologinStudyInfo'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
+import StudyMember from '../components/Study/StudyMember'
 
 export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -29,9 +28,9 @@ export default function TempDetailPage({ isLoggedIn }) {
         { 가입했을때정보: <JoinStudyInfo study={study} /> },
       ]
     : [
-        { 가입Xinfo: <NologinStudyInfo study={study} /> },
+        { TempInfo: <StudyInfo study={study} /> },
         { TempQnA: <StudyQnA study={study} /> },
-        { 회원정보: <StudyRecord members={study?.memberProfiles} /> },
+        { 회원정보: <StudyMember members={study?.memberProfiles} /> },
         { TempReview: <StudyReview study={study} /> },
       ]
 
