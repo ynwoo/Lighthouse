@@ -22,7 +22,9 @@ export default function TempDetailPage({ isLoggedIn }) {
   const tabMenu = isLoggedIn
     ? [
         { TempInfo: <StudyInfo study={study} /> },
-        { 가입했을때정보: <JoinStudyInfo study={study} /> },
+        {
+          가입했을때정보: <JoinStudyInfo study={study} />,
+        },
       ]
     : [
         { 가입Xinfo: <NologinStudyInfo study={study} /> },
