@@ -101,7 +101,7 @@ public class AuthController {
         HttpHeaders headers = new HttpHeaders();
 
         // 프론트 서버로 리다이렉트
-        headers.setLocation(URI.create("http://127.0.0.1:3000/"));
+        headers.setLocation(URI.create("http://i9a409.p.ssafy.io:3000/"));
         return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
