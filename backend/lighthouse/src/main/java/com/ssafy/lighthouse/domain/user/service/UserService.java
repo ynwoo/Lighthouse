@@ -46,6 +46,8 @@ public interface UserService {
 
 	void removeFollow(Long followeeId, Long followerId);
 
+	List<Long> findFollowAllByFollowerId(Long followerId);
+
 	void updateProfileImage(MultipartFile img, Long userId);
 
 	boolean isEmailUnique(String emailToValidate);
