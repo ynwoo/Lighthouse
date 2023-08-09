@@ -77,11 +77,13 @@ export default function MainPage({ isLoggedIn }) {
   }
   if (refreshToken !== '') {
     sessionStorage.setItem('refresh_token', refreshToken)
+
+    // 쿠키 삭제
+    deleteCookie('user_id')
+    deleteCookie('access_token')
+    deleteCookie('refresh_token')
+    window.location.reload()
   }
-  // 쿠키 삭제
-  deleteCookie('user_id')
-  deleteCookie('access_token')
-  deleteCookie('refresh_token')
   return (
     <div
       style={
