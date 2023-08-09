@@ -11,6 +11,9 @@ import {
 } from '../../utils/FormateDateToString'
 import { updateStudy } from '../../api/study'
 import StringToDate from '../../utils/FormateStringToDate'
+import likemark from '../../static/mark/like.png'
+import bookmark from '../../static/mark/bookmark-white.png'
+import view from '../../static/mark/view.png'
 
 export default function StudyInfo({ study }) {
   const [memos, setMemos] = useState([])
@@ -96,32 +99,58 @@ export default function StudyInfo({ study }) {
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
           </h3>
-          <h3>해시태그</h3>
-          <div style={{ display: 'flex' }}>
-            {study.studyTags?.map(tag => (
-              <p key={tag.id}>#{tag.tag?.keyword}</p>
-            ))}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '20px',
+            }}
+          >
+            {study.studyTags ? (
+              study.studyTags.map(tag => (
+                <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
+              ))
+            ) : (
+              <p>loading...</p>
+            )}
           </div>
-          <hr />
-          <p>조회수 - {study.hit}</p>
+          <br />
+          <div className="mark_container">
+            <div />
+            <div />
+            <div />
+            <div>
+              <img src={view} alt="" style={{ width: '20px' }} />
+            </div>
+            <div> {study.bookmarkCnt}</div>
+            <div>
+              <img src={bookmark} alt="" style={{ width: '20px' }} />
+            </div>
+            <div>{study.bookmarkCnt}</div>
+            <div>
+              <img src={likemark} alt="" style={{ width: '20px' }} />
+            </div>
+            <div> {study.likeCnt}</div>
+          </div>
         </div>
       </div>
       <div className="info_text">
         <p>스터디 정보</p>
       </div>
-      <h3>{study.description}</h3>
-      <div>모집 마감 - {study.recruitFinishedAt?.split(' ')[0]} 까지</div>
-      <div>시작 - {study.startedAt?.split(' ')[0]}</div>
-      <div>끝 - {study.endedAt?.split(' ')[0]}</div>
-      <p>북마크 - {study.bookmarkCnt}</p>
-      <div>Tabom - {study.likeCnt}</div>
-      <p>규칙 - {study.rule}</p>
-      <p>배지 - {study.badge?.name}</p>
+      <p style={{ margin: '0 auto' }}>{study.description}</p>
+      {study.rule?.split('\n')?.map((rulee, i) => (
+        <p key={i}>{rulee}</p>
+      ))}
+
+      <p>{study.badge && `배지 - ${study.badge.name}`}</p>
+
       <p>
         {' '}
         {study.isOnline
           ? '온라인'
-          : `장소 - ${study.sido}, ${study.gugun}`}{' '}
+          : study.sido && study.gugun
+          ? `장소 - ${study.sido}, ${study.gugun}`
+          : ''}{' '}
       </p>
       <div className="info_text">
         <p>커리큘럼</p>
