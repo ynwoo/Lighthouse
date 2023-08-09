@@ -5,6 +5,7 @@ import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import StudyDetailPage from './routes/StudyDetailPage'
+import TempMorePage from './routes/TempMorePage'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
@@ -41,6 +42,10 @@ function App() {
           <Route
             path="/temp/:id"
             element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/temp"
+            element={<TempMorePage isLoggedIn={isLoggedIn} />}
           />
           <Route path="/user/:id" element={<UserPage />} />
           <Route path="/login" element={<SignIn />} />
