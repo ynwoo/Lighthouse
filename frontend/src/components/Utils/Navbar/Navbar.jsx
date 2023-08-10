@@ -1,14 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = e => {
+    e.preventDefault()
     dispatch(userAction.logout())
+    navigate('/')
   }
   return (
     <div

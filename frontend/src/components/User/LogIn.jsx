@@ -14,22 +14,25 @@ const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
 //
-const history = useNavigate()
 
 function LogIn() {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+  const navigate = useNavigate()
+
   const onFinish = value => {
     console.log(value)
     dispatch(userAction.login(value)).then(res => {
-      // 로그인 성공하면 메인으로 보내주는 코드
       // 실패하면 안된다 함
       if (res.type === 'user/login/rejected') {
         alert('안돼')
+      } else {
+        // 로그인 성공하면 메인으로 보내주는 코드
+        navigate('/')
       }
     })
-    history('/')
   }
+
   return (
     <div
       style={{

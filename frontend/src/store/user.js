@@ -252,8 +252,6 @@ export const userSlice = createSlice({
       console.log('action.payload', action.payload)
       state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
-      // eslint-disable-next-line no-restricted-globals
-      // history.push('/')
     },
     // 로그아웃 성공 시 토큰 삭제
     [userAction.logout.fulfilled]: (state, action) => {
