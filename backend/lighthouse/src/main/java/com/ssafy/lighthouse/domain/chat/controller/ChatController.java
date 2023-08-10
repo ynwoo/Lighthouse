@@ -53,8 +53,8 @@ public class ChatController {
     }
 
     // get all message of the given chatting room
-    @GetMapping
-    public ResponseEntity<?> getAllMessage(@RequestParam String id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAllMessage(@PathVariable String id) {
         log.info("Get all message of room : " + id);
         /*
         logical session management, connection here -> replaced with KAFKA

@@ -12,6 +12,7 @@ import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
+import { CreateButton, UpdateButton } from './utils/button'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -69,6 +70,10 @@ export default function StudyInfo({ study }) {
     )
   }
 
+  const handleCreateStudy = () => {
+    // 생성 해야함
+  }
+
   return (
     <div className="big_box">
       <div className="study_container">
@@ -78,6 +83,10 @@ export default function StudyInfo({ study }) {
           style={{ width: '100%' }}
         />
         <div className="study_box">
+          <CreateButton onClick={handleCreateStudy}>생성버튼이다</CreateButton>
+          <UpdateButton onClick={() => console.log('button 클릭')}>
+            수정버튼이다
+          </UpdateButton>
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
           </h1>
