@@ -29,7 +29,12 @@ const normFile = e => {
   return e?.fileList
 }
 
-//
+const dummyRequest = ({ file, onSuccess }) => {
+  console.log('file upload successful', file)
+  setTimeout(() => {
+    onSuccess('ok')
+  }, 0)
+}
 
 function SignUp() {
   // dispatch와 form을 사용하기 위한 두 줄
@@ -92,7 +97,8 @@ function SignUp() {
                   values[key] = null
                 }
               })
-              console.log(values)
+              values.profileImgFile = values.profileImgFile[0].originFileObj
+              console.log('submitting values: ', values)
               // redux => server
               dispatch(userAction.signUp(values))
               navigate('/')
@@ -263,7 +269,7 @@ function SignUp() {
             getValueFromEvent={normFile}
             initialValue={null}
           >
-            <Upload action="/upload.do" listType="picture-card">
+            <Upload customRequest={dummyRequest} listType="picture-card">
               <div>
                 <PlusOutlined />
                 <div
