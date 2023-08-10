@@ -190,35 +190,24 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
     @Override
     public SimpleUserResponse findUserInfo(Long userId) {
-        return jpaQueryFactory.select(Projections.fields(SimpleUserResponse.class,
-                        user.id,
-                        user.nickname,
-                        ExpressionUtils.as(
-                                select(participationHistory.studyId)
-                                        .from(participationHistory)
-                                        .where(participationHistory.userId.eq(userId))
-                                , "progressStudies"),
-                        ExpressionUtils.as(
-                                select(follow.followeeId)
-                                        .from(follow)
-                                        .where(follow.followerId.eq(userId))
-                                , "follows"),
-                        ExpressionUtils.as(
-                                select(bookmark.studyId)
-                                        .from(bookmark)
-                                        .where(bookmark.userId.eq(userId))
-                                , "progressStudies"),
-                        ExpressionUtils.as(
-                                select(studyLike.studyId)
-                                        .from(studyLike)
-                                        .where(studyLike.userId.eq(userId))
-                                , "progressStudies"),
-                        user.description,
-                        ExpressionUtils.as(select(userEval.score.avg()).from(userEval).where(userEval.userId.eq(user.id), userEval.isValid.eq(1)), "score")))
-                .from(user)
-                .where(user.id.eq(userId), user.isValid.eq(1))
-                .groupBy(user.id)
-                .fetchOne();
+        return SimpleUserResponse.builder()
+                .progressStudies(jpaQueryFactory.select(participationHistory.studyId)
+                        .from(participationHistory)
+                        .where(participationHistory.userId.eq(userId))
+                        .fetch())
+                .bookmarks(jpaQueryFactory.select(bookmark.studyId)
+                        .from(bookmark)
+                        .where(bookmark.userId.eq(userId))
+                        .fetch())
+                .likes(jpaQueryFactory.select(studyLike.studyId)
+                        .from(studyLike)
+                        .where(studyLike.userId.eq(userId))
+                        .fetch())
+                .follows(select(follow.followeeId)
+                        .from(follow)
+                        .where(follow.followerId.eq(userId))
+                        .fetch())
+                .build();
     }
 
     // badgeList
