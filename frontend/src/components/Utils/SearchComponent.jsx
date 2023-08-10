@@ -78,8 +78,17 @@ function SearchComponent({
         {/* 지역 */}
         <div style={{}}>
           <Space wrap>
+            {/* 온라인 오프라인 스위치 버튼 */}
             <button style={styles} type="button" onClick={handleChangeKey}>
               {params.key ?? 'like'}
+            </button>
+            {/* 온라인 오프라인 스위치 버튼 */}
+            <button style={styles} type="button" onClick={handleChangeIsOnline}>
+              {params.isOnline ? 'Online' : 'Offline'}
+            </button>
+            {/* 온라인 오프라인 스위치 버튼 */}
+            <button style={styles} type="button" onClick={handleChangeIsOnline}>
+              {params.isOnline ? 'Online' : 'Offline'}
             </button>
             {/* 온라인 오프라인 스위치 버튼 */}
             <button style={styles} type="button" onClick={handleChangeIsOnline}>
