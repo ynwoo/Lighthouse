@@ -92,7 +92,7 @@ export const studySlice = createSlice({
   extraReducers: {
     [studyAction.studyList.fulfilled]: (state, action) => {
       state.studies = action.payload.content
-      state.totalPage = action.payload.pageable
+      state.totalPage = action.payload.totalPages - 1
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
       // state.studyDetail.push(action.payload)

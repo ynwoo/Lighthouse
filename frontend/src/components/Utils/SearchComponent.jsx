@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import { setOnline, setText, studyAction } from '../../store/study'
+import { studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
 
+const styles = {
+  backgroundColor: 'white',
+  color: 'black',
+  border: '1px solid #A4C3FF',
+  borderRadius: '20px',
+  padding: '10px',
+  fontWeight: 'bold',
+  width: '100px',
+  display: 'flex',
+  alignContent: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: '10px',
+  marginTop: '10px',
+}
 // 검색창
 const { Search } = Input
 
-function SearchComponent() {
+function SearchComponent({
+  handleChangeKey,
+  handleChangeWord,
+  // handleChangeOrderKey,
+  // handleChangeOrderBy,
+  handleChangeIsOnline,
+  // handleAddTagId,
+  // handleDeleteTagId,
+}) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const sido = useSelector(state => state.user.sido)
@@ -20,10 +42,6 @@ function SearchComponent() {
     dispatch(userAction.sido())
   }, [dispatch])
 
-  const onChange = value => {
-    console.log(value.nativeEvent.data)
-    dispatch(setText(value.nativeEvent.data))
-  }
   const onSearch = () => {
     dispatch(studyAction.studyList(params))
   }
@@ -50,7 +68,7 @@ function SearchComponent() {
         <div>
           <Search
             placeholder="input search text"
-            onChange={onChange}
+            onChange={e => handleChangeWord(e.target.value)}
             onSearch={onSearch}
             defaultValue=""
             enterButton
@@ -60,28 +78,11 @@ function SearchComponent() {
         {/* 지역 */}
         <div style={{}}>
           <Space wrap>
+            <button style={styles} type="button" onClick={handleChangeKey}>
+              {params.key ?? 'like'}
+            </button>
             {/* 온라인 오프라인 스위치 버튼 */}
-            <button
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid #A4C3FF',
-                borderRadius: '20px',
-                padding: '10px',
-                fontWeight: 'bold',
-                width: '100px',
-                display: 'flex',
-                alignContent: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '10px',
-                marginTop: '10px',
-              }}
-              type="button"
-              onClick={() => {
-                dispatch(setOnline())
-              }}
-            >
+            <button style={styles} type="button" onClick={handleChangeIsOnline}>
               {params.isOnline ? 'Online' : 'Offline'}
             </button>
             {!params.isOnline && (

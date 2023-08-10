@@ -1,6 +1,7 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
@@ -15,7 +16,8 @@ import SignIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 
 function App() {
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
+  const login = useSelector(state => state.user.isLoggedIn)
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') || login
   const [showChat, setShowChat] = useState(false)
 
   const handleChatClick = () => {
@@ -50,11 +52,11 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<MainPage isLoggedIn={isLoggedIn} initStatus={1} />}
+                element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
               />
               <Route
                 path="/temp"
-                element={<MainPage isLoggedIn={isLoggedIn} initStatus={5} />}
+                element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
               />
               <Route
                 path="/temp/:id"

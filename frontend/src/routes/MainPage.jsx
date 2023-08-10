@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
-import { studyAction } from '../store/study'
+import { setParams, studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
+import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
 const { Footer, Content } = Layout
@@ -54,16 +55,15 @@ function deleteCookie(name) {
 }
 
 // 내부 탭
-export default function MainPage({ isLoggedIn, initStatus }) {
+export default function MainPage({ isLoggedIn, status }) {
   const dispatch = useDispatch()
-  const [page /* setPage */] = useState(0)
-  const [key /* setKey */] = useState(null)
-  const [word /* setWord */] = useState(null)
-  const [orderKey /* setOrderKey */] = useState('like')
-  const [orderBy /* setOrderBy */] = useState('desc')
-  const [isOnline /* setIsOnline */] = useState(0)
-  const [tagIds /* setTagIds */] = useState(null)
-  const [status, setStatus] = useState(initStatus)
+  const [page, setPage] = useState(0)
+  const [key, setKey] = useState(null)
+  const [word, setWord] = useState(null)
+  const [orderKey, setOrderKey] = useState('like')
+  const [orderBy, setOrderBy] = useState('desc')
+  const [isOnline, setIsOnline] = useState(0)
+  const [tagIds, setTagIds] = useState(null)
 
   const options = {
     page,
@@ -77,15 +77,12 @@ export default function MainPage({ isLoggedIn, initStatus }) {
   }
 
   useEffect(() => {
-    setStatus(initStatus)
-  }, [initStatus])
-
-  useEffect(() => {
     dispatch(studyAction.studyList(options))
-    // dispatch(studyAction.getTags())
+    dispatch(setParams(options))
   }, [page, key, word, orderKey, orderBy, isOnline, tagIds, status])
 
   const studies = useSelector(state => state.study.studies)
+  const totalPage = useSelector(state => state.study.totalPage)
   console.log(studies)
 
   // 구글 소셜 로그인 시 서버로부터 값 받아오기
@@ -109,6 +106,35 @@ export default function MainPage({ isLoggedIn, initStatus }) {
     deleteCookie('refresh_token')
     window.location.reload()
   }
+
+  const handleChangeKey = () => {
+    setKey(key === 'like' ? 'title' : 'like')
+  }
+
+  const handleChangeWord = val => {
+    setWord(val)
+  }
+
+  const handleChangeOrderKey = newOrderKey => () => {
+    setOrderKey(newOrderKey)
+  }
+
+  const handleChangeOrderBy = newOrderBy => () => {
+    setOrderBy(newOrderBy)
+  }
+
+  const handleChangeIsOnline = () => {
+    setIsOnline(isOnline ? 0 : 1)
+  }
+
+  const handleAddTagId = addTagId => () => {
+    setTagIds([...tagIds, addTagId])
+  }
+
+  const handleDeleteTagId = deleteTagId => () => {
+    setTagIds(tagIds.filter(tagId => tagId !== deleteTagId))
+  }
+
   return (
     <div
       style={
@@ -138,11 +164,30 @@ export default function MainPage({ isLoggedIn, initStatus }) {
               <CreateButton>
                 이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
               </CreateButton>
-              <div>
-                {/* <Button><FontAwesomeIcon icon={faAngleRight} /></Button> */}
-              </div>
+              {page ? (
+                <NextButton onClick={() => setPage(page - 1)}>
+                  이것은 이전 페이지
+                </NextButton>
+              ) : (
+                ''
+              )}
+              {page < totalPage ? (
+                <NextButton onClick={() => setPage(page + 1)}>
+                  이것은 다음 페이지
+                </NextButton>
+              ) : (
+                ''
+              )}
               {/* 검색창 */}
-              <SearchComponent />
+              <SearchComponent
+                handleChangeKey={handleChangeKey}
+                handleChangeWord={handleChangeWord}
+                handleChangeOrderKey={handleChangeOrderKey}
+                handleChangeOrderBy={handleChangeOrderBy}
+                handleChangeIsOnline={handleChangeIsOnline}
+                handleAddTagId={handleAddTagId}
+                handleDeleteTagId={handleDeleteTagId}
+              />
             </div>
             <MainComponent studies={studies} isLoggedIn={isLoggedIn} />
           </Content>
