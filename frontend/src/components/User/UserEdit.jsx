@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useLocation, Link } from 'react-router-dom'
-import { Layout, Menu, Card, Space, Avatar, Button, Row, Col } from 'antd'
+import { Layout, Card, Space, Avatar, Button, Row, Col, Tabs } from 'antd'
 import { userAction } from '../../store/user'
+
+import LogIn from './LogIn'
 // import React, { useState } from 'react'
 
 const { Content, Sider } = Layout
 // 템플릿 상세의 질의응답
 
-const menuItems = [
-  { label: <Link to={`/user_edit/${userId}`}>정보</Link>, key: '1' },
-  { label: <Link to="inprogress">진행 중인 스터디</Link>, key: '2' },
-  { label: '스터디 참여 기록', key: '3' },
-  { label: '템플릿 북마크', key: '4' },
-]
 export default function UserEdit() {
   // const [checkboxValues, setCheckboxValues] = useState({
   //   개발: false,
@@ -47,7 +43,25 @@ export default function UserEdit() {
     // console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
   }, [])
-  const profile = useSelector(state => state.user.profile)
+  // const profile = useSelector(state => state.user.profile)
+
+  const items = [
+    {
+      key: '1',
+      label: `Tab 1`,
+      children: <LogIn />,
+    },
+    {
+      key: '2',
+      label: `Tab 2`,
+      children: <LogIn />,
+    },
+    {
+      key: '3',
+      label: `Tab 3`,
+      children: <LogIn />,
+    },
+  ]
 
   return (
     <Layout
@@ -82,7 +96,7 @@ export default function UserEdit() {
             </Col>
           </Row>
         </Card>
-        <Menu
+        {/* <Menu
           mode="inline"
           defaultSelectedKeys={['1']}
           style={{
@@ -90,7 +104,7 @@ export default function UserEdit() {
           }}
           items={menuItems}
           // onClick={handleMenuClick}
-        />
+        /> */}
       </Sider>
       <Content
         style={{
@@ -98,6 +112,7 @@ export default function UserEdit() {
           minHeight: 280,
         }}
       >
+        <Tabs defaultActiveKey="1" items={items} />;
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
           <Card title="자기소개" bordered={false}>
             <p>
