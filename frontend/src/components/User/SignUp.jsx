@@ -92,6 +92,7 @@ function SignUp() {
                   values[key] = null
                 }
               })
+              console.log(values)
               // redux => server
               dispatch(userAction.signUp(values))
               navigate('/')
@@ -256,8 +257,8 @@ function SignUp() {
           </Form.Item>
 
           <Form.Item
-            label="Upload"
-            name="프로필 사진"
+            label="프로필 사진"
+            name="profileImgFile"
             valuePropName="fileList"
             getValueFromEvent={normFile}
             initialValue={null}
