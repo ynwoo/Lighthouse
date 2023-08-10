@@ -38,7 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
+	private static final String CATEGORY = "profileImage";
 	private final UserRepository userRepository;
 	private final UserTagRepository userTagRepository;
 	private final UserEvalRepository userEvalRepository;
@@ -47,10 +47,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
+		userMyPageDto.setProfileImgUrl(S3Utils.uploadFile(CATEGORY , userMyPageDto.getProfileImgFile()));
 		User user = User.from(userMyPageDto);
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User savedUser = userRepository.save(user);
 		List<Long> list = userMyPageDto.getUserTagList();
+		if(list == null) {
+			return;
+		}
 		for (Long tagId : list) {
 			UserTag userTag = UserTag.from(savedUser.getId(), tagId);
 			userTagRepository.save(userTag);
@@ -89,18 +93,29 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(UserMyPageDto userMyPageDto) {
 		User foundUser = userRepository.findById(userMyPageDto.getId()).get();
-
+		MultipartFile file = userMyPageDto.getProfileImgFile();
+		String fileUrl = foundUser.getProfileImgUrl();
+		if (file != null && !file.isEmpty()) {
+			//이전 파일 삭제
+			if (fileUrl != null) {
+				S3Utils.deleteFile(fileUrl);
+			}
+			fileUrl = S3Utils.uploadFile(CATEGORY, file);
+		}
 		foundUser.updateUserInfo(
 			userMyPageDto.getPassword() == null ? foundUser.getPassword() :
 				BCrypt.hashpw(userMyPageDto.getPassword(), BCrypt.gensalt()),
 			userMyPageDto.getName(),
-			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
+			userMyPageDto.getNickname(), fileUrl,
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
 		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
 
 		List<Long> list = userMyPageDto.getUserTagList();
+		if(list == null) {
+			return;
+		}
 		for (Long tagId : list) {
 			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
 			userTagRepository.save(userTag);

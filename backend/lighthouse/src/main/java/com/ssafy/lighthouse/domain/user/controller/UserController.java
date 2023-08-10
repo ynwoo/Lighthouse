@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -83,8 +85,8 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 
-	@PostMapping
-	public ResponseEntity<String> joinUser(@RequestBody UserMyPageDto userMyPageDto) {
+	@PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<String> joinUser(@ModelAttribute UserMyPageDto userMyPageDto) {
 		userService.addUser(userMyPageDto);
 		return new ResponseEntity<>("", HttpStatus.OK);
 	}
@@ -219,8 +221,9 @@ public class UserController {
 		return new ResponseEntity<>(resultMap, status);
 	}
 
-	@PutMapping("/update")
-	public ResponseEntity<?> updateUser(HttpServletRequest request, @RequestBody UserMyPageDto userMyPageDto) {
+	@PutMapping(value = "/update", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public ResponseEntity<?> updateUser(HttpServletRequest request,
+		@ModelAttribute UserMyPageDto userMyPageDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status;
 		String token = request.getHeader("access-token");

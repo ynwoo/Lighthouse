@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,6 +61,7 @@ public class User extends BaseEntity {
 			.gugunId(userMyPageDto.getGugunId())
 			.phoneNumber(userMyPageDto.getPhoneNumber())
 			.description(userMyPageDto.getDescription())
+			.profileImgUrl(userMyPageDto.getProfileImgUrl())
 			//.userTags(userMyPageDto.getUserTagList())
 			.build();
 	}
