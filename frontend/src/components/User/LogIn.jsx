@@ -26,7 +26,7 @@ function LogIn() {
     dispatch(userAction.login(value)).then(res => {
       // 실패하면 안된다 함
       if (res.type === 'user/login/rejected') {
-        alert('안돼')
+        alert('이메일 또는 비밀번호를 확인해주세요.')
       } else {
         // 로그인 성공하면 메인으로 보내주는 코드
         navigate('/')
