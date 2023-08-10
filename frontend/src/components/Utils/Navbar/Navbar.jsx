@@ -52,7 +52,7 @@ export default function Navbar({ isLoggedIn }) {
               <div className="item dropdown_king nav_item">
                 <Link
                   to="/user/me"
-                  state={{ userId: sessionStorage.getItem('userId') }}
+                  state={{ userId: Number(sessionStorage.getItem('userId')) }}
                   className="dropdown_toggle"
                 >
                   MYPAGE
