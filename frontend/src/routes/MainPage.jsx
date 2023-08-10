@@ -6,7 +6,7 @@ import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
-import NextButton from '../components/Study/utils/button/NextButton'
+import NextButton from '../components/Study/utils/button/Button'
 
 const { Footer, Content } = Layout
 
