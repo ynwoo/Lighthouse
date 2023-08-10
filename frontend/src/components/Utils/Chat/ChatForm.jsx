@@ -34,8 +34,8 @@ function ChatForm() {
   }
 
   const roomId = 1
-  const userName = 'Yang'
-  const senderId = 1
+  const userName = sessionStorage.getItem('nickname')
+  const senderId = sessionStorage.getItem('userId')
 
   const onSubmit = e => {
     e.preventDefault()

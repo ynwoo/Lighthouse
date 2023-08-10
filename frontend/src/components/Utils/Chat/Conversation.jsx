@@ -15,17 +15,18 @@ export const dateFormat = timestamp => {
 }
 
 export const getFirstLetter = name => {
-  const lettersArray = name.split(' ').map(word => word[0])
+  return name[0]
+  // const lettersArray = name.split(' ').map(word => word[0])
 
-  if (lettersArray.length === 1) {
-    return lettersArray[0].toString().toUpperCase()
-  }
+  // if (lettersArray.length === 1) {
+  //   return lettersArray[0].toString().toUpperCase()
+  // }
 
-  const firstLetters = [lettersArray[0], lettersArray[lettersArray.length - 1]]
-    .join('')
-    .toUpperCase()
+  // const firstLetters = [lettersArray[0], lettersArray[lettersArray.length - 1]]
+  //   .join('')
+  //   .toUpperCase()
 
-  return firstLetters
+  // return firstLetters
 }
 
 const ConversationContainer = styled.div`
@@ -101,45 +102,48 @@ const BotMessage = styled.div`
 function Conversation() {
   //   const { socket } = useChat()
   //   const messages = useMessages()
-  const tempMessages = useSelector(state => state.chat.messages)
-  console.log('temp messages: ', tempMessages)
-  const messages = [
-    { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
-    { text: 'world', author: 'YANG', socketId: 1, id: 2 },
-    { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
-    { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
-    { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
-    { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
-    { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
-    { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
-    { text: 'world', author: 'YANG', socketId: 1, id: 2 },
-    { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
-    { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
-    { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
-    { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
-    { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
-  ]
+  const messages = useSelector(state => state.chat.messages)
+  const userId = sessionStorage.getItem('userId')
+
+  console.log('temp messages: ', messages)
+  // const messages = [
+  //   { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
+  //   { text: 'world', author: 'YANG', socketId: 1, id: 2 },
+  //   { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
+  //   { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
+  //   { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
+  //   { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
+  //   { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
+  //   { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
+  //   { text: 'world', author: 'YANG', socketId: 1, id: 2 },
+  //   { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
+  //   { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
+  //   { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
+  //   { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
+  //   { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
+  // ]
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
   useEffect(() => {
     chatConversation.current.scrollTo(0, chatConversation.current.scrollHeight)
+    console.log('mess: ', messages)
   }, [messages])
 
   return (
     <ConversationContainer ref={chatConversation}>
       {messages.map(m => {
-        const { text, author, socketId, id } = m
+        const { type, senderName, senderId, message, time } = m
 
         // const isBot = author === 'BOT' && !socketId
-        const isBot = author === 'BOT'
+        const isBot = type !== 'TALK'
         return isBot ? (
-          <BotMessage>{text}</BotMessage>
+          <BotMessage>{message}</BotMessage>
         ) : (
           //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
-          <MessageContainer key={id} incomingMessage={socketId !== 1}>
-            <UserProfile content={author} />
-            <MessageContent>{text}</MessageContent>
+          <MessageContainer key={time} incomingMessage={senderId !== userId}>
+            <UserProfile content={senderName ? senderName.toString() : '🤬'} />
+            <MessageContent>{message}</MessageContent>
           </MessageContainer>
         )
       })}
