@@ -4,51 +4,57 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 // import axios from 'axios'
 import { userAction } from '../store/user'
-import { authApiInstance } from '../api'
-import getFollowList from '../api/follow'
+// import { authApiInstance } from '../api'
+// import getFollowList from '../api/follow'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isFollowing, setIsFollowing] = useState(false)
-  const [followingList, setFollowingList] = useState(null)
-  const [nowfollowing, setNowfollowing] = useState(0)
-
-  const followeeId = location.state.userId
-  console.log(followeeId)
-  const authApi = authApiInstance()
-  const loggedInUserId = Number(sessionStorage.getItem('userId'))
-  console.log(loggedInUserId)
+  // const [isFollowing, setIsFollowing] = useState(false)
+  // const [followingList, setFollowingList] = useState(null)
+  // const [nowfollowing, setNowfollowing] = useState(0)
 
   useEffect(() => {
     const { userId } = location.state
-    // console.log('asdfasdfasdfasdf', userId)
+    console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
-
-    getFollowList(
-      ({ data }) => {
-        console.log('getFollowList', data)
-        setFollowingList(data)
-        setIsFollowing(
-          !!followingList?.find(followingId => followingId === followeeId),
-        )
-      },
-      ({ data }) => {
-        console.log(data)
-      },
-    )
+    const myId = Number(sessionStorage.getItem('userId'))
+    console.log(myId)
   }, [])
+
+  const followeeId = location.state.userId
+  const loggedInUserId = 123123
+
+  // const authApi = authApiInstance()
+  // useEffect(() => {
+  //   const { userId } = location.state
+  //   // console.log('asdfasdfasdfasdf', userId)
+  //   dispatch(userAction.profile(userId))
+
+  //   getFollowList(
+  //     ({ data }) => {
+  //       console.log('getFollowList', data)
+  //       setFollowingList(data)
+  //       setIsFollowing(
+  //         !!followingList?.find(followingId => followingId === followeeId),
+  //       )
+  //     },
+  //     ({ data }) => {
+  //       console.log(data)
+  //     },
+  //   )
+  // }, [])
 
   const profile = useSelector(state => state.user.profile)
 
-  useEffect(() => {
-    console.log('profile.follower : ', profile.follower)
-    setNowfollowing(profile.follower)
-  }, [])
+  // useEffect(() => {
+  //   console.log('profile.follower : ', profile.follower)
+  //   setNowfollowing(profile.follower)
+  // }, [])
 
-  console.log('followingList', followingList)
-  console.log(!!followingList?.find(followingId => followingId === followeeId))
+  // console.log('followingList', followingList)
+  // console.log(!!followingList?.find(followingId => followingId === followeeId))
 
   const handleFollowClick = async () => {
     try {
@@ -105,12 +111,17 @@ export default function UserPage() {
         {followeeId !== loggedInUserId && (
           <div>
             {/* 버튼 렌더링 */}
-            {!isFollowing ? (
-              <Button type="primary" onClick={handleFollowClick}>
+            {1 ? (
+              <Button type="primary" onClick={() => console.log('팔로우 버튼')}>
                 팔로우
               </Button>
             ) : (
-              <Button type="default" onClick={handleUnFollowClick}>
+              <Button
+                type="default"
+                onClick={() => {
+                  console.log('언팔')
+                }}
+              >
                 언팔로우
               </Button>
             )}
@@ -197,7 +208,7 @@ export default function UserPage() {
             <div className="item">
               <div style={{ position: 'absolute', top: '10px', right: '30px' }}>
                 <Tooltip title="팔로워 목록 보기" placement="bottom">
-                  <div>팔로워 {nowfollowing}</div>
+                  <div>팔로워</div>
                 </Tooltip>
                 <Tooltip title="팔로잉 목록 보기" placement="bottom">
                   <div>팔로잉 {profile.following}</div>
@@ -355,7 +366,7 @@ export default function UserPage() {
           <div className="item">
             <div style={{ position: 'absolute', top: '10px', right: '30px' }}>
               <Tooltip title="팔로워 목록 보기" placement="bottom">
-                <div>팔로워 {nowfollowing}</div>
+                <div>팔로워</div>
               </Tooltip>
               <Tooltip title="팔로잉 목록 보기" placement="bottom">
                 <div>팔로잉 {profile.following}</div>

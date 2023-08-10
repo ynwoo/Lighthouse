@@ -13,6 +13,8 @@ export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const study = useSelector(state => state.study.studyDetail)
 
+  console.log(study)
+
   useEffect(() => {
     console.log(window.location.pathname?.split('/')[2])
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
@@ -20,19 +22,18 @@ export default function TempDetailPage({ isLoggedIn }) {
   const userId = sessionStorage.getItem('userId')
 
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
-  const tabMenu = study.memberProfiles?.find(
-    memberProfile => memberProfile.id === Number(userId),
-  )?.id
-    ? [
-        { TempInfo: <StudyInfo study={study} /> },
-        { 가입했을때정보: <JoinStudyInfo study={study} /> },
-      ]
-    : [
-        { TempInfo: <StudyInfo study={study} /> },
-        { TempQnA: <StudyQnA study={study} /> },
-        { 회원정보: <StudyMember members={study?.memberProfiles} /> },
-        { TempReview: <StudyReview study={study} /> },
-      ]
+  const tabMenu = [
+    { TempInfo: <StudyInfo study={study} /> },
+    ...(study.memberProfiles?.find(
+      memberProfile => memberProfile.id === Number(userId),
+    )?.id
+      ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
+      : [
+          { TempQnA: <StudyQnA qnas={study?.qnas} /> },
+          { 회원정보: <StudyMember members={study?.memberProfiles} /> },
+          { TempReview: <StudyReview study={study} /> },
+        ]),
+  ]
 
   return (
     <div className="info_container">
