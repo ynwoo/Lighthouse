@@ -193,19 +193,23 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         return SimpleUserResponse.builder()
                 .progressStudies(jpaQueryFactory.select(participationHistory.studyId)
                         .from(participationHistory)
-                        .where(participationHistory.userId.eq(userId))
+                        .where(participationHistory.userId.eq(userId),
+                                participationHistory.isValid.eq(1))
                         .fetch())
                 .bookmarks(jpaQueryFactory.select(bookmark.studyId)
                         .from(bookmark)
-                        .where(bookmark.userId.eq(userId))
+                        .where(bookmark.userId.eq(userId),
+                                bookmark.isValid.eq(1))
                         .fetch())
                 .likes(jpaQueryFactory.select(studyLike.studyId)
                         .from(studyLike)
-                        .where(studyLike.userId.eq(userId))
+                        .where(studyLike.userId.eq(userId),
+                                studyLike.isValid.eq(1))
                         .fetch())
-                .follows(select(follow.followeeId)
+                .follows(jpaQueryFactory.select(follow.followeeId)
                         .from(follow)
-                        .where(follow.followerId.eq(userId))
+                        .where(follow.followerId.eq(userId),
+                                follow.isValid.eq(1))
                         .fetch())
                 .build();
     }
