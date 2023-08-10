@@ -179,7 +179,7 @@ public class UserController {
 	}
 
 	// userId에 해당하는 유저 프로필 조회
-	@GetMapping("/{user-id}")
+	@GetMapping("/profile/{user-id}")
 	public ResponseEntity<?> findProfileByUserId(@PathVariable(name = "user-id") Long userId,
 												 HttpServletRequest request) {
 		Long loginId = (Long) request.getAttribute("userId");
