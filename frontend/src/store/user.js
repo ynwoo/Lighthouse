@@ -65,6 +65,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   profile: {},
+  following: null,
   userInfo: {},
 }
 
@@ -202,6 +203,37 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  // 나의 팔로우 목록
+  getFollowing: createAsyncThunk(
+    'user/getFollow',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.get(`${API_URL}/users/follow`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
+  follow: createAsyncThunk('user/follow', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`/users/follow/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  unfollow: createAsyncThunk('user/unfollow', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.delete(`/users/follow/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const userSlice = createSlice({
@@ -279,6 +311,11 @@ export const userSlice = createSlice({
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload)
       state.profile = action.payload
+    },
+    // 팔로우
+    [userAction.getFollowing.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.following = action.payload
     },
   },
 })
