@@ -15,6 +15,7 @@ const initialState = {
     tagIds: [],
   },
   studies: [],
+  totalPage: 0,
   studyDetail: [],
   tags: [],
 }

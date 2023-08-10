@@ -149,7 +149,7 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      window.location.href = '/'
+      // window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -174,7 +174,6 @@ export const userAction = {
     try {
       const response = await authApi.get(`/users/logout`)
       console.log(response)
-      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -250,9 +249,11 @@ export const userSlice = createSlice({
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
       state.userInfo = action.payload.userInfo
-      console.log('action.payload.userInfo', action.payload.userInfo)
+      console.log('action.payload', action.payload)
       state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
+      // eslint-disable-next-line no-restricted-globals
+      // history.push('/')
     },
     // 로그아웃 성공 시 토큰 삭제
     [userAction.logout.fulfilled]: (state, action) => {

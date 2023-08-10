@@ -1,7 +1,7 @@
 import React from 'react'
 // import { Layout, Button, Checkbox, Form, Input } from 'antd'
 import { Form, Input, Button, Checkbox, Card, Typography, Col, Row } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
@@ -14,6 +14,7 @@ const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
 //
+const history = useNavigate()
 
 function LogIn() {
   const dispatch = useDispatch()
@@ -27,6 +28,7 @@ function LogIn() {
         alert('안돼')
       }
     })
+    history('/')
   }
   return (
     <div

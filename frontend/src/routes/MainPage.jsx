@@ -6,7 +6,7 @@ import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
-import NextButton from '../components/Study/utils/button/Button'
+// import Button from '../components/Study/utils/button/Button'
 
 const { Footer, Content } = Layout
 
@@ -91,7 +91,7 @@ export default function MainPage({ isLoggedIn, initStatus }) {
                 이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
               </CreateButton>
               <div>
-                <NextButton />
+                {/* <Button><FontAwesomeIcon icon={faAngleRight} /></Button> */}
               </div>
               {/* 검색창 */}
               <SearchComponent />
