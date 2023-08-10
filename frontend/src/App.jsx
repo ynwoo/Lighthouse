@@ -1,6 +1,8 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { CommentOutlined } from '@ant-design/icons'
+import { FloatButton } from 'antd'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
@@ -10,10 +12,11 @@ import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
-import chat from './static/chat.png'
+// import chat from './static/chat.png'
 import SignUp from './components/User/SignUp'
 import SignIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
+import ChatList from './components/Utils/Chat/ChatList'
 
 function App() {
   const isLoggedIn = sessionStorage.getItem('isLoggedIn')
@@ -85,15 +88,16 @@ function App() {
         }}
         onClick={handleChatClick}
       >
-        <img src={chat} alt="채팅" style={{ width: '100px' }} />
+        <FloatButton icon={<CommentOutlined />} />
+        {/* <img src={chat} alt="채팅" style={{ width: '100px' }} /> */}
       </button>
       {showChat && (
         // 채팅창이 보일 때만 아래 코드가 렌더링됨
         <div
           style={{
             position: 'fixed',
-            width: '200px',
-            height: '200px',
+            width: '300px',
+            height: '500px',
             bottom: '90px',
             right: '70px',
             backgroundColor: 'white',
@@ -104,7 +108,7 @@ function App() {
           }}
         >
           {/* 채팅창 내용 */}
-          채팅창
+          <ChatList />
         </div>
       )}
     </div>

@@ -73,8 +73,9 @@ export const chatSlice = createSlice({
   },
   extraReducers: {
     [chatAction.getChat.fulfilled]: (state, action) => {
-      console.log(action.payload)
-      state.messages = action.payload
+      console.log(action.payload.log)
+      // state.messages = [...state.messages, ...action.payload.log]
+      state.messages = action.payload.log
     },
   },
 })
