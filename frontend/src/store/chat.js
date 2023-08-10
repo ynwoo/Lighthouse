@@ -2,10 +2,20 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { Client } from '@stomp/stompjs'
 
+const API_URL = process.env.REACT_APP_API_URL
+
 const initialState = {
   messages: [],
 }
 export const chatAction = {
+  getChat: createAsyncThunk('chat/get', async (payload, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/kafka/${payload}`)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
   sendChat: createAsyncThunk('chat/send', async (payload, thunkAPI) => {
     try {
       const response = await axios
@@ -61,7 +71,12 @@ export const chatSlice = createSlice({
       state.messages.push(action.payload)
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [chatAction.getChat.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.messages = action.payload
+    },
+  },
 })
 
 export const { receiveMessage } = chatSlice.actions
