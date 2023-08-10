@@ -19,9 +19,7 @@ import ChatTest from './components/Utils/Chat/ChatTest'
 
 function App() {
   const login = useSelector(state => state.user.isLoggedIn)
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn')
-    ? sessionStorage.getItem('isLoggedIn')
-    : login
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') || login
   const [showChat, setShowChat] = useState(false)
 
   const handleChatClick = () => {

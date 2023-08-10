@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const API_URL = process.env.REACT_APP_API_URL
+const navigate = useNavigate
 
 // custom axios for axios interceptor
-const authApi = axios.create({
+export const authApi = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
@@ -41,13 +43,13 @@ authApi.interceptors.response.use(
         window.location.reload()
       } catch (error) {
         alert('로그인이 필요합니다!')
-        window.location.href = '/login'
+        navigate('/login')
       }
       return Promise.reject(err)
     }
     console.log('hmm...')
     alert('로그인이 필요합니다!')
-    window.location.href = '/login'
+    navigate('/login')
     return Promise.reject(err)
   },
 )
@@ -178,7 +180,7 @@ export const userAction = {
   // 프로필 불러오기
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
-      const response = await authApi.get(`${API_URL}/users/${payload}`)
+      const response = await authApi.get(`${API_URL}/users/profile/${payload}`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {

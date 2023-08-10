@@ -27,7 +27,7 @@ function LogIn() {
       if (res.type === 'user/login/rejected') {
         alert('안돼')
       } else {
-        navigate(-1)
+        navigate('/')
       }
     })
   }

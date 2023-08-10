@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 // import axios from 'axios'
 import { userAction } from '../store/user'
 // import { authApiInstance } from '../api'
@@ -243,8 +243,10 @@ export default function UserPage() {
           <div>
             <Select className="u_item2" value="신청중인 스터디">
               {profile.participatedStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.title}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { authApi } from './user'
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -37,6 +38,17 @@ export const studyAction = {
   getTags: createAsyncThunk('study/getTags', async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}/tags`)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  joinStudy: createAsyncThunk('study/joinStudy', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(
+        `${API_URL}/participation-history/${payload}`,
+      )
+      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
