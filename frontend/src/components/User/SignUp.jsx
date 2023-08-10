@@ -30,7 +30,7 @@ const normFile = e => {
 }
 
 const dummyRequest = ({ file, onSuccess }) => {
-  console.log(file)
+  console.log('file upload successful', file)
   setTimeout(() => {
     onSuccess('ok')
   }, 0)
@@ -97,12 +97,8 @@ function SignUp() {
                   values[key] = null
                 }
               })
-              console.log(
-                values.profileImgFile[0].originFileObj,
-                typeof values.profileImgFile[0].originFileObj,
-              )
               values.profileImgFile = values.profileImgFile[0].originFileObj
-              console.log(values)
+              console.log('submitting values: ', values)
               // redux => server
               dispatch(userAction.signUp(values))
               navigate('/')
