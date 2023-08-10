@@ -95,8 +95,9 @@ function SignUp() {
               // redux => server
               dispatch(userAction.signUp(values))
               navigate('/')
+            } else {
+              alert('이메일, 닉네임 중복확인을 해주세요.')
             }
-            alert('이메일, 닉네임 중복확인을 해주세요.')
           }}
         >
           <Form.Item
