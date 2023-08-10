@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
+import { studyAction } from '../../store/study'
 
-const API_URL = process.env.REACT_APP_API_URL
 export default function SideComponent({ isLoggedIn, study }) {
+  const dispatch = useDispatch()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
-  const nickname = sessionStorage.getItem('nickname')
-  // 스터디 가입
-  const OnclickJoin = () => {
-    axios.put(`${API_URL}/participation-history/${study.id}`)
-    console.log('id', study.id)
-  }
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -25,8 +21,14 @@ export default function SideComponent({ isLoggedIn, study }) {
 
   const handleOk = () => {
     console.log('Message:', message)
-    setIsModalVisible(false)
-    setIsConfirmationVisible(true)
+    console.log(study.id)
+    dispatch(studyAction.joinStudy(study.id)).then(res => {
+      console.log(res)
+      if (res.type !== 'study/joinStudy/rejected') {
+        setIsModalVisible(false)
+        setIsConfirmationVisible(true)
+      }
+    })
   }
 
   const handleCancel = () => {
