@@ -16,6 +16,7 @@ const onFinishFailed = errorInfo => {
 //
 
 function LogIn() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
   const navigate = useNavigate()
