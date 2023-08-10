@@ -155,10 +155,7 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-<<<<<<< frontend/src/store/user.js
-=======
       // window.location.href = '/'
->>>>>>> frontend/src/store/user.js
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
