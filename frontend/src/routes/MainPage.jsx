@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Layout } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { studyAction } from '../store/study'
-import { getStudyAll } from '../api/study'
+import { CreateButton } from '../components/Study/utils/button'
 
 const { Footer, Content } = Layout
 
@@ -26,41 +26,39 @@ const footerStyle = {
   backgroundColor: '#7dbcea',
 }
 // 내부 탭
-export default function MainPage({ isLoggedIn }) {
+export default function MainPage({ isLoggedIn, initStatus }) {
   const dispatch = useDispatch()
-  const [studies, setStudies] = useState(null)
-  const params = new URLSearchParams(window.location.search)
+  const [page /* setPage */] = useState(0)
+  const [key /* setKey */] = useState(null)
+  const [word /* setWord */] = useState(null)
+  const [orderKey /* setOrderKey */] = useState('like')
+  const [orderBy /* setOrderBy */] = useState('desc')
+  const [isOnline /* setIsOnline */] = useState(0)
+  const [tagIds /* setTagIds */] = useState(null)
+  const [status, setStatus] = useState(initStatus)
+
   const options = {
-    page: params.get('page') || 0,
-    key: params.get('key'),
-    word: params.get('word'),
-    orderKey: params.get('order-key') || 'like',
-    orderBy: params.get('order-by') || 'desc',
-    isOnline: params.get('is-online') || 0,
-    tagIds: params.getAll('tagIds') ?? [],
-    status: 1,
+    page,
+    key,
+    word,
+    orderKey,
+    orderBy,
+    isOnline,
+    tagIds,
+    status,
   }
-  console.log('options', options)
 
   useEffect(() => {
-    getStudyAll(
-      options,
-      ({ data }) => {
-        console.log(data)
-        setStudies(data.content)
-      },
-      ({ data }) => {
-        console.log(data)
-      },
-    )
-  }, [])
+    setStatus(initStatus)
+  }, [initStatus])
 
+  useEffect(() => {
+    dispatch(studyAction.studyList(options))
+    // dispatch(studyAction.getTags())
+  }, [page, key, word, orderKey, orderBy, isOnline, tagIds, status])
+
+  const studies = useSelector(state => state.study.studies)
   console.log(studies)
-  useEffect(() => {
-    console.log(studies)
-    dispatch(studyAction.studyList(params))
-    dispatch(studyAction.getTags())
-  }, [])
 
   return (
     <div
@@ -88,6 +86,9 @@ export default function MainPage({ isLoggedIn }) {
                 width: '100%',
               }}
             >
+              <CreateButton>
+                이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
+              </CreateButton>
               {/* 검색창 */}
               <SearchComponent />
             </div>

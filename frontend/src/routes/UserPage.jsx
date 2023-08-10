@@ -44,7 +44,7 @@ export default function UserPage() {
 
   useEffect(() => {
     console.log('profile.follower : ', profile.follower)
-    setNowfollowing(profile.follower)
+    setNowfollowing(profile.follower ?? 0)
   }, [])
 
   console.log('followingList', followingList)
