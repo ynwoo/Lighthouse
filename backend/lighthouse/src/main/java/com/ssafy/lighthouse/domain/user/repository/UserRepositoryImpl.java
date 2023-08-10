@@ -2,19 +2,25 @@ package com.ssafy.lighthouse.domain.user.repository;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
+import com.ssafy.lighthouse.domain.study.entity.QBookmark;
+import com.ssafy.lighthouse.domain.study.entity.QParticipationHistory;
+import com.ssafy.lighthouse.domain.study.entity.QStudyLike;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
 import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryRepository;
 import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
+import com.ssafy.lighthouse.domain.user.dto.SimpleUserResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,7 +31,10 @@ import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
 import static com.ssafy.lighthouse.domain.common.entity.QTag.tag;
+import static com.ssafy.lighthouse.domain.study.entity.QBookmark.bookmark;
+import static com.ssafy.lighthouse.domain.study.entity.QParticipationHistory.participationHistory;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
+import static com.ssafy.lighthouse.domain.study.entity.QStudyLike.studyLike;
 import static com.ssafy.lighthouse.domain.user.entity.QFollow.follow;
 import static com.ssafy.lighthouse.domain.user.entity.QUser.user;
 import static com.ssafy.lighthouse.domain.user.entity.QUserEval.userEval;
@@ -177,6 +186,39 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(simpleProfileResponse.getScore())
                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SimpleUserResponse findUserInfo(Long userId) {
+        return jpaQueryFactory.select(Projections.fields(SimpleUserResponse.class,
+                        user.id,
+                        user.nickname,
+                        ExpressionUtils.as(
+                                select(participationHistory.studyId)
+                                        .from(participationHistory)
+                                        .where(participationHistory.userId.eq(userId))
+                                , "progressStudies"),
+                        ExpressionUtils.as(
+                                select(follow.followeeId)
+                                        .from(follow)
+                                        .where(follow.followerId.eq(userId))
+                                , "follows"),
+                        ExpressionUtils.as(
+                                select(bookmark.studyId)
+                                        .from(bookmark)
+                                        .where(bookmark.userId.eq(userId))
+                                , "progressStudies"),
+                        ExpressionUtils.as(
+                                select(studyLike.studyId)
+                                        .from(studyLike)
+                                        .where(studyLike.userId.eq(userId))
+                                , "progressStudies"),
+                        user.description,
+                        ExpressionUtils.as(select(userEval.score.avg()).from(userEval).where(userEval.userId.eq(user.id), userEval.isValid.eq(1)), "score")))
+                .from(user)
+                .where(user.id.eq(userId), user.isValid.eq(1))
+                .groupBy(user.id)
+                .fetchOne();
     }
 
     // badgeList

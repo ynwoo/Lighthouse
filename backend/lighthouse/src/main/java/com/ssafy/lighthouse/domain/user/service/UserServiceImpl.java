@@ -8,19 +8,12 @@ import javax.transaction.Transactional;
 
 import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
+import com.ssafy.lighthouse.domain.user.dto.*;
+import com.ssafy.lighthouse.domain.user.entity.*;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
-import com.ssafy.lighthouse.domain.user.dto.AlertDto;
-import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
-import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
-import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
-import com.ssafy.lighthouse.domain.user.entity.Follow;
-import com.ssafy.lighthouse.domain.user.entity.User;
-import com.ssafy.lighthouse.domain.user.entity.UserEval;
-import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
 import com.ssafy.lighthouse.domain.user.repository.AlertQueueRepository;
 import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
@@ -64,6 +57,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMyPageDto loginUser(String userEmail, String userPwd) {
 		User loginUser = userRepository.findByEmailAndIsValid(userEmail, 1);
+
 		if (loginUser != null && BCrypt.checkpw(userPwd,
 			userRepository.getReferenceById(loginUser.getId()).getPassword())) {
 			return UserMyPageDto.from(loginUser);
