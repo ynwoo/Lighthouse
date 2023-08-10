@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import axios from 'axios'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
@@ -60,8 +61,7 @@ export default function SideComponent({ isLoggedIn, study }) {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          <p>00님 환영합니다 !</p>
-          <p>현재 가입된 스터디는 0개입니다.</p>
+          <p>{nickname}님 환영합니다 !</p>
         </div>
 
         <div style={{ marginTop: '20px' }}>
@@ -120,6 +120,7 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
+                onClick={OnclickJoin}
               />
             </Modal>
 
