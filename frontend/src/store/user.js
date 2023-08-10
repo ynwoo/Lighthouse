@@ -62,6 +62,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   profile: {},
+  userInfo: {},
 }
 
 export const userAction = {
@@ -248,6 +249,8 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
+      state.userInfo = action.payload.userInfo
+      console.log('action.payload.userInfo', action.payload.userInfo)
       state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
