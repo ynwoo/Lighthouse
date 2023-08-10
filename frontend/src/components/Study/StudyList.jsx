@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import StudyCard from './StudyCard'
 import { studyAction } from '../../store/study'
 
-function MainComponent() {
+function MainComponent({ studies }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
-  const studies = useSelector(state => state.study.studies)
 
   useEffect(() => {
     console.log(params)
