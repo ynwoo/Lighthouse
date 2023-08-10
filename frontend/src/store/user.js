@@ -152,7 +152,7 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      window.location.href = '/'
+      // window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -177,7 +177,6 @@ export const userAction = {
     try {
       const response = await authApi.get(`/users/logout`)
       console.log(response)
-      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -252,6 +251,8 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
+      state.userInfo = action.payload.userInfo
+      console.log('action.payload', action.payload)
       state.isLoggedIn = true
       state.userInfo = action.payload.userInfo
       console.log(action.payload.userInfo)
