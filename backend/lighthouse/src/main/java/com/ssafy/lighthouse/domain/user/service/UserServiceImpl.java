@@ -181,6 +181,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<Long> findFollowAllByFollowerId(Long followerId) {
+		return followRepository.findFollowAllByFollowerId(followerId);
+	}
+
+	@Override
 	public void updateProfileImage(MultipartFile img, Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
 		String profileImgUrl = user.getProfileImgUrl();

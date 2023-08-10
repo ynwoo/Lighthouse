@@ -112,37 +112,47 @@ function LogIn() {
 
         <Row justify="center">
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/google.png"
-              alt="구글 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a
+              href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_URL}/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`}
+            >
+              <img
+                src="/google.png"
+                alt="구글 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/kakao.png"
-              alt="카카오 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a href="#!">
+              <img
+                src="/kakao.png"
+                alt="카카오 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/github.png"
-              alt="깃허브 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a href="#!">
+              <img
+                src="/github.png"
+                alt="깃허브 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/naver.png"
-              alt="네이버 로그인"
-              style={{
-                width: '30px',
-                height: '30px',
-                marginleft: 'auto',
-                marginright: 'auto',
-              }}
-            />
+            <a href="#!">
+              <img
+                src="/naver.png"
+                alt="네이버 로그인"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  marginleft: 'auto',
+                  marginright: 'auto',
+                }}
+              />
+            </a>
           </Col>
         </Row>
       </Card>
