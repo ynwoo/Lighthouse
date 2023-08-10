@@ -149,26 +149,11 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  googleOauth: createAsyncThunk(
-    'user/googleLogin',
-    async (payload, thunkAPI) => {
-      try {
-        const response = await axios.post(
-          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
-        )
-        console.log(response)
-        return thunkAPI.fulfillWithValue(response.data)
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error)
-      }
-    },
-  ),
   // 로그아웃
   logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
     try {
@@ -284,15 +269,9 @@ export const userSlice = createSlice({
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
-    [userAction.logout.fulfilled]: (state, action) => {
+    [userAction.logout.fulfilled]: state => {
       // tokens save in session storage
-      sessionStorage.removeItem('access_token', action.payload['access-token'])
-      sessionStorage.removeItem(
-        'refresh_token',
-        action.payload['refresh-token'],
-      )
-      sessionStorage.removeItem('isLoggedIn')
-      sessionStorage.removeItem('userId')
+      sessionStorage.clear()
       state.isLoggedIn = false
     },
     // 마이페이지

@@ -71,21 +71,21 @@ export default function UserPage() {
   //   }
   // }
 
+  const profile = useSelector(state => state.user.profile)
   useEffect(() => {
     const { userId } = location.state
-    console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.getFollowing())
-    const myId = sessionStorage.getItem('userId')
-    console.log(myId)
   }, [])
 
-  const followeeId = location.state.userId
-  const loggedInUserId = 123123
+  const { userId } = location.state
+  const myId = Number(sessionStorage.getItem('userId'))
 
-  const profile = useSelector(state => state.user.profile)
+  console.log(userId, typeof userId, myId, typeof myId)
   const following = useSelector(state => state.user.following)
+
   console.log(following)
+  console.log(profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -107,7 +107,7 @@ export default function UserPage() {
         marginTop: '-47px',
       }}
     >
-      {followeeId !== loggedInUserId && (
+      {userId !== myId && (
         <div>
           {/* 버튼 렌더링 */}
           {!following?.find(id => id === profile.id) ? (
