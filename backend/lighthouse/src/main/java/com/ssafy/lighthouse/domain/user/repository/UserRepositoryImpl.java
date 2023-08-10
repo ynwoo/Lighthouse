@@ -190,7 +190,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
     @Override
     public SimpleUserResponse findUserInfo(Long userId) {
-        List<SimpleUserResponse> fetch = jpaQueryFactory.select(Projections.fields(SimpleUserResponse.class,
+        return jpaQueryFactory.select(Projections.fields(SimpleUserResponse.class,
                         user.id,
                         user.nickname,
                         ExpressionUtils.as(
@@ -218,8 +218,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .from(user)
                 .where(user.id.eq(userId), user.isValid.eq(1))
                 .groupBy(user.id)
-                .fetch();
-        return null;
+                .fetchOne();
     }
 
     // badgeList

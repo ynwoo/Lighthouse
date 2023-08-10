@@ -53,15 +53,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMyPageDto loginUser(String userEmail, String userPwd) {
 		User loginUser = userRepository.findByEmailAndIsValid(userEmail, 1);
-		SimpleUserInfo userInfo = userRepository.findUserInfo(loginUser.getId());
-		SimpleUserResponse result = SimpleUserResponse.builder()
-				.id(userInfo.getId())
-				.nickname(userInfo.getNickname())
-				.progressStudies(userInfo.getProgressStudies())
-				.follows(userInfo.getFollows())
-				.likes(userInfo.getLikes())
-				.bookmarks(userInfo.getBookmarks())
-				.build();
 
 		if (loginUser != null && BCrypt.checkpw(userPwd,
 			userRepository.getReferenceById(loginUser.getId()).getPassword())) {
