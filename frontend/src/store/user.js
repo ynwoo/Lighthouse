@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { formInstance } from '../api/index'
+
+const formApi = formInstance()
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -62,7 +65,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   profile: {},
-  following: null,
+  userInfo: {},
 }
 
 export const userAction = {
@@ -136,7 +139,7 @@ export const userAction = {
   signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
       console.log(payload)
-      const response = await axios.post(`${API_URL}/users`, payload)
+      const response = await formApi.post(`${API_URL}/users`, payload)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -200,37 +203,6 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  // 나의 팔로우 목록
-  getFollowing: createAsyncThunk(
-    'user/getFollow',
-    async (payload, thunkAPI) => {
-      try {
-        const response = await authApi.get(`${API_URL}/users/follow`)
-        console.log(response)
-        return thunkAPI.fulfillWithValue(response.data)
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error)
-      }
-    },
-  ),
-  follow: createAsyncThunk('user/follow', async (payload, thunkAPI) => {
-    try {
-      const response = await authApi.post(`/users/follow/${payload}`)
-      console.log(response)
-      return thunkAPI.fulfillWithValue(response.data)
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error)
-    }
-  }),
-  unfollow: createAsyncThunk('user/unfollow', async (payload, thunkAPI) => {
-    try {
-      const response = await authApi.delete(`/users/follow/${payload}`)
-      console.log(response)
-      return thunkAPI.fulfillWithValue(response.data)
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error)
-    }
-  }),
 }
 
 export const userSlice = createSlice({
@@ -281,6 +253,8 @@ export const userSlice = createSlice({
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
       state.isLoggedIn = true
+      state.userInfo = action.payload.userInfo
+      console.log(action.payload.userInfo)
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
@@ -304,11 +278,6 @@ export const userSlice = createSlice({
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload)
       state.profile = action.payload
-    },
-    // 팔로우
-    [userAction.getFollowing.fulfilled]: (state, action) => {
-      console.log(action.payload)
-      state.following = action.payload
     },
   },
 })
