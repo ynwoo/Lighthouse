@@ -56,33 +56,37 @@ export default function UserPage() {
   // console.log('followingList', followingList)
   // console.log(!!followingList?.find(followingId => followingId === followeeId))
 
-  // const handleFollowClick = async () => {
-  //   try {
-  //     if (isFollowing) {
-  //       // 언팔로우 API 요청
-  //       await authApi.delete(`/users/follow/${followeeId}`)
-  //     } else {
-  //       // 팔로우 API 요청
-  //       await authApi.post(`/users/follow/${followeeId}`)
-  //     }
-  //     console.log(isFollowing)
-  //     setIsFollowing(prevIsFollowing => !prevIsFollowing)
-  //     setNowfollowing(nowfollowing + 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
+  const handleFollowClick = async () => {
+    try {
+      if (isFollowing) {
+        // 언팔로우 API 요청
+        await authApi.delete(`/users/follow/${followeeId}`)
+      } else {
+        // 팔로우 API 요청
+        await authApi.post(`/users/follow/${followeeId}`)
+      }
+      console.log(isFollowing)
+      setIsFollowing(true)
+      setNowfollowing(nowfollowing + 1)
+      setFollowingList([...followingList, followeeId])
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error)
+    }
+  }
 
-  // const handleUnFollowClick = async () => {
-  //   try {
-  //     // 언팔로우 API 요청
-  //     await authApi.delete(`/users/follow/${followeeId}`)
-  //     setIsFollowing(false) // 팔로우 상태 변경
-  //     setNowfollowing(nowfollowing - 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
+  const handleUnFollowClick = async () => {
+    try {
+      // 언팔로우 API 요청
+      await authApi.delete(`/users/follow/${followeeId}`)
+      setIsFollowing(false) // 팔로우 상태 변경
+      setNowfollowing(nowfollowing - 1)
+      setFollowingList(
+        followingList.filter(following => following !== followeeId),
+      )
+    } catch (error) {
+      console.error('API 요청 중 오류 발생:', error)
+    }
+  }
 
   const showModal = () => {
     setIsModalVisible(true)
