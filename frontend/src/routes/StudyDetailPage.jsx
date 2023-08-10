@@ -5,9 +5,9 @@ import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyReview from '../components/Study/StudyReview'
-import { studyAction } from '../store/study'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 import StudyMember from '../components/Study/StudyMember'
+import { studyAction } from '../store/study'
 
 export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -16,15 +16,17 @@ export default function TempDetailPage({ isLoggedIn }) {
   console.log(study)
 
   useEffect(() => {
-    console.log(window.location.pathname?.split('/')[2])
+    const studyId = window.location.pathname?.split('/')[2]
+    console.log(studyId)
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
+  console.log(study)
   const userId = sessionStorage.getItem('userId')
 
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { TempInfo: <StudyInfo study={study} /> },
-    ...(study.memberProfiles?.find(
+    ...(study?.memberProfiles?.find(
       memberProfile => memberProfile.id === Number(userId),
     )?.id
       ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
