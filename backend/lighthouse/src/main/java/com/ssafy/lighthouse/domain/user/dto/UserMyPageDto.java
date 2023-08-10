@@ -3,6 +3,8 @@ package com.ssafy.lighthouse.domain.user.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssafy.lighthouse.domain.user.entity.User;
 
 import lombok.Builder;
@@ -28,6 +30,7 @@ public class UserMyPageDto {
 	private Long gugunId;
 	private String phoneNumber;
 	private String description;
+	private MultipartFile profileImgFile;
 	List<Long> userTagList;
 
 	@Builder
