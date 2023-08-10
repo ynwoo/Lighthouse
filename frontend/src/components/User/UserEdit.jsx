@@ -1,23 +1,19 @@
-// import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, Link } from 'react-router-dom'
 import { Layout, Menu, Card, Space, Avatar, Button, Row, Col } from 'antd'
-import { Link } from 'react-router-dom'
+import { userAction } from '../../store/user'
+// import React, { useState } from 'react'
 
 const { Content, Sider } = Layout
 // 템플릿 상세의 질의응답
 
-const items2 = [
-  '정보',
-  '진행 중인 스터디',
-  '스터디 참여 기록',
-  '템플릿 북마크',
-].map((text, index) => {
-  const key = String(index + 1)
-  return {
-    key: `sub${key}`,
-    label: text,
-  }
-})
-
+const menuItems = [
+  { label: <Link to={`/user_edit/${userId}`}>정보</Link>, key: '1' },
+  { label: <Link to="inprogress">진행 중인 스터디</Link>, key: '2' },
+  { label: '스터디 참여 기록', key: '3' },
+  { label: '템플릿 북마크', key: '4' },
+]
 export default function UserEdit() {
   // const [checkboxValues, setCheckboxValues] = useState({
   //   개발: false,
@@ -38,6 +34,20 @@ export default function UserEdit() {
   //     [name]: checked,
   //   })
   // }
+  // const handleMenuClick = ({ key }) => {
+  //   const { target } = menuItems.find(item => item.key === key) || {}
+  //   if (target) {
+  //     navigate(target)
+  //   }
+  // }
+  const dispatch = useDispatch()
+  const location = useLocation()
+  useEffect(() => {
+    const { userId } = location.state
+    // console.log('asdfasdfasdfasdf', userId)
+    dispatch(userAction.profile(userId))
+  }, [])
+  const profile = useSelector(state => state.user.profile)
 
   return (
     <Layout
@@ -75,11 +85,11 @@ export default function UserEdit() {
         <Menu
           mode="inline"
           defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub1']}
           style={{
             height: '100%',
           }}
-          items={items2}
+          items={menuItems}
+          // onClick={handleMenuClick}
         />
       </Sider>
       <Content
