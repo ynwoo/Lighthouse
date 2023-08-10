@@ -247,6 +247,7 @@ export const userSlice = createSlice({
       sessionStorage.setItem('refresh_token', action.payload['refresh-token'])
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
+      sessionStorage.setItem('nickname', action.payload.nickname)
       state.isLoggedIn = true
       console.log(sessionStorage.getItem('refresh_token'))
     },
