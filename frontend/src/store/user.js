@@ -62,6 +62,7 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   profile: {},
+  userInfo: {},
 }
 
 export const userAction = {
@@ -249,6 +250,8 @@ export const userSlice = createSlice({
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
       state.isLoggedIn = true
+      state.userInfo = action.payload.userInfo
+      console.log(action.payload.userInfo)
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
