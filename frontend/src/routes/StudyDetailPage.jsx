@@ -11,17 +11,15 @@ import { studyAction } from '../store/study'
 
 export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
+  const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
 
-  console.log(study)
-
   useEffect(() => {
-    const studyId = window.location.pathname?.split('/')[2]
     console.log(studyId)
     dispatch(studyAction.studyDetail(window.location.pathname?.split('/')[2]))
   }, [])
-  console.log(study)
   const userId = sessionStorage.getItem('userId')
+  console.log(study)
 
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
