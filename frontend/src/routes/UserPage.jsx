@@ -79,7 +79,8 @@ export default function UserPage() {
   }, [])
 
   const { userId } = location.state
-  const myId = sessionStorage.getItem('userId')
+  const myId = Number(sessionStorage.getItem('userId'))
+  console.log(typeof userId, typeof myId)
 
   const following = useSelector(state => state.user.following)
 
