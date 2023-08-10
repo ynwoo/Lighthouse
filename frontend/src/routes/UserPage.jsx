@@ -43,53 +43,48 @@ export default function UserPage() {
   // console.log('followingList', followingList)
   // console.log(!!followingList?.find(followingId => followingId === followeeId))
 
-  const handleFollowClick = async () => {
-    try {
-      if (isFollowing) {
-        // 언팔로우 API 요청
-        await authApi.delete(`/users/follow/${followeeId}`)
-      } else {
-        // 팔로우 API 요청
-        await authApi.post(`/users/follow/${followeeId}`)
-      }
-      console.log(isFollowing)
-      setIsFollowing(true)
-      setNowfollowing(nowfollowing + 1)
-      setFollowingList([...followingList, followeeId])
-    } catch (error) {
-      console.error('API 요청 중 오류 발생:', error)
-    }
-  }
+  // const handleFollowClick = async () => {
+  //   try {
+  //     if (isFollowing) {
+  //       // 언팔로우 API 요청
+  //       await authApi.delete(`/users/follow/${followeeId}`)
+  //     } else {
+  //       // 팔로우 API 요청
+  //       await authApi.post(`/users/follow/${followeeId}`)
+  //     }
+  //     console.log(isFollowing)
+  //     setIsFollowing(prevIsFollowing => !prevIsFollowing)
+  //     setNowfollowing(nowfollowing + 1)
+  //   } catch (error) {
+  //     console.error('API 요청 중 오류 발생:', error)
+  //   }
+  // }
 
-  const handleUnFollowClick = async () => {
-    try {
-      // 언팔로우 API 요청
-      await authApi.delete(`/users/follow/${followeeId}`)
-      setIsFollowing(false) // 팔로우 상태 변경
-      setNowfollowing(nowfollowing - 1)
-      setFollowingList(
-        followingList.filter(following => following !== followeeId),
-      )
-    } catch (error) {
-      console.error('API 요청 중 오류 발생:', error)
-    }
-  }
-
-  useEffect(() => {
-    const { userId } = location.state
-    console.log('asdfasdfasdfasdf', userId)
-    dispatch(userAction.profile(userId))
-    dispatch(userAction.getFollowing())
-    const myId = sessionStorage.getItem('userId')
-    console.log(myId)
-  }, [])
-
-  const followeeId = location.state.userId
-  const loggedInUserId = 123123
+  // const handleUnFollowClick = async () => {
+  //   try {
+  //     // 언팔로우 API 요청
+  //     await authApi.delete(`/users/follow/${followeeId}`)
+  //     setIsFollowing(false) // 팔로우 상태 변경
+  //     setNowfollowing(nowfollowing - 1)
+  //   } catch (error) {
+  //     console.error('API 요청 중 오류 발생:', error)
+  //   }
+  // }
 
   const profile = useSelector(state => state.user.profile)
+  useEffect(() => {
+    const { userId } = location.state
+    dispatch(userAction.profile(userId))
+    dispatch(userAction.getFollowing())
+  }, [])
+
+  const { userId } = location.state
+  const myId = sessionStorage.getItem('userId')
+
   const following = useSelector(state => state.user.following)
+
   console.log(following)
+  console.log(profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -111,7 +106,7 @@ export default function UserPage() {
         marginTop: '-47px',
       }}
     >
-      {followeeId !== loggedInUserId && (
+      {userId !== myId && (
         <div>
           {/* 버튼 렌더링 */}
           {!following?.find(id => id === profile.id) ? (
