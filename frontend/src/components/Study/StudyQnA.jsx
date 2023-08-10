@@ -4,14 +4,18 @@ function QnA({ qnas }) {
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {qnas?.map(qna => (
-        <p>
+      <div className="big_box">
+        {qnas?.map(qna => (
           <p>
-            {qna.userId} : {qna.question}, {qna.createdAt}
+            <p>
+              <h3>Q : {qna.question}</h3>
+              {qna.userId} : {qna.createdAt}
+            </p>
+            <p>A : {qna.answer}</p>
+            <hr />
           </p>
-          <p>방장 : {qna.answer}</p>
-        </p>
-      ))}
+        ))}
+      </div>
     </>
   )
 }
