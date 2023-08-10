@@ -92,9 +92,11 @@ export const studySlice = createSlice({
   extraReducers: {
     [studyAction.studyList.fulfilled]: (state, action) => {
       state.studies = action.payload.content
+      state.totalPage = action.payload.pageable
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
-      state.studyDetail.push(action.payload)
+      // state.studyDetail.push(action.payload)
+      state.studyDetail = action.payload
     },
     [studyAction.getTags.fulfilled]: (state, action) => {
       console.log(action.payload.tagList)
