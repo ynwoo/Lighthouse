@@ -55,11 +55,11 @@ function App() {
               <Route
                 exact
                 path="/"
-                element={<MainPage isLoggedIn={isLoggedIn} initStatus={1} />}
+                element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
               />
               <Route
                 path="/temp"
-                element={<MainPage isLoggedIn={isLoggedIn} initStatus={5} />}
+                element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
               />
               <Route
                 path="/temp/:id"
