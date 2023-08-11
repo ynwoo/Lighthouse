@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default function StudyMember({ members }) {
   console.log(members)
-  const dataSource = members.map(member => {
+  const dataSource = members?.map(member => {
     return {
       key: member.id,
       nickname: (
