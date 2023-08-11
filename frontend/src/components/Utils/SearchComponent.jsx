@@ -34,10 +34,10 @@ function SearchComponent() {
     dispatch(userAction.sido())
   }, [dispatch])
 
-  const onSearch = e => {
-    console.log(e.target)
-    dispatch(setParams({ ...params, [e.target.name]: e.target.value }))
-    dispatch(studyAction.studyList(params))
+  const onSearch = val => {
+    const newParams = { ...params, word: val }
+    dispatch(setParams(newParams))
+    dispatch(studyAction.studyList(newParams))
   }
 
   // 지역
