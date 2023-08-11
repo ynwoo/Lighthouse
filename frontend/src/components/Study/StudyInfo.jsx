@@ -138,17 +138,13 @@ export default function StudyInfo({ study }) {
             <div>
               <img src={view} alt="" style={{ width: '20px' }} />
             </div>
-            <div> {study.hit}</div>
+            <div> {study.bookmarkCnt}</div>
             <div>
-              <button type="button" onClick={() => console.log('bookmark')}>
-                <img src={bookmark} alt="" style={{ width: '20px' }} />
-              </button>
+              <img src={bookmark} alt="" style={{ width: '20px' }} />
             </div>
             <div>{study.bookmarkCnt}</div>
             <div>
-              <button type="button" onClick={() => console.log('like')}>
-                <img src={likemark} alt="" style={{ width: '20px' }} />
-              </button>
+              <img src={likemark} alt="" style={{ width: '20px' }} />
             </div>
             <div> {study.likeCnt}</div>
           </div>

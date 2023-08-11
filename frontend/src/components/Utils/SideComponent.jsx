@@ -88,7 +88,7 @@ export default function SideComponent({ isLoggedIn, study }) {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          {/* <p>{nickname}님 환영합니다 !</p> */}
+          <p>{nickname}님 환영합니다 !</p>
         </div>
 
         <div style={{ marginTop: '20px' }}>
