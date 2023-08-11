@@ -8,7 +8,7 @@ export default function StudyMember({ members }) {
     return {
       key: member.id,
       nickname: (
-        <Link to={`/user/${member?.id}`} state={{ userId: member?.id }}>
+        <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
           {member.nickname}
         </Link>
       ),
@@ -42,7 +42,7 @@ export default function StudyMember({ members }) {
       {/* <Table dataSource={members} columns={members} /> */}
       {members?.map(member => (
         <div>
-          <Link to={`/user/${member?.id}`} state={{ userId: member?.id }}>
+          <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
             {member.nickname}
             {member.description}
             {member.score}
