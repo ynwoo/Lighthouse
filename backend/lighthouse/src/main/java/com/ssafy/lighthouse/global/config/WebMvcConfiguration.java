@@ -32,6 +32,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 				.addPathPatterns("/users/follow", "/users/follow/*")
 				.addPathPatterns("/users/profile/*")
 				.addPathPatterns("/users/eval", "/users/eval/*")
+				.addPathPatterns("/study/like", "/study/like/*")
+				.addPathPatterns("/study/bookmark", "/study/bookmark/*")
 				.addPathPatterns("/participation-history/*")
 				.addPathPatterns("/users");
 	}
