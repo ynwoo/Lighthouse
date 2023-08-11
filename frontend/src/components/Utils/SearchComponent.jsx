@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-// import { Link } from 'react-router-dom'
-import { setOnline, setText, studyAction } from '../../store/study'
+import { setParams, studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
 
+const styles = {
+  backgroundColor: 'white',
+  color: 'black',
+  border: '1px solid #A4C3FF',
+  borderRadius: '20px',
+  padding: '10px',
+  fontWeight: 'bold',
+  width: '100px',
+  display: 'flex',
+  alignContent: 'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: '10px',
+  marginTop: '10px',
+}
 // 검색창
 const { Search } = Input
 
@@ -20,12 +34,10 @@ function SearchComponent() {
     dispatch(userAction.sido())
   }, [dispatch])
 
-  const onChange = value => {
-    console.log(value.nativeEvent.data)
-    dispatch(setText(value.nativeEvent.data))
-  }
-  const onSearch = () => {
-    dispatch(studyAction.studyList(params))
+  const onSearch = val => {
+    const newParams = { ...params, word: val }
+    dispatch(setParams(newParams))
+    dispatch(studyAction.studyList(newParams))
   }
 
   // 지역
@@ -35,6 +47,23 @@ function SearchComponent() {
   }
   const gugunChange = e => {
     setGugun(e)
+  }
+
+  const onChange = e => {
+    dispatch(setParams({ ...params, [e.target.name]: e.target.value }))
+  }
+
+  const setOrderBy = () => {
+    dispatch(
+      setParams({
+        ...params,
+        orderBy: params.orderBy === 'desc' ? 'asc' : 'desc',
+      }),
+    )
+  }
+
+  const setIsOnline = () => {
+    dispatch(setParams({ ...params, isOnline: params.isOnline ? 0 : 1 }))
   }
 
   return (
@@ -49,10 +78,10 @@ function SearchComponent() {
         {/* 검색창 */}
         <div>
           <Search
+            name="word"
             placeholder="input search text"
-            onChange={onChange}
             onSearch={onSearch}
-            defaultValue=""
+            defaultValue={params.word}
             enterButton
             style={{ width: '500px', margin: '10px' }}
           />
@@ -60,27 +89,44 @@ function SearchComponent() {
         {/* 지역 */}
         <div style={{}}>
           <Space wrap>
+            {/* 검색 key */}
+            <select
+              style={styles}
+              name="key"
+              value={params.key}
+              onChange={onChange}
+            >
+              <option value="title">제목</option>
+            </select>
+
+            {/* 정렬 key */}
+            <select
+              style={styles}
+              name="orderKey"
+              value={params.orderKey}
+              onChange={onChange}
+            >
+              <option value="">최신순</option>
+              <option value="like">좋아요순</option>
+              <option value="bookmark">북마크순</option>
+            </select>
+
+            {/* 오름차순 내림차순 */}
+            <button
+              style={styles}
+              type="button"
+              onClick={setOrderBy}
+              name="orderBy"
+            >
+              {params.orderBy === 'desc' ? '내림차순' : '오름차순'}
+            </button>
+
             {/* 온라인 오프라인 스위치 버튼 */}
             <button
-              style={{
-                backgroundColor: 'white',
-                color: 'black',
-                border: '1px solid #A4C3FF',
-                borderRadius: '20px',
-                padding: '10px',
-                fontWeight: 'bold',
-                width: '100px',
-                display: 'flex',
-                alignContent: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: '10px',
-                marginTop: '10px',
-              }}
+              style={styles}
               type="button"
-              onClick={() => {
-                dispatch(setOnline())
-              }}
+              onClick={setIsOnline}
+              name="isOnline"
             >
               {params.isOnline ? 'Online' : 'Offline'}
             </button>

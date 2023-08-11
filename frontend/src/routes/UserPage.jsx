@@ -2,81 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-// import axios from 'axios'
 import { userAction } from '../store/user'
-// import { authApiInstance } from '../api'
-// import getFollowList from '../api/follow'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  // const [isFollowing, setIsFollowing] = useState(false)
-  // const [followingList, setFollowingList] = useState(null)
-  // const [nowfollowing, setNowfollowing] = useState(0)
-
-  // const authApi = authApiInstance()
-  // useEffect(() => {
-  //   const { userId } = location.state
-  //   // console.log('asdfasdfasdfasdf', userId)
-  //   dispatch(userAction.profile(userId))
-
-  //   getFollowList(
-  //     ({ data }) => {
-  //       console.log('getFollowList', data)
-  //       setFollowingList(data)
-  //       setIsFollowing(
-  //         !!followingList?.find(followingId => followingId === followeeId),
-  //       )
-  //     },
-  //     ({ data }) => {
-  //       console.log(data)
-  //     },
-  //   )
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('profile.follower : ', profile.follower)
-  //   setNowfollowing(profile.follower)
-  // }, [])
-
-  // console.log('followingList', followingList)
-  // console.log(!!followingList?.find(followingId => followingId === followeeId))
-
-  // const handleFollowClick = async () => {
-  //   try {
-  //     if (isFollowing) {
-  //       // 언팔로우 API 요청
-  //       await authApi.delete(`/users/follow/${followeeId}`)
-  //     } else {
-  //       // 팔로우 API 요청
-  //       await authApi.post(`/users/follow/${followeeId}`)
-  //     }
-  //     console.log(isFollowing)
-  //     setIsFollowing(prevIsFollowing => !prevIsFollowing)
-  //     setNowfollowing(nowfollowing + 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
-
-  // const handleUnFollowClick = async () => {
-  //   try {
-  //     // 언팔로우 API 요청
-  //     await authApi.delete(`/users/follow/${followeeId}`)
-  //     setIsFollowing(false) // 팔로우 상태 변경
-  //     setNowfollowing(nowfollowing - 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
-
   const profile = useSelector(state => state.user.profile)
   useEffect(() => {
     const { userId } = location.state
     dispatch(userAction.profile(userId))
     dispatch(userAction.getFollowing())
-  }, [])
+  }, [location.state.userId])
 
   const { userId } = location.state
   const myId = Number(sessionStorage.getItem('userId'))
@@ -243,8 +180,38 @@ export default function UserPage() {
           <div className="u_item">신청 중</div>
           <div>
             <Select className="u_item2" value="신청중인 스터디">
-              {profile.participatedStudies?.map(study => (
-                <Select.Option value={study.title} key={study.title}>
+              {profile.participatedStudies
+                ?.filter(study => study.leaderProfile.id !== myId)
+                .map(study => (
+                  <Select.Option value={study.title} key={study.id}>
+                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                      {study.title}
+                    </Link>
+                  </Select.Option>
+                ))}
+            </Select>
+          </div>
+
+          <div className="u_item">편집 중</div>
+          <div>
+            <Select className="u_item2" value="편집중인 스터디">
+              {profile.participatedStudies
+                ?.filter(study => study.leaderProfile.id === myId)
+                .map(study => (
+                  <Select.Option value={study.title} key={study.id}>
+                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                      {study.title}
+                    </Link>
+                  </Select.Option>
+                ))}
+            </Select>
+          </div>
+
+          <div className="u_item">진행 예정</div>
+          <div>
+            <Select className="u_item2" value="진행 예정인 스터디">
+              {profile.recruitingStudies?.map(study => (
+                <Select.Option value={study.title} key={study.id}>
                   <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
                     {study.title}
                   </Link>
@@ -252,13 +219,14 @@ export default function UserPage() {
               ))}
             </Select>
           </div>
-
           <div className="u_item">진행 중</div>
           <div>
             <Select className="u_item2" value="진행중인 스터디">
               {profile.progressStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.id}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
@@ -268,8 +236,10 @@ export default function UserPage() {
           <div>
             <Select className="u_item2" value="참여했던 스터디">
               {profile.terminatedStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.id}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
@@ -279,8 +249,10 @@ export default function UserPage() {
           <div>
             <Select className="u_item2" value="북마크한 스터디">
               {profile.bookmarkStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.id}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
