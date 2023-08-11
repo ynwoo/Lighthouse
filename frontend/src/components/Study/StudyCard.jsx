@@ -52,7 +52,7 @@ function TempCard({ study }) {
           }
         >
           <div>
-            <h3 style={{ margin: '0px' }}>{study.title}</h3>
+            <h3 style={{ margin: '5px 0px 0px 0px' }}>{study.title}</h3>
             <div style={{ fontSize: '13px', color: '#6e6e6e' }}>
               <p style={{ fontSize: '12px', marginBottom: '5px' }}>
                 {study.leaderProfile.nickname}
@@ -84,26 +84,27 @@ function TempCard({ study }) {
             bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
           >
             <div style={{ color: '#f2f2f2' }}>
-              <h3 style={{ margin: '3px' }}>{study.title}</h3>
-              <div
-                style={{
-                  fontSize: '13px',
-                  height: '140px',
-                  overflow: 'hidden',
-                  whiteSpace: 'pre-wrap',
-                  textOverflow: 'ellipsis',
-                  marginBottom: '10px',
-                }}
-              >
-                {study.description} i think your preference is spot-on for
-                documents, but over-zealous for applications where markup
-                interchange compat is not important. some major web apps are
-                actually getting rid of classes and using only inline style,
-                which is more predictable and easier to reason about than which
-                of 5 applied rules is making the text bold. when the attribs are
-                dynamic, you dont save much bandwidth like you do with
-                repetitive documents. the apps semantics (view-source markup)
-                are not that important either..
+              <h3 style={{ margin: '5px 0px 10px 0px' }}>{study.title}</h3>
+              <div style={{ minHeight: '130px' }}>
+                <div
+                  style={{
+                    fontSize: '13px',
+                    overflow: 'hidden',
+                    whiteSpace: 'normal',
+                    textOverflow: 'ellipsis',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 6,
+                    WebkitBoxOrient: 'vertical',
+                    wordBreak: 'keep-all',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {study.description} i think your preference is spot-on for
+                  documents, but over-zealous i think your preference is spot-on
+                  for documents, but over-zealous i think your preference is
+                  spot-on for documents, but over-zealous i think your
+                  preference is spot-on for documents, but over-zealous
+                </div>
               </div>
               <div
                 style={{
