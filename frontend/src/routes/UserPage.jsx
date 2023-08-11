@@ -1,51 +1,92 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 // import axios from 'axios'
 import { userAction } from '../store/user'
-import { authApiInstance } from '../api'
+// import { authApiInstance } from '../api'
+// import getFollowList from '../api/follow'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isFollowing, setIsFollowing] = useState(false)
-  const followeeId = location.state.userId
-  console.log(followeeId)
-  const authApi = authApiInstance()
+  // const [isFollowing, setIsFollowing] = useState(false)
+  // const [followingList, setFollowingList] = useState(null)
+  // const [nowfollowing, setNowfollowing] = useState(0)
 
-  const handleFollowClick = async () => {
-    try {
-      if (isFollowing) {
-        // 언팔로우 API 요청
-        await authApi.delete(`/users/follow/${followeeId}`)
-      } else {
-        // 팔로우 API 요청
-        await authApi.post(`/users/follow/${followeeId}`)
-      }
-      setIsFollowing(!isFollowing) // 팔로우 상태 변경
-    } catch (error) {
-      console.error('API 요청 중 오류 발생:', error)
-    }
-  }
+  // const authApi = authApiInstance()
+  // useEffect(() => {
+  //   const { userId } = location.state
+  //   // console.log('asdfasdfasdfasdf', userId)
+  //   dispatch(userAction.profile(userId))
 
-  const handleUnFollowClick = async () => {
-    try {
-      // 언팔로우 API 요청
-      await authApi.delete(`/users/follow/${followeeId}`)
-      // setIsFollowing(!isFollowing) // 팔로우 상태 변경
-    } catch (error) {
-      console.error('API 요청 중 오류 발생:', error)
-    }
-  }
+  //   getFollowList(
+  //     ({ data }) => {
+  //       console.log('getFollowList', data)
+  //       setFollowingList(data)
+  //       setIsFollowing(
+  //         !!followingList?.find(followingId => followingId === followeeId),
+  //       )
+  //     },
+  //     ({ data }) => {
+  //       console.log(data)
+  //     },
+  //   )
+  // }, [])
 
+  // useEffect(() => {
+  //   console.log('profile.follower : ', profile.follower)
+  //   setNowfollowing(profile.follower)
+  // }, [])
+
+  // console.log('followingList', followingList)
+  // console.log(!!followingList?.find(followingId => followingId === followeeId))
+
+  // const handleFollowClick = async () => {
+  //   try {
+  //     if (isFollowing) {
+  //       // 언팔로우 API 요청
+  //       await authApi.delete(`/users/follow/${followeeId}`)
+  //     } else {
+  //       // 팔로우 API 요청
+  //       await authApi.post(`/users/follow/${followeeId}`)
+  //     }
+  //     console.log(isFollowing)
+  //     setIsFollowing(prevIsFollowing => !prevIsFollowing)
+  //     setNowfollowing(nowfollowing + 1)
+  //   } catch (error) {
+  //     console.error('API 요청 중 오류 발생:', error)
+  //   }
+  // }
+
+  // const handleUnFollowClick = async () => {
+  //   try {
+  //     // 언팔로우 API 요청
+  //     await authApi.delete(`/users/follow/${followeeId}`)
+  //     setIsFollowing(false) // 팔로우 상태 변경
+  //     setNowfollowing(nowfollowing - 1)
+  //   } catch (error) {
+  //     console.error('API 요청 중 오류 발생:', error)
+  //   }
+  // }
+
+  const profile = useSelector(state => state.user.profile)
   useEffect(() => {
     const { userId } = location.state
-    // console.log('asdfasdfasdfasdf', userId)
     dispatch(userAction.profile(userId))
+    dispatch(userAction.getFollowing())
   }, [])
-  const profile = useSelector(state => state.user.profile)
+
+  const { userId } = location.state
+  const myId = Number(sessionStorage.getItem('userId'))
+
+  console.log(userId, typeof userId, myId, typeof myId)
+
+  const following = useSelector(state => state.user.following)
+
+  console.log(following)
+  console.log(profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -64,25 +105,41 @@ export default function UserPage() {
       style={{
         display: 'flex',
         justifyContent: 'space-around',
-        // backgroundImage: 'linear-gradient(to bottom, #74A3FF, #FFFFFF 25%)',
         marginTop: '-47px',
       }}
     >
-      <div>
-        {/* 버튼 렌더링 */}
-        <Button
-          type={isFollowing ? 'default' : 'primary'}
-          onClick={handleFollowClick}
-        >
-          {isFollowing ? '언팔로우' : '팔로우'}
-        </Button>
-        <Button
-          type={!isFollowing ? 'default' : 'primary'}
-          onClick={handleUnFollowClick}
-        >
-          {!isFollowing ? '언팔로우' : '팔로우'}
-        </Button>
-      </div>
+      {userId !== myId && (
+        <div>
+          {/* 버튼 렌더링 */}
+          {!following?.find(id => id === profile.id) ? (
+            <Button
+              type="primary"
+              onClick={() => {
+                dispatch(userAction.follow(profile.id)).then(() => {
+                  dispatch(userAction.getFollowing())
+                  dispatch(userAction.profile(profile.id))
+                })
+                // window.location.reload()
+              }}
+            >
+              팔로우
+            </Button>
+          ) : (
+            <Button
+              type="default"
+              onClick={() => {
+                dispatch(userAction.unfollow(profile.id)).then(() => {
+                  dispatch(userAction.getFollowing())
+                  dispatch(userAction.profile(profile.id))
+                })
+                // window.location.reload()
+              }}
+            >
+              언팔로우
+            </Button>
+          )}
+        </div>
+      )}
       <div
         className="comp"
         style={{
@@ -109,8 +166,6 @@ export default function UserPage() {
             <div
               style={{
                 position: 'absolute',
-
-                // alignItems: 'center', // Center the text vertically
                 border: '1px solid #177AEE',
                 backgroundColor: '#177AEE',
                 color: 'white',
@@ -183,23 +238,16 @@ export default function UserPage() {
           <div className="u_item1">{profile.description}</div>
 
           <div className="u_item">뱃지 목록</div>
-          <div className="u_item1">
-            {profile.badges?.map(badge => (
-              <img
-                key={badge.id}
-                src={`${process.env.REACT_APP_S3_DOMAIN_URL}/${badge.imgUrl}`}
-                alt={badge.description}
-                style={{ width: '40px' }}
-              />
-            ))}
-          </div>
+          <div className="u_item1" />
 
           <div className="u_item">신청 중</div>
           <div>
             <Select className="u_item2" value="신청중인 스터디">
               {profile.participatedStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.title}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
@@ -215,8 +263,6 @@ export default function UserPage() {
               ))}
             </Select>
           </div>
-          {/* <div className="u_item">통계</div>
-          <div className="u_item1">{profile.nickname}</div> */}
 
           <div className="u_item">참여했던 스터디</div>
           <div>
