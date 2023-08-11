@@ -85,7 +85,7 @@ function TempCard({ study }) {
           >
             <div style={{ color: '#f2f2f2' }}>
               <h3 style={{ margin: '5px 0px 10px 0px' }}>{study.title}</h3>
-              <div style={{ minHeight: '130px' }}>
+              <div style={{ minHeight: '135px' }}>
                 <div
                   style={{
                     fontSize: '13px',
