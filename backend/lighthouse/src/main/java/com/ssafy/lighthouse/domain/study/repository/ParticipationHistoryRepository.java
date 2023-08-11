@@ -17,7 +17,7 @@ public interface ParticipationHistoryRepository extends JpaRepository<Participat
     Optional<ParticipationHistory> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 
     // userId관련 studyId 리스트
-    @Query("select ph.studyId from ParticipationHistory ph where ph.userId = :userId and ph.isValid = 1")
+    @Query("select ph.studyId from ParticipationHistory ph where ph.userId = :userId and ph.isValid = 1 and ph.status != 4")
     Set<Long> findStudyIdAllByUserId(@Param("userId") Long userId);
 
     // userId관련 studyId 리스트 (status로 구분)
