@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+// import axios from 'axios'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
@@ -10,7 +10,12 @@ import { studyAction } from '../../store/study'
 const API_URL = process.env.REACT_APP_API_URL
 export default function SideComponent({ isLoggedIn, study }) {
   const dispatch = useDispatch()
+  // 스터디 신청 모달
   const [isModalVisible, setIsModalVisible] = useState(false)
+  // 스터디 목록 모달
+  const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
+    useState(false)
+
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
   const nickname = sessionStorage.getItem('nickname')
@@ -58,7 +63,29 @@ export default function SideComponent({ isLoggedIn, study }) {
   const location = useLocation()
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
   const isTempPath = location.pathname.includes('/temp')
+  const nickname = sessionStorage.getItem('nickname')
 
+  // 스터디 목록 모달
+  const showConfirmationModal = () => {
+    setIsConfirmationModalVisible(true)
+    // 본문 스크롤 방지
+    document.body.style.overflow = 'hidden'
+  }
+
+  const handleConfirmationModalOk = () => {
+    setIsConfirmationModalVisible(false)
+    // 본문 스크롤 복구
+    document.body.style.overflow = 'auto'
+  }
+
+  const handleConfirmationModalCancel = () => {
+    setIsConfirmationModalVisible(false)
+    // 본문 스크롤 복구
+    document.body.style.overflow = 'auto'
+  }
+
+  const profile = useSelector(state => state.user.profile)
+  console.log(profile)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
@@ -89,10 +116,29 @@ export default function SideComponent({ isLoggedIn, study }) {
               marginBottom: '10px',
               marginTop: '10px',
             }}
-            onClick={showModal}
+            onClick={showConfirmationModal}
           >
             가입한 스터디 바로가기
           </Button>
+
+          <Modal
+            title="가입한 스터디 목록"
+            visible={isConfirmationModalVisible}
+            onOk={handleConfirmationModalOk}
+            onCancel={handleConfirmationModalCancel}
+          >
+            <p>왜안떠</p>
+            <p>
+              {profile.participatedStudies?.map(studyData => (
+                // <Select.Option value={studyData.title} key={studyData.title}>
+                <Link to={`/temp/${studyData.id}`} state={{ id: studyData.id }}>
+                  {studyData.title}
+                </Link>
+                // </Select.Option>
+              ))}{' '}
+            </p>
+          </Modal>
+
           <div>
             {isTempPath && (
               <Button
@@ -127,7 +173,6 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
-                onClick={OnclickJoin}
               />
             </Modal>
 

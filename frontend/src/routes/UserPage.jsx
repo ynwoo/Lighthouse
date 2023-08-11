@@ -2,75 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-// import axios from 'axios'
 import { userAction } from '../store/user'
-// import { authApiInstance } from '../api'
-// import getFollowList from '../api/follow'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  // const [isFollowing, setIsFollowing] = useState(false)
-  // const [followingList, setFollowingList] = useState(null)
-  // const [nowfollowing, setNowfollowing] = useState(0)
-
-  // const authApi = authApiInstance()
-  // useEffect(() => {
-  //   const { userId } = location.state
-  //   // console.log('asdfasdfasdfasdf', userId)
-  //   dispatch(userAction.profile(userId))
-
-  //   getFollowList(
-  //     ({ data }) => {
-  //       console.log('getFollowList', data)
-  //       setFollowingList(data)
-  //       setIsFollowing(
-  //         !!followingList?.find(followingId => followingId === followeeId),
-  //       )
-  //     },
-  //     ({ data }) => {
-  //       console.log(data)
-  //     },
-  //   )
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('profile.follower : ', profile.follower)
-  //   setNowfollowing(profile.follower)
-  // }, [])
-
-  // console.log('followingList', followingList)
-  // console.log(!!followingList?.find(followingId => followingId === followeeId))
-
-  // const handleFollowClick = async () => {
-  //   try {
-  //     if (isFollowing) {
-  //       // 언팔로우 API 요청
-  //       await authApi.delete(`/users/follow/${followeeId}`)
-  //     } else {
-  //       // 팔로우 API 요청
-  //       await authApi.post(`/users/follow/${followeeId}`)
-  //     }
-  //     console.log(isFollowing)
-  //     setIsFollowing(prevIsFollowing => !prevIsFollowing)
-  //     setNowfollowing(nowfollowing + 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
-
-  // const handleUnFollowClick = async () => {
-  //   try {
-  //     // 언팔로우 API 요청
-  //     await authApi.delete(`/users/follow/${followeeId}`)
-  //     setIsFollowing(false) // 팔로우 상태 변경
-  //     setNowfollowing(nowfollowing - 1)
-  //   } catch (error) {
-  //     console.error('API 요청 중 오류 발생:', error)
-  //   }
-  // }
-
   const profile = useSelector(state => state.user.profile)
   useEffect(() => {
     const { userId } = location.state
