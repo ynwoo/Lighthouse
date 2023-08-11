@@ -43,7 +43,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     private final BookmarkRepository bookmarkRepository;
     private final UserTagRepository userTagRepository;
     private final UserBadgeRepository userBadgeRepository;
-    private final UserRepository userRepository;
 
     @Override
     public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
@@ -74,8 +73,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
-            // setLeaderProfile
-            simpleStudyDto.setLeaderProfile(userRepository.findSimpleProfileByUserId(study.getLeaderId()));
+            simpleStudyDto.setLeaderProfile(SimpleProfileResponse.builder()
+                    .id(study.getLeaderId())
+                    .build());
 
             // 신청한 스터디
             if (participatedSet.contains(study.getId())) {
