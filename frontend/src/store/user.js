@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { formInstance } from '../api/index'
+
+const formApi = formInstance()
 
 const API_URL = process.env.REACT_APP_API_URL
 
@@ -60,6 +63,7 @@ const initialState = {
   myInfo: {},
   profile: {},
   following: null,
+  userInfo: {},
 }
 
 export const userAction = {
@@ -133,7 +137,7 @@ export const userAction = {
   signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
       console.log(payload)
-      const response = await axios.post(`${API_URL}/users`, payload)
+      const response = await formApi.post(`${API_URL}/users`, payload)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -156,7 +160,6 @@ export const userAction = {
     try {
       const response = await authApi.get(`/users/logout`)
       console.log(response)
-      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -262,7 +265,11 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
+      state.userInfo = action.payload.userInfo
+      console.log('action.payload', action.payload)
       state.isLoggedIn = true
+      state.userInfo = action.payload.userInfo
+      console.log(action.payload.userInfo)
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제

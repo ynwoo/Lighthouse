@@ -75,4 +75,4 @@ function authApiInstance() {
   return authInterceptor(apiInstance())
 }
 
-export { apiInstance, authApiInstance, authFormInstance }
+export { apiInstance, authApiInstance, authFormInstance, formInstance }
