@@ -69,7 +69,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     .build());
 
             // status에 따른 스터디 분류
-            switch(study.getStatus()) {
+            switch(simpleStudyDto.getStatus()) {
                 // 신청한 스터디
                 case STATUS.PREPARING:
                     if(userId.equals(loginId)) {
