@@ -1,12 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
 import { formInstance } from '../api/index'
 
 const formApi = formInstance()
 
 const API_URL = process.env.REACT_APP_API_URL
-const navigate = useNavigate
 
 // custom axios for axios interceptor
 export const authApi = axios.create({
@@ -45,14 +43,11 @@ authApi.interceptors.response.use(
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
-        alert('로그인이 필요합니다!')
-        navigate('/login')
+        alert('다시 로그인 해주세요!')
+        window.location.href = '/login'
       }
       return Promise.reject(err)
     }
-    console.log('hmm...')
-    alert('로그인이 필요합니다!')
-    navigate('/login')
     return Promise.reject(err)
   },
 )

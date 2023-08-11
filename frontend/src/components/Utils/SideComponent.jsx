@@ -95,7 +95,7 @@ export default function SideComponent({ isLoggedIn, study }) {
           </div>
         </div>
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          <p>{nickname}님 환영합니다 !</p>
+          {/* <p>{nickname}님 환영합니다 !</p> */}
         </div>
 
         <div style={{ marginTop: '20px' }}>
@@ -173,6 +173,7 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
+                // onClick={OnclickJoin}
               />
             </Modal>
 
