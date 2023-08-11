@@ -136,7 +136,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         // userInfo
-        SimpleUserResponse userInfo = findUserInfo(userId);
+        SimpleUserResponse userInfo = findUserInfo(loginId);
 
         return ProfileResponse.builder()
                 .id(result.getId())
