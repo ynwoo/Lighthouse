@@ -1,228 +1,121 @@
-import React, { useState } from 'react'
-import { Form, Select } from 'antd'
+import React from 'react'
+// import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
+// import { userAction } from '../../store/user'
 
+import StudyList from '../Study/StudyList'
+import UserInfo from './UserInfo'
+import UserInfoModify from './UserInfoModify'
+// import React, { useState } from 'react'
+
+const { Content, Sider } = Layout
 // 템플릿 상세의 질의응답
 
 export default function UserEdit() {
-  const [checkboxValues, setCheckboxValues] = useState({
-    개발: false,
-    알고리즘: false,
-    CS: false,
-    면접: false,
-    공무원: false,
-    인적성: false,
-    수능: false,
-    영어: false,
-    // 필요한 만큼 체크박스 상태 변수를 추가할 수 있습니다.
-  })
+  // const [checkboxValues, setCheckboxValues] = useState({
+  //   개발: false,
+  //   알고리즘: false,
+  //   CS: false,
+  //   면접: false,
+  //   공무원: false,
+  //   인적성: false,
+  //   수능: false,
+  //   영어: false,
+  //   // 필요한 만큼 체크박스 상태 변수를 추가할 수 있습니다.
+  // })
 
-  const handleCheckboxChange = event => {
-    const { name, checked } = event.target
-    setCheckboxValues({
-      ...checkboxValues,
-      [name]: checked,
-    })
-  }
+  // const handleCheckboxChange = event => {
+  //   const { name, checked } = event.target
+  //   setCheckboxValues({
+  //     ...checkboxValues,
+  //     [name]: checked,
+  //   })
+  // }
+  // const handleMenuClick = ({ key }) => {
+  //   const { target } = menuItems.find(item => item.key === key) || {}
+  //   if (target) {
+  //     navigate(target)
+  //   }
+  // }
+  // const dispatch = useDispatch()
+  // const location = useLocation()
+  // useEffect(() => {
+  //   const { userId } = location.state
+  //   // console.log('asdfasdfasdfasdf', userId)
+  //   dispatch(userAction.profile(userId))
+  // }, [])
+  // const profile = useSelector(state => state.user.profile)
+
+  const items = [
+    {
+      key: '1',
+      label: `정보`,
+      children: <UserInfo />,
+    },
+    {
+      key: '2',
+      label: `tab 2`,
+      children: <StudyList />,
+    },
+    {
+      key: '3',
+      label: `프로필 수정`,
+      children: <UserInfoModify />,
+    },
+  ]
 
   return (
-    <div
-      className="comp"
+    <Layout
       style={{
-        width: '80%',
-        height: '500px',
-        border: '2px solid #999999',
-        borderRadius: '20px',
-        textAlign: 'center',
-        backgroundColor: 'white',
-        // display: 'flex',
-        justifyContent: 'center',
-        alignContent: 'center',
-        boxShadow: '4px 4px 15px rgba(0, 0, 0, 0.4)',
-        position: 'relative',
-        margin: '20px',
-        padding: '20px',
-        alignItems: 'center',
+        padding: '3vh 10vw',
+        background: 'rgb(255, 255, 255)',
       }}
     >
-      ;
-      <div className="circular-image">
-        <img src="/logo192.png" alt="안뜸" />
-      </div>
-      <div className="container2">
-        <div className="u_item">닉네임</div>
-        <div className="u_item1">닉네임</div>
-        <div className="u_item">별점</div>
-        <div className="u_item1">별점</div>
-        <div className="u_item">자기소개</div>
-        <div className="u_item1">자기소개</div>
-        {/* <div className="u_item">뱃지 목록</div>
-        <div className="u_item1">뱃지 목록</div>
-        <div className="u_item">진행 중</div>
-        <div className="u_item1">진행 중</div>
-        <div className="u_item">통계</div>
-        <div className="u_item1">통계</div> */}
-        <div className="u_item">참여했던 스터디</div>
-        <div
+      <Sider
+        style={{
+          background: 'rgb(255, 255, 255)',
+        }}
+        width={200}
+      >
+        <Card bordered={false}>
+          <Avatar
+            size={{ sm: 100, md: 150, lg: 150, xl: 150, xxl: 150 }}
+            src="/profile.jpg"
+            shape="circle"
+          />
+          <h2 style={{ marginBottom: '0px' }}>닉네임</h2>
+          <p>이름</p>
+          <Button block style={{ margin: '2vh 0' }}>
+            팔로우
+          </Button>
+          <Row>
+            <Col span={12} align="middle">
+              <Link to="/">30 팔로워</Link>
+            </Col>
+            <Col span={12} align="middle">
+              <Link to="/">22 팔로잉</Link>
+            </Col>
+          </Row>
+        </Card>
+        {/* <Menu
+          mode="inline"
+          defaultSelectedKeys={['1']}
           style={{
-            display: 'flex',
-            // margin: '0px',
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
-            marginTop: '25px',
-            marginRight: '50px',
+            height: '100%',
           }}
-        >
-          <Form.Item>
-            <div style={{ width: '70%' }}>
-              <Select className="u_item2" value="참여했던 스터디">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </div>
-          </Form.Item>
-          <Form.Item>
-            <div style={{ width: '70%' }}>
-              <Select className="u_item2" value="참여했던 스터디">
-                <Select.Option value="demo">Demo</Select.Option>
-              </Select>
-            </div>
-          </Form.Item>
-        </div>
-        <div className="u_item">닉네임</div>
-        <div className="u_item1">닉네임</div>
-        <div className="u_item">별점</div>
-        <div className="u_item1">별점</div>
-        <div className="u_item">자기소개</div>
-        <div className="u_item1">자기소개</div>
-        <div className="u_item">닉네임</div>
-        <div className="u_item1">닉네임</div>
-        <div className="u_item">별점</div>
-        <div className="u_item1">별점</div>
-        <div className="u_item" />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            // marginRight: '20px',
-            // marginBottom: '20px',
-          }}
-        >
-          <div className="ue_item">관심 분야를 선택해주세요.</div>
-          <div
-            className="u_item"
-            style={{
-              display: 'flex',
-            }}
-          >
-            <label htmlFor="개발">
-              <input
-                type="checkbox"
-                id="개발"
-                name="개발"
-                checked={checkboxValues.checkbox1}
-                onChange={handleCheckboxChange}
-              />
-              개발&nbsp;&nbsp;&nbsp;
-            </label>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="알고리즘">
-                <input
-                  type="checkbox"
-                  id="알고리즘"
-                  name="알고리즘"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                알고리즘
-              </label>
-            </div>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="CS">
-                <input
-                  type="checkbox"
-                  id="CS"
-                  name="CS"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                CS
-              </label>
-            </div>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="면접">
-                <input
-                  type="checkbox"
-                  id="면접"
-                  name="면접"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                면접
-              </label>
-            </div>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              // flexDirection: 'column',
-              justifyContent: 'flex-start',
-              alignContent: 'flex-start',
-            }}
-          >
-            &nbsp;&nbsp;&nbsp;
-            <label htmlFor="공무원">
-              <input
-                type="checkbox"
-                id="공무원"
-                name="공무원"
-                checked={checkboxValues.checkbox1}
-                onChange={handleCheckboxChange}
-              />
-              공무원&nbsp;
-            </label>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="인적성">
-                <input
-                  type="checkbox"
-                  id="인적성"
-                  name="인적성"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                인적성
-              </label>
-            </div>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="수능">
-                <input
-                  type="checkbox"
-                  id="수능"
-                  name="수능"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                수능
-              </label>
-            </div>
-            <div style={{ marginRight: '10px' }}>
-              <label htmlFor="영어">
-                <input
-                  type="checkbox"
-                  id="영어"
-                  name="영어"
-                  checked={checkboxValues.checkbox1}
-                  onChange={handleCheckboxChange}
-                />
-                영어
-              </label>
-            </div>
-          </div>
-        </div>
-        {/* <div classN
-        {/* <div className="u_item">북마크</div>
-        <div className="u_item1">북마크</div> */}
-      </div>
-    </div>
+          items={menuItems}
+          // onClick={handleMenuClick}
+        /> */}
+      </Sider>
+      <Content
+        style={{
+          padding: '0 24px',
+          minHeight: 280,
+        }}
+      >
+        <Tabs defaultActiveKey="1" items={items} />
+      </Content>
+    </Layout>
   )
 }

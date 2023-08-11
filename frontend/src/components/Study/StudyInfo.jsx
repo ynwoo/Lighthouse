@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
@@ -13,6 +14,7 @@ import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
 import { CreateButton } from './utils/button'
+import { studyAction } from '../../store/study'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -25,6 +27,7 @@ export default function StudyInfo({ study }) {
   const [uploadedImage, setUploadedImage] = useState(null)
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleImageUpload = event => {
     const imageFile = event.target.files[0]
@@ -140,11 +143,29 @@ export default function StudyInfo({ study }) {
             </div>
             <div> {study.bookmarkCnt}</div>
             <div>
-              <img src={bookmark} alt="" style={{ width: '20px' }} />
+              <button
+                type="button"
+                onClick={() => {
+                  dispatch(studyAction.bookmark(study.id)).then(() => {
+                    dispatch(studyAction.studyDetail(study.id))
+                  })
+                }}
+              >
+                <img src={bookmark} alt="" style={{ width: '20px' }} />
+              </button>
             </div>
             <div>{study.bookmarkCnt}</div>
             <div>
-              <img src={likemark} alt="" style={{ width: '20px' }} />
+              <button
+                type="button"
+                onClick={() => {
+                  dispatch(studyAction.like(study.id)).then(() => {
+                    dispatch(studyAction.studyDetail(study.id))
+                  })
+                }}
+              >
+                <img src={likemark} alt="" style={{ width: '20px' }} />
+              </button>
             </div>
             <div> {study.likeCnt}</div>
           </div>
