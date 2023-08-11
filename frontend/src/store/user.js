@@ -315,8 +315,13 @@ export const userSlice = createSlice({
     },
     // 프로필
     [userAction.profile.fulfilled]: (state, action) => {
-      console.log(action.payload)
-      state.profile = action.payload
+      console.log(action.payload.id)
+      if (action.payload.id === Number(sessionStorage.getItem('userId'))) {
+        state.myInfo = action.payload
+        state.profile = action.payload
+      } else {
+        state.profile = action.payload
+      }
     },
     // 팔로우
     [userAction.getFollowing.fulfilled]: (state, action) => {

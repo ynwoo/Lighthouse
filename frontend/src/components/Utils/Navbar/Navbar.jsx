@@ -10,7 +10,7 @@ export default function Navbar({ isLoggedIn }) {
 
   const handleLogout = e => {
     e.preventDefault()
-    dispatch(userAction.logout()).then(navigate('/'))
+    dispatch(userAction.logout()).then(() => navigate('/'))
   }
   return (
     <div
