@@ -31,6 +31,7 @@ public class SimpleStudyDto {
     private int isOnline;
     private int likeCnt;
     private int bookmarkCnt;
+    private int status;
     private Long originalId;
     private Long sidoId;
     private Long gugunId;
@@ -62,6 +63,7 @@ public class SimpleStudyDto {
         this.originalId = study.getOriginalId();
         this.sidoId = study.getSidoId();
         this.gugunId = study.getGugunId();
+        this.status = study.getStatus();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList());
     }
