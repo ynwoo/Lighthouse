@@ -42,7 +42,7 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
 
 		if (requestURI.startsWith("/study")) {
 			// study 전체 조회 제외 & 상세 조회 제외
-			if (method.equals(HttpMethod.GET.name())) {
+			if (!requestURI.equals("/study/like") && method.equals(HttpMethod.GET.name())) {
 				return true;
 			}
 
