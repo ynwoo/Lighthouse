@@ -464,6 +464,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public List<Long> findStudyLikeAllByUserId(Long userId) {
+        return studyLikeRepository.findAllByUserId(userId);
+    }
+
+    @Override
     public void createStudyBookmark(Long studyId, Long userId) {
         Optional<Bookmark> result = bookmarkRepository.find(studyId, userId);
         if(result.isPresent()) {
