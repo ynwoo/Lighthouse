@@ -97,7 +97,10 @@ function SignUp() {
                   values[key] = null
                 }
               })
-              values.profileImgFile = values.profileImgFile[0].originFileObj
+              if (values.profileImgFile != null) {
+                values.profileImgFile = values.profileImgFile[0].originFileObj
+              }
+
               console.log('submitting values: ', values)
               // redux => server
               dispatch(userAction.signUp(values))
