@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { studyAction } from '../../store/study'
+import { setParams, studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
 
 const styles = {
@@ -22,15 +22,7 @@ const styles = {
 // 검색창
 const { Search } = Input
 
-function SearchComponent({
-  handleChangeKey,
-  handleChangeWord,
-  // handleChangeOrderKey,
-  // handleChangeOrderBy,
-  handleChangeIsOnline,
-  // handleAddTagId,
-  // handleDeleteTagId,
-}) {
+function SearchComponent() {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const sido = useSelector(state => state.user.sido)
@@ -42,7 +34,9 @@ function SearchComponent({
     dispatch(userAction.sido())
   }, [dispatch])
 
-  const onSearch = () => {
+  const onSearch = e => {
+    console.log(e.target)
+    dispatch(setParams({ ...params, [e.target.name]: e.target.value }))
     dispatch(studyAction.studyList(params))
   }
 
@@ -53,6 +47,23 @@ function SearchComponent({
   }
   const gugunChange = e => {
     setGugun(e)
+  }
+
+  const onChange = e => {
+    dispatch(setParams({ ...params, [e.target.name]: e.target.value }))
+  }
+
+  const setOrderBy = () => {
+    dispatch(
+      setParams({
+        ...params,
+        orderBy: params.orderBy === 'desc' ? 'asc' : 'desc',
+      }),
+    )
+  }
+
+  const setIsOnline = () => {
+    dispatch(setParams({ ...params, isOnline: params.isOnline ? 0 : 1 }))
   }
 
   return (
@@ -67,8 +78,8 @@ function SearchComponent({
         {/* 검색창 */}
         <div>
           <Search
+            name="word"
             placeholder="input search text"
-            onChange={e => handleChangeWord(e.target.value)}
             onSearch={onSearch}
             defaultValue=""
             enterButton
@@ -78,20 +89,45 @@ function SearchComponent({
         {/* 지역 */}
         <div style={{}}>
           <Space wrap>
-            {/* 온라인 오프라인 스위치 버튼 */}
-            <button style={styles} type="button" onClick={handleChangeKey}>
-              {params.key ?? 'like'}
+            {/* 검색 key */}
+            <select
+              style={styles}
+              name="key"
+              value={params.key}
+              onChange={onChange}
+            >
+              <option value="title">제목</option>
+            </select>
+
+            {/* 정렬 key */}
+            <select
+              style={styles}
+              name="orderKey"
+              value={params.orderKey}
+              onChange={onChange}
+            >
+              <option value="">최신순</option>
+              <option value="like">좋아요순</option>
+              <option value="bookmark">북마크순</option>
+            </select>
+
+            {/* 오름차순 내림차순 */}
+            <button
+              style={styles}
+              type="button"
+              onClick={setOrderBy}
+              name="orderBy"
+            >
+              {params.orderBy === 'desc' ? '내림차순' : '오름차순'}
             </button>
+
             {/* 온라인 오프라인 스위치 버튼 */}
-            <button style={styles} type="button" onClick={handleChangeIsOnline}>
-              {params.isOnline ? 'Online' : 'Offline'}
-            </button>
-            {/* 온라인 오프라인 스위치 버튼 */}
-            <button style={styles} type="button" onClick={handleChangeIsOnline}>
-              {params.isOnline ? 'Online' : 'Offline'}
-            </button>
-            {/* 온라인 오프라인 스위치 버튼 */}
-            <button style={styles} type="button" onClick={handleChangeIsOnline}>
+            <button
+              style={styles}
+              type="button"
+              onClick={setIsOnline}
+              name="isOnline"
+            >
               {params.isOnline ? 'Online' : 'Offline'}
             </button>
             {!params.isOnline && (

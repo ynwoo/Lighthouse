@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
@@ -57,33 +57,19 @@ function deleteCookie(name) {
 // 내부 탭
 export default function MainPage({ isLoggedIn, status }) {
   const dispatch = useDispatch()
-  const [page, setPage] = useState(0)
-  const [key, setKey] = useState(null)
-  const [word, setWord] = useState(null)
-  const [orderKey, setOrderKey] = useState('like')
-  const [orderBy, setOrderBy] = useState('desc')
-  const [isOnline, setIsOnline] = useState(0)
-  const [tagIds, setTagIds] = useState(null)
-
-  const options = {
-    page,
-    key,
-    word,
-    orderKey,
-    orderBy,
-    isOnline,
-    tagIds,
-    status,
-  }
-
-  useEffect(() => {
-    dispatch(studyAction.studyList(options))
-    dispatch(setParams(options))
-  }, [page, key, word, orderKey, orderBy, isOnline, tagIds, status])
-
+  const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
   const totalPage = useSelector(state => state.study.totalPage)
+
+  useEffect(() => {
+    dispatch(studyAction.studyList(params))
+  }, [params])
+
   console.log(studies)
+  console.log(params)
+
+  const onClick = () =>
+    dispatch(setParams({ ...params, page: params.page + 1 }))
 
   // 구글 소셜 로그인 시 서버로부터 값 받아오기
   const userId = getCookie('user_id')
@@ -105,34 +91,6 @@ export default function MainPage({ isLoggedIn, status }) {
     deleteCookie('access_token')
     deleteCookie('refresh_token')
     window.location.reload()
-  }
-
-  const handleChangeKey = () => {
-    setKey(key === 'like' ? 'title' : 'like')
-  }
-
-  const handleChangeWord = val => {
-    setWord(val)
-  }
-
-  const handleChangeOrderKey = newOrderKey => () => {
-    setOrderKey(newOrderKey)
-  }
-
-  const handleChangeOrderBy = newOrderBy => () => {
-    setOrderBy(newOrderBy)
-  }
-
-  const handleChangeIsOnline = () => {
-    setIsOnline(isOnline ? 0 : 1)
-  }
-
-  const handleAddTagId = addTagId => () => {
-    setTagIds([...tagIds, addTagId])
-  }
-
-  const handleDeleteTagId = deleteTagId => () => {
-    setTagIds(tagIds.filter(tagId => tagId !== deleteTagId))
   }
 
   return (
@@ -164,30 +122,18 @@ export default function MainPage({ isLoggedIn, status }) {
               <CreateButton>
                 이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
               </CreateButton>
-              {page ? (
-                <NextButton onClick={() => setPage(page - 1)}>
-                  이것은 이전 페이지
-                </NextButton>
+              {params.page ? (
+                <NextButton onClick={onClick}>이것은 이전 페이지</NextButton>
               ) : (
                 ''
               )}
-              {page < totalPage ? (
-                <NextButton onClick={() => setPage(page + 1)}>
-                  이것은 다음 페이지
-                </NextButton>
+              {params.page < totalPage ? (
+                <NextButton onClick={onClick}>이것은 다음 페이지</NextButton>
               ) : (
                 ''
               )}
               {/* 검색창 */}
-              <SearchComponent
-                handleChangeKey={handleChangeKey}
-                handleChangeWord={handleChangeWord}
-                handleChangeOrderKey={handleChangeOrderKey}
-                handleChangeOrderBy={handleChangeOrderBy}
-                handleChangeIsOnline={handleChangeIsOnline}
-                handleAddTagId={handleAddTagId}
-                handleDeleteTagId={handleDeleteTagId}
-              />
+              <SearchComponent />
             </div>
             <MainComponent studies={studies} isLoggedIn={isLoggedIn} />
           </Content>
