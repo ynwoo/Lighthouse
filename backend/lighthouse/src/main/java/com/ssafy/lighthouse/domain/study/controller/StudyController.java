@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/study")
@@ -82,6 +83,15 @@ public class StudyController {
         log.debug("studyId : {}", studyId);
         studyService.removeStudyByStudyId(studyId);
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<?> findStudyLikeAllByUserId(HttpServletRequest request) {
+        // session에서 userId 가져오기
+        Long userId = (Long) request.getAttribute("userId");
+        log.debug("userId : {}", userId);
+        List<Long> studyLikeAllByUserId = studyService.findStudyLikeAllByUserId(userId);
+        return new ResponseEntity<>(studyLikeAllByUserId, HttpStatus.OK);
     }
 
     @PostMapping("/like/{study-id}")

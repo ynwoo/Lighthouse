@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -135,6 +134,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         // badgeList
         List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
+        // userInfo
+//        SimpleUserResponse userInfo = findUserInfo(loginId);
+
         return ProfileResponse.builder()
                 .id(result.getId())
                 .isValid(result.getIsValid())
@@ -151,6 +153,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(result.getScore())
                 .following(result.getFollowing())
                 .follower(result.getFollower())
+                .simpleUserResponse(userInfo)
                 .build();
     }
 
@@ -217,6 +220,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     @Override
     public SimpleUserResponse findUserInfo(Long userId) {
         return SimpleUserResponse.builder()
+                .id(userId)
                 .progressStudies(jpaQueryFactory.select(participationHistory.studyId)
                         .from(participationHistory)
                         .where(participationHistory.userId.eq(userId),
