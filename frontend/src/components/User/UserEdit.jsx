@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useLocation, Link } from 'react-router-dom'
-import { Layout, Card, Space, Avatar, Button, Row, Col, Tabs } from 'antd'
-import { userAction } from '../../store/user'
+import React from 'react'
+// import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
+// import { userAction } from '../../store/user'
 
-import LogIn from './LogIn'
+import StudyList from '../Study/StudyList'
+import UserInfo from './UserInfo'
+import UserInfoModify from './UserInfoModify'
 // import React, { useState } from 'react'
 
 const { Content, Sider } = Layout
@@ -36,30 +38,30 @@ export default function UserEdit() {
   //     navigate(target)
   //   }
   // }
-  const dispatch = useDispatch()
-  const location = useLocation()
-  useEffect(() => {
-    const { userId } = location.state
-    // console.log('asdfasdfasdfasdf', userId)
-    dispatch(userAction.profile(userId))
-  }, [])
+  // const dispatch = useDispatch()
+  // const location = useLocation()
+  // useEffect(() => {
+  //   const { userId } = location.state
+  //   // console.log('asdfasdfasdfasdf', userId)
+  //   dispatch(userAction.profile(userId))
+  // }, [])
   // const profile = useSelector(state => state.user.profile)
 
   const items = [
     {
       key: '1',
-      label: `Tab 1`,
-      children: <LogIn />,
+      label: `정보`,
+      children: <UserInfo />,
     },
     {
       key: '2',
-      label: `Tab 2`,
-      children: <LogIn />,
+      label: `tab 2`,
+      children: <StudyList />,
     },
     {
       key: '3',
-      label: `Tab 3`,
-      children: <LogIn />,
+      label: `프로필 수정`,
+      children: <UserInfoModify />,
     },
   ]
 
@@ -78,7 +80,7 @@ export default function UserEdit() {
       >
         <Card bordered={false}>
           <Avatar
-            size={{ sm: 100, md: 150, lg: 150 }}
+            size={{ sm: 100, md: 150, lg: 150, xl: 150, xxl: 150 }}
             src="/profile.jpg"
             shape="circle"
           />
@@ -112,18 +114,7 @@ export default function UserEdit() {
           minHeight: 280,
         }}
       >
-        <Tabs defaultActiveKey="1" items={items} />;
-        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-          <Card title="자기소개" bordered={false}>
-            <p>
-              안녕하세요. 멋진 스터디를 찾고 있는 커비입니다. 잘 부탁드립니다.
-            </p>
-          </Card>
-          <Card title="Card" bordered={false}>
-            <p>Card content</p>
-            <p>Card content</p>
-          </Card>
-        </Space>
+        <Tabs defaultActiveKey="1" items={items} />
       </Content>
     </Layout>
   )
