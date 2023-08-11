@@ -76,7 +76,7 @@ export default function UserPage() {
     const { userId } = location.state
     dispatch(userAction.profile(userId))
     dispatch(userAction.getFollowing())
-  }, [])
+  }, [location.state.userId])
 
   const { userId } = location.state
   const myId = Number(sessionStorage.getItem('userId'))
@@ -242,7 +242,49 @@ export default function UserPage() {
           <div className="u_item">신청 중</div>
           <div>
             <Select className="u_item2" value="신청중인 스터디">
-              {profile.participatedStudies?.map(study => (
+              {profile.participatedStudies
+                ?.filter(study => study.leaderProfile.id !== myId)
+                .map(study => (
+                  <Select.Option value={study.title} key={study.title}>
+                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                      {study.title}
+                    </Link>
+                  </Select.Option>
+                ))}
+            </Select>
+          </div>
+
+          <div className="u_item">편집 중</div>
+          <div>
+            <Select className="u_item2" value="편집중인 스터디">
+              {profile.participatedStudies
+                ?.filter(study => study.leaderProfile.id === myId)
+                .map(study => (
+                  <Select.Option value={study.title} key={study.title}>
+                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                      {study.title}
+                    </Link>
+                  </Select.Option>
+                ))}
+            </Select>
+          </div>
+
+          <div className="u_item">진행 예정</div>
+          <div>
+            <Select className="u_item2" value="진행 예정인 스터디">
+              {profile.recruitingStudies?.map(study => (
+                <Select.Option value={study.title} key={study.title}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          <div className="u_item">진행 중</div>
+          <div>
+            <Select className="u_item2" value="진행중인 스터디">
+              {profile.progressStudies?.map(study => (
                 <Select.Option value={study.title} key={study.title}>
                   <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
                     {study.title}
@@ -252,23 +294,14 @@ export default function UserPage() {
             </Select>
           </div>
 
-          <div className="u_item">진행 중</div>
-          <div>
-            <Select className="u_item2" value="진행중인 스터디">
-              {profile.progressStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </div>
-
           <div className="u_item">참여했던 스터디</div>
           <div>
             <Select className="u_item2" value="참여했던 스터디">
               {profile.terminatedStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.title}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
@@ -278,8 +311,10 @@ export default function UserPage() {
           <div>
             <Select className="u_item2" value="북마크한 스터디">
               {profile.bookmarkStudies?.map(study => (
-                <Select.Option value={study.name} key={study.name}>
-                  {study.name}
+                <Select.Option value={study.title} key={study.title}>
+                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    {study.title}
+                  </Link>
                 </Select.Option>
               ))}
             </Select>
