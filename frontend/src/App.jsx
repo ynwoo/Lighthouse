@@ -14,6 +14,7 @@ import chat from './static/chat.png'
 import SignUp from './components/User/SignUp'
 import SignIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
+import ChatTest from './components/Utils/Chat/ChatTest'
 
 function App() {
   const login = useSelector(state => state.user.isLoggedIn)
@@ -67,6 +68,7 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />
+              <Route path="/chat1" element={<ChatTest />} />
             </Routes>
           </>
         )}
