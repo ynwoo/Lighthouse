@@ -19,6 +19,7 @@ const initialState = {
   totalPage: 0,
   studyDetail: [],
   tags: [],
+  likeList: [],
 }
 
 export const studyAction = {
@@ -76,9 +77,27 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  getLike: createAsyncThunk('study/getLike', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.get(`${API_URL}/study/like`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
   like: createAsyncThunk('study/like', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/study/like/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  dislike: createAsyncThunk('study/dislike', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.delete(`${API_URL}/study/like/${payload}`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -96,6 +115,20 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  disbookmark: createAsyncThunk(
+    'study/disbookmark',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.delete(
+          `${API_URL}/study/bookmark/${payload}`,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
 }
 
 export const studySlice = createSlice({
@@ -135,11 +168,21 @@ export const studySlice = createSlice({
       state.tags = action.payload.tagList
       localStorage.setItem('tags', JSON.stringify(action.payload.tagList))
     },
+    [studyAction.getLike.fulfilled]: (state, action) => {
+      state.likeList = action.payload
+      console.log(action.payload)
+    },
     [studyAction.like.fulfilled]: () => {
       alert('따봉')
     },
+    [studyAction.dislike.fulfilled]: () => {
+      alert('따봉 취소')
+    },
     [studyAction.bookmark.fulfilled]: () => {
       alert('북마크')
+    },
+    [studyAction.disbookmark.fulfilled]: () => {
+      alert('북마크 취소')
     },
     [studyAction.joinStudy.rejected]: () => {
       alert('이미 가입된 스터디입니다!')
