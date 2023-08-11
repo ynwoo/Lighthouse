@@ -14,38 +14,17 @@ const { Content, Sider } = Layout
 export default function UserEdit() {
   const dispatch = useDispatch()
   const profile = useSelector(state => state.user.profile)
-  const userId = Number(sessionStorage.getItem('userId'))
+  const userId = Number(window.location.pathname.split('/user_edit/')[1])
+  const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
     dispatch(userAction.profile(userId))
   }, [])
 
-  const items = [
+  let items = [
     {
       key: '1',
       label: `정보`,
       children: <UserInfo />,
-    },
-    {
-      key: '2',
-      label: `생성중인 스터디`,
-      children: (
-        <StudyList
-          studies={profile.participatedStudies?.filter(
-            study => study.leaderProfile.id === userId,
-          )}
-        />
-      ),
-    },
-    {
-      key: '3',
-      label: `신청한 스터디`,
-      children: (
-        <StudyList
-          studies={profile.participatedStudies?.filter(
-            study => study.leaderProfile.id !== userId,
-          )}
-        />
-      ),
     },
     {
       key: '4',
@@ -66,12 +45,39 @@ export default function UserEdit() {
       label: `북마크 스터디`,
       children: <StudyList studies={profile.bookmarkStudies} />,
     },
-    {
-      key: '7',
-      label: `프로필 수정`,
-      children: <UserInfoModify />,
-    },
   ]
+  if (userId === loginId) {
+    items = [
+      ...items,
+      {
+        key: '2',
+        label: `생성중인 스터디`,
+        children: (
+          <StudyList
+            studies={profile.participatedStudies?.filter(
+              study => study.leaderProfile.id === userId,
+            )}
+          />
+        ),
+      },
+      {
+        key: '3',
+        label: `신청한 스터디`,
+        children: (
+          <StudyList
+            studies={profile.participatedStudies?.filter(
+              study => study.leaderProfile.id !== userId,
+            )}
+          />
+        ),
+      },
+      {
+        key: '7',
+        label: `프로필 수정`,
+        children: <UserInfoModify />,
+      },
+    ]
+  }
 
   return (
     <Layout

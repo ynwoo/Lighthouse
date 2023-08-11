@@ -9,7 +9,7 @@ export default function JoinStudyInfo({ study }) {
     return {
       key: member.id,
       nickname: (
-        <Link to={`/user/${member?.id}`} state={{ userId: member?.id }}>
+        <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
           {member.nickname}
         </Link>
       ),

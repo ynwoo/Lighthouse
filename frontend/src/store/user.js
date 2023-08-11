@@ -61,7 +61,37 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
-  profile: {},
+  profile: {
+    id: 1,
+    isValid: 1,
+    nickname: '싸피vv싸피',
+    profileImgUrl: null,
+    description: '안녕하세요 김싸피 입니다.',
+    tags: [
+      {
+        id: 3,
+        keyword: '자격증',
+      },
+      {
+        id: 4,
+        keyword: '알고리즘',
+      },
+      {
+        id: 7,
+        keyword: 'CS',
+      },
+    ],
+    participatedStudies: [],
+    recruitingStudies: [],
+    progressStudies: [],
+    terminatedStudies: [],
+    bookmarkStudies: [],
+    badges: [],
+    score: 0,
+    following: 0,
+    follower: 0,
+    simpleUserResponse: {},
+  },
   following: null,
   userInfo: {},
 }
