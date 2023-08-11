@@ -1,21 +1,7 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
 import StudyCard from './StudyCard'
-import { studyAction } from '../../store/study'
 
 function MainComponent({ studies }) {
-  const dispatch = useDispatch()
-  const params = useSelector(state => state.study.params)
-
-  useEffect(() => {
-    console.log(params)
-    dispatch(studyAction.studyList(params))
-    dispatch(studyAction.getTags())
-  }, [])
-
-  console.log(sessionStorage.getItem('isLoggedIn'))
-  console.log(studies)
-
   return (
     <div>
       <div style={{ width: '1000px' }}>

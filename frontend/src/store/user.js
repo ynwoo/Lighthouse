@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { formInstance } from '../api/index'
+
+const formApi = formInstance()
 
 const API_URL = process.env.REACT_APP_API_URL
+const navigate = useNavigate
 
 // custom axios for axios interceptor
-const authApi = axios.create({
+export const authApi = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8',
@@ -41,13 +46,13 @@ authApi.interceptors.response.use(
         window.location.reload()
       } catch (error) {
         alert('로그인이 필요합니다!')
-        window.location.href = '/login'
+        navigate('/login')
       }
       return Promise.reject(err)
     }
     console.log('hmm...')
     alert('로그인이 필요합니다!')
-    window.location.href = '/login'
+    navigate('/login')
     return Promise.reject(err)
   },
 )
@@ -62,6 +67,8 @@ const initialState = {
   nicknameIsValid: null,
   myInfo: {},
   profile: {},
+  following: null,
+  userInfo: {},
 }
 
 export const userAction = {
@@ -135,7 +142,7 @@ export const userAction = {
   signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
       console.log(payload)
-      const response = await axios.post(`${API_URL}/users`, payload)
+      const response = await formApi.post(`${API_URL}/users`, payload)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -148,32 +155,17 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      window.location.href = '/'
+      // window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  googleOauth: createAsyncThunk(
-    'user/googleLogin',
-    async (payload, thunkAPI) => {
-      try {
-        const response = await axios.post(
-          `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=http://i9a409.p.ssafy.io:8081/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`,
-        )
-        console.log(response)
-        return thunkAPI.fulfillWithValue(response.data)
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error)
-      }
-    },
-  ),
   // 로그아웃
   logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
     try {
       const response = await authApi.get(`/users/logout`)
       console.log(response)
-      window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -192,7 +184,38 @@ export const userAction = {
   // 프로필 불러오기
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
-      const response = await authApi.get(`${API_URL}/users/${payload}`)
+      const response = await authApi.get(`${API_URL}/users/profile/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  // 나의 팔로우 목록
+  getFollowing: createAsyncThunk(
+    'user/getFollow',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.get(`${API_URL}/users/follow`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
+  follow: createAsyncThunk('user/follow', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`/users/follow/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  unfollow: createAsyncThunk('user/unfollow', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.delete(`/users/follow/${payload}`)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -248,19 +271,17 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
+      state.userInfo = action.payload.userInfo
+      console.log('action.payload', action.payload)
       state.isLoggedIn = true
+      state.userInfo = action.payload.userInfo
+      console.log(action.payload.userInfo)
       console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
-    [userAction.logout.fulfilled]: (state, action) => {
+    [userAction.logout.fulfilled]: state => {
       // tokens save in session storage
-      sessionStorage.removeItem('access_token', action.payload['access-token'])
-      sessionStorage.removeItem(
-        'refresh_token',
-        action.payload['refresh-token'],
-      )
-      sessionStorage.removeItem('isLoggedIn')
-      sessionStorage.removeItem('userId')
+      sessionStorage.clear()
       state.isLoggedIn = false
     },
     // 마이페이지
@@ -272,6 +293,11 @@ export const userSlice = createSlice({
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload)
       state.profile = action.payload
+    },
+    // 팔로우
+    [userAction.getFollowing.fulfilled]: (state, action) => {
+      console.log(action.payload)
+      state.following = action.payload
     },
   },
 })

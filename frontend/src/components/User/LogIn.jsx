@@ -1,7 +1,7 @@
 import React from 'react'
 // import { Layout, Button, Checkbox, Form, Input } from 'antd'
 import { Form, Input, Button, Checkbox, Card, Typography, Col, Row } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
@@ -16,18 +16,26 @@ const onFinishFailed = errorInfo => {
 //
 
 function LogIn() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+
   const onFinish = value => {
     console.log(value)
+
     dispatch(userAction.login(value)).then(res => {
-      // 로그인 성공하면 메인으로 보내주는 코드
       // 실패하면 안된다 함
       if (res.type === 'user/login/rejected') {
-        alert('안돼')
+        alert('이메일 또는 비밀번호를 확인해주세요.')
+      } else {
+        const userId = sessionStorage.getItem('userId')
+        dispatch(userAction.profile(userId))
+        // 로그인 성공하면 메인으로 보내주는 코드
+        navigate('/')
       }
     })
   }
+
   return (
     <div
       style={{
@@ -112,37 +120,47 @@ function LogIn() {
 
         <Row justify="center">
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/google.png"
-              alt="구글 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a
+              href={`https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_API_URL}/auth/callback/google&scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email`}
+            >
+              <img
+                src="/google.png"
+                alt="구글 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/kakao.png"
-              alt="카카오 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a href="#!">
+              <img
+                src="/kakao.png"
+                alt="카카오 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/github.png"
-              alt="깃허브 로그인"
-              style={{ width: '30px', height: '30px' }}
-            />
+            <a href="#!">
+              <img
+                src="/github.png"
+                alt="깃허브 로그인"
+                style={{ width: '30px', height: '30px' }}
+              />
+            </a>
           </Col>
           <Col span={6} type="flex" align="middle">
-            <img
-              src="/naver.png"
-              alt="네이버 로그인"
-              style={{
-                width: '30px',
-                height: '30px',
-                marginleft: 'auto',
-                marginright: 'auto',
-              }}
-            />
+            <a href="#!">
+              <img
+                src="/naver.png"
+                alt="네이버 로그인"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  marginleft: 'auto',
+                  marginright: 'auto',
+                }}
+              />
+            </a>
           </Col>
         </Row>
       </Card>
