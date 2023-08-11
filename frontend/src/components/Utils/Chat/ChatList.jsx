@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { Avatar, Divider, List, Skeleton } from 'antd'
+// import { Avatar, Divider, List, Skeleton } from 'antd'
+import { Avatar, List } from 'antd'
 
 import { useSelector } from 'react-redux'
 
@@ -10,7 +11,27 @@ function App() {
   const [data, setData] = useState([])
 
   const profile = useSelector(state => state.user.profile)
+  const studiesToShow =
+    profile.participatedStudies && profile.progressStudies
+      ? [...profile.participatedStudies, ...profile.progressStudies].map(
+          study => {
+            return {
+              id: study.id,
+              title: study.title,
+              description: study.description,
+              avatar: study.badge ? study.badge.imgUrl : '',
+            }
+          },
+        )
+      : []
+
+  console.log('to show: ', studiesToShow)
+
   console.log('profile in chat list: ', profile)
+
+  function clickHandler(e) {
+    console.log('click', e)
+  }
 
   const loadMoreData = () => {
     if (loading) {
@@ -29,9 +50,11 @@ function App() {
         setLoading(false)
       })
   }
+
   useEffect(() => {
     loadMoreData()
   }, [])
+
   return (
     <div
       id="scrollableDiv"
@@ -44,30 +67,30 @@ function App() {
     >
       <InfiniteScroll
         dataLength={data.length}
-        next={loadMoreData}
-        hasMore={data.length < 50}
-        loader={
-          <Skeleton
-            avatar
-            paragraph={{
-              rows: 1,
-            }}
-            active
-          />
-        }
-        endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+        // next={loadMoreData}
+        // hasMore={data.length < 50}
+        // loader={
+        //   <Skeleton
+        //     avatar
+        //     paragraph={{
+        //       rows: 1,
+        //     }}
+        //     active
+        //   />
+        // }
+        // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         scrollableTarget="scrollableDiv"
       >
         <List
-          dataSource={data}
+          dataSource={studiesToShow}
           renderItem={item => (
-            <List.Item key={item.email}>
+            <List.Item key={item.id}>
               <List.Item.Meta
-                avatar={<Avatar src={item.picture.large} />}
-                title={<a href="https://ant.design">{item.name.last}</a>}
-                description={item.email}
+                avatar={<Avatar src={item.avatar} />}
+                title={<a onClick={clickHandler}>{item.title}</a>}
+                description={item.description}
               />
-              <div>Content</div>
+              <div>GO</div>
             </List.Item>
           )}
         />
