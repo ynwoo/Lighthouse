@@ -25,15 +25,16 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtTokenInterceptor)
-				.addPathPatterns("/study")
-				.addPathPatterns("/study/*")
+				// user
 				.addPathPatterns("/users/mypage")
 				.addPathPatterns("/users/logout")
 				.addPathPatterns("/users/follow", "/users/follow/*")
 				.addPathPatterns("/users/profile/*")
 				.addPathPatterns("/users/eval", "/users/eval/*")
-				.addPathPatterns("/study/like", "/study/like/*")
-				.addPathPatterns("/study/bookmark", "/study/bookmark/*")
+
+				// study
+				.addPathPatterns("/study")
+				.addPathPatterns("/study/**")
 				.addPathPatterns("/participation-history/*")
 				.addPathPatterns("/users");
 	}
