@@ -2,15 +2,11 @@ package com.ssafy.lighthouse.domain.user.repository;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
-import com.ssafy.lighthouse.domain.study.entity.QBookmark;
-import com.ssafy.lighthouse.domain.study.entity.QParticipationHistory;
-import com.ssafy.lighthouse.domain.study.entity.QStudyLike;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
 import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryRepository;
@@ -20,7 +16,6 @@ import com.ssafy.lighthouse.domain.user.dto.SimpleUserResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -48,10 +43,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
     private final BookmarkRepository bookmarkRepository;
     private final UserTagRepository userTagRepository;
     private final UserBadgeRepository userBadgeRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
         Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) : new HashSet<>();
+        Set<Long> recruitingSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.RECRUITING);
         Set<Long> progressSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PROGRESS);
         Set<Long> terminatedSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.TERMINATED);
         Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
@@ -59,6 +56,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         // all
         Set<Long> allStudyIdSet = new HashSet<>();
         allStudyIdSet.addAll(participatedSet);
+        allStudyIdSet.addAll(recruitingSet);
         allStudyIdSet.addAll(progressSet);
         allStudyIdSet.addAll(terminatedSet);
         allStudyIdSet.addAll(bookmarkSet);
@@ -69,24 +67,35 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
+        List<SimpleStudyDto> recruitingStudies = new ArrayList<>();
         List<SimpleStudyDto> progressStudies = new ArrayList<>();
         List<SimpleStudyDto> terminatedStudies = new ArrayList<>();
         List<SimpleStudyDto> bookmarkStudies = new ArrayList<>();
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
+            // setLeaderProfile
+            simpleStudyDto.setLeaderProfile(userRepository.findSimpleProfileByUserId(study.getLeaderId()));
+
+            // 신청한 스터디
+            if (participatedSet.contains(study.getId())) {
+                participatedStudies.add(simpleStudyDto);
+            }
+
+            // 모집중 스터디
+            else if(recruitingSet.contains(study.getId())) {
+                recruitingStudies.add(simpleStudyDto);
+            }
+
             // 진행중 스터디
-            if(progressSet.contains(study.getId())) {
+            else if(progressSet.contains(study.getId())) {
                 progressStudies.add(simpleStudyDto);
-            } 
+            }
+
             // 끝난 스터디
             else if(terminatedSet.contains(study.getId())) {
                 terminatedStudies.add(simpleStudyDto);
             } 
-            // 신청한 스터디
-            else if (participatedSet.contains(study.getId())) {
-                participatedStudies.add(simpleStudyDto);
-            }
 
             // 북마크 한 스터디
             if(bookmarkSet.contains(study.getId())) {
@@ -119,6 +128,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .tags(tags)
                 .badges(badgeResponses)
                 .participatedStudies(participatedStudies)
+                .recruitingStudies(recruitingStudies)
                 .progressStudies(progressStudies)
                 .terminatedStudies(terminatedStudies)
                 .bookmarkStudies(bookmarkStudies)
