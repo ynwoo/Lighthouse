@@ -20,14 +20,30 @@ function LogIn() {
   const [form] = Form.useForm()
   const onFinish = value => {
     console.log(value)
-    dispatch(userAction.login(value)).then(res => {
-      // 로그인 성공하면 메인으로 보내주는 코드
-      // 실패하면 안된다 함
-      if (res.type === 'user/login/rejected') {
+
+    dispatch(userAction.login(value))
+      .then(res => {
+        // 로그인 성공하면 메인으로 보내주는 코드
+        // 실패하면 안된다 함
+        console.log(res)
+        const userId = sessionStorage.getItem('userId')
+        dispatch(userAction.profile(userId))
+        // if (res.type === 'user/login/rejected') {
+
+        // } else {
+        //   console.log('login completed with user Id: ', userId)
+        //   if (userId) {
+        //     console.log('login success in profile')
+        //   } else {
+        //     console.log('log in failed... maybe??')
+        //   }
+      })
+      .catch(err => {
+        console.log(err)
         alert('안돼')
-      }
-    })
+      })
   }
+
   return (
     <div
       style={{

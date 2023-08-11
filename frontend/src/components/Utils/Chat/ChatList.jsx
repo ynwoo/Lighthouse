@@ -3,9 +3,15 @@ import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { Avatar, Divider, List, Skeleton } from 'antd'
 
+import { useSelector } from 'react-redux'
+
 function App() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
+
+  const profile = useSelector(state => state.user.profile)
+  console.log('profile in chat list: ', profile)
+
   const loadMoreData = () => {
     if (loading) {
       return

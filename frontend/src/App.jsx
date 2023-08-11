@@ -85,6 +85,7 @@ function App() {
           padding: 0,
           margin: 0,
           zIndex: '1',
+          // width: '200px',
         }}
         onClick={handleChatClick}
       >
