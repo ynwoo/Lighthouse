@@ -34,8 +34,7 @@ function LogIn() {
       if (res.type === 'user/login/rejected') {
         alert('이메일 또는 비밀번호를 확인해주세요.')
       } else {
-        const userId = sessionStorage.getItem('userId')
-        dispatch(userAction.profile(userId))
+        dispatch(userAction.myPage())
         // 로그인 성공하면 메인으로 보내주는 코드
         navigate('/')
       }

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
@@ -77,8 +76,8 @@ export default function SideComponent({ isLoggedIn, study }) {
     document.body.style.overflow = 'auto'
   }
 
-  const profile = useSelector(state => state.user.profile)
-  console.log(profile)
+  const myInfo = useSelector(state => state.user.myInfo)
+  console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
@@ -122,7 +121,7 @@ export default function SideComponent({ isLoggedIn, study }) {
           >
             <p>왜안떠</p>
             <p>
-              {profile.participatedStudies?.map(studyData => (
+              {myInfo.participatedStudies?.map(studyData => (
                 // <Select.Option value={studyData.title} key={studyData.title}>
                 <Link to={`/temp/${studyData.id}`} state={{ id: studyData.id }}>
                   {studyData.title}
@@ -166,7 +165,6 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
-                onClick={OnclickJoin}
               />
             </Modal>
 
