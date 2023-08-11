@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 public class SimpleUserResponse {
 	Long id;
-	String nickname;
 	List<Long> progressStudies;
 	List<Long> follows;
 	List<Long> bookmarks;
