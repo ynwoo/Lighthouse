@@ -76,6 +76,26 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  like: createAsyncThunk('study/like', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/study/like/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  bookmark: createAsyncThunk('study/bookmark', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(
+        `${API_URL}/study/bookmark/${payload}`,
+      )
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const studySlice = createSlice({
@@ -114,6 +134,12 @@ export const studySlice = createSlice({
       console.log(action.payload.tagList)
       state.tags = action.payload.tagList
       localStorage.setItem('tags', JSON.stringify(action.payload.tagList))
+    },
+    [studyAction.like.fulfilled]: () => {
+      alert('따봉')
+    },
+    [studyAction.bookmark.fulfilled]: () => {
+      alert('북마크')
     },
     [studyAction.joinStudy.rejected]: () => {
       alert('이미 가입된 스터디입니다!')

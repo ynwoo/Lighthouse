@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-// import axios from 'axios'
+import axios from 'axios'
 import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
@@ -166,7 +166,7 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
-                // onClick={OnclickJoin}
+                onClick={OnclickJoin}
               />
             </Modal>
 
