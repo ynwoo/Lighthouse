@@ -22,6 +22,7 @@ public class ProfileResponse {
     private String description;
     private List<TagDto> tags;
     private List<SimpleStudyDto> participatedStudies;    // 신청한 스터디 (본인 프로필에서만 조회 가능)
+    private List<SimpleStudyDto> recruitingStudies;    // 모집중 스터디
     private List<SimpleStudyDto> progressStudies;    // 진행 중 스터디
     private List<SimpleStudyDto> terminatedStudies;   // 완료 된 스터디
     private List<SimpleStudyDto> bookmarkStudies;
