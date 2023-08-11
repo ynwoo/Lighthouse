@@ -115,6 +115,9 @@ export const studySlice = createSlice({
       state.tags = action.payload.tagList
       localStorage.setItem('tags', JSON.stringify(action.payload.tagList))
     },
+    [studyAction.joinStudy.rejected]: () => {
+      alert('이미 가입된 스터디입니다!')
+    },
   },
 })
 
