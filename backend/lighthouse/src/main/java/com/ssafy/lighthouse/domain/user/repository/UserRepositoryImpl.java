@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -136,7 +135,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
         // userInfo
-        SimpleUserResponse userInfo = findUserInfo(loginId);
+//        SimpleUserResponse userInfo = findUserInfo(loginId);
 
         return ProfileResponse.builder()
                 .id(result.getId())
