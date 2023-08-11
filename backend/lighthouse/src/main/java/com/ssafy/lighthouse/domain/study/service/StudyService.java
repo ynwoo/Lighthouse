@@ -5,6 +5,8 @@ import com.ssafy.lighthouse.domain.study.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 public interface StudyService {
     Page<SimpleStudyDto> findAllByStudySearchOption(StudySearchOption options);
@@ -18,6 +20,7 @@ public interface StudyService {
     // study-like
     void createStudyLike(Long studyId, Long userId);
     void removeStudyLike(Long studyId, Long userId);
+    List<Long> findStudyLikeAllByUserId(Long userId);
 
     // study-bookmark
     void createStudyBookmark(Long studyId, Long userId);
