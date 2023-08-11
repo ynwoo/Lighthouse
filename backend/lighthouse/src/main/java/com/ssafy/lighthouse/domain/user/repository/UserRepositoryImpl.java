@@ -68,29 +68,49 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     .id(study.getLeaderId())
                     .build());
 
-            // status에 따른 스터디 분류
-            switch(simpleStudyDto.getStatus()) {
-                // 신청한 스터디
-                case STATUS.PREPARING:
-                    if(userId.equals(loginId)) {
-                        participatedStudies.add(simpleStudyDto);
-                    }
-                    break;
+//            // status에 따른 스터디 분류
+//            switch(simpleStudyDto.getStatus()) {
+//                // 신청한 스터디
+//                case STATUS.PREPARING:
+//                    if(userId.equals(loginId)) {
+//                        participatedStudies.add(simpleStudyDto);
+//                    }
+//                    break;
+//
+//                // 모집중 스터디
+//                case STATUS.RECRUITING:
+//                    recruitingStudies.add(simpleStudyDto);
+//                    break;
+//
+//                // 진행중 스터디
+//                case STATUS.PROGRESS:
+//                    progressStudies.add(simpleStudyDto);
+//                    break;
+//
+//                // 끝난 스터디
+//                case STATUS.TERMINATED: case STATUS.SHARE:
+//                    terminatedStudies.add(simpleStudyDto);
+//                    break;
+//            }
+
+            // 신청한 스터디
+            if (study.getStatus() == STATUS.PREPARING && userId.equals(loginId)) {
+                participatedStudies.add(simpleStudyDto);
+            }
 
                 // 모집중 스터디
-                case STATUS.RECRUITING:
-                    recruitingStudies.add(simpleStudyDto);
-                    break;
+            else if(study.getStatus() == STATUS.RECRUITING) {
+                recruitingStudies.add(simpleStudyDto);
+            }
 
-                // 진행중 스터디
-                case STATUS.PROGRESS:
-                    progressStudies.add(simpleStudyDto);
-                    break;
+            // 진행중 스터디
+            else if(study.getStatus() == STATUS.PROGRESS) {
+                progressStudies.add(simpleStudyDto);
+            }
 
-                // 끝난 스터디
-                case STATUS.TERMINATED: case STATUS.SHARE:
-                    terminatedStudies.add(simpleStudyDto);
-                    break;
+            // 끝난 스터디
+            else if(study.getStatus() == STATUS.TERMINATED || study.getStatus() == STATUS.SHARE) {
+                terminatedStudies.add(simpleStudyDto);
             }
 
             // 북마크 한 스터디
