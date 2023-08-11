@@ -1,51 +1,23 @@
-import React from 'react'
-// import { useDispatch } from 'react-redux'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
-// import { userAction } from '../../store/user'
+import { useSelector, useDispatch } from 'react-redux'
+import { userAction } from '../../store/user'
 
 import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
-// import React, { useState } from 'react'
 
 const { Content, Sider } = Layout
 // 템플릿 상세의 질의응답
 
 export default function UserEdit() {
-  // const [checkboxValues, setCheckboxValues] = useState({
-  //   개발: false,
-  //   알고리즘: false,
-  //   CS: false,
-  //   면접: false,
-  //   공무원: false,
-  //   인적성: false,
-  //   수능: false,
-  //   영어: false,
-  //   // 필요한 만큼 체크박스 상태 변수를 추가할 수 있습니다.
-  // })
-
-  // const handleCheckboxChange = event => {
-  //   const { name, checked } = event.target
-  //   setCheckboxValues({
-  //     ...checkboxValues,
-  //     [name]: checked,
-  //   })
-  // }
-  // const handleMenuClick = ({ key }) => {
-  //   const { target } = menuItems.find(item => item.key === key) || {}
-  //   if (target) {
-  //     navigate(target)
-  //   }
-  // }
-  // const dispatch = useDispatch()
-  // const location = useLocation()
-  // useEffect(() => {
-  //   const { userId } = location.state
-  //   // console.log('asdfasdfasdfasdf', userId)
-  //   dispatch(userAction.profile(userId))
-  // }, [])
-  // const profile = useSelector(state => state.user.profile)
+  const dispatch = useDispatch()
+  const profile = useSelector(state => state.user.profile)
+  const userId = Number(sessionStorage.getItem('userId'))
+  useEffect(() => {
+    dispatch(userAction.profile(userId))
+  }, [])
 
   const items = [
     {
@@ -55,11 +27,47 @@ export default function UserEdit() {
     },
     {
       key: '2',
-      label: `tab 2`,
-      children: <StudyList />,
+      label: `생성중인 스터디`,
+      children: (
+        <StudyList
+          studies={profile.participatedStudies?.filter(
+            study => study.leaderProfile.id === userId,
+          )}
+        />
+      ),
     },
     {
       key: '3',
+      label: `신청한 스터디`,
+      children: (
+        <StudyList
+          studies={profile.participatedStudies?.filter(
+            study => study.leaderProfile.id !== userId,
+          )}
+        />
+      ),
+    },
+    {
+      key: '4',
+      label: `참여중인 스터디`,
+      children: (
+        <StudyList
+          studies={[...profile.progressStudies, ...profile.recruitingStudies]}
+        />
+      ),
+    },
+    {
+      key: '5',
+      label: `참여했던 스터디`,
+      children: <StudyList studies={profile.terminatedStudies} />,
+    },
+    {
+      key: '6',
+      label: `북마크 스터디`,
+      children: <StudyList studies={profile.bookmarkStudies} />,
+    },
+    {
+      key: '7',
       label: `프로필 수정`,
       children: <UserInfoModify />,
     },

@@ -50,7 +50,7 @@ export default function Navbar({ isLoggedIn }) {
             <>
               <div className="item dropdown_king nav_item">
                 <Link
-                  to="/user/me"
+                  to="/user_edit/me"
                   state={{ userId: Number(sessionStorage.getItem('userId')) }}
                   className="dropdown_toggle"
                 >
