@@ -81,7 +81,7 @@ function SearchComponent() {
             name="word"
             placeholder="input search text"
             onSearch={onSearch}
-            defaultValue=""
+            defaultValue={params.word}
             enterButton
             style={{ width: '500px', margin: '10px' }}
           />

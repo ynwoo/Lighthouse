@@ -7,7 +7,6 @@ import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
 
-const API_URL = process.env.REACT_APP_API_URL
 export default function SideComponent({ isLoggedIn, study }) {
   const dispatch = useDispatch()
   // 스터디 신청 모달
@@ -19,11 +18,6 @@ export default function SideComponent({ isLoggedIn, study }) {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
   const nickname = sessionStorage.getItem('nickname')
-  // 스터디 가입
-  const OnclickJoin = () => {
-    axios.put(`${API_URL}/participation-history/${study.id}`)
-    console.log('id', study.id)
-  }
 
   const showModal = () => {
     setIsModalVisible(true)

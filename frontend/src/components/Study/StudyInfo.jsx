@@ -141,7 +141,7 @@ export default function StudyInfo({ study }) {
             <div>
               <img src={view} alt="" style={{ width: '20px' }} />
             </div>
-            <div> {study.hit}</div>
+            <div> {study.bookmarkCnt}</div>
             <div>
               <button
                 type="button"
