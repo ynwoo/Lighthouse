@@ -46,20 +46,11 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
     @Override
     public ProfileResponse findProfileByUserId(Long userId, Long loginId) {
-        Set<Long> participatedSet = userId.equals(loginId) ? participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PREPARING) : new HashSet<>();
-        Set<Long> recruitingSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.RECRUITING);
-        Set<Long> progressSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.PROGRESS);
-        Set<Long> terminatedSet = participationHistoryRepository.findStudyIdAllByUserId(userId, STATUS.TERMINATED);
-        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
-
         // all
-        Set<Long> allStudyIdSet = new HashSet<>();
-        allStudyIdSet.addAll(participatedSet);
-        allStudyIdSet.addAll(recruitingSet);
-        allStudyIdSet.addAll(progressSet);
-        allStudyIdSet.addAll(terminatedSet);
-        allStudyIdSet.addAll(bookmarkSet);
-
+        Set<Long> allStudyIdSet = participationHistoryRepository.findStudyIdAllByUserId(userId);
+        // bookmark studyIdSet
+        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+        // tag
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         QFollow followee = new QFollow("followee");
 
@@ -78,22 +69,22 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     .build());
 
             // 신청한 스터디
-            if (participatedSet.contains(study.getId())) {
+            if (study.getStatus() == STATUS.PREPARING && userId.equals(loginId)) {
                 participatedStudies.add(simpleStudyDto);
             }
 
             // 모집중 스터디
-            else if(recruitingSet.contains(study.getId())) {
+            else if(study.getStatus() == STATUS.RECRUITING) {
                 recruitingStudies.add(simpleStudyDto);
             }
 
             // 진행중 스터디
-            else if(progressSet.contains(study.getId())) {
+            else if(study.getStatus() == STATUS.PROGRESS) {
                 progressStudies.add(simpleStudyDto);
             }
 
             // 끝난 스터디
-            else if(terminatedSet.contains(study.getId())) {
+            else if(study.getStatus() == STATUS.TERMINATED || study.getStatus() == STATUS.SHARE) {
                 terminatedStudies.add(simpleStudyDto);
             } 
 
