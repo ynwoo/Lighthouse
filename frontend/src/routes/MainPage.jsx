@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
 import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
-import { studyAction } from '../store/study'
+import { setParams, studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
+import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
 const { Footer, Content } = Layout
@@ -54,39 +55,22 @@ function deleteCookie(name) {
 }
 
 // 내부 탭
-export default function MainPage({ isLoggedIn, initStatus }) {
+
+export default function MainPage({ isLoggedIn, status }) {
   const dispatch = useDispatch()
-  const [page /* setPage */] = useState(0)
-  const [key /* setKey */] = useState(null)
-  const [word /* setWord */] = useState(null)
-  const [orderKey /* setOrderKey */] = useState('like')
-  const [orderBy /* setOrderBy */] = useState('desc')
-  const [isOnline /* setIsOnline */] = useState(0)
-  const [tagIds /* setTagIds */] = useState(null)
-  const [status, setStatus] = useState(initStatus)
-
-  const options = {
-    page,
-    key,
-    word,
-    orderKey,
-    orderBy,
-    isOnline,
-    tagIds,
-    status,
-  }
-
-  useEffect(() => {
-    setStatus(initStatus)
-  }, [initStatus])
-
-  useEffect(() => {
-    dispatch(studyAction.studyList(options))
-    // dispatch(studyAction.getTags())
-  }, [page, key, word, orderKey, orderBy, isOnline, tagIds, status])
-
+  const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
+  const totalPage = useSelector(state => state.study.totalPage)
+
+  useEffect(() => {
+    dispatch(studyAction.studyList(params))
+  }, [params])
+
   console.log(studies)
+  console.log(params)
+
+  const onClick = () =>
+    dispatch(setParams({ ...params, page: params.page + 1 }))
 
   // 구글 소셜 로그인 시 서버로부터 값 받아오기
   const userId = getCookie('user_id')
@@ -109,6 +93,7 @@ export default function MainPage({ isLoggedIn, initStatus }) {
     deleteCookie('refresh_token')
     window.location.reload()
   }
+
   return (
     <div
       style={
@@ -138,9 +123,16 @@ export default function MainPage({ isLoggedIn, initStatus }) {
               <CreateButton>
                 이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
               </CreateButton>
-              <div>
-                {/* <Button><FontAwesomeIcon icon={faAngleRight} /></Button> */}
-              </div>
+              {params.page ? (
+                <NextButton onClick={onClick}>이것은 이전 페이지</NextButton>
+              ) : (
+                ''
+              )}
+              {params.page < totalPage ? (
+                <NextButton onClick={onClick}>이것은 다음 페이지</NextButton>
+              ) : (
+                ''
+              )}
               {/* 검색창 */}
               <SearchComponent />
             </div>

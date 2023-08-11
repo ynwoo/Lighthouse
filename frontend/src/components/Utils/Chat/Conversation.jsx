@@ -16,6 +16,7 @@ export const dateFormat = timestamp => {
 
 export const getFirstLetter = name => {
   return name[0]
+
   // const lettersArray = name.split(' ').map(word => word[0])
 
   // if (lettersArray.length === 1) {
@@ -106,22 +107,6 @@ function Conversation() {
   const userId = sessionStorage.getItem('userId')
 
   console.log('temp messages: ', messages)
-  // const messages = [
-  //   { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
-  //   { text: 'world', author: 'YANG', socketId: 1, id: 2 },
-  //   { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
-  //   { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
-  //   { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
-  //   { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
-  //   { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
-  //   { text: 'hello i am a bot', author: 'BOT', socketId: 7, id: 1 },
-  //   { text: 'world', author: 'YANG', socketId: 1, id: 2 },
-  //   { text: 'zzzz', author: 'LEE', socketId: 1, id: 3 },
-  //   { text: 'lol', author: 'BOT', socketId: 1, id: 4 },
-  //   { text: 'should be invisible', author: 'BOT', socketId: 7, id: 4 },
-  //   { text: 'should be invisible', author: 'YANG', socketId: 7, id: 4 },
-  //   { text: 'should be invisible', author: 'SSS', socketId: 7, id: 4 },
-  // ]
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
@@ -142,7 +127,7 @@ function Conversation() {
         ) : (
           //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
           <MessageContainer key={time} incomingMessage={senderId !== userId}>
-            <UserProfile content={senderName ? senderName.toString() : '🤬'} />
+            <UserProfile content={senderName ? senderName.toString() : 'Y'} />
             <MessageContent>{message}</MessageContent>
           </MessageContainer>
         )

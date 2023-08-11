@@ -39,6 +39,7 @@ function ChatForm() {
 
   const onSubmit = e => {
     e.preventDefault()
+    if (!inputRef.current.value) return
 
     sendMessage({
       text: inputRef.current.value,

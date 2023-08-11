@@ -1,5 +1,5 @@
 import { Button, Form, Input } from 'antd'
-// import React, { useEffect } from 'react'
+import React, { useEffect } from 'react'
 // import SockJS from 'sockjs-client'
 import { Client } from '@stomp/stompjs'
 import { useDispatch, useSelector } from 'react-redux'
@@ -42,11 +42,9 @@ function Chat() {
   //   }
   // })
 
-  // useEffect(() => {
-  //   dispatch(userAction.myPage())
-  // }, [])
-  // console.log(userInfo)
-  // console.log(userInfo.id)
+  useEffect(() => {
+    dispatch(chatAction.getChat(1))
+  }, [])
 
   client.onConnect = frame => {
     // Do something, all subscribes must be done is this callback
