@@ -2,50 +2,30 @@ import React from 'react'
 // import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
+import { useSelector } from 'react-redux'
 // import { userAction } from '../../store/user'
-
 import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
 // import React, { useState } from 'react'
+// import { userAction } from '../../store/user'
 
 const { Content, Sider } = Layout
-// 템플릿 상세의 질의응답
 
 export default function UserEdit() {
-  // const [checkboxValues, setCheckboxValues] = useState({
-  //   개발: false,
-  //   알고리즘: false,
-  //   CS: false,
-  //   면접: false,
-  //   공무원: false,
-  //   인적성: false,
-  //   수능: false,
-  //   영어: false,
-  //   // 필요한 만큼 체크박스 상태 변수를 추가할 수 있습니다.
-  // })
-
-  // const handleCheckboxChange = event => {
-  //   const { name, checked } = event.target
-  //   setCheckboxValues({
-  //     ...checkboxValues,
-  //     [name]: checked,
-  //   })
-  // }
-  // const handleMenuClick = ({ key }) => {
-  //   const { target } = menuItems.find(item => item.key === key) || {}
-  //   if (target) {
-  //     navigate(target)
-  //   }
-  // }
   // const dispatch = useDispatch()
   // const location = useLocation()
+  const profile = useSelector(state => state.user.profile)
+  console.log(profile)
   // useEffect(() => {
   //   const { userId } = location.state
-  //   // console.log('asdfasdfasdfasdf', userId)
   //   dispatch(userAction.profile(userId))
-  // }, [])
-  // const profile = useSelector(state => state.user.profile)
+  //   dispatch(userAction.getFollowing())
+  // }, [location.state.userId])
+  // console.log('프', profile)
+
+  // const { userId } = location.state
+  // console.log(userId)
 
   const items = [
     {
@@ -84,7 +64,10 @@ export default function UserEdit() {
             src="/profile.jpg"
             shape="circle"
           />
-          <h2 style={{ marginBottom: '0px' }}>닉네임</h2>
+          <h2 style={{ marginBottom: '0px' }}>
+            닉네임
+            {profile.id}
+          </h2>
           <p>이름</p>
           <Button block style={{ margin: '2vh 0' }}>
             팔로우
@@ -98,15 +81,6 @@ export default function UserEdit() {
             </Col>
           </Row>
         </Card>
-        {/* <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          style={{
-            height: '100%',
-          }}
-          items={menuItems}
-          // onClick={handleMenuClick}
-        /> */}
       </Sider>
       <Content
         style={{
