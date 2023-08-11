@@ -166,13 +166,16 @@ public class StudyServiceImpl implements StudyService {
         participationHistoryRepository.save(ParticipationHistory
                 .builder()
                 .userId(userId)
-                .studyId(studyId)
+                .studyId(newStudy.getId())
                 .status(STATUS.PREPARING)
                 .userRole(ROLE.TEAM_LEADER)
                 .joinedAt(LocalDateTime.now())
                 .build());
 
-        return new StudyResponse(newStudy);
+        StudyResponse studyResponse = new StudyResponse(newStudy);
+        // setLeaderProfile
+        studyResponse.setLeaderProfile(userRepository.findSimpleProfileByUserId(userId));
+        return studyResponse;
     }
 
     @Override
