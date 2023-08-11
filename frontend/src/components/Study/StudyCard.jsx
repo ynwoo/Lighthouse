@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined } from '@ant-design/icons'
+
 import CustomTitle from './CustomTitle'
 
 function StudyCard({ study }) {
@@ -121,7 +122,6 @@ function StudyCard({ study }) {
                 }}
               >
                 {study.studyTags.map(tag => {
-                  // <span key={tag.id}>#{tag.tag.keyword} </span>
                   return (
                     <Tag
                       key={tag.id}
