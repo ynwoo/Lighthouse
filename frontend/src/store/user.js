@@ -266,7 +266,6 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
-      state.userInfo = action.payload.userInfo
       console.log('action.payload', action.payload)
       state.isLoggedIn = true
       state.userInfo = action.payload.userInfo
