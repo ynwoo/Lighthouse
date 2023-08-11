@@ -54,6 +54,17 @@ function deleteCookie(name) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
 }
 
+const initParams = {
+  status: 1,
+  page: 0,
+  key: 'title',
+  word: '',
+  isOnline: 0,
+  orderKey: 'like',
+  orderBy: 'desc',
+  tagIds: [],
+}
+
 // 내부 탭
 
 export default function MainPage({ isLoggedIn, status }) {
@@ -61,6 +72,10 @@ export default function MainPage({ isLoggedIn, status }) {
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
   const totalPage = useSelector(state => state.study.totalPage)
+
+  useEffect(() => {
+    dispatch(setParams({ ...initParams, status }))
+  }, [status])
 
   useEffect(() => {
     dispatch(studyAction.studyList(params))
