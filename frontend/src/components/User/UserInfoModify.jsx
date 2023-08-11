@@ -35,11 +35,15 @@ function UserInfoModify() {
   const [form] = Form.useForm()
   const navigate = useNavigate()
 
+  const myInfo = useSelector(state => state.user.myInfo)
+
   // 컴포넌트가 mount되는 과정에서 서버에 요청을 보내 store에 sido를 추가해줌
   // 저 아래에 [dispatch] 부분이 없으면 인생 끝날 때 까지 요청함
   useEffect(() => {
-    dispatch(userAction.sido())
-  }, [dispatch])
+    dispatch(userAction.myPage())
+  }, [])
+
+  console.log(myInfo)
 
   // sido와 gugun을 store에서 불러 와주는 선언문
   const sido = useSelector(state => state.user.sido)
