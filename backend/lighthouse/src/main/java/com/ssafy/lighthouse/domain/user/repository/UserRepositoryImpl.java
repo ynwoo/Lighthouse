@@ -153,7 +153,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .score(result.getScore())
                 .following(result.getFollowing())
                 .follower(result.getFollower())
-                .simpleUserResponse(userInfo)
                 .build();
     }
 
