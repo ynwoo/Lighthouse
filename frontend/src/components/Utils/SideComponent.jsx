@@ -166,7 +166,6 @@ export default function SideComponent({ isLoggedIn, study }) {
                 placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                 value={message}
                 onChange={handleChangeMessage}
-                onClick={OnclickJoin}
               />
             </Modal>
 
