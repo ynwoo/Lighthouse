@@ -30,4 +30,5 @@ public class ProfileResponse {
     private Double score;   // 유저 평점 평균
     private Long following;
     private Long follower;
+    private SimpleUserResponse simpleUserResponse;
 }
