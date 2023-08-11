@@ -1,6 +1,15 @@
 import React from 'react'
-// import { Layout, Button, Checkbox, Form, Input } from 'antd'
-import { Form, Input, Button, Checkbox, Card, Typography, Col, Row } from 'antd'
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Card,
+  Typography,
+  Col,
+  Row,
+  Divider,
+} from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'

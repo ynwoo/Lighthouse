@@ -675,7 +675,7 @@ p {
 }
 
 .hovered-card {
-  border: 2px solid #6181f1;
+  /* border: 2px solid #6181f1; */
   /* background-color: #000000; */
   transform: scale(1.05);
   transition: all 0.3s ease;
@@ -698,7 +698,7 @@ p {
   background-color: white;
   justify-content: center;
   align-content: center;
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
   /* position: relative; */
   padding: 20px;
   margin: -18px;

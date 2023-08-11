@@ -12,7 +12,7 @@ import UserEditPage from './routes/UserEditPage'
 import Chat from './components/Utils/Chat/Chat'
 import chat from './static/chat.png'
 import SignUp from './components/User/SignUp'
-import SignIn from './components/User/LogIn'
+import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatTest from './components/Utils/Chat/ChatTest'
 
@@ -64,7 +64,7 @@ function App() {
                 element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
               />
               <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<SignIn />} />
+              <Route path="/login" element={<LogIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/user_edit/:id" element={<UserEditPage />} />
               <Route path="/chat" element={<Chat />} />
