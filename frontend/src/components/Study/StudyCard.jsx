@@ -20,7 +20,7 @@ function TempCard({ study }) {
         <Card
           onMouseOver={handleMouseEnter}
           // className={isHovered ? 'hovered-card' : ''}
-          // bordered={false}
+          bordered={false}
           style={{
             width: '250px',
             height: '300px',
