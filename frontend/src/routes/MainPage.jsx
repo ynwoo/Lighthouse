@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
-import MainComponent from '../components/Study/StudyList'
+import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
@@ -151,7 +151,7 @@ export default function MainPage({ isLoggedIn, status }) {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <MainComponent studies={studies} isLoggedIn={isLoggedIn} />
+            <StudyList studies={studies} isLoggedIn={isLoggedIn} />
           </Content>
         </div>
 
