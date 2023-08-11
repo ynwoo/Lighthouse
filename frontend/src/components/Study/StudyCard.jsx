@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Typography, Tag } from 'antd'
-
-const { Title } = Typography
-
-const { Meta } = Card
+import { Card, Tag } from 'antd'
 
 function TempCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -22,10 +18,9 @@ function TempCard({ study }) {
       <div>
         <div>
           <Card
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={isHovered ? 'hovered-card' : ''}
-            bordered={false}
+            onMouseOver={handleMouseEnter}
+            // className={isHovered ? 'hovered-card' : ''}
+            // bordered={false}
             style={{
               width: '250px',
               height: '300px',
@@ -76,24 +71,41 @@ function TempCard({ study }) {
                 </div>
               </div>
             </div>
-
-            {/* 카드 내용 */}
-            <Meta
-              title={<Title level={5} style={{ margin: '0px' }} />}
-              description={
-                isHovered ? (
-                  <>
-                    {/* 호버 상태일 때 보여질 다른 내용 */}
-                    <div>클릭하여</div>
-                    <div>자세한 스터디 내용을 확인하세요 !</div>
-                  </>
-                ) : (
-                  // 호버 상태가 아닐 때 보여질 내용
-                  `${study.currentMember}/${study.maxMember}
-                좋아요 ${study.likeCnt}`
-                )
-              }
-            />
+          </Card>
+          {/* 레이어 카드 */}
+          <Card
+            onMouseOut={handleMouseLeave}
+            className={isHovered ? 'hovered-card' : ''}
+            // bordered={false}
+            style={{
+              width: '250px',
+              height: '300px',
+              margin: '5px',
+              padding: '5px',
+              whiteSpace: 'pre-line',
+              boxShadow: 'none',
+              backgroundColor: 'rgba(21, 21, 21, 0.93)',
+              position: 'relative',
+              top: '-305px',
+              zIndex: '10',
+              visibility: isHovered ? 'visible' : 'hidden',
+            }}
+            bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
+          >
+            <div style={{ color: '#f2f2f2' }}>
+              <h3 style={{ margin: '3px' }}>{study.title}</h3>
+              <div style={{ fontSize: '13px' }}>
+                {study.description}i think your preference is spot-on for
+                documents, but over-zealous for applications where markup
+                interchange compat is not important. some major web apps are
+                actually getting rid of classes and using only inline style,
+                which is more predictable and easier to reason about than which
+                of 5 applied rules is making the text bold. when the attribs are
+                dynamic, you dont save much bandwidth like you do with
+                repetitive documents. the apps semantics (view-source markup)
+                are not that important either..
+              </div>
+            </div>
           </Card>
         </div>
       </div>

@@ -677,8 +677,6 @@ p {
 .hovered-card {
   /* border: 2px solid #6181f1; */
   /* background-color: #000000; */
-  transform: scale(1.05);
-  transition: all 0.3s ease;
 }
 
 .hovered-card .hovered-cover {
