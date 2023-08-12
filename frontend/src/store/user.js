@@ -56,8 +56,8 @@ authApi.interceptors.response.use(
 // 이것은 초깃값이자 저장 폼
 const initialState = {
   isLoggedIn: false,
-  sido: {},
-  gugun: { 0: '시/도를 선택하세요' },
+  sido: [],
+  gugun: [],
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},

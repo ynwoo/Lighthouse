@@ -14,6 +14,8 @@ const initialState = {
     orderKey: 'like',
     orderBy: 'desc',
     tagIds: [],
+    sidoId: '',
+    gugunId: '',
   },
   studies: [],
   totalPage: 0,
@@ -185,6 +187,21 @@ export const studySlice = createSlice({
     setParams: (state, action) => {
       state.params = action.payload
       console.log('setParams', action.payload, state.params)
+    },
+    initParams: (state, action) => {
+      console.log(action)
+      state.params = {
+        status: 1,
+        page: 0,
+        key: 'title',
+        word: '',
+        isOnline: 0,
+        orderKey: 'like',
+        orderBy: 'desc',
+        tagIds: [],
+        sidoId: '',
+        gugunId: '',
+      }
     },
   },
   extraReducers: {
