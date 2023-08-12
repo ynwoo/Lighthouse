@@ -16,6 +16,8 @@ public class StudySearchOption {
     private int isOnline;
     private int status;
     private List<Long> tagIds;
+    private Long sidoId;
+    private Long gugunId;
 
     public int getOffset() {
         return (this.page) * PAGE.LIMIT;
