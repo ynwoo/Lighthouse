@@ -65,11 +65,13 @@ public class StudyServiceImpl implements StudyService {
 
     // 결과값이 null 이면 StudyNotFoundException을 전달한다.
     @Override
-    @Transactional(readOnly = true)
     public StudyResponse findDetailByStudyId(Long studyId) {
         Study study = studyRepository.findDetailById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
-        log.debug("service - studyId : {}", studyId);
-        log.debug("service - findDetailById : {}", study.getId());
+        log.debug("service - studyId : {} = {}", studyId, study.getId());
+
+        // 조회수 증가
+        study.addHit();
+
         StudyResponse studyResponse = new StudyResponse(study);
 
         int status = studyResponse.getStatus();
@@ -99,11 +101,13 @@ public class StudyServiceImpl implements StudyService {
                 .isValid(study.getIsValid())
                 .title(study.getTitle())
                 .description(study.getDescription())
-                .hit(study.getHit())
                 .rule(study.getRule())
                 .isOnline(study.getIsOnline())
                 .originalId(study.getId())
                 .leaderId(userId)
+                .maxMember(study.getMaxMember())
+                .minMember(study.getMinMember())
+                .badge(study.getBadge())
                 .build());
 
         log.debug("service2 - studyId : {}", study.getId());
