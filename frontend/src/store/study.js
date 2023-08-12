@@ -14,13 +14,15 @@ const initialState = {
     orderKey: 'like',
     orderBy: 'desc',
     tagIds: [],
+    sidoId: '',
+    gugunId: '',
   },
   studies: [],
   totalPage: 0,
   studyDetail: {
-    id: 7,
+    id: 0,
     createdAt: '',
-    isValid: 1,
+    isValid: 0,
     title: '',
     description: '',
     hit: 0,
@@ -41,7 +43,7 @@ const initialState = {
     badge: 0,
     studyTags: [],
     leaderProfile: {
-      id: 1,
+      id: 0,
       isValid: 0,
       nickname: '',
       profileImgUrl: '',
@@ -185,6 +187,21 @@ export const studySlice = createSlice({
     setParams: (state, action) => {
       state.params = action.payload
       console.log('setParams', action.payload, state.params)
+    },
+    initParams: (state, action) => {
+      console.log(action)
+      state.params = {
+        status: 1,
+        page: 0,
+        key: 'title',
+        word: '',
+        isOnline: 0,
+        orderKey: 'like',
+        orderBy: 'desc',
+        tagIds: [],
+        sidoId: '',
+        gugunId: '',
+      }
     },
   },
   extraReducers: {
