@@ -18,9 +18,9 @@ const initialState = {
   studies: [],
   totalPage: 0,
   studyDetail: {
-    id: 7,
+    id: 0,
     createdAt: '',
-    isValid: 1,
+    isValid: 0,
     title: '',
     description: '',
     hit: 0,
@@ -41,7 +41,7 @@ const initialState = {
     badge: 0,
     studyTags: [],
     leaderProfile: {
-      id: 1,
+      id: 0,
       isValid: 0,
       nickname: '',
       profileImgUrl: '',

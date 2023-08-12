@@ -15,7 +15,6 @@ export default function TempDetailPage({ isLoggedIn }) {
   const study = useSelector(state => state.study.studyDetail)
 
   useEffect(() => {
-    console.log(studyId)
     dispatch(studyAction.studyDetail(studyId))
   }, [])
   const userId = sessionStorage.getItem('userId')
