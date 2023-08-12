@@ -24,7 +24,7 @@ export default function UserEdit() {
     {
       key: '1',
       label: `정보`,
-      children: <UserInfo />,
+      children: <UserInfo profile={profile} />,
     },
     {
       key: '4',
@@ -37,7 +37,7 @@ export default function UserEdit() {
     },
     {
       key: '5',
-      label: `참여했던 스터디`,
+      label: `완료한 스터디`,
       children: <StudyList studies={profile.terminatedStudies} />,
     },
     {
@@ -95,20 +95,24 @@ export default function UserEdit() {
         <Card bordered={false}>
           <Avatar
             size={{ sm: 100, md: 150, lg: 150, xl: 150, xxl: 150 }}
-            src="/profile.jpg"
+            src={
+              profile.profileImgUrl
+                ? process.env.REACT_APP_S3_DOMAIN_URL + profile.profileImgUrl
+                : '/profile.jpg'
+            }
             shape="circle"
           />
-          <h2 style={{ marginBottom: '0px' }}>닉네임</h2>
-          <p>이름</p>
+          <h2 style={{ marginBottom: '0px' }}>{profile.nickname}</h2>
+          {userId === loginId && <p>유저 이름</p>}
           <Button block style={{ margin: '2vh 0' }}>
             팔로우
           </Button>
           <Row>
             <Col span={12} align="middle">
-              <Link to="/">30 팔로워</Link>
+              <Link to="/">{profile.follower} 팔로워</Link>
             </Col>
             <Col span={12} align="middle">
-              <Link to="/">22 팔로잉</Link>
+              <Link to="/">{profile.following} 팔로잉</Link>
             </Col>
           </Row>
         </Card>
