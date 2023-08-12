@@ -92,6 +92,7 @@ export default function StudyInfo({ study }) {
       study.id,
       ({ data }) => {
         console.log(data)
+        alert('템플릿 복제 완료!!')
         navigate(`/temp/${data.id}`)
       },
       ({ data }) => {
@@ -100,6 +101,8 @@ export default function StudyInfo({ study }) {
       },
     )
   }
+
+  console.log('studyInfo : ', study)
 
   return (
     <div className="big_box">
