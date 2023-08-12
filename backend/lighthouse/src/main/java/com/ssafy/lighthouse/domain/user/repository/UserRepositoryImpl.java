@@ -71,6 +71,13 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
             // status에 따른 스터디 분류
             switch(study.getStatus()) {
+                // 생성중 스터디
+                case STATUS.PREPARING:
+                    if(userId.equals(loginId)) {
+                        participatedStudies.add(simpleStudyDto);
+                    }
+                    break;
+
                 // 모집중 스터디
                 case STATUS.RECRUITING:
                     // 신청한 스터디
