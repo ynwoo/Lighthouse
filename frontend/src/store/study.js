@@ -40,7 +40,12 @@ const initialState = {
     originalId: 0,
     sidoId: 0,
     gugunId: 0,
-    badge: 0,
+    badge: {
+      id: 0,
+      imgUrl: '',
+      name: '',
+      description: '',
+    },
     studyTags: [],
     leaderProfile: {
       id: 0,
@@ -49,7 +54,14 @@ const initialState = {
       profileImgUrl: '',
       description: '',
       tags: [],
-      badges: [],
+      badges: [
+        {
+          id: 0,
+          imgUrl: '',
+          name: '',
+          description: '',
+        },
+      ],
       score: 0,
     },
   },

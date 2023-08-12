@@ -121,16 +121,33 @@ export default function StudyInfo({ study }) {
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
+            {study.badge?.imgUrl && (
+              <img
+                src={process.env.REACT_APP_S3_DOMAIN_URL + study.badge.imgUrl}
+                alt={study.badge?.description}
+                className="badge"
+              />
+            )}
           </h1>
           <h3>
             스터디장 :{' '}
             <Link
-              to={`/user/${study.leaderProfile?.id}`}
+              to={`/user_edit/${study.leaderProfile?.id}`}
               state={{ userId: study.leaderProfile?.id }}
               className="dropdown_toggle"
             >
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
+            {study.leaderProfile?.badges && (
+              <img
+                src={
+                  process.env.REACT_APP_S3_DOMAIN_URL +
+                  study.leaderProfile.badges[0].imgUrl
+                }
+                alt={study.leaderProfile.badges[0].description}
+                className="badge"
+              />
+            )}
           </h3>
           <div
             style={{
