@@ -63,6 +63,8 @@ const initParams = {
   orderKey: 'like',
   orderBy: 'desc',
   tagIds: [],
+  sidoId: '',
+  gugunId: '',
 }
 
 // 내부 탭

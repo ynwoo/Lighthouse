@@ -76,7 +76,7 @@ export default function UserEdit() {
         label: `프로필 수정`,
         children: <UserInfoModify />,
       },
-    ]
+    ].sort((a, b) => a.key - b.key)
   }
 
   return (
