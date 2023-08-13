@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
@@ -9,15 +9,17 @@ import { userAction } from '../../../store/user'
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
+  const location = useLocation()
+  console.log(location.pathname)
   const handleLogout = e => {
     e.preventDefault()
-    dispatch(userAction.logout()).then(navigate('/'))
+    dispatch(userAction.logout()).then(() => navigate('/'))
   }
   return (
     <div
       style={{
         backgroundColor: 'white',
+        height: '100%',
       }}
     >
       <Row>
@@ -34,15 +36,29 @@ export default function Navbar({ isLoggedIn }) {
             </div>
           </Link>
         </Col>
-        <Col xl={18} lg={18} md={18} sm={4} xs={4}>
+        <Col
+          xl={18}
+          lg={18}
+          md={18}
+          sm={4}
+          xs={4}
+          align="center"
+          style={{ height: '50px' }}
+        >
           <Menu
-            theme="Light"
+            backgroundColor="white"
             mode="horizontal"
-            defaultSelectedKeys={['item1']}
+            defaultSelectedKeys={['/']}
             overflowedIndicator={<MenuOutlined />}
-            style={{ display: 'block' }}
+            style={{ display: 'block', height: '100%' }}
+            selectedKeys={[location.pathname]}
           >
-            <Menu.Item key="item1">
+            <Menu.Item key="/" style={{ float: 'left' }}>
+              <Link to="/" state={{ status: 5 }}>
+                스터디 모집
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/temp" style={{ float: 'left' }}>
               <Link to="/temp" state={{ status: 5 }}>
                 템플릿 둘러보기
               </Link>
@@ -56,7 +72,7 @@ export default function Navbar({ isLoggedIn }) {
                 >
                   로그아웃
                 </Menu.Item>
-                <Menu.Item style={{ float: 'right' }}>
+                <Menu.Item key="/user/me" style={{ float: 'right' }}>
                   <Link
                     to="/user/me"
                     state={{ userId: Number(sessionStorage.getItem('userId')) }}
@@ -68,10 +84,10 @@ export default function Navbar({ isLoggedIn }) {
               </>
             ) : (
               <>
-                <Menu.Item key="item5" style={{ float: 'right' }}>
+                <Menu.Item key="/signup" style={{ float: 'right' }}>
                   <Link to="/signup">회원가입</Link>
                 </Menu.Item>
-                <Menu.Item key="item4" style={{ float: 'right' }}>
+                <Menu.Item key="/login" style={{ float: 'right' }}>
                   <Link to="/login">로그인</Link>
                 </Menu.Item>
               </>

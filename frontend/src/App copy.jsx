@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
-import { FloatButton } from 'antd'
+import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
 import Navbar from './components/Utils/Navbar/NavbarNew'
 import WaveComponent from './components/Utils/WaveComponent'
@@ -17,6 +17,8 @@ import SignUp from './components/User/SignUp'
 import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
+
+const { Content, Footer } = Layout
 
 function App() {
   const login = useSelector(state => state.user.isLoggedIn)
@@ -40,53 +42,57 @@ function App() {
       className="App"
       style={{
         backgroundColor: 'white',
-        boxSizing: 'border-box',
       }}
     >
       <Router>
+        <Layout>
+          <div
+            style={{
+              backgroundColor: 'white',
+              position: 'fixed',
+              top: 0,
+              zIndex: 1,
+              width: '100%',
+            }}
+          >
+            <Navbar isLoggedIn={isLoggedIn} />
+          </div>
+          <Content style={{ backgroundColor: 'white' }}>
+            {isLoading ? (
+              <LoadingComponent />
+            ) : (
+              <>
+                <WaveComponent />
+                <Routes>
+                  <Route
+                    exact
+                    path="/"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
+                  />
+                  <Route
+                    path="/temp"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
+                  />
+                  <Route
+                    path="/temp/:id"
+                    element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route path="/user/:id" element={<UserPage />} />
+                  <Route path="/login" element={<LogIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/user_edit/:id" element={<UserEditPage />} />
+                  <Route path="/chat" element={<Chat />} />
+                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
+                </Routes>
+              </>
+            )}
+          </Content>
+          <Footer style={{ textAlign: 'center' }}>
+            Ant Design ©2023 Created by Ant UED
+          </Footer>
+        </Layout>
         <ScrollToTop />
-        <div
-          style={{
-            backgroundColor: 'white',
-            position: 'fixed',
-            top: 0,
-            zIndex: 1,
-            width: '100vw',
-            paddingLeft: '5vw',
-          }}
-        >
-          <Navbar isLoggedIn={isLoggedIn} />
-        </div>
-
-        {isLoading ? (
-          <LoadingComponent />
-        ) : (
-          <>
-            <div style={{ marginBottom: '50px' }} />
-            <WaveComponent />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
-              />
-              <Route
-                path="/temp"
-                element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
-              />
-              <Route
-                path="/temp/:id"
-                element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
-              />
-              <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/user_edit/:id" element={<UserEditPage />} />
-              <Route path="/chat" element={<Chat />} />
-              {/* <Route path="/chat1" element={<ChatTest />} /> */}
-            </Routes>
-          </>
-        )}
+        {/* <Navbar isLoggedIn={isLoggedIn} /> */}
       </Router>
       <button
         type="submit"
