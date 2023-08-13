@@ -1,7 +1,5 @@
 import React from 'react'
-// import { useDispatch } from 'react-redux'
 import { Card, Space } from 'antd'
-// import { userAction } from '../../store/user'
 
 // 템플릿 상세의 질의응답
 
