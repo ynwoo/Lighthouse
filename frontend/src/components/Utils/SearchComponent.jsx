@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Input, Select, Space } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { setParams, studyAction } from '../../store/study'
@@ -27,26 +27,24 @@ function SearchComponent() {
   const params = useSelector(state => state.study.params)
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
-  const [selectedSido, setSido] = useState('도시를 선택해주세요')
-  const [selectedGugun, setGugun] = useState('상세 주소를 선택해 주세요')
 
   useEffect(() => {
     dispatch(userAction.sido())
   }, [dispatch])
 
-  const onSearch = val => {
-    const newParams = { ...params, word: val }
+  const onSearch = word => {
+    const newParams = { ...params, word }
     dispatch(setParams(newParams))
     dispatch(studyAction.studyList(newParams))
   }
 
   // 지역
-  const sidoChange = e => {
-    setSido(e)
-    dispatch(userAction.gugun(e))
+  const sidoChange = sidoId => {
+    dispatch(setParams({ ...params, sidoId }))
+    dispatch(userAction.gugun(sidoId))
   }
-  const gugunChange = e => {
-    setGugun(e)
+  const gugunChange = gugunId => {
+    dispatch(setParams({ ...params, gugunId }))
   }
 
   const onChange = e => {
@@ -97,6 +95,8 @@ function SearchComponent() {
               onChange={onChange}
             >
               <option value="title">제목</option>
+              <option value="description">설명</option>
+              <option value="leader">리더닉네임</option>
             </select>
 
             {/* 정렬 key */}
@@ -106,7 +106,8 @@ function SearchComponent() {
               value={params.orderKey}
               onChange={onChange}
             >
-              <option value="">최신순</option>
+              <option value="createdAt">생성순</option>
+              <option value="hit">조회순</option>
               <option value="like">좋아요순</option>
               <option value="bookmark">북마크순</option>
             </select>
@@ -131,7 +132,13 @@ function SearchComponent() {
               {params.isOnline ? 'Online' : 'Offline'}
             </button>
             {!params.isOnline && (
-              <Select onChange={sidoChange} defaultValue={selectedSido}>
+              <Select
+                onChange={sidoChange}
+                defaultValue="도시를 선택해주세요"
+                value={
+                  sido?.[Object.keys(sido).find(key => key === params.sidoId)]
+                }
+              >
                 {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
                 {Object.keys(sido).map(key => {
                   return (
@@ -143,7 +150,15 @@ function SearchComponent() {
               </Select>
             )}
             {!params.isOnline && (
-              <Select onChange={gugunChange} defaultValue={selectedGugun}>
+              <Select
+                onChange={gugunChange}
+                defaultValue="상세주소를 선택해주세요"
+                value={
+                  gugun?.[
+                    Object.keys(gugun).find(key => key === params.gugunId)
+                  ]
+                }
+              >
                 {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
                 {Object.keys(gugun).map(key => {
                   return (

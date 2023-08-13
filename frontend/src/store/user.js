@@ -56,31 +56,18 @@ authApi.interceptors.response.use(
 // 이것은 초깃값이자 저장 폼
 const initialState = {
   isLoggedIn: false,
-  sido: {},
-  gugun: { 0: '시/도를 선택하세요' },
+  sido: [],
+  gugun: [],
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
   profile: {
-    id: 1,
-    isValid: 1,
-    nickname: '싸피vv싸피',
-    profileImgUrl: null,
-    description: '안녕하세요 김싸피 입니다.',
-    tags: [
-      {
-        id: 3,
-        keyword: '자격증',
-      },
-      {
-        id: 4,
-        keyword: '알고리즘',
-      },
-      {
-        id: 7,
-        keyword: 'CS',
-      },
-    ],
+    id: 0,
+    isValid: 0,
+    nickname: '',
+    profileImgUrl: '',
+    description: '',
+    tags: [],
     participatedStudies: [],
     recruitingStudies: [],
     progressStudies: [],
@@ -210,7 +197,7 @@ export const userAction = {
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/users/profile/${payload}`)
-      console.log(response)
+      console.log('getProfile : ', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)

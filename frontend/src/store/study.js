@@ -14,13 +14,15 @@ const initialState = {
     orderKey: 'like',
     orderBy: 'desc',
     tagIds: [],
+    sidoId: '',
+    gugunId: '',
   },
   studies: [],
   totalPage: 0,
   studyDetail: {
-    id: 7,
+    id: 0,
     createdAt: '',
-    isValid: 1,
+    isValid: 0,
     title: '',
     description: '',
     hit: 0,
@@ -38,16 +40,28 @@ const initialState = {
     originalId: 0,
     sidoId: 0,
     gugunId: 0,
-    badge: 0,
+    badge: {
+      id: 0,
+      imgUrl: '',
+      name: '',
+      description: '',
+    },
     studyTags: [],
     leaderProfile: {
-      id: 1,
+      id: 0,
       isValid: 0,
       nickname: '',
       profileImgUrl: '',
       description: '',
       tags: [],
-      badges: [],
+      badges: [
+        {
+          id: 0,
+          imgUrl: '',
+          name: '',
+          description: '',
+        },
+      ],
       score: 0,
     },
   },
@@ -185,6 +199,21 @@ export const studySlice = createSlice({
     setParams: (state, action) => {
       state.params = action.payload
       console.log('setParams', action.payload, state.params)
+    },
+    initParams: (state, action) => {
+      console.log(action)
+      state.params = {
+        status: 1,
+        page: 0,
+        key: 'title',
+        word: '',
+        isOnline: 0,
+        orderKey: 'like',
+        orderBy: 'desc',
+        tagIds: [],
+        sidoId: '',
+        gugunId: '',
+      }
     },
   },
   extraReducers: {
