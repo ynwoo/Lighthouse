@@ -43,12 +43,22 @@ function UserInfoModify() {
     dispatch(userAction.myPage())
   }, [])
 
-  console.log(myInfo)
+  console.log(myInfo.nickname)
+
+  // myInfo에 있는 값을 initialValues로 설정
+  const initialValues = {
+    name: myInfo.name,
+    nickname: myInfo.nickname,
+    age: myInfo.age,
+    phoneNumber: myInfo.phoneNumber,
+    sidoId: myInfo.sidoId,
+    gugunId: myInfo.gugunId,
+    description: myInfo.description,
+  }
 
   // sido와 gugun을 store에서 불러 와주는 선언문
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
-  const emailIsValid = useSelector(state => state.user.emailIsValid)
   const nicknameIsValid = useSelector(state => state.user.nicknameIsValid)
 
   // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
@@ -57,7 +67,6 @@ function UserInfoModify() {
   }
 
   const [nicknameInput, setNickname] = useState('')
-
   return (
     <Card title="회원 정보 수정">
       <Form
@@ -65,10 +74,12 @@ function UserInfoModify() {
         style={{ minWidth: '100px', maxWidth: '400px' }}
         name="register"
         layout="vertical"
+        initialValues={initialValues} // initialValues 설정
         onFinish={values => {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
-          if (emailIsValid && nicknameIsValid) {
+          console.log(values)
+          if (nicknameIsValid) {
             delete values.confirm
             values.userTagList = []
             // 비어있는 요소를 undefined => null로 바꾸어주는 작업
@@ -78,10 +89,11 @@ function UserInfoModify() {
               }
             })
             // redux => server
-            dispatch(userAction.signUp(values))
+            dispatch(userAction.modifyMyPage(values))
             navigate('/')
+          } else {
+            alert('닉네임 중복확인을 해주세요.')
           }
-          alert('이메일, 닉네임 중복확인을 해주세요.')
         }}
       >
         <Form.Item
@@ -163,6 +175,7 @@ function UserInfoModify() {
                   if (nicknameInput) {
                     dispatch(userAction.checkNickname(nicknameInput))
                   }
+                  console.log(nicknameIsValid)
                 }}
               >
                 중복확인

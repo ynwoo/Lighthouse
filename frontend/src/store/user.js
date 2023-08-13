@@ -176,6 +176,19 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  // 내 정보 수정하기
+  modifyMyPage: createAsyncThunk(
+    'user/modifyMypage',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.put(`/users/mypage`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
   // 프로필 불러오기
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
@@ -282,6 +295,10 @@ export const userSlice = createSlice({
     [userAction.myPage.fulfilled]: (state, action) => {
       console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
+    },
+    // 마이페이지 수정 시 확인용
+    [userAction.modifyMyPage.fulfilled]: (state, action) => {
+      console.log(action.payload)
     },
     // 프로필
     [userAction.profile.fulfilled]: (state, action) => {
