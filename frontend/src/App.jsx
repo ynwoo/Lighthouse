@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
-import { FloatButton } from 'antd'
+import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
 import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
@@ -17,6 +17,8 @@ import SignUp from './components/User/SignUp'
 import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
+
+const { Header, Content, Footer } = Layout
 
 function App() {
   const login = useSelector(state => state.user.isLoggedIn)
@@ -43,8 +45,25 @@ function App() {
       }}
     >
       <Router>
+        <Layout>
+          <Header
+            style={{
+              backgroundColor: 'white',
+              position: 'fixed',
+              top: 0,
+              zIndex: 1,
+              width: '100%',
+            }}
+          >
+            <Navbar isLoggedIn={isLoggedIn} />
+          </Header>
+          <Content>test</Content>
+          <Footer style={{ textAlign: 'center' }}>
+            Ant Design ©2023 Created by Ant UED
+          </Footer>
+        </Layout>
         <ScrollToTop />
-        <Navbar isLoggedIn={isLoggedIn} />
+        {/* <Navbar isLoggedIn={isLoggedIn} /> */}
 
         {isLoading ? (
           <LoadingComponent />
