@@ -41,6 +41,9 @@ public class Study extends BaseEntity {
         this.status = STATUS.SHARE; // share중인 상태
     }
     
+    // hit 관리
+    public void addHit() {this.hit++;}
+    
     // like 관리
     public void addLike(){this.likeCnt++;}
     public void removeLike(){this.likeCnt--;}
