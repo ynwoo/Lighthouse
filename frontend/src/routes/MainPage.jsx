@@ -9,7 +9,7 @@ import { CreateButton } from '../components/Study/utils/button'
 import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
-const { Footer, Content } = Layout
+const { Content } = Layout
 
 // 컨텐츠
 const contentStyle = {
@@ -19,13 +19,6 @@ const contentStyle = {
   color: '#fff',
   backgroundColor: 'transparent',
   margin: '10px',
-}
-
-// 푸터
-const footerStyle = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#7dbcea',
 }
 
 function getCookie(name) {
@@ -157,10 +150,6 @@ export default function MainPage({ isLoggedIn, status }) {
 
         {/* </div> */}
       </div>
-      {/* 푸터 */}
-      <Footer style={footerStyle}>
-        &copy; Lighthouse {new Date().getFullYear()}
-      </Footer>
     </div>
   )
 }
