@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
 import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
-import Navbar from './components/Utils/Navbar/Navbar'
+import Navbar from './components/Utils/Navbar/NavbarNew'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPage'
 import StudyDetailPage from './routes/StudyDetailPage'
@@ -57,42 +57,42 @@ function App() {
           >
             <Navbar isLoggedIn={isLoggedIn} />
           </Header>
-          <Content>test</Content>
+          <Content style={{ backgroundColor: 'white' }}>
+            {isLoading ? (
+              <LoadingComponent />
+            ) : (
+              <>
+                <WaveComponent />
+                <Routes>
+                  <Route
+                    exact
+                    path="/"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
+                  />
+                  <Route
+                    path="/temp"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
+                  />
+                  <Route
+                    path="/temp/:id"
+                    element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route path="/user/:id" element={<UserPage />} />
+                  <Route path="/login" element={<LogIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/user_edit/:id" element={<UserEditPage />} />
+                  <Route path="/chat" element={<Chat />} />
+                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
+                </Routes>
+              </>
+            )}
+          </Content>
           <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2023 Created by Ant UED
           </Footer>
         </Layout>
         <ScrollToTop />
         {/* <Navbar isLoggedIn={isLoggedIn} /> */}
-
-        {isLoading ? (
-          <LoadingComponent />
-        ) : (
-          <>
-            <WaveComponent />
-            <Routes>
-              <Route
-                exact
-                path="/"
-                element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
-              />
-              <Route
-                path="/temp"
-                element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
-              />
-              <Route
-                path="/temp/:id"
-                element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
-              />
-              <Route path="/user/:id" element={<UserPage />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/user_edit/:id" element={<UserEditPage />} />
-              <Route path="/chat" element={<Chat />} />
-              {/* <Route path="/chat1" element={<ChatTest />} /> */}
-            </Routes>
-          </>
-        )}
       </Router>
       <button
         type="submit"

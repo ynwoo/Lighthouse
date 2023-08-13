@@ -42,16 +42,39 @@ export default function Navbar({ isLoggedIn }) {
             overflowedIndicator={<MenuOutlined />}
             style={{ display: 'block' }}
           >
-            <Menu.Item key="item1">item1</Menu.Item>
-            <Menu.Item key="item2">item2</Menu.Item>
+            <Menu.Item key="item1">
+              <Link to="/temp" state={{ status: 5 }}>
+                템플릿 둘러보기
+              </Link>
+            </Menu.Item>
             {isLoggedIn ? (
-              <Menu.Item key="item3" onClick={handleLogout}>
-                로그아웃
-              </Menu.Item>
+              <>
+                <Menu.Item
+                  key="item3"
+                  onClick={handleLogout}
+                  style={{ float: 'right' }}
+                >
+                  로그아웃
+                </Menu.Item>
+                <Menu.Item style={{ float: 'right' }}>
+                  <Link
+                    to="/user/me"
+                    state={{ userId: Number(sessionStorage.getItem('userId')) }}
+                    className="dropdown_toggle"
+                  >
+                    마이페이지
+                  </Link>
+                </Menu.Item>
+              </>
             ) : (
-              <Menu.Item key="item4" style={{ float: 'right' }}>
-                로그인
-              </Menu.Item>
+              <>
+                <Menu.Item key="item5" style={{ float: 'right' }}>
+                  <Link to="/signup">회원가입</Link>
+                </Menu.Item>
+                <Menu.Item key="item4" style={{ float: 'right' }}>
+                  <Link to="/login">로그인</Link>
+                </Menu.Item>
+              </>
             )}
           </Menu>
         </Col>
