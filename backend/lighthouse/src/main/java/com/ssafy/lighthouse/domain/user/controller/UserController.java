@@ -159,7 +159,7 @@ public class UserController {
 	@PostMapping("/refresh")
 	public ResponseEntity<Map<String, Object>> refreshToken(HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status = HttpStatus.NOT_FOUND;
 		String token = request.getHeader("refresh-token");
 		if (jwtService.checkToken(token)) {
 			// payload에서 id값 추출
