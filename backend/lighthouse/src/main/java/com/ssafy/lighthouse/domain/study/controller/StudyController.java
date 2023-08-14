@@ -71,7 +71,7 @@ public class StudyController {
 
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> updateStudy(@RequestPart HashMap<String, Object> studyRequest) {
+    public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
     log.debug("study: {}", studyRequest);
 //        log.debug("studyId : {}", studyRequest.getId());
 //        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
