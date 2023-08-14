@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
@@ -14,13 +14,16 @@ const { Content, Sider } = Layout
 
 export default function UserEdit() {
   const dispatch = useDispatch()
-  const userId = Number(window.location.pathname.split('/user_edit/')[1])
+  const location = useLocation()
+  const userId = Number(location.state.userId)
+  // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
+    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
-  }, [])
-  const profile = useSelector(state => state.user.myProfile)
+  }, [userId])
+  const profile = useSelector(state => state.user.profile)
   const myInfo = useSelector(state => state.user.myInfo)
   const myProfile = { ...myInfo, ...profile }
 
