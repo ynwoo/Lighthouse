@@ -23,7 +23,7 @@ function StudyCard({ study }) {
         <Card
           onMouseOver={handleMouseEnter}
           // className={isHovered ? 'hovered-card' : ''}
-          // bordered={false}
+          bordered={false}
           style={{
             width: { cardWidth },
             height: { cardHeight },
@@ -63,10 +63,18 @@ function StudyCard({ study }) {
                 {study.leaderProfile.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
-              <p>
-                <HeartOutlined /> {study.likeCnt} <BookOutlined />{' '}
-                {study.bookmarkCnt} <EyeOutlined /> {study.hit}
-              </p>
+              <Row>
+                <Col span={5}>
+                  <HeartOutlined /> {study.likeCnt}
+                </Col>
+                <Col span={5}>
+                  <BookOutlined /> {study.bookmarkCnt}
+                </Col>
+                <Col>
+                  <EyeOutlined /> {study.hit}
+                </Col>
+              </Row>
+              <p />
             </div>
           </div>
         </Card>

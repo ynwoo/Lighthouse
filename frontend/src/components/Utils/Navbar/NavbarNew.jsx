@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import logo from '../../../static/main_logo.PNG'
+import logo from '../../../static/main_logo.png'
 import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
