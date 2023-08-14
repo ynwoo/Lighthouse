@@ -9,7 +9,7 @@ import {
   startDateToString,
   image,
   StringToDate,
-} from '../../utils'
+} from '../../utils/index'
 import { createStudy, updateStudy } from '../../api/study'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
@@ -36,7 +36,7 @@ export default function StudyInfo({ study }) {
     dispatch(studyAction.getLike())
   }, [])
 
-  const myInfo = useSelector(state => state.user.myInfo)
+  const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
   console.log(myInfo)
   console.log(likeList)

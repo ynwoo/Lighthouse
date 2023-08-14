@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
@@ -8,11 +8,12 @@ import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const location = useLocation()
   console.log(location.pathname)
   const handleLogout = () => {
-    dispatch(userAction.logout()).then(() => navigate('/'))
+    dispatch(userAction.logout()).then(() => {
+      window.location.href = '/'
+    })
   }
   return (
     <div
@@ -77,7 +78,6 @@ export default function Navbar({ isLoggedIn }) {
                       sessionStorage.getItem('userId'),
                     )}`}
                     state={{ userId: Number(sessionStorage.getItem('userId')) }}
-                    className="dropdown_toggle"
                   >
                     마이페이지
                   </Link>
