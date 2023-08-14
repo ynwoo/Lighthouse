@@ -11,8 +11,7 @@ export default function Navbar({ isLoggedIn }) {
   const navigate = useNavigate()
   const location = useLocation()
   console.log(location.pathname)
-  const handleLogout = e => {
-    e.preventDefault()
+  const handleLogout = () => {
     dispatch(userAction.logout()).then(() => navigate('/'))
   }
   return (
