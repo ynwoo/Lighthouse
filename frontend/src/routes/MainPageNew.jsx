@@ -9,7 +9,7 @@ import { setParams, studyAction } from '../store/study'
 // import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
-// const { Content } = Layout
+// const { Sider } = Layout
 
 // 컨텐츠
 // const contentStyle = {
