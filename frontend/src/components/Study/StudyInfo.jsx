@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
-import { endDateToString, startDateToString, image } from '../../utils'
+import {
+  endDateToString,
+  startDateToString,
+  image,
+  StringToDate,
+} from '../../utils'
 import { createStudy, updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
@@ -73,9 +77,9 @@ export default function StudyInfo({ study }) {
     }
   }
 
-  const callStudyUpdateApi = studyRequest => {
+  const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
-    updateStudy(
+    await updateStudy(
       studyRequest,
       ({ response }) => {
         console.log(response)
