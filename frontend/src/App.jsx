@@ -122,7 +122,6 @@ function App() {
         onClick={handleChatClick}
       >
         <FloatButton icon={<CommentOutlined />} />
-        {/* <img src={chat} alt="채팅" style={{ width: '100px' }} /> */}
       </button>
       {showChat && (
         // 채팅창이 보일 때만 아래 코드가 렌더링됨

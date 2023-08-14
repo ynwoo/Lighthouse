@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/study")
@@ -70,10 +72,11 @@ public class StudyController {
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
-
-        log.debug("studyId : {}", studyRequest.getId());
-        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
-        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
+    log.debug("study: {}", studyRequest);
+//        log.debug("studyId : {}", studyRequest.getId());
+//        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
+//        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // 스터디 삭제
