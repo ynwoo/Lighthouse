@@ -64,6 +64,7 @@ export default function StudyInfo({ study }) {
 
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
+    // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
     formData.append('title', `${study.title}수정완료!!`)
@@ -75,6 +76,7 @@ export default function StudyInfo({ study }) {
     formData.append('currentMember', study.currentMember)
     formData.append('isOnline', study.isOnline)
     formData.append('likeCnt', study.likeCnt)
+    formData.append('bookmarkCnt', study.bookmarkCnt)
     formData.append('originalId', study.originalId)
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
@@ -150,18 +152,21 @@ export default function StudyInfo({ study }) {
 
       // studyNotices
       else if (sKey === 'studyNotices') {
+        // formData.append('studyNotices', null)
         console.log(sKey)
       }
 
       // studyEvals
       else if (sKey === 'studyEvals') {
+        // formData.append('studyEvals', null)
         console.log(sKey)
       }
 
       // badge
       else if (sKey === 'badge' && study.badge) {
         Object.keys(study.badge).forEach(key => {
-          formData.append(`badge.${key}`, study.badge[key])
+          if (key !== 'isValid')
+            formData.append(`badge.${key}`, study.badge[key])
         })
       }
     })
@@ -169,9 +174,9 @@ export default function StudyInfo({ study }) {
     return formData
     // return {
     //   ...study,
-    //   sessions: [...study.sessions],
-    //   studyTags: [...study.studyTags],
-    //   studyNotices: [...study.studyNotices],
+    //   // sessions: [...study.sessions],
+    //   // studyTags: [...study.studyTags],
+    //   // studyNotices: [...study.studyNotices],
     //   startedAt: startDateToString(startDate) ?? study.startedAt,
     //   endedAt: endDateToString(endDate) ?? study.endedAt,
     //   recruitFinishedAt:
@@ -180,7 +185,7 @@ export default function StudyInfo({ study }) {
     //   status,
     //   leaderProfile: null,
     //   memberProfiles: null,
-    //   // studyTags: null,
+    //   studyTags: null,
     // }
   }
 
