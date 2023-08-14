@@ -10,7 +10,6 @@ import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
 
 const { Content, Sider } = Layout
-// 템플릿 상세의 질의응답
 
 export default function UserEdit() {
   const dispatch = useDispatch()
@@ -105,8 +104,10 @@ export default function UserEdit() {
             src={profileImage(profile.profileImgUrl)}
             shape="circle"
           />
-          <h2 style={{ marginBottom: '0px' }}>{profile.nickname}</h2>
-          {userId === loginId && <p>유저 이름</p>}
+          <h3 style={{ marginBottom: '0px' }}>
+            {profile.nickname}님의 페이지 입니다
+          </h3>
+          {/* {userId === loginId && <p>유저 이름</p>} */}
           <Button block style={{ margin: '2vh 0' }}>
             팔로우
           </Button>
@@ -119,15 +120,6 @@ export default function UserEdit() {
             </Col>
           </Row>
         </Card>
-        {/* <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          style={{
-            height: '100%',
-          }}
-          items={menuItems}
-          // onClick={handleMenuClick}
-        /> */}
       </Sider>
       <Content
         style={{
