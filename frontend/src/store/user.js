@@ -126,6 +126,7 @@ export const userAction = {
             },
           },
         )
+        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -150,7 +151,6 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      // window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -186,6 +186,21 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  // 프로필 업데이트
+  profileUpdate: createAsyncThunk(
+    'user/profileUpdate',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.put(`${API_URL}/users/update`, payload, {
+          headers: { 'content-type': 'multipart/form-data' },
+        })
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
   // 나의 팔로우 목록
   getFollowing: createAsyncThunk(
     'user/getFollow',
