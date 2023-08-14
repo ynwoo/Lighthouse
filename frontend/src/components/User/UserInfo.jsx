@@ -1,11 +1,33 @@
 import React from 'react'
 import { Card, Space } from 'antd'
+import Piechart from '../Study/utils/chart/PieChart'
+import { image } from '../../utils/image'
+import Barchart from '../Study/utils/chart/BarChart'
 
 // 템플릿 상세의 질의응답
 
 export default function UserInfo({ profile }) {
+  const recruit = profile.recruitingStudies.length
+  const progress = profile.progressStudies.length
+  const terminated = profile.terminatedStudies.length
+  const chartData = [
+    { id: '모집중', value: recruit },
+    { id: '진행중', value: progress },
+    { id: '완료', value: terminated },
+  ]
+
+  const barData = [
+    { study: '모집중', recruit },
+    { study: '진행중', progress },
+    { study: '완료', terminated },
+  ]
   return (
-    <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+    <Space
+      className="user-info"
+      direction="vertical"
+      size="middle"
+      style={{ display: 'flex' }}
+    >
       <Card title="자기소개" bordered={false}>
         <p>{profile.description}</p>
       </Card>
@@ -31,6 +53,19 @@ export default function UserInfo({ profile }) {
               .filter(study => study.leaderProfile.id === profile.id).length
           }
         </p>
+      </Card>
+      <Card title="뱃지" bordered={false}>
+        {profile.badges?.map(badge => (
+          <img
+            src={image(badge.imgUrl)}
+            alt={badge.description}
+            className="badge"
+          />
+        ))}
+      </Card>
+      <Card title="차트" bordered={false} style={{ display: 'flex' }}>
+        <Barchart className="chart" data={barData} />
+        <Piechart className="chart" data={chartData} />
       </Card>
     </Space>
   )
