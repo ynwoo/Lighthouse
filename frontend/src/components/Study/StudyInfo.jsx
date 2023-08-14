@@ -4,10 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
-import {
-  endDateToString,
-  startDateToString,
-} from '../../utils/FormateDateToString'
+import { endDateToString, startDateToString, image } from '../../utils'
 import { createStudy, updateStudy } from '../../api/study'
 import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
@@ -16,7 +13,6 @@ import view from '../../static/mark/view.png'
 import { CreateButton } from './utils/button'
 import { studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
-import { image } from '../../utils/image'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
