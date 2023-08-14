@@ -7,6 +7,7 @@ import { userAction } from '../../store/user'
 import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
+import { profileImage } from '../../utils/image'
 
 const { Content, Sider } = Layout
 // 템플릿 상세의 질의응답
@@ -95,11 +96,7 @@ export default function UserEdit() {
         <Card bordered={false}>
           <Avatar
             size={{ sm: 100, md: 150, lg: 150, xl: 150, xxl: 150 }}
-            src={
-              profile.profileImgUrl
-                ? process.env.REACT_APP_S3_DOMAIN_URL + profile.profileImgUrl
-                : '/profile.jpg'
-            }
+            src={profileImage(profile.profileImgUrl)}
             shape="circle"
           />
           <h2 style={{ marginBottom: '0px' }}>{profile.nickname}</h2>
