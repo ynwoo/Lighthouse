@@ -17,7 +17,6 @@ export default function Navbar({ isLoggedIn }) {
       style={{
         display: 'flex',
         justifyContent: 'space-between',
-        backgroundColor: 'white',
       }}
     >
       <Link

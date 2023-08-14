@@ -2,14 +2,14 @@ import React, { useEffect } from 'react'
 import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import SideComponent from '../components/Utils/SideComponent'
-import StudyList from '../components/Study/StudyList'
+import MainComponent from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
 import { CreateButton } from '../components/Study/utils/button'
 import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
-const { Content } = Layout
+const { Footer, Content } = Layout
 
 // 컨텐츠
 const contentStyle = {
@@ -19,6 +19,13 @@ const contentStyle = {
   color: '#fff',
   backgroundColor: 'transparent',
   margin: '10px',
+}
+
+// 푸터
+const footerStyle = {
+  textAlign: 'center',
+  color: '#fff',
+  backgroundColor: '#7dbcea',
 }
 
 function getCookie(name) {
@@ -148,12 +155,16 @@ export default function MainPage({ isLoggedIn, status }) {
               {/* 검색창 */}
               <SearchComponent />
             </div>
-            <StudyList studies={studies} isLoggedIn={isLoggedIn} />
+            <MainComponent studies={studies} isLoggedIn={isLoggedIn} />
           </Content>
         </div>
 
         {/* </div> */}
       </div>
+      {/* 푸터 */}
+      <Footer style={footerStyle}>
+        &copy; Lighthouse {new Date().getFullYear()}
+      </Footer>
     </div>
   )
 }
