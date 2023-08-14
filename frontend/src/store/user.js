@@ -62,7 +62,24 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
-  // myProfile: {},
+  myProfile: {
+    id: 0,
+    isValid: 0,
+    nickname: '',
+    profileImgUrl: '',
+    description: '',
+    tags: [],
+    participatedStudies: [],
+    recruitingStudies: [],
+    progressStudies: [],
+    terminatedStudies: [],
+    bookmarkStudies: [],
+    badges: [],
+    score: 0,
+    following: 0,
+    follower: 0,
+    simpleUserResponse: {},
+  },
   profile: {
     id: 0,
     isValid: 0,
@@ -300,10 +317,7 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
-<<<<<<< HEAD
-=======
       console.log('action.payload', action.payload)
->>>>>>> ed291c5e409cf8c89a320be1ebc2b1bb7b1c1b36
       state.isLoggedIn = true
       state.userInfo = action.payload.userInfo
       console.log(action.payload.userInfo)
