@@ -139,17 +139,14 @@ export default function StudyInfo({ study }) {
         )
       } else if (sKey === 'startedAt') {
         formData.append(
-          'createdAt',
+          'startedAt',
           startDateToString(startDate) ?? study.startedAt,
         )
       } else if (sKey === 'endedAt') {
-        formData.append(
-          'createdAt',
-          endDateToString(endDate) ?? study.createdAt,
-        )
+        formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
       } else if (sKey === 'recruitFinishedAt') {
         formData.append(
-          'createdAt',
+          'recruitFinishedAt',
           endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
         )
       } else if (sKey === 'status') {
