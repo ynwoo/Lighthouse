@@ -37,7 +37,7 @@ public class User extends BaseEntity {
 	public void changeProfileImgUrl(String profileImgUrl) {this.profileImgUrl = profileImgUrl;}
 
 	public void updateUserInfo(String password, String name, String nickname,
-		String profileImgUrl, int age, Long sidoId, Long gugunId,
+		String profileImgUrl, Integer age, Long sidoId, Long gugunId,
 		String phoneNumber, String description) {
 		this.password = password;
 		this.name = name;
