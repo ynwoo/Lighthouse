@@ -61,6 +61,7 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
+  myProfile: {},
   profile: {
     id: 0,
     isValid: 0,
@@ -319,7 +320,7 @@ export const userSlice = createSlice({
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload.id)
       if (action.payload.id === Number(sessionStorage.getItem('userId'))) {
-        state.myInfo = action.payload
+        state.myProfile = action.payload
         state.profile = action.payload
       } else {
         state.profile = action.payload
