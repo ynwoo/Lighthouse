@@ -14,10 +14,57 @@ const initialState = {
     orderKey: 'like',
     orderBy: 'desc',
     tagIds: [],
+    sidoId: '',
+    gugunId: '',
   },
   studies: [],
   totalPage: 0,
-  studyDetail: [],
+  studyDetail: {
+    id: 0,
+    createdAt: '',
+    isValid: 0,
+    title: '',
+    description: '',
+    hit: 0,
+    rule: '',
+    startedAt: '',
+    endedAt: '',
+    recruitFinishedAt: '',
+    maxMember: 0,
+    minMember: 0,
+    currentMember: 0,
+    isOnline: 0,
+    likeCnt: 0,
+    bookmarkCnt: 0,
+    status: 0,
+    originalId: 0,
+    sidoId: 0,
+    gugunId: 0,
+    badge: {
+      id: 0,
+      imgUrl: '',
+      name: '',
+      description: '',
+    },
+    studyTags: [],
+    leaderProfile: {
+      id: 0,
+      isValid: 0,
+      nickname: '',
+      profileImgUrl: '',
+      description: '',
+      tags: [],
+      badges: [
+        {
+          id: 0,
+          imgUrl: '',
+          name: '',
+          description: '',
+        },
+      ],
+      score: 0,
+    },
+  },
   tags: [],
   likeList: [],
 }
@@ -152,6 +199,21 @@ export const studySlice = createSlice({
     setParams: (state, action) => {
       state.params = action.payload
       console.log('setParams', action.payload, state.params)
+    },
+    initParams: (state, action) => {
+      console.log(action)
+      state.params = {
+        status: 1,
+        page: 0,
+        key: 'title',
+        word: '',
+        isOnline: 0,
+        orderKey: 'like',
+        orderBy: 'desc',
+        tagIds: [],
+        sidoId: '',
+        gugunId: '',
+      }
     },
   },
   extraReducers: {
