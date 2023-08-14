@@ -1,52 +1,109 @@
-import React, { useState } from 'react' // useState를 추가로 import
-import ChatRoom from './ChatRoom'
-import chat from '../../../static/chat.png'
+import React, { useEffect, useState } from 'react'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import InfiniteScroll from 'react-infinite-scroll-component'
+// import { Avatar, Divider, List, Skeleton } from 'antd'
+import { Avatar, List } from 'antd'
 
-export default function ChatList() {
-  const [showChat, setShowChat] = useState(false)
+import { useSelector } from 'react-redux'
 
-  const handleChatClick = () => {
-    setShowChat(!showChat)
+function App() {
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState([])
+
+  const profile = useSelector(state => state.user.profile)
+  const studiesToShow =
+    profile.participatedStudies && profile.progressStudies
+      ? [...profile.participatedStudies, ...profile.progressStudies].map(
+          study => {
+            return {
+              id: study.id,
+              title: study.title,
+              description: study.description,
+              avatar: study.badge ? study.badge.imgUrl : '',
+            }
+          },
+        )
+      : []
+
+  console.log('to show: ', studiesToShow)
+
+  console.log('profile in chat list: ', profile)
+
+  function clickHandler(e) {
+    console.log('click', e)
   }
 
+  const loadMoreData = () => {
+    if (loading) {
+      return
+    }
+    setLoading(true)
+    fetch(
+      'https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo',
+    )
+      .then(res => res.json())
+      .then(body => {
+        setData([...data, ...body.results])
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    loadMoreData()
+  }, [])
+
   return (
-    <div>
-      <button
-        type="submit"
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          cursor: 'pointer',
-          border: 'none',
-          background: 'none',
-          padding: 0,
-          margin: 0,
-          zIndex: '1',
-        }}
-        onClick={handleChatClick}
+    <div
+      id="scrollableDiv"
+      style={{
+        height: 500,
+        overflow: 'auto',
+        padding: '0 16px',
+        // border: '1px solid rgba(140, 140, 140, 0.35)',
+      }}
+    >
+      <InfiniteScroll
+        dataLength={data.length}
+        // next={loadMoreData}
+        // hasMore={data.length < 50}
+        // loader={
+        //   <Skeleton
+        //     avatar
+        //     paragraph={{
+        //       rows: 1,
+        //     }}
+        //     active
+        //   />
+        // }
+        // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+        scrollableTarget="scrollableDiv"
       >
-        <img src={chat} alt="채팅" style={{ width: '100px' }} />
-      </button>
-      {showChat && (
-        // 채팅창이 보일 때만 아래 코드가 렌더링됨
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            height: '200px',
-            bottom: '90px',
-            right: '70px',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            padding: '10px',
-            borderRadius: '5px',
-            boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          채팅창
-        </div>
-      )}
+        <List
+          dataSource={studiesToShow}
+          renderItem={item => (
+            <List.Item key={item.id}>
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    src={`${process.env.REACT_APP_S3_DOMAIN_URL}${item.avatar}`}
+                  />
+                }
+                title={
+                  <button type="button" onClick={clickHandler}>
+                    {item.title}
+                  </button>
+                }
+                description={item.description}
+              />
+              <div>GO</div>
+            </List.Item>
+          )}
+        />
+      </InfiniteScroll>
     </div>
   )
 }
+export default App

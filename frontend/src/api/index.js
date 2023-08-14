@@ -64,6 +64,7 @@ function authInterceptor(instance) {
   //     return Promise.reject(err)
   //   },
   // )
+
   return instance
 }
 
@@ -75,4 +76,4 @@ function authApiInstance() {
   return authInterceptor(apiInstance())
 }
 
-export { apiInstance, authApiInstance, authFormInstance }
+export { apiInstance, authApiInstance, authFormInstance, formInstance }

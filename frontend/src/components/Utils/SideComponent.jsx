@@ -1,14 +1,23 @@
 import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
-import profilePic from '../../logo.svg'
+import { useDispatch, useSelector } from 'react-redux'
 import logo from '../../static/LOGO1.png'
+import { studyAction } from '../../store/study'
+import { profileImage } from '../../utils/image'
 
-export default function SideComponent({ isLoggedIn }) {
+export default function SideComponent({ isLoggedIn, study }) {
+  const dispatch = useDispatch()
+  // 스터디 신청 모달
   const [isModalVisible, setIsModalVisible] = useState(false)
+  // 스터디 목록 모달
+  const [isConfirmationModalVisible, setIsConfirmationModalVisible] =
+    useState(false)
+
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
-
+  const nickname = sessionStorage.getItem('nickname')
+  const myInfo = useSelector(state => state.user.myInfo)
   const showModal = () => {
     setIsModalVisible(true)
     // Body 스크롤 방지
@@ -17,8 +26,14 @@ export default function SideComponent({ isLoggedIn }) {
 
   const handleOk = () => {
     console.log('Message:', message)
-    setIsModalVisible(false)
-    setIsConfirmationVisible(true)
+    console.log(study.id)
+    dispatch(studyAction.joinStudy(study.id)).then(res => {
+      console.log(res)
+      if (res.type !== 'study/joinStudy/rejected') {
+        setIsModalVisible(false)
+        setIsConfirmationVisible(true)
+      }
+    })
   }
 
   const handleCancel = () => {
@@ -37,22 +52,40 @@ export default function SideComponent({ isLoggedIn }) {
     setMessage(e.target.value)
   }
 
-  const Pic = profilePic
   const location = useLocation()
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
   const isTempPath = location.pathname.includes('/temp')
 
+  // 스터디 목록 모달
+  const showConfirmationModal = () => {
+    setIsConfirmationModalVisible(true)
+    // 본문 스크롤 방지
+    document.body.style.overflow = 'hidden'
+  }
+
+  const handleConfirmationModalOk = () => {
+    setIsConfirmationModalVisible(false)
+    // 본문 스크롤 복구
+    document.body.style.overflow = 'auto'
+  }
+
+  const handleConfirmationModalCancel = () => {
+    setIsConfirmationModalVisible(false)
+    // 본문 스크롤 복구
+    document.body.style.overflow = 'auto'
+  }
+
+  console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
         <div>
           <div className="circular-image2">
-            <img src={Pic} alt="안뜸" />
+            <img src={profileImage(myInfo.profileImgUrl)} alt="안뜸" />
           </div>
         </div>
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
-          <p>00님 환영합니다 !</p>
-          <p>현재 가입된 스터디는 0개입니다.</p>
+          <p>{nickname}님 환영합니다 !</p>
         </div>
 
         <div style={{ marginTop: '20px' }}>
@@ -73,10 +106,33 @@ export default function SideComponent({ isLoggedIn }) {
               marginBottom: '10px',
               marginTop: '10px',
             }}
-            onClick={showModal}
+            onClick={showConfirmationModal}
           >
             가입한 스터디 바로가기
           </Button>
+
+          <Modal
+            title="가입한 스터디 목록"
+            visible={isConfirmationModalVisible}
+            onOk={handleConfirmationModalOk}
+            onCancel={handleConfirmationModalCancel}
+          >
+            <p>왜안떠</p>
+            <p>
+              {myInfo.participatedStudies?.map(studyData => (
+                <>
+                  <Link
+                    to={`/temp/${studyData.id}`}
+                    state={{ id: studyData.id }}
+                  >
+                    {studyData.title}
+                  </Link>
+                  <br />
+                </>
+              ))}
+            </p>
+          </Modal>
+
           <div>
             {isTempPath && (
               <Button
