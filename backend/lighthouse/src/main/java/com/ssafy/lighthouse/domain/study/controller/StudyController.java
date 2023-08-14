@@ -72,9 +72,8 @@ public class StudyController {
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
 
         log.debug("studyId : {}", studyRequest.getId());
-        log.debug(studyRequest.toString());
-        //StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
 
     // 스터디 삭제
