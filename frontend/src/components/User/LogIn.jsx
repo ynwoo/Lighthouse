@@ -1,33 +1,47 @@
 import React from 'react'
-// import { Layout, Button, Checkbox, Form, Input } from 'antd'
-import { Form, Input, Button, Checkbox, Card, Typography, Col, Row } from 'antd'
-import { Link } from 'react-router-dom'
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Card,
+  Typography,
+  Col,
+  Row,
+  Divider,
+} from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
-// import { createRoot } from 'react-router-dom';
 const { Title } = Typography
-// const { Content } = Layout
 // 로그인
 
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
-//
 
 function LogIn() {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
+
   const onFinish = value => {
     console.log(value)
+
     dispatch(userAction.login(value)).then(res => {
-      // 로그인 성공하면 메인으로 보내주는 코드
       // 실패하면 안된다 함
       if (res.type === 'user/login/rejected') {
-        alert('안돼')
+        alert('이메일 또는 비밀번호를 확인해주세요.')
+      } else {
+        const userId = sessionStorage.getItem('userId')
+        dispatch(userAction.profile(userId))
+        // 로그인 성공하면 메인으로 보내주는 코드
+        navigate('/')
       }
     })
   }
+
   return (
     <div
       style={{
@@ -66,14 +80,6 @@ function LogIn() {
             rules={[{ required: true, message: '비밀번호를 입력해주세요.' }]}
           >
             <Input.Password type="password" placeholder="비밀번호" />
-            {/* <a
-              style={{ float: 'right' }}
-              className="login-form-forgot"
-              href=""
-              onClick={handleForgotPassword}
-            >
-              Forgot password
-            </a> */}
           </Form.Item>
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
@@ -106,8 +112,9 @@ function LogIn() {
             marginBottom: '3vh',
           }}
         >
-          <p>간편 로그인</p>
-          <hr style={{ background: '#8e8e8e', height: '1px', border: '0' }} />
+          <Divider plain>간편 로그인</Divider>
+          {/* <p></p>
+          <hr style={{ background: '#8e8e8e', height: '1px', border: '0' }} /> */}
         </div>
 
         <Row justify="center">

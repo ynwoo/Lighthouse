@@ -45,8 +45,6 @@ function Chat() {
   useEffect(() => {
     dispatch(chatAction.getChat(1))
   }, [])
-  // console.log(userInfo)
-  // console.log(userInfo.id)
 
   client.onConnect = frame => {
     // Do something, all subscribes must be done is this callback
