@@ -74,7 +74,6 @@ export default function UserPage() {
                   dispatch(userAction.getFollowing())
                   dispatch(userAction.profile(profile.id))
                 })
-                // window.location.reload()
               }}
             >
               언팔로우
@@ -82,6 +81,12 @@ export default function UserPage() {
           )}
         </div>
       )}
+      <Link
+        to="/user_edit/me"
+        state={{ userId: Number(sessionStorage.getItem('userId')) }}
+      >
+        마이페이지
+      </Link>
       <div
         className="comp"
         style={{
