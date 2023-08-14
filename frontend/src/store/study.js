@@ -185,6 +185,15 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  addQnA: createAsyncThunk('study/addQnA', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/qna`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const studySlice = createSlice({

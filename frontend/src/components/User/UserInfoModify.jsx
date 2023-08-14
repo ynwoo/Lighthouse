@@ -85,7 +85,9 @@ function UserInfoModify({ profile }) {
               values.profileImgFile = values.profileImgFile[0].originFileObj
             }
             // redux => server
-            dispatch(userAction.profileUpdate(values))
+            dispatch(userAction.profileUpdate(values)).then(() => {
+              alert('변경이 완료되었습니다!')
+            })
           } else {
             alert('닉네임 중복확인을 해주세요.')
           }
