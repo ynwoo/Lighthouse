@@ -10,16 +10,18 @@ import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
 
 const { Content, Sider } = Layout
-// 템플릿 상세의 질의응답
 
 export default function UserEdit() {
   const dispatch = useDispatch()
-  const profile = useSelector(state => state.user.profile)
   const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
     dispatch(userAction.profile(userId))
+    dispatch(userAction.myPage())
   }, [])
+  const profile = useSelector(state => state.user.myProfile)
+  const myInfo = useSelector(state => state.user.myInfo)
+  const myProfile = { ...myInfo, ...profile }
 
   let items = [
     {
@@ -75,7 +77,7 @@ export default function UserEdit() {
       {
         key: '7',
         label: `프로필 수정`,
-        children: <UserInfoModify />,
+        children: <UserInfoModify profile={myProfile} />,
       },
     ].sort((a, b) => a.key - b.key)
   }
@@ -99,8 +101,10 @@ export default function UserEdit() {
             src={profileImage(profile.profileImgUrl)}
             shape="circle"
           />
-          <h2 style={{ marginBottom: '0px' }}>{profile.nickname}</h2>
-          {userId === loginId && <p>유저 이름</p>}
+          <h3 style={{ marginBottom: '0px' }}>
+            {profile.nickname}님의 페이지 입니다
+          </h3>
+          {/* {userId === loginId && <p>유저 이름</p>} */}
           <Button block style={{ margin: '2vh 0' }}>
             팔로우
           </Button>
@@ -113,15 +117,6 @@ export default function UserEdit() {
             </Col>
           </Row>
         </Card>
-        {/* <Menu
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          style={{
-            height: '100%',
-          }}
-          items={menuItems}
-          // onClick={handleMenuClick}
-        /> */}
       </Sider>
       <Content
         style={{

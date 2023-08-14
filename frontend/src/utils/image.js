@@ -9,4 +9,10 @@ const profileImage = imgUrl => {
   return imgUrl.startsWith('https') ? imgUrl : image(imgUrl)
 }
 
-export { profileImage, image }
+const coverImage = imgUrl => {
+  if (!imgUrl) {
+    return 'https://s24953.pcdn.co/blog/wp-content/uploads/2018/01/Templates-Guide-header-1-1024x576.png'
+  }
+  return imgUrl.startsWith('https') ? imgUrl : image(imgUrl)
+}
+export { profileImage, image, coverImage }

@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined } from '@ant-design/icons'
+import { coverImage } from '../../utils/image'
+import CustomTitle from './CustomTitle'
 
-function TempCard({ study }) {
+function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
 
   const handleMouseEnter = () => {
@@ -13,7 +15,8 @@ function TempCard({ study }) {
   const handleMouseLeave = () => {
     setIsHovered(false)
   }
-
+  const cardWidth = '100%'
+  const cardHeight = '250px'
   return (
     <div>
       <div style={{ position: 'relative' }}>
@@ -22,9 +25,9 @@ function TempCard({ study }) {
           // className={isHovered ? 'hovered-card' : ''}
           bordered={false}
           style={{
-            width: '250px',
-            height: '300px',
-            margin: '5px',
+            width: { cardWidth },
+            height: { cardHeight },
+            paddingBottom: '5px',
             whiteSpace: 'pre-line',
             boxShadow: 'none',
             overflow: 'hidden',
@@ -34,27 +37,29 @@ function TempCard({ study }) {
             <div
               style={{
                 overflow: 'hidden',
-                height: '150px',
+                height: '130px',
                 alignItems: 'center',
               }}
             >
               {/* 이미지를 감싸는 div */}
               <img
                 style={{
+                  width: '100%',
                   height: '100%',
                   marginLeft: '50%',
                   transform: 'translateX(-50%)',
+                  objectFit: 'cover',
                 }}
                 alt="example"
-                src="https://s24953.pcdn.co/blog/wp-content/uploads/2018/01/Templates-Guide-header-1-1024x576.png"
+                src={coverImage(study.coverImgUrl)}
               />
             </div>
           }
         >
           <div>
-            <h3 style={{ margin: '5px 0px 0px 0px' }}>{study.title}</h3>
+            <CustomTitle text={study.title} />
             <div style={{ fontSize: '13px', color: '#6e6e6e' }}>
-              <p style={{ fontSize: '12px', marginBottom: '5px' }}>
+              <p style={{ fontSize: '12px', marginBottom: '20px' }}>
                 {study.leaderProfile.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
@@ -67,25 +72,29 @@ function TempCard({ study }) {
           <Card
             onMouseLeave={handleMouseLeave}
             className={isHovered ? 'hovered-card' : ''}
-            // bordered={false}
+            bordered={false}
             style={{
-              width: '250px',
-              height: '300px',
-              margin: '5px',
+              width: '100%',
+              height: { cardHeight },
               padding: '5px',
               whiteSpace: 'pre-line',
               boxShadow: 'none',
               backgroundColor: 'rgba(21, 21, 21, 0.88)',
               position: 'absolute',
-              top: '-5px',
+              top: '0',
               zIndex: '10',
               visibility: isHovered ? 'visible' : 'hidden',
             }}
             bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
           >
             <div style={{ color: '#f2f2f2' }}>
-              <h3 style={{ margin: '5px 0px 10px 0px' }}>{study.title}</h3>
-              <div style={{ minHeight: '135px' }}>
+              <CustomTitle text={study.title} />
+              <div
+                style={{
+                  minHeight: '85px',
+                  marginTop: '5px',
+                }}
+              >
                 <div
                   style={{
                     fontSize: '13px',
@@ -93,17 +102,13 @@ function TempCard({ study }) {
                     whiteSpace: 'normal',
                     textOverflow: 'ellipsis',
                     display: '-webkit-box',
-                    WebkitLineClamp: 6,
+                    WebkitLineClamp: 4,
                     WebkitBoxOrient: 'vertical',
                     wordBreak: 'keep-all',
                     marginBottom: '10px',
                   }}
                 >
-                  {study.description} i think your preference is spot-on for
-                  documents, but over-zealous i think your preference is spot-on
-                  for documents, but over-zealous i think your preference is
-                  spot-on for documents, but over-zealous i think your
-                  preference is spot-on for documents, but over-zealous
+                  {study.description}
                 </div>
               </div>
               <div
@@ -116,7 +121,6 @@ function TempCard({ study }) {
                 }}
               >
                 {study.studyTags.map(tag => {
-                  // <span key={tag.id}>#{tag.tag.keyword} </span>
                   return (
                     <Tag
                       key={tag.id}
@@ -132,8 +136,8 @@ function TempCard({ study }) {
                 })}
               </div>
               <hr />
-              <Row justify="end">
-                <Col span={4} align="middle">
+              <Row justify="end" style={{ margin: '10px 10px' }}>
+                <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
                   <Tooltip title="좋아요">
                     <HeartOutlined
                       style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
@@ -164,4 +168,4 @@ function TempCard({ study }) {
   )
 }
 
-export default TempCard
+export default StudyCard
