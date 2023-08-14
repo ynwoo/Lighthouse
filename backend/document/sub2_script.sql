@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `s09p12a409`.`study` (
   `bookmark_cnt` INT NULL DEFAULT NULL,
   `status` INT NOT NULL,
   `badge_id` INT NULL,
+  `cover_img_url` VARCHAR(100) NULL,
   PRIMARY KEY (`id`, `status`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
