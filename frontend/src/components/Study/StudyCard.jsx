@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined } from '@ant-design/icons'
-
+import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
 
 function StudyCard({ study }) {
@@ -51,7 +51,7 @@ function StudyCard({ study }) {
                   objectFit: 'cover',
                 }}
                 alt="example"
-                src="https://s24953.pcdn.co/blog/wp-content/uploads/2018/01/Templates-Guide-header-1-1024x576.png"
+                src={coverImage(study.coverImgUrl)}
               />
             </div>
           }
