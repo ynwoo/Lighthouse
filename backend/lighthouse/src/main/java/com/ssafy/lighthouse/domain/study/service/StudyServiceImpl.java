@@ -198,7 +198,7 @@ public class StudyServiceImpl implements StudyService {
 
     // 변경사항이 있으면 update 진행
     @Override
-    public StudyResponse updateStudyByStudyId(StudyRequest studyRequest, Long userId) {
+    public StudyResponse updateStudyByStudyId(StudyRequest studyRequest) {
         Study changedStudy = studyRequest.toEntity();
         Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
         log.debug("studyId : {}", study.getId());
