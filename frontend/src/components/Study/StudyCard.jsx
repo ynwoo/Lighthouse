@@ -60,7 +60,7 @@ function StudyCard({ study }) {
             <CustomTitle text={study.title} />
             <div style={{ fontSize: '13px', color: '#6e6e6e' }}>
               <p style={{ fontSize: '12px', marginBottom: '20px' }}>
-                {study.leaderProfile.nickname}
+                {study.leaderProfile?.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
               <p>{`좋아요 ${study.likeCnt}  북마크 ${study.bookmarkCnt}`}</p>
