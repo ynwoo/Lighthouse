@@ -64,8 +64,35 @@ export default function StudyInfo({ study }) {
 
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
+    formData.append('id', study.id)
+    formData.append('isValid', study.isValid)
+    formData.append('title', `${study.title}수정완료!!`)
+    formData.append('description', study.description)
+    formData.append('hit', study.hit)
+    formData.append('rule', study.rule)
+    formData.append('maxMember', study.maxMember)
+    formData.append('minMember', study.minMember)
+    formData.append('currentMember', study.currentMember)
+    formData.append('isOnline', study.isOnline)
+    formData.append('likeCnt', study.likeCnt)
+    formData.append('originalId', study.originalId)
+    if (study.sidoId) formData.append('sidoId', study.sidoId)
+    if (study.gugunId) formData.append('gugunId', study.gugunId)
+    formData.append('status', status)
+    formData.append(
+      'createdAt',
+      startDateToString(createdDate) ?? study.createdAt,
+    )
+    formData.append(
+      'startedAt',
+      startDateToString(startDate) ?? study.startedAt,
+    )
+    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    formData.append(
+      'recruitFinishedAt',
+      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    )
 
-    console.log('studyTags : ', study.studyTags)
     Object.keys(study).forEach(sKey => {
       // studyTags
       if (sKey === 'studyTags') {
@@ -131,28 +158,11 @@ export default function StudyInfo({ study }) {
         console.log(sKey)
       }
 
-      // study
-      else if (sKey === 'createdAt') {
-        formData.append(
-          'createdAt',
-          startDateToString(createdDate) ?? study.createdAt,
-        )
-      } else if (sKey === 'startedAt') {
-        formData.append(
-          'startedAt',
-          startDateToString(startDate) ?? study.startedAt,
-        )
-      } else if (sKey === 'endedAt') {
-        formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
-      } else if (sKey === 'recruitFinishedAt') {
-        formData.append(
-          'recruitFinishedAt',
-          endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-        )
-      } else if (sKey === 'status') {
-        formData.append(sKey, status)
-      } else {
-        formData.append(sKey, study[sKey])
+      // badge
+      else if (sKey === 'badge' && study.badge) {
+        Object.keys(study.badge).forEach(key => {
+          formData.append(`badge.${key}`, study.badge[key])
+        })
       }
     })
 
