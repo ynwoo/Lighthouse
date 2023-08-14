@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
-import { HeartOutlined, BookOutlined } from '@ant-design/icons'
+import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
 
@@ -23,7 +23,7 @@ function StudyCard({ study }) {
         <Card
           onMouseOver={handleMouseEnter}
           // className={isHovered ? 'hovered-card' : ''}
-          bordered={false}
+          // bordered={false}
           style={{
             width: { cardWidth },
             height: { cardHeight },
@@ -59,11 +59,14 @@ function StudyCard({ study }) {
           <div>
             <CustomTitle text={study.title} />
             <div style={{ fontSize: '13px', color: '#6e6e6e' }}>
-              <p style={{ fontSize: '12px', marginBottom: '20px' }}>
+              <p style={{ fontSize: '12px', marginBottom: '10px' }}>
                 {study.leaderProfile.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
-              <p>{`좋아요 ${study.likeCnt}  북마크 ${study.bookmarkCnt}`}</p>
+              <p>
+                <HeartOutlined /> {study.likeCnt} <BookOutlined />{' '}
+                {study.bookmarkCnt} <EyeOutlined /> {study.hit}
+              </p>
             </div>
           </div>
         </Card>
