@@ -87,7 +87,7 @@ function UserInfoModify({ profile }) {
             // redux => server
             dispatch(userAction.profileUpdate(values))
           } else {
-            alert('이메일, 닉네임 중복확인을 해주세요.')
+            alert('닉네임 중복확인을 해주세요.')
           }
         }}
       >
