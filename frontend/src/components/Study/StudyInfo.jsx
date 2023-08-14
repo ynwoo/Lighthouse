@@ -74,6 +74,9 @@ export default function StudyInfo({ study }) {
         endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
       createdAt: startDateToString(createdDate) ?? study.createdAt,
       status,
+      leaderProfile: null,
+      memberProfiles: null,
+      // studyTags: null,
     }
   }
 
