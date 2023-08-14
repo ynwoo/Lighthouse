@@ -3,8 +3,6 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
-import com.ssafy.lighthouse.domain.common.dto.GugunDto;
-import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.dto.SessionDto.SessionRes;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
@@ -47,6 +45,7 @@ public class StudyResponse {
     private List<StudyNoticeDto.StudyNoticeRes> studyNotices;
     private List<SessionRes> sessions;
     private List<QnaDto.Res> qnas;
+    private String coverImgUrl;
 
     public void setLeaderProfile(SimpleProfileResponse leaderProfile) {
         this.leaderProfile = leaderProfile;
