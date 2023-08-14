@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
   startDateToString,
-} from '../../utils/FormateDateToString'
-import { updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
+  image,
+  StringToDate,
+} from '../../utils/index'
+import { createStudy, updateStudy } from '../../api/study'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
-import { CreateButton, UpdateButton } from './utils/button'
+import { CreateButton } from './utils/button'
+import { studyAction } from '../../store/study'
+import { userAction } from '../../store/user'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -23,6 +27,19 @@ export default function StudyInfo({ study }) {
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
 
   const [uploadedImage, setUploadedImage] = useState(null)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(userAction.profile(sessionStorage.getItem('userId')))
+    dispatch(studyAction.getLike())
+  }, [])
+
+  const myInfo = useSelector(state => state.user.myProfile)
+  const likeList = useSelector(state => state.study.likeList)
+  console.log(myInfo)
+  console.log(likeList)
 
   const handleImageUpload = event => {
     const imageFile = event.target.files[0]
@@ -45,8 +62,8 @@ export default function StudyInfo({ study }) {
     setCreatedDate(date)
   }
 
-  const handleUpdateStudy = () => {
-    const studyRequest = {
+  const copyStudy = (status = study.status) => {
+    return {
       ...study,
       sessions: [...study.sessions],
       studyTags: [...study.studyTags],
@@ -56,13 +73,17 @@ export default function StudyInfo({ study }) {
       recruitFinishedAt:
         endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
       createdAt: startDateToString(createdDate) ?? study.createdAt,
+      status,
     }
+  }
 
-    console.log(studyRequest)
-    updateStudy(
+  const callStudyUpdateApi = async studyRequest => {
+    console.log('callStudyUpdateApi', studyRequest)
+    await updateStudy(
       studyRequest,
       ({ response }) => {
         console.log(response)
+        dispatch(studyAction.studyDetail(studyRequest.id))
       },
       ({ error }) => {
         console.log(error)
@@ -70,9 +91,30 @@ export default function StudyInfo({ study }) {
     )
   }
 
+  const handleUpdateStudy = () => {
+    callStudyUpdateApi(copyStudy())
+  }
+  const handleRecruitStudy = () => {
+    callStudyUpdateApi(copyStudy(1))
+  }
+
   const handleCreateStudy = () => {
     // 생성 해야함
+    createStudy(
+      study.id,
+      ({ data }) => {
+        console.log(data)
+        alert('템플릿 복제 완료!!')
+        navigate(`/temp/${data.id}`)
+      },
+      ({ data }) => {
+        console.log(data)
+        alert(data)
+      },
+    )
   }
+
+  console.log('studyInfo : ', study)
 
   return (
     <div className="big_box">
@@ -83,22 +125,36 @@ export default function StudyInfo({ study }) {
           style={{ width: '100%' }}
         />
         <div className="study_box">
-          <CreateButton onClick={handleCreateStudy}>생성버튼이다</CreateButton>
-          <UpdateButton onClick={() => console.log('button 클릭')}>
-            수정버튼이다
-          </UpdateButton>
+          {study.status === 5 && (
+            <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
+          )}
+
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
+            {study.badge?.imgUrl && (
+              <img
+                src={image(study.badge.imgUrl)}
+                alt={study.badge?.description}
+                className="badge"
+              />
+            )}
           </h1>
           <h3>
             스터디장 :{' '}
             <Link
-              to={`/user/${study.leaderProfile?.id}`}
+              to={`/user_edit/${study.leaderProfile?.id}`}
               state={{ userId: study.leaderProfile?.id }}
               className="dropdown_toggle"
             >
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
+            {study.leaderProfile?.badges && (
+              <img
+                src={image(study.leaderProfile?.badges[0]?.imgUrl)}
+                alt={study.leaderProfile.badges[0]?.description}
+                className="badge"
+              />
+            )}
           </h3>
           <div
             style={{
@@ -107,13 +163,9 @@ export default function StudyInfo({ study }) {
               marginTop: '20px',
             }}
           >
-            {study.studyTags ? (
-              study.studyTags.map(tag => (
-                <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
-              ))
-            ) : (
-              <p>loading...</p>
-            )}
+            {study.studyTags?.map(tag => (
+              <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
+            ))}
           </div>
           <br />
           <div className="mark_container">
@@ -125,11 +177,63 @@ export default function StudyInfo({ study }) {
             </div>
             <div> {study.bookmarkCnt}</div>
             <div>
-              <img src={bookmark} alt="" style={{ width: '20px' }} />
+              {myInfo.bookmarkStudies?.find(
+                bookmarkStudy => bookmarkStudy.id === study.id,
+              ) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.disbookmark(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(userAction.profile(myInfo.id))
+                    })
+                  }}
+                >
+                  <img src={bookmark} alt="" style={{ width: '20px' }} />
+                  않북마크
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.bookmark(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(userAction.profile(myInfo.id))
+                    })
+                  }}
+                >
+                  <img src={bookmark} alt="" style={{ width: '20px' }} />
+                </button>
+              )}
             </div>
             <div>{study.bookmarkCnt}</div>
             <div>
-              <img src={likemark} alt="" style={{ width: '20px' }} />
+              {likeList.find(id => id === study.id) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.dislike(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(studyAction.getLike())
+                    })
+                  }}
+                >
+                  <img src={likemark} alt="" style={{ width: '20px' }} />
+                  않좋아요
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.like(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(studyAction.getLike())
+                    })
+                  }}
+                >
+                  <img src={likemark} alt="" style={{ width: '20px' }} />
+                </button>
+              )}
             </div>
             <div> {study.likeCnt}</div>
           </div>
@@ -189,9 +293,14 @@ export default function StudyInfo({ study }) {
         initStartDate={study.createdAt}
         initEndDate={study.recruitFinishedAt}
       />
-      <button type="button" onClick={handleUpdateStudy}>
-        수정
+      <button className="button" type="button" onClick={handleUpdateStudy}>
+        저장
       </button>
+      {study.status === 0 && (
+        <button className="button" type="button" onClick={handleRecruitStudy}>
+          모집 시작
+        </button>
+      )}
     </div>
   )
 }

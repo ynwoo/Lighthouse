@@ -9,7 +9,7 @@ export default function JoinStudyInfo({ study }) {
     return {
       key: member.id,
       nickname: (
-        <Link to={`/user/${member?.id}`} state={{ userId: member?.id }}>
+        <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
           {member.nickname}
         </Link>
       ),
@@ -67,8 +67,8 @@ export default function JoinStudyInfo({ study }) {
           <div className="review_mini2">
             <div>날짜</div>
             <div className="review_mini">
-              {study.startedAt.split(' ')[0]}&nbsp;~&nbsp;
-              {study.endedAt.split(' ')[0]}
+              {study.startedAt?.split(' ')[0]}&nbsp;~&nbsp;
+              {study.endedAt?.split(' ')[0]}
             </div>
           </div>
         </div>
