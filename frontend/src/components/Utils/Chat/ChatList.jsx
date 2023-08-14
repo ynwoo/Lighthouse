@@ -86,8 +86,16 @@ function App() {
           renderItem={item => (
             <List.Item key={item.id}>
               <List.Item.Meta
-                avatar={<Avatar src={item.avatar} />}
-                title={<a onClick={clickHandler}>{item.title}</a>}
+                avatar={
+                  <Avatar
+                    src={`${process.env.REACT_APP_S3_DOMAIN_URL}${item.avatar}`}
+                  />
+                }
+                title={
+                  <button type="button" onClick={clickHandler}>
+                    {item.title}
+                  </button>
+                }
                 description={item.description}
               />
               <div>GO</div>
