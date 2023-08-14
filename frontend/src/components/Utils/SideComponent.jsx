@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Button, Modal, Input } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import profilePic from '../../logo.svg'
 import logo from '../../static/LOGO1.png'
 import { studyAction } from '../../store/study'
+import { profileImage } from '../../utils/image'
 
 export default function SideComponent({ isLoggedIn, study }) {
   const dispatch = useDispatch()
@@ -17,7 +17,7 @@ export default function SideComponent({ isLoggedIn, study }) {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
   const nickname = sessionStorage.getItem('nickname')
-
+  const myInfo = useSelector(state => state.user.myInfo)
   const showModal = () => {
     setIsModalVisible(true)
     // Body 스크롤 방지
@@ -52,7 +52,6 @@ export default function SideComponent({ isLoggedIn, study }) {
     setMessage(e.target.value)
   }
 
-  const Pic = profilePic
   const location = useLocation()
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
   const isTempPath = location.pathname.includes('/temp')
@@ -76,14 +75,13 @@ export default function SideComponent({ isLoggedIn, study }) {
     document.body.style.overflow = 'auto'
   }
 
-  const myInfo = useSelector(state => state.user.myInfo)
   console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
         <div>
           <div className="circular-image2">
-            <img src={Pic} alt="안뜸" />
+            <img src={profileImage(myInfo.profileImgUrl)} alt="안뜸" />
           </div>
         </div>
         <div style={{ textAlign: 'center', marginBottom: '10px' }}>
@@ -122,12 +120,16 @@ export default function SideComponent({ isLoggedIn, study }) {
             <p>왜안떠</p>
             <p>
               {myInfo.participatedStudies?.map(studyData => (
-                // <Select.Option value={studyData.title} key={studyData.title}>
-                <Link to={`/temp/${studyData.id}`} state={{ id: studyData.id }}>
-                  {studyData.title}
-                </Link>
-                // </Select.Option>
-              ))}{' '}
+                <>
+                  <Link
+                    to={`/temp/${studyData.id}`}
+                    state={{ id: studyData.id }}
+                  >
+                    {studyData.title}
+                  </Link>
+                  <br />
+                </>
+              ))}
             </p>
           </Modal>
 

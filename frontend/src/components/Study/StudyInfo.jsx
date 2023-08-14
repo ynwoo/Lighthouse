@@ -7,9 +7,10 @@ import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
   startDateToString,
-} from '../../utils/FormateDateToString'
+  image,
+  StringToDate,
+} from '../../utils'
 import { createStudy, updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
@@ -61,8 +62,8 @@ export default function StudyInfo({ study }) {
     setCreatedDate(date)
   }
 
-  const handleUpdateStudy = () => {
-    const studyRequest = {
+  const copyStudy = (status = study.status) => {
+    return {
       ...study,
       sessions: [...study.sessions],
       studyTags: [...study.studyTags],
@@ -72,18 +73,29 @@ export default function StudyInfo({ study }) {
       recruitFinishedAt:
         endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
       createdAt: startDateToString(createdDate) ?? study.createdAt,
+      status,
     }
+  }
 
-    console.log(studyRequest)
-    updateStudy(
+  const callStudyUpdateApi = async studyRequest => {
+    console.log('callStudyUpdateApi', studyRequest)
+    await updateStudy(
       studyRequest,
       ({ response }) => {
         console.log(response)
+        dispatch(studyAction.studyDetail(studyRequest.id))
       },
       ({ error }) => {
         console.log(error)
       },
     )
+  }
+
+  const handleUpdateStudy = () => {
+    callStudyUpdateApi(copyStudy())
+  }
+  const handleRecruitStudy = () => {
+    callStudyUpdateApi(copyStudy(1))
   }
 
   const handleCreateStudy = () => {
@@ -114,16 +126,14 @@ export default function StudyInfo({ study }) {
         />
         <div className="study_box">
           {study.status === 5 && (
-            <CreateButton onClick={handleCreateStudy}>
-              생성버튼이다
-            </CreateButton>
+            <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
           )}
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
             {study.badge?.imgUrl && (
               <img
-                src={process.env.REACT_APP_S3_DOMAIN_URL + study.badge.imgUrl}
+                src={image(study.badge.imgUrl)}
                 alt={study.badge?.description}
                 className="badge"
               />
@@ -140,11 +150,8 @@ export default function StudyInfo({ study }) {
             </Link>
             {study.leaderProfile?.badges && (
               <img
-                src={
-                  process.env.REACT_APP_S3_DOMAIN_URL +
-                  study.leaderProfile.badges[0].imgUrl
-                }
-                alt={study.leaderProfile.badges[0].description}
+                src={image(study.leaderProfile?.badges[0]?.imgUrl)}
+                alt={study.leaderProfile.badges[0]?.description}
                 className="badge"
               />
             )}
@@ -286,9 +293,14 @@ export default function StudyInfo({ study }) {
         initStartDate={study.createdAt}
         initEndDate={study.recruitFinishedAt}
       />
-      <button type="button" onClick={handleUpdateStudy}>
-        수정
+      <button className="button" type="button" onClick={handleUpdateStudy}>
+        저장
       </button>
+      {study.status === 0 && (
+        <button className="button" type="button" onClick={handleRecruitStudy}>
+          모집 시작
+        </button>
+      )}
     </div>
   )
 }
