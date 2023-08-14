@@ -10,7 +10,7 @@ export default function Navbar({ isLoggedIn }) {
 
   const handleLogout = e => {
     e.preventDefault()
-    dispatch(userAction.logout()).then(navigate('/'))
+    dispatch(userAction.logout()).then(() => navigate('/'))
   }
   return (
     <div
@@ -50,7 +50,7 @@ export default function Navbar({ isLoggedIn }) {
             <>
               <div className="item dropdown_king nav_item">
                 <Link
-                  to="/user/me"
+                  to={`/user_edit/${Number(sessionStorage.getItem('userId'))}`}
                   state={{ userId: Number(sessionStorage.getItem('userId')) }}
                   className="dropdown_toggle"
                 >

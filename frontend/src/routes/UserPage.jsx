@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Select, Modal, Button, Tooltip } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { userAction } from '../store/user'
 
 export default function UserPage() {
   const dispatch = useDispatch()
   const location = useLocation()
+  const navigate = useNavigate()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const profile = useSelector(state => state.user.profile)
   useEffect(() => {
@@ -35,6 +36,10 @@ export default function UserPage() {
 
   const handleCancel = () => {
     setIsModalVisible(false)
+  }
+
+  const handleMoveTempDetailPage = val => {
+    navigate(`/temp/${val}`)
   }
 
   return (
@@ -184,11 +189,15 @@ export default function UserPage() {
 
           <div className="u_item">신청 중</div>
           <div>
-            <Select className="u_item2" value="신청중인 스터디">
+            <Select
+              className="u_item2"
+              value="신청중인 스터디"
+              onChange={handleMoveTempDetailPage}
+            >
               {profile.participatedStudies
                 ?.filter(study => study.leaderProfile.id !== myId)
                 .map(study => (
-                  <Select.Option value={study.title} key={study.id}>
+                  <Select.Option value={study.id} key={study.id}>
                     <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
                       {study.title}
                     </Link>
@@ -199,14 +208,18 @@ export default function UserPage() {
 
           <div className="u_item">편집 중</div>
           <div>
-            <Select className="u_item2" value="편집중인 스터디">
+            <Select
+              className="u_item2"
+              value="편집중인 스터디"
+              onChange={handleMoveTempDetailPage}
+            >
               {profile.participatedStudies
                 ?.filter(study => study.leaderProfile.id === myId)
                 .map(study => (
-                  <Select.Option value={study.title} key={study.id}>
-                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
-                      {study.title}
-                    </Link>
+                  <Select.Option value={study.id} key={study.id}>
+                    {/* <Link to={`/temp/${study.id}`} state={{ id: study.id }}> */}
+                    {study.title}
+                    {/* </Link> */}
                   </Select.Option>
                 ))}
             </Select>

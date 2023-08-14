@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
@@ -15,6 +15,7 @@ import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
 import { CreateButton } from './utils/button'
 import { studyAction } from '../../store/study'
+import { userAction } from '../../store/user'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -28,6 +29,16 @@ export default function StudyInfo({ study }) {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(userAction.profile(sessionStorage.getItem('userId')))
+    dispatch(studyAction.getLike())
+  }, [])
+
+  const myInfo = useSelector(state => state.user.myInfo)
+  const likeList = useSelector(state => state.study.likeList)
+  console.log(myInfo)
+  console.log(likeList)
 
   const handleImageUpload = event => {
     const imageFile = event.target.files[0]
@@ -81,6 +92,7 @@ export default function StudyInfo({ study }) {
       study.id,
       ({ data }) => {
         console.log(data)
+        alert('템플릿 복제 완료!!')
         navigate(`/temp/${data.id}`)
       },
       ({ data }) => {
@@ -89,6 +101,8 @@ export default function StudyInfo({ study }) {
       },
     )
   }
+
+  console.log('studyInfo : ', study)
 
   return (
     <div className="big_box">
@@ -107,16 +121,33 @@ export default function StudyInfo({ study }) {
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
+            {study.badge?.imgUrl && (
+              <img
+                src={process.env.REACT_APP_S3_DOMAIN_URL + study.badge.imgUrl}
+                alt={study.badge?.description}
+                className="badge"
+              />
+            )}
           </h1>
           <h3>
             스터디장 :{' '}
             <Link
-              to={`/user/${study.leaderProfile?.id}`}
+              to={`/user_edit/${study.leaderProfile?.id}`}
               state={{ userId: study.leaderProfile?.id }}
               className="dropdown_toggle"
             >
               {study.leaderProfile ? study.leaderProfile.nickname : `로딩중`}
             </Link>
+            {study.leaderProfile?.badges && (
+              <img
+                src={
+                  process.env.REACT_APP_S3_DOMAIN_URL +
+                  study.leaderProfile.badges[0].imgUrl
+                }
+                alt={study.leaderProfile.badges[0].description}
+                className="badge"
+              />
+            )}
           </h3>
           <div
             style={{
@@ -125,13 +156,9 @@ export default function StudyInfo({ study }) {
               marginTop: '20px',
             }}
           >
-            {study.studyTags ? (
-              study.studyTags.map(tag => (
-                <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
-              ))
-            ) : (
-              <p>loading...</p>
-            )}
+            {study.studyTags?.map(tag => (
+              <p key={tag.id}> #{tag.tag.keyword} &nbsp;</p>
+            ))}
           </div>
           <br />
           <div className="mark_container">
@@ -143,29 +170,63 @@ export default function StudyInfo({ study }) {
             </div>
             <div> {study.bookmarkCnt}</div>
             <div>
-              <button
-                type="button"
-                onClick={() => {
-                  dispatch(studyAction.bookmark(study.id)).then(() => {
-                    dispatch(studyAction.studyDetail(study.id))
-                  })
-                }}
-              >
-                <img src={bookmark} alt="" style={{ width: '20px' }} />
-              </button>
+              {myInfo.bookmarkStudies?.find(
+                bookmarkStudy => bookmarkStudy.id === study.id,
+              ) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.disbookmark(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(userAction.profile(myInfo.id))
+                    })
+                  }}
+                >
+                  <img src={bookmark} alt="" style={{ width: '20px' }} />
+                  않북마크
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.bookmark(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(userAction.profile(myInfo.id))
+                    })
+                  }}
+                >
+                  <img src={bookmark} alt="" style={{ width: '20px' }} />
+                </button>
+              )}
             </div>
             <div>{study.bookmarkCnt}</div>
             <div>
-              <button
-                type="button"
-                onClick={() => {
-                  dispatch(studyAction.like(study.id)).then(() => {
-                    dispatch(studyAction.studyDetail(study.id))
-                  })
-                }}
-              >
-                <img src={likemark} alt="" style={{ width: '20px' }} />
-              </button>
+              {likeList.find(id => id === study.id) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.dislike(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(studyAction.getLike())
+                    })
+                  }}
+                >
+                  <img src={likemark} alt="" style={{ width: '20px' }} />
+                  않좋아요
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(studyAction.like(study.id)).then(() => {
+                      dispatch(studyAction.studyDetail(study.id))
+                      dispatch(studyAction.getLike())
+                    })
+                  }}
+                >
+                  <img src={likemark} alt="" style={{ width: '20px' }} />
+                </button>
+              )}
             </div>
             <div> {study.likeCnt}</div>
           </div>
