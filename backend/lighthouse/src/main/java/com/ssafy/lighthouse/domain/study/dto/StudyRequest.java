@@ -1,8 +1,6 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
-import com.ssafy.lighthouse.domain.common.dto.GugunDto;
-import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +10,8 @@ import lombok.ToString;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -42,6 +42,8 @@ public class StudyRequest {
     private List<StudyEvalDto> studyEvals;
     private List<StudyNoticeDto.StudyNoticeReq> studyNotices;
     private List<SessionDto.SessionReq> sessions;
+    private MultipartFile coverImgFile;
+    private String coverImgUrl;
 
     public Study toEntity() {
         return Study.builder()
@@ -68,6 +70,7 @@ public class StudyRequest {
                 .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .sessions(this.sessions != null ? this.sessions.stream().map(SessionDto.SessionReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+                .coverImgUrl(this.coverImgUrl)
                 .build();
     }
 }
