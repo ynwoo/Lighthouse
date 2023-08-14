@@ -13,6 +13,14 @@ body {
   /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
+.user-info {
+  & .badge {
+    width: 20px;
+    height: 20px;
+    border: 5px;
+  }
+}
+
 /* WaveComponent CSS */
 @import url(//fonts.googleapis.com/css?family=Lato:300:400);
 
