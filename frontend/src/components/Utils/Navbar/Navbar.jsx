@@ -1,12 +1,12 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import logo from '../../../static/main_logo.PNG'
-import { userAction } from '../../../store/user'
+// import React from 'react'
+// import { Link, useNavigate } from 'react-router-dom'
+// import { useDispatch } from 'react-redux'
+// import logo from '../../../static/main_logo.PNG'
+// import { userAction } from '../../../store/user'
 
-export default function Navbar({ isLoggedIn }) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+// export default function Navbar({ isLoggedIn }) {
+//   const dispatch = useDispatch()
+//   const navigate = useNavigate()
 
   const handleLogout = e => {
     e.preventDefault()
@@ -51,6 +51,7 @@ export default function Navbar({ isLoggedIn }) {
               <div className="item dropdown_king nav_item">
                 <Link
                   to={`/user_edit/${Number(sessionStorage.getItem('userId'))}`}
+                  state={{ userId: Number(sessionStorage.getItem('userId')) }}
                   className="dropdown_toggle"
                 >
                   MYPAGE

@@ -7,9 +7,10 @@ import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
   startDateToString,
-} from '../../utils/FormateDateToString'
+  image,
+  StringToDate,
+} from '../../utils/index'
 import { createStudy, updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
@@ -24,7 +25,7 @@ export default function StudyInfo({ study }) {
     StringToDate(study.recruitFinishedAt),
   )
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
-
+  const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
 
   const navigate = useNavigate()
@@ -35,7 +36,7 @@ export default function StudyInfo({ study }) {
     dispatch(studyAction.getLike())
   }, [])
 
-  const myInfo = useSelector(state => state.user.myInfo)
+  const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
   console.log(myInfo)
   console.log(likeList)
@@ -61,8 +62,8 @@ export default function StudyInfo({ study }) {
     setCreatedDate(date)
   }
 
-  const handleUpdateStudy = () => {
-    const studyRequest = {
+  const copyStudy = (status = study.status) => {
+    return {
       ...study,
       sessions: [...study.sessions],
       studyTags: [...study.studyTags],
@@ -72,18 +73,29 @@ export default function StudyInfo({ study }) {
       recruitFinishedAt:
         endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
       createdAt: startDateToString(createdDate) ?? study.createdAt,
+      status,
     }
+  }
 
-    console.log(studyRequest)
-    updateStudy(
+  const callStudyUpdateApi = async studyRequest => {
+    console.log('callStudyUpdateApi', studyRequest)
+    await updateStudy(
       studyRequest,
       ({ response }) => {
         console.log(response)
+        dispatch(studyAction.studyDetail(studyRequest.id))
       },
       ({ error }) => {
         console.log(error)
       },
     )
+  }
+
+  const handleUpdateStudy = () => {
+    callStudyUpdateApi(copyStudy())
+  }
+  const handleRecruitStudy = () => {
+    callStudyUpdateApi(copyStudy(1))
   }
 
   const handleCreateStudy = () => {
@@ -114,16 +126,14 @@ export default function StudyInfo({ study }) {
         />
         <div className="study_box">
           {study.status === 5 && (
-            <CreateButton onClick={handleCreateStudy}>
-              생성버튼이다
-            </CreateButton>
+            <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
           )}
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
             {study.badge?.imgUrl && (
               <img
-                src={process.env.REACT_APP_S3_DOMAIN_URL + study.badge.imgUrl}
+                src={image(study.badge.imgUrl)}
                 alt={study.badge?.description}
                 className="badge"
               />
@@ -140,11 +150,8 @@ export default function StudyInfo({ study }) {
             </Link>
             {study.leaderProfile?.badges && (
               <img
-                src={
-                  process.env.REACT_APP_S3_DOMAIN_URL +
-                  study.leaderProfile.badges[0].imgUrl
-                }
-                alt={study.leaderProfile.badges[0].description}
+                src={image(study.leaderProfile?.badges[0]?.imgUrl)}
+                alt={study.leaderProfile.badges[0]?.description}
                 className="badge"
               />
             )}
@@ -234,6 +241,44 @@ export default function StudyInfo({ study }) {
       </div>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
       <div className="info_text">
+        <p>스터디 공지</p>
+      </div>
+      <h2>
+        {/* 가장 마지막에 올린 공지 추리는 코드 */}
+        {
+          study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).content
+        }
+      </h2>
+      <input
+        type="text"
+        value={notice}
+        onChange={e => {
+          setNotice(e.target.value)
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          const data = {
+            studyId: study.id,
+            content: notice,
+          }
+          dispatch(studyAction.addNotice(data)).then(() =>
+            dispatch(studyAction.studyDetail(study.id)),
+          )
+          setNotice('')
+        }}
+      >
+        +
+      </button>
+      <div className="info_text">
         <p>스터디 정보</p>
       </div>
       <p style={{ margin: '0 auto' }}>{study.description}</p>
@@ -286,9 +331,14 @@ export default function StudyInfo({ study }) {
         initStartDate={study.createdAt}
         initEndDate={study.recruitFinishedAt}
       />
-      <button type="button" onClick={handleUpdateStudy}>
-        수정
+      <button className="button" type="button" onClick={handleUpdateStudy}>
+        저장
       </button>
+      {study.status === 0 && (
+        <button className="button" type="button" onClick={handleRecruitStudy}>
+          모집 시작
+        </button>
+      )}
     </div>
   )
 }

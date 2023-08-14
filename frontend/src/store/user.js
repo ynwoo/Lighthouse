@@ -48,6 +48,7 @@ authApi.interceptors.response.use(
       }
       return Promise.reject(err)
     }
+    console.log('else')
     return Promise.reject(err)
   },
 )
@@ -61,6 +62,24 @@ const initialState = {
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
+  myProfile: {
+    id: 0,
+    isValid: 0,
+    nickname: '',
+    profileImgUrl: '',
+    description: '',
+    tags: [],
+    participatedStudies: [],
+    recruitingStudies: [],
+    progressStudies: [],
+    terminatedStudies: [],
+    bookmarkStudies: [],
+    badges: [],
+    score: 0,
+    following: 0,
+    follower: 0,
+    simpleUserResponse: {},
+  },
   profile: {
     id: 0,
     isValid: 0,
@@ -143,6 +162,7 @@ export const userAction = {
             },
           },
         )
+        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -167,7 +187,6 @@ export const userAction = {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
       console.log(response)
-      // window.location.href = '/'
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -203,6 +222,21 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  // 프로필 업데이트
+  profileUpdate: createAsyncThunk(
+    'user/profileUpdate',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.put(`${API_URL}/users/update`, payload, {
+          headers: { 'content-type': 'multipart/form-data' },
+        })
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
   // 나의 팔로우 목록
   getFollowing: createAsyncThunk(
     'user/getFollow',
@@ -304,7 +338,7 @@ export const userSlice = createSlice({
     [userAction.profile.fulfilled]: (state, action) => {
       console.log(action.payload.id)
       if (action.payload.id === Number(sessionStorage.getItem('userId'))) {
-        state.myInfo = action.payload
+        state.myProfile = action.payload
         state.profile = action.payload
       } else {
         state.profile = action.payload
