@@ -21,7 +21,9 @@ export default function UserInfo({ profile }) {
           {profile.recruitingStudies
             .concat(profile.terminatedStudies)
             .map(study => study.currentMember)
-            .reduce((a, b) => a + b)}
+            .reduce((a, b) => {
+              return a + b
+            }, 0)}
         </p>
         <p>
           스터디장 맡은 횟수:{' '}
