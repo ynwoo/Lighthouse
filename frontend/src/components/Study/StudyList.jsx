@@ -8,7 +8,7 @@ function StudyList({ studies }) {
       <List
         grid={{
           colAlign: 'middle',
-          gutter: 0,
+          gutter: 12,
           xs: 1,
           sm: 1,
           md: 2,

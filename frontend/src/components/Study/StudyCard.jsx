@@ -27,7 +27,6 @@ function StudyCard({ study }) {
           style={{
             width: { cardWidth },
             height: { cardHeight },
-            margin: '5px',
             paddingBottom: '5px',
             whiteSpace: 'pre-line',
             boxShadow: 'none',
@@ -73,17 +72,16 @@ function StudyCard({ study }) {
           <Card
             onMouseLeave={handleMouseLeave}
             className={isHovered ? 'hovered-card' : ''}
-            // bordered={false}
+            bordered={false}
             style={{
-              width: { cardWidth },
+              width: '100%',
               height: { cardHeight },
-              margin: '5px',
               padding: '5px',
               whiteSpace: 'pre-line',
               boxShadow: 'none',
               backgroundColor: 'rgba(21, 21, 21, 0.88)',
               position: 'absolute',
-              top: '-5px',
+              top: '0',
               zIndex: '10',
               visibility: isHovered ? 'visible' : 'hidden',
             }}
@@ -91,7 +89,12 @@ function StudyCard({ study }) {
           >
             <div style={{ color: '#f2f2f2' }}>
               <CustomTitle text={study.title} />
-              <div style={{ minHeight: '85px', marginTop: '5px' }}>
+              <div
+                style={{
+                  minHeight: '85px',
+                  marginTop: '5px',
+                }}
+              >
                 <div
                   style={{
                     fontSize: '13px',
@@ -105,11 +108,7 @@ function StudyCard({ study }) {
                     marginBottom: '10px',
                   }}
                 >
-                  {study.description} i think your preference is spot-on for
-                  documents, but over-zealous i think your preference is spot-on
-                  for documents, but over-zealous i think your preference is
-                  spot-on for documents, but over-zealous i think your
-                  preference is spot-on for documents, but over-zealous
+                  {study.description}
                 </div>
               </div>
               <div
@@ -137,8 +136,8 @@ function StudyCard({ study }) {
                 })}
               </div>
               <hr />
-              <Row justify="end">
-                <Col span={4} align="middle">
+              <Row justify="end" style={{ margin: '10px 10px' }}>
+                <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
                   <Tooltip title="좋아요">
                     <HeartOutlined
                       style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}

@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
-import { Layout } from 'antd'
+// import { Layout } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import SideComponent from '../components/Utils/SideComponent'
+// import SideComponent from '../components/Utils/SideComponent'
 import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
-import { CreateButton } from '../components/Study/utils/button'
-import NextButton from '../components/Study/utils/button/NextButton'
+// import { CreateButton } from '../components/Study/utils/button'
+// import NextButton from '../components/Study/utils/button/NextButton'
 // import Button from '../components/Study/utils/button/Button'
 
-const { Content } = Layout
+// const { Content } = Layout
 
 // 컨텐츠
-const contentStyle = {
-  textAlign: 'center',
-  minHeight: '100%',
-  lineHeight: '130%',
-  color: '#fff',
-  backgroundColor: 'transparent',
-  margin: '10px',
-}
+// const contentStyle = {
+//   textAlign: 'center',
+//   minHeight: '100%',
+//   lineHeight: '130%',
+//   color: '#fff',
+//   backgroundColor: 'transparent',
+//   margin: '10px',
+// }
 
 function getCookie(name) {
   const nameOfCookie = `${name}=` // 쿠키=값 의 형태로 되어 있음
@@ -64,7 +64,7 @@ export default function MainPage({ isLoggedIn, status }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const studies = useSelector(state => state.study.studies)
-  const totalPage = useSelector(state => state.study.totalPage)
+  // const totalPage = useSelector(state => state.study.totalPage)
 
   useEffect(() => {
     dispatch(setParams({ ...initParams, status }))
@@ -77,8 +77,8 @@ export default function MainPage({ isLoggedIn, status }) {
   console.log(studies)
   console.log(params)
 
-  const onClick = () =>
-    dispatch(setParams({ ...params, page: params.page + 1 }))
+  // const onClick = () =>
+  //   dispatch(setParams({ ...params, page: params.page + 1 }))
 
   // 구글 소셜 로그인 시 서버로부터 값 받아오기
   const userId = getCookie('user_id')

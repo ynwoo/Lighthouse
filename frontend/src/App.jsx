@@ -6,7 +6,7 @@ import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
 import Navbar from './components/Utils/Navbar/NavbarNew'
 import WaveComponent from './components/Utils/WaveComponent'
-import MainPage from './routes/MainPage'
+import MainPage from './routes/MainPageNew'
 import StudyDetailPage from './routes/StudyDetailPage'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
@@ -50,7 +50,7 @@ function App() {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        minHeight: '100vh',
+        minHeight: '1000px',
         backgroundColor: 'white',
         boxSizing: 'border-box',
       }}
@@ -64,7 +64,7 @@ function App() {
             top: 0,
             zIndex: 1,
             width: '100vw',
-            paddingLeft: '5vw',
+            padding: '0 5vw 0 3vw',
           }}
         >
           <Navbar isLoggedIn={isLoggedIn} />
@@ -76,32 +76,33 @@ function App() {
             <>
               <div style={{ marginBottom: '50px' }} />
               <WaveComponent />
-              <Routes>
-                <Route
-                  exact
-                  path="/"
-                  element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
-                />
-                <Route
-                  path="/temp"
-                  element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
-                />
-                <Route
-                  path="/temp/:id"
-                  element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
-                />
-                <Route path="/user/:id" element={<UserPage />} />
-                <Route path="/login" element={<LogIn />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/user_edit/:id" element={<UserEditPage />} />
-                <Route path="/chat" element={<Chat />} />
-                {/* <Route path="/chat1" element={<ChatTest />} /> */}
-              </Routes>
+              <div style={{ margin: '0vw 10vw' }}>
+                <Routes>
+                  <Route
+                    exact
+                    path="/"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
+                  />
+                  <Route
+                    path="/temp"
+                    element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
+                  />
+                  <Route
+                    path="/temp/:id"
+                    element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route path="/user/:id" element={<UserPage />} />
+                  <Route path="/login" element={<LogIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  <Route path="/user_edit/:id" element={<UserEditPage />} />
+                  <Route path="/chat" element={<Chat />} />
+                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
+                </Routes>
+              </div>
             </>
           )}
         </div>
       </Router>
-      {/* footer */}
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}
       </Footer>
@@ -144,6 +145,7 @@ function App() {
           <ChatList />
         </div>
       )}
+      {/* footer */}
     </div>
   )
 }
