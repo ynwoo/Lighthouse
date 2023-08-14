@@ -62,7 +62,7 @@ function App() {
             backgroundColor: 'white',
             position: 'fixed',
             top: 0,
-            zIndex: 1,
+            zIndex: 9999,
             width: '100vw',
             padding: '0 5vw 0 3vw',
           }}
