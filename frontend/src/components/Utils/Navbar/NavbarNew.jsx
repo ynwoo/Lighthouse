@@ -74,7 +74,9 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
                 <Menu.Item key="/user/me" style={{ float: 'right' }}>
                   <Link
-                    to={`/user_edit/${sessionStorage.getItem('userId')}`}
+                    to={`/user_edit/${Number(
+                      sessionStorage.getItem('userId'),
+                    )}`}
                     state={{ userId: Number(sessionStorage.getItem('userId')) }}
                   >
                     마이페이지
