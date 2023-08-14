@@ -871,3 +871,8 @@ h1 span:nth-child(9) {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   margin-top: 10px;
 }
+
+.badge {
+  height: 15px;
+  width: 15px;
+}

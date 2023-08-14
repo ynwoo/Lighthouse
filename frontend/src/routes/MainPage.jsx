@@ -56,6 +56,8 @@ const initParams = {
   orderKey: 'like',
   orderBy: 'desc',
   tagIds: [],
+  sidoId: '',
+  gugunId: '',
 }
 
 // 내부 탭
@@ -77,8 +79,8 @@ export default function MainPage({ isLoggedIn, status }) {
   console.log(studies)
   console.log(params)
 
-  const onClick = () =>
-    dispatch(setParams({ ...params, page: params.page + 1 }))
+  const onClick = val => () =>
+    dispatch(setParams({ ...params, page: params.page + val }))
 
   // 구글 소셜 로그인 시 서버로부터 값 받아오기
   const userId = getCookie('user_id')
@@ -132,12 +134,14 @@ export default function MainPage({ isLoggedIn, status }) {
                 이것은 {status === 1 ? '스터디 모집' : '템플릿 선택'}
               </CreateButton>
               {params.page ? (
-                <NextButton onClick={onClick}>이것은 이전 페이지</NextButton>
+                <NextButton onClick={onClick(-1)}>
+                  이것은 이전 페이지
+                </NextButton>
               ) : (
                 ''
               )}
               {params.page < totalPage ? (
-                <NextButton onClick={onClick}>이것은 다음 페이지</NextButton>
+                <NextButton onClick={onClick(1)}>이것은 다음 페이지</NextButton>
               ) : (
                 ''
               )}

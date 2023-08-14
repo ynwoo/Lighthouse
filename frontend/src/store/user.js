@@ -56,12 +56,29 @@ authApi.interceptors.response.use(
 // 이것은 초깃값이자 저장 폼
 const initialState = {
   isLoggedIn: false,
-  sido: {},
-  gugun: { 0: '시/도를 선택하세요' },
+  sido: [],
+  gugun: [],
   emailIsValid: null,
   nicknameIsValid: null,
   myInfo: {},
-  profile: {},
+  profile: {
+    id: 0,
+    isValid: 0,
+    nickname: '',
+    profileImgUrl: '',
+    description: '',
+    tags: [],
+    participatedStudies: [],
+    recruitingStudies: [],
+    progressStudies: [],
+    terminatedStudies: [],
+    bookmarkStudies: [],
+    badges: [],
+    score: 0,
+    following: 0,
+    follower: 0,
+    simpleUserResponse: {},
+  },
   following: null,
   userInfo: {},
 }
@@ -180,7 +197,7 @@ export const userAction = {
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/users/profile/${payload}`)
-      console.log(response)
+      console.log('getProfile : ', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -285,8 +302,13 @@ export const userSlice = createSlice({
     },
     // 프로필
     [userAction.profile.fulfilled]: (state, action) => {
-      console.log(action.payload)
-      state.profile = action.payload
+      console.log(action.payload.id)
+      if (action.payload.id === Number(sessionStorage.getItem('userId'))) {
+        state.myInfo = action.payload
+        state.profile = action.payload
+      } else {
+        state.profile = action.payload
+      }
     },
     // 팔로우
     [userAction.getFollowing.fulfilled]: (state, action) => {

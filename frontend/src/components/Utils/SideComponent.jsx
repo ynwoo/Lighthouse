@@ -76,8 +76,8 @@ export default function SideComponent({ isLoggedIn, study }) {
     document.body.style.overflow = 'auto'
   }
 
-  const profile = useSelector(state => state.user.profile)
-  console.log(profile)
+  const myInfo = useSelector(state => state.user.myInfo)
+  console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
@@ -121,7 +121,7 @@ export default function SideComponent({ isLoggedIn, study }) {
           >
             <p>왜안떠</p>
             <p>
-              {profile.participatedStudies?.map(studyData => (
+              {myInfo.participatedStudies?.map(studyData => (
                 // <Select.Option value={studyData.title} key={studyData.title}>
                 <Link to={`/temp/${studyData.id}`} state={{ id: studyData.id }}>
                   {studyData.title}
