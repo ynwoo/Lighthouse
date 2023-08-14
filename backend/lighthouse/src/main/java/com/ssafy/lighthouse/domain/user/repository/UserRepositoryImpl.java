@@ -51,6 +51,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         Set<Long> participatedStudyIdSet = participationHistoryRepository.findStudyIdAllByUserIdandStatus(userId, STATUS.PREPARING);
         // bookmark studyIdSet
         Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+
+        allStudyIdSet.addAll(bookmarkSet);
+
         // tag
         Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
         QFollow followee = new QFollow("followee");
