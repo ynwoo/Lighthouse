@@ -49,22 +49,12 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         Set<Long> allStudyIdSet = participationHistoryRepository.findStudyIdAllByUserId(userId);
         // participated StudyIdSet
         Set<Long> participatedStudyIdSet = participationHistoryRepository.findStudyIdAllByUserIdandStatus(userId, STATUS.PREPARING);
-        // bookmark studyIdSet
-        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
 
-        allStudyIdSet.addAll(bookmarkSet);
-
-        // tag
-        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
-        QFollow followee = new QFollow("followee");
-
-        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
         List<SimpleStudyDto> recruitingStudies = new ArrayList<>();
         List<SimpleStudyDto> progressStudies = new ArrayList<>();
         List<SimpleStudyDto> terminatedStudies = new ArrayList<>();
-        List<SimpleStudyDto> bookmarkStudies = new ArrayList<>();
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
@@ -106,13 +96,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     terminatedStudies.add(simpleStudyDto);
                     break;
             }
-
-            // 북마크 한 스터디
-            if(bookmarkSet.contains(study.getId())) {
-                bookmarkStudies.add(simpleStudyDto);
-            }
         });
 
+        // 북마크한 스터디
+        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+        List<SimpleStudyDto> bookmarkStudies = jpaQueryFactory.select(study)
+                .from(study)
+                .where(study.id.in(bookmarkSet),
+                        study.isValid.eq(1))
+                .fetch()
+                .stream()
+                .map(SimpleStudyDto::new)
+                .collect(Collectors.toList());
+
+        QFollow followee = new QFollow("followee");
         ProfileResponse result = jpaQueryFactory.select(Projections.fields(ProfileResponse.class,
                         user.id,
                         user.isValid,
@@ -128,6 +125,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 
         // badgeList
         List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
+
+        // tag
+        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
+        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
 
         // userInfo
 //        SimpleUserResponse userInfo = findUserInfo(loginId);
