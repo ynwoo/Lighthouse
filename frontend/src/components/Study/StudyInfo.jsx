@@ -73,9 +73,9 @@ export default function StudyInfo({ study }) {
     }
   }
 
-  const callStudyUpdateApi = async studyRequest => {
-    console.log(studyRequest)
-    await updateStudy(
+  const callStudyUpdateApi = studyRequest => {
+    console.log('callStudyUpdateApi', studyRequest)
+    updateStudy(
       studyRequest,
       ({ response }) => {
         console.log(response)
@@ -123,9 +123,6 @@ export default function StudyInfo({ study }) {
         <div className="study_box">
           {study.status === 5 && (
             <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
-          )}
-          {study.status === 0 && (
-            <CreateButton onClick={handleRecruitStudy}>수정 완료</CreateButton>
           )}
 
           <h1>
