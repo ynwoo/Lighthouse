@@ -150,8 +150,8 @@ export default function StudyInfo({ study }) {
             </Link>
             {study.leaderProfile?.badges && (
               <img
-                src={image(study.leaderProfile.badges[0].imgUrl)}
-                alt={study.leaderProfile.badges[0].description}
+                src={image(study.leaderProfile?.badges[0]?.imgUrl)}
+                alt={study.leaderProfile.badges[0]?.description}
                 className="badge"
               />
             )}
