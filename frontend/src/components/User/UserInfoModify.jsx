@@ -33,7 +33,7 @@ const dummyRequest = ({ file, onSuccess }) => {
   }, 0)
 }
 
-function UserInfoModify() {
+function UserInfoModify({ profile }) {
   // dispatch와 form을 사용하기 위한 두 줄
   const dispatch = useDispatch()
   const [form] = Form.useForm()
@@ -50,9 +50,9 @@ function UserInfoModify() {
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
   const nicknameIsValid = useSelector(state => state.user.nicknameIsValid)
-  const profile = useSelector(state => state.user.myProfile)
-  const myInfo = useSelector(state => state.user.myInfo)
-  console.log(myInfo)
+  // const myProfile = useSelector(state => state.user.myProfile)
+  // const myInfo = useSelector(state => state.user.myInfo)
+  // const profile = { ...myInfo, ...myProfile }
 
   // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
   const sidoChange = e => {
@@ -132,7 +132,7 @@ function UserInfoModify() {
         </Form.Item>
 
         <Form.Item label="이름" name="name">
-          <Input defaultValue={myInfo.name} />
+          <Input defaultValue={profile.name} />
         </Form.Item>
 
         <Form.Item
@@ -187,7 +187,7 @@ function UserInfoModify() {
         </p>
 
         <Form.Item label="나이" name="age">
-          <InputNumber defaultValue={myInfo.age} />
+          <InputNumber defaultValue={profile.age} />
         </Form.Item>
 
         <Form.Item
@@ -212,7 +212,7 @@ function UserInfoModify() {
         </Form.Item>
 
         <Form.Item name="phoneNumber" label="전화번호">
-          <Input defaultValue={myInfo.phoneNumber} />
+          <Input defaultValue={profile.phoneNumber} />
         </Form.Item>
 
         <Form.Item label="주소(시/도)" name="sidoId">

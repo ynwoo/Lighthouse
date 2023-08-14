@@ -7,16 +7,16 @@ import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
   startDateToString,
-} from '../../utils/FormateDateToString'
+  image,
+  StringToDate,
+} from '../../utils/index'
 import { createStudy, updateStudy } from '../../api/study'
-import StringToDate from '../../utils/FormateStringToDate'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
 import { CreateButton } from './utils/button'
 import { studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
-import { image } from '../../utils/image'
 
 export default function StudyInfo({ study }) {
   const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
@@ -36,7 +36,7 @@ export default function StudyInfo({ study }) {
     dispatch(studyAction.getLike())
   }, [])
 
-  const myInfo = useSelector(state => state.user.myInfo)
+  const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
   console.log(myInfo)
   console.log(likeList)
@@ -78,7 +78,7 @@ export default function StudyInfo({ study }) {
   }
 
   const callStudyUpdateApi = async studyRequest => {
-    console.log(studyRequest)
+    console.log('callStudyUpdateApi', studyRequest)
     await updateStudy(
       studyRequest,
       ({ response }) => {
@@ -128,9 +128,6 @@ export default function StudyInfo({ study }) {
           {study.status === 5 && (
             <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
           )}
-          {study.status === 0 && (
-            <CreateButton onClick={handleRecruitStudy}>수정 완료</CreateButton>
-          )}
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
@@ -153,8 +150,8 @@ export default function StudyInfo({ study }) {
             </Link>
             {study.leaderProfile?.badges && (
               <img
-                src={image(study.leaderProfile.badges[0].imgUrl)}
-                alt={study.leaderProfile.badges[0].description}
+                src={image(study.leaderProfile?.badges[0]?.imgUrl)}
+                alt={study.leaderProfile.badges[0]?.description}
                 className="badge"
               />
             )}

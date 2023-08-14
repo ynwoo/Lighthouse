@@ -48,6 +48,7 @@ authApi.interceptors.response.use(
       }
       return Promise.reject(err)
     }
+    console.log('else')
     return Promise.reject(err)
   },
 )
