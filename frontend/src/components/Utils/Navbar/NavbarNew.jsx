@@ -9,7 +9,7 @@ import { userAction } from '../../../store/user'
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
   const location = useLocation()
-
+  console.log(location.pathname)
   const handleLogout = () => {
     dispatch(userAction.logout()).then(() => {
       window.location.href = '/'

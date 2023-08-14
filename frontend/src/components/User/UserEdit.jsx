@@ -13,12 +13,15 @@ const { Content, Sider } = Layout
 
 export default function UserEdit() {
   const dispatch = useDispatch()
-  const profile = useSelector(state => state.user.profile)
   const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
     dispatch(userAction.profile(userId))
+    dispatch(userAction.myPage())
   }, [])
+  const profile = useSelector(state => state.user.myProfile)
+  const myInfo = useSelector(state => state.user.myInfo)
+  const myProfile = { ...myInfo, ...profile }
 
   let items = [
     {
@@ -74,7 +77,7 @@ export default function UserEdit() {
       {
         key: '7',
         label: `프로필 수정`,
-        children: <UserInfoModify />,
+        children: <UserInfoModify profile={myProfile} />,
       },
     ].sort((a, b) => a.key - b.key)
   }

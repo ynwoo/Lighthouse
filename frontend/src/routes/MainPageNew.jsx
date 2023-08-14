@@ -104,6 +104,9 @@ export default function MainPage({ isLoggedIn, status }) {
 
   return (
     <div>
+      <h2 style={{ marginBottom: '20px' }}>
+        {status === 1 ? '스터디 모집' : '템플릿 둘러보기'}
+      </h2>
       <SearchComponent />
       <StudyList studies={studies} isLoggedIn={isLoggedIn} />
     </div>
