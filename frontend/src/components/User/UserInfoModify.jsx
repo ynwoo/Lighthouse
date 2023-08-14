@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Card,
@@ -27,25 +26,33 @@ const normFile = e => {
   return e?.fileList
 }
 
-//
+const dummyRequest = ({ file, onSuccess }) => {
+  console.log('file upload successful', file)
+  setTimeout(() => {
+    onSuccess('ok')
+  }, 0)
+}
 
-function UserInfoModify() {
+function UserInfoModify({ profile }) {
   // dispatch와 form을 사용하기 위한 두 줄
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const navigate = useNavigate()
 
   // 컴포넌트가 mount되는 과정에서 서버에 요청을 보내 store에 sido를 추가해줌
-  // 저 아래에 [dispatch] 부분이 없으면 인생 끝날 때 까지 요청함
+  // 저 아래에 [] 부분이 없으면 인생 끝날 때 까지 요청함
   useEffect(() => {
     dispatch(userAction.sido())
-  }, [dispatch])
+    dispatch(userAction.profile(sessionStorage.getItem('userId')))
+    dispatch(userAction.myPage())
+  }, [])
 
   // sido와 gugun을 store에서 불러 와주는 선언문
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
-  const emailIsValid = useSelector(state => state.user.emailIsValid)
   const nicknameIsValid = useSelector(state => state.user.nicknameIsValid)
+  // const myProfile = useSelector(state => state.user.myProfile)
+  // const myInfo = useSelector(state => state.user.myInfo)
+  // const profile = { ...myInfo, ...myProfile }
 
   // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
   const sidoChange = e => {
@@ -64,20 +71,24 @@ function UserInfoModify() {
         onFinish={values => {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
-          if (emailIsValid && nicknameIsValid) {
+          if (nicknameIsValid) {
             delete values.confirm
             values.userTagList = []
+            values.id = Number(sessionStorage.getItem('userId'))
             // 비어있는 요소를 undefined => null로 바꾸어주는 작업
             Object.keys(values).forEach(key => {
               if (values[key] === undefined) {
                 values[key] = null
               }
             })
+            if (values.profileImgFile != null) {
+              values.profileImgFile = values.profileImgFile[0].originFileObj
+            }
             // redux => server
-            dispatch(userAction.signUp(values))
-            navigate('/')
+            dispatch(userAction.profileUpdate(values))
+          } else {
+            alert('이메일, 닉네임 중복확인을 해주세요.')
           }
-          alert('이메일, 닉네임 중복확인을 해주세요.')
         }}
       >
         <Form.Item
@@ -121,7 +132,7 @@ function UserInfoModify() {
         </Form.Item>
 
         <Form.Item label="이름" name="name">
-          <Input />
+          <Input defaultValue={profile.name} />
         </Form.Item>
 
         <Form.Item
@@ -132,15 +143,12 @@ function UserInfoModify() {
               type: 'text',
               message: '닉네임이 유효하지 않습니다.',
             },
-            {
-              required: true,
-              message: '닉네임을 입력해주세요.',
-            },
           ]}
         >
           <Row>
             <Col span={19}>
               <Input
+                defaultValue={profile.nickname}
                 onChange={e => {
                   setNickname(e.target.value)
                 }}
@@ -179,17 +187,17 @@ function UserInfoModify() {
         </p>
 
         <Form.Item label="나이" name="age">
-          <InputNumber />
+          <InputNumber defaultValue={profile.age} />
         </Form.Item>
 
         <Form.Item
           label="Upload"
-          name="프로필 사진"
+          name="profileImgFile"
           valuePropName="fileList"
           getValueFromEvent={normFile}
           initialValue={null}
         >
-          <Upload action="/upload.do" listType="picture-card">
+          <Upload customRequest={dummyRequest} listType="picture-card">
             <div>
               <PlusOutlined />
               <div
@@ -203,21 +211,12 @@ function UserInfoModify() {
           </Upload>
         </Form.Item>
 
-        <Form.Item
-          name="phoneNumber"
-          label="전화번호"
-          rules={[
-            {
-              required: true,
-              message: '전화번호를 입력해주세요',
-            },
-          ]}
-        >
-          <Input />
+        <Form.Item name="phoneNumber" label="전화번호">
+          <Input defaultValue={profile.phoneNumber} />
         </Form.Item>
 
         <Form.Item label="주소(시/도)" name="sidoId">
-          <Select onChange={sidoChange} defaultValue="도시를 선택해주세요">
+          <Select onChange={sidoChange} initialvalue={profile.sido}>
             {/* 셀렉트에 시/도를 띄워주는 베열 메서드 */}
             {Object.keys(sido).map(key => {
               return (
@@ -230,7 +229,7 @@ function UserInfoModify() {
         </Form.Item>
 
         <Form.Item label="주소(구/군)" name="gugunId">
-          <Select defaultValue="세부 위치를 선택해주세요">
+          <Select initialvalue={profile.gugun}>
             {/* 셀렉트에 구/군을 띄워주는 배열 메서드 */}
             {Object.keys(gugun).map(key => {
               return (
@@ -243,7 +242,7 @@ function UserInfoModify() {
         </Form.Item>
 
         <Form.Item label="자기소개" name="description">
-          <TextArea rows={4} />
+          <TextArea rows={4} defaultValue={profile.description} />
         </Form.Item>
         <div
           style={{
