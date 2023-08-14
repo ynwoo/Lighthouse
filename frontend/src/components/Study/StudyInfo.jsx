@@ -63,21 +63,118 @@ export default function StudyInfo({ study }) {
   }
 
   const copyStudy = (status = study.status) => {
-    return {
-      ...study,
-      sessions: [...study.sessions],
-      studyTags: [...study.studyTags],
-      studyNotices: [...study.studyNotices],
-      startedAt: startDateToString(startDate) ?? study.startedAt,
-      endedAt: endDateToString(endDate) ?? study.endedAt,
-      recruitFinishedAt:
-        endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-      createdAt: startDateToString(createdDate) ?? study.createdAt,
-      status,
-      leaderProfile: null,
-      memberProfiles: null,
-      // studyTags: null,
-    }
+    const formData = new FormData()
+
+    console.log('studyTags : ', study.studyTags)
+    Object.keys(study).forEach(sKey => {
+      // studyTags
+      if (sKey === 'studyTags') {
+        study.studyTags?.forEach((studyTag, index) => {
+          Object.keys(studyTag).forEach(key => {
+            if (key !== 'tag') {
+              formData.append(`studyTags[${index}].${key}`, studyTag[key])
+            } else {
+              Object.keys(studyTag[key]).forEach(tagKey => {
+                formData.append(
+                  `studyTags[${index}].${key}.${tagKey}`,
+                  studyTag[key][tagKey],
+                )
+              })
+            }
+          })
+        })
+      }
+
+      // sessions
+      else if (sKey === 'sessions') {
+        study.sessions?.forEach((session, index) => {
+          Object.keys(session).forEach(key => {
+            // studyMaterials
+            if (key === 'studyMaterials') {
+              session.studyMaterials?.forEach((studyMaterial, smIndex) => {
+                Object.keys(studyMaterial).forEach(smKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${smIndex}].${smKey}`,
+                    studyMaterial[smKey],
+                  )
+                })
+              })
+            }
+
+            // sessionChecks
+            else if (key === 'sessionChecks') {
+              session.sessionChecks?.forEach((sessionCheck, scIndex) => {
+                Object.keys(sessionCheck).forEach(scKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${scIndex}].${scKey}`,
+                    sessionCheck[scKey],
+                  )
+                })
+              })
+            }
+
+            // sessions
+            else {
+              formData.append(`sessions[${index}].${key}`, session[key])
+            }
+          })
+        })
+      }
+
+      // studyNotices
+      else if (sKey === 'studyNotices') {
+        console.log(sKey)
+      }
+
+      // studyEvals
+      else if (sKey === 'studyEvals') {
+        console.log(sKey)
+      }
+
+      // study
+      else if (sKey === 'createdAt') {
+        formData.append(
+          'createdAt',
+          startDateToString(createdDate) ?? study.createdAt,
+        )
+      } else if (sKey === 'startedAt') {
+        formData.append(
+          'createdAt',
+          startDateToString(startDate) ?? study.startedAt,
+        )
+      } else if (sKey === 'endedAt') {
+        formData.append(
+          'createdAt',
+          endDateToString(endDate) ?? study.createdAt,
+        )
+      } else if (sKey === 'recruitFinishedAt') {
+        formData.append(
+          'createdAt',
+          endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+        )
+      } else if (sKey === 'status') {
+        formData.append(sKey, status)
+      } else {
+        formData.append(sKey, study[sKey])
+      }
+    })
+
+    return formData
+    // return {
+    //   ...study,
+    //   sessions: [...study.sessions],
+    //   studyTags: [...study.studyTags],
+    //   studyNotices: [...study.studyNotices],
+    //   startedAt: startDateToString(startDate) ?? study.startedAt,
+    //   endedAt: endDateToString(endDate) ?? study.endedAt,
+    //   recruitFinishedAt:
+    //     endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    //   createdAt: startDateToString(createdDate) ?? study.createdAt,
+    //   status,
+    //   leaderProfile: null,
+    //   memberProfiles: null,
+    //   // studyTags: null,
+    // }
   }
 
   const callStudyUpdateApi = async studyRequest => {
@@ -86,7 +183,7 @@ export default function StudyInfo({ study }) {
       studyRequest,
       ({ response }) => {
         console.log(response)
-        dispatch(studyAction.studyDetail(studyRequest.id))
+        dispatch(studyAction.studyDetail(study.id))
       },
       ({ error }) => {
         console.log(error)
