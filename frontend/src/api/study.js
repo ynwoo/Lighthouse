@@ -1,8 +1,10 @@
-import { authApiInstance, authFormInstance } from '.'
+import { apiInstance, authApiInstance, authFormInstance } from '.'
 
+const api = apiInstance()
 const authApi = authApiInstance()
 const authFormApi = authFormInstance()
 
+// studyList 검색
 async function getStudyAll(options, success, fail) {
   let uri = '/study?'
   Object.keys(options).forEach((option, index) => {
@@ -20,17 +22,20 @@ async function getStudyAll(options, success, fail) {
     }
   })
   console.log(uri)
-  await authApi.get(uri).then(success).catch(fail)
+  await api.get(uri).then(success).catch(fail)
 }
 
+// 스터디 상세 조회
 async function getDetailStudy(studyId, success, fail) {
   await authApi.get(`/study/${studyId}`).then(success).catch(fail)
 }
 
+// 스터디 복제
 async function createStudy(studyId, success, fail) {
   await authApi.post(`/study/${studyId}`).then(success).catch(fail)
 }
 
+// 스터디 수정
 async function updateStudy(study, success, fail) {
   await authFormApi.put(`/study`, study).then(success).catch(fail)
 }

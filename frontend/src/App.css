@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0 auto;
   width: 100%;
@@ -675,10 +681,8 @@ p {
 }
 
 .hovered-card {
-  border: 2px solid #6181f1;
+  /* border: 2px solid #6181f1; */
   /* background-color: #000000; */
-  transform: scale(1.05);
-  transition: all 0.3s ease;
 }
 
 .hovered-card .hovered-cover {
@@ -698,7 +702,7 @@ p {
   background-color: white;
   justify-content: center;
   align-content: center;
-  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
   /* position: relative; */
   padding: 20px;
   margin: -18px;
@@ -867,4 +871,9 @@ h1 span:nth-child(9) {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   margin-top: 10px;
+}
+
+.badge {
+  height: 15px;
+  width: 15px;
 }

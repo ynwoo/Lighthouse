@@ -15,7 +15,8 @@ export const dateFormat = timestamp => {
 }
 
 export const getFirstLetter = name => {
-  return name ? name[0] : 'Y'
+  return name[0]
+
   // const lettersArray = name.split(' ').map(word => word[0])
 
   // if (lettersArray.length === 1) {
@@ -106,7 +107,6 @@ function Conversation() {
   const userId = sessionStorage.getItem('userId')
 
   console.log('temp messages: ', messages)
-
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
@@ -127,7 +127,7 @@ function Conversation() {
         ) : (
           //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
           <MessageContainer key={time} incomingMessage={senderId !== userId}>
-            <UserProfile content={senderName} />
+            <UserProfile content={senderName ? senderName.toString() : 'Y'} />
             <MessageContent>{message}</MessageContent>
           </MessageContainer>
         )
