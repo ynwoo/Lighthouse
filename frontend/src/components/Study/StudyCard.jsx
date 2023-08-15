@@ -50,7 +50,7 @@ function StudyCard({ study }) {
                   transform: 'translateX(-50%)',
                   objectFit: 'cover',
                 }}
-                alt="example"
+                alt="coverImage"
                 src={coverImage(study.coverImgUrl)}
               />
             </div>
@@ -117,7 +117,7 @@ function StudyCard({ study }) {
               </div>
               <div
                 style={{
-                  fontSize: '12px',
+                  fontSize: '14px',
                   marginTop: '5px',
                   height: '55px',
                   overflow: 'hidden',
