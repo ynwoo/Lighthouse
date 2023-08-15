@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/study")
@@ -69,10 +72,10 @@ public class StudyController {
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
-
-        log.debug("studyId : {}", studyRequest.getId());
-        log.debug(studyRequest.toString());
-        //StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+    log.debug("study: {}", studyRequest);
+//        log.debug("studyId : {}", studyRequest.getId());
+//        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
+//        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -82,6 +85,15 @@ public class StudyController {
         log.debug("studyId : {}", studyId);
         studyService.removeStudyByStudyId(studyId);
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<?> findStudyLikeAllByUserId(HttpServletRequest request) {
+        // session에서 userId 가져오기
+        Long userId = (Long) request.getAttribute("userId");
+        log.debug("userId : {}", userId);
+        List<Long> studyLikeAllByUserId = studyService.findStudyLikeAllByUserId(userId);
+        return new ResponseEntity<>(studyLikeAllByUserId, HttpStatus.OK);
     }
 
     @PostMapping("/like/{study-id}")

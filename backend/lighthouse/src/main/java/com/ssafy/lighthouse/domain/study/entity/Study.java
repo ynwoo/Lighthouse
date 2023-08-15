@@ -2,8 +2,6 @@ package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
-import com.ssafy.lighthouse.domain.common.entity.Gugun;
-import com.ssafy.lighthouse.domain.common.entity.Sido;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,9 +35,13 @@ public class Study extends BaseEntity {
     private Long originalId;
     private Long sidoId;
     private Long gugunId;
+    private String coverImgUrl;
     public void share() {
         this.status = STATUS.SHARE; // share중인 상태
     }
+    
+    // hit 관리
+    public void addHit() {this.hit++;}
     
     // like 관리
     public void addLike(){this.likeCnt++;}
@@ -99,5 +101,6 @@ public class Study extends BaseEntity {
         this.status = study.getStatus();
         this.sidoId = study.getSidoId();
         this.gugunId = study.getGugunId();
+        this.coverImgUrl = study.getCoverImgUrl();
     }
 }
