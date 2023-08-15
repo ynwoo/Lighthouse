@@ -83,11 +83,11 @@ function App() {
                     element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
                   />
                   <Route
-                    path="/temp"
+                    path="/templates"
                     element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
                   />
                   <Route
-                    path="/temp/:id"
+                    path="/study/:id"
                     element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
                   />
                   <Route path="/user/:id" element={<UserPage />} />
