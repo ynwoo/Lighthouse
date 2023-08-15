@@ -8,19 +8,12 @@ import javax.transaction.Transactional;
 
 import com.ssafy.lighthouse.domain.common.util.S3Utils;
 import com.ssafy.lighthouse.domain.study.exception.StudyNotFoundException;
+import com.ssafy.lighthouse.domain.user.dto.*;
+import com.ssafy.lighthouse.domain.user.entity.*;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.lighthouse.domain.auth.dto.OAuthUserInfoDto;
-import com.ssafy.lighthouse.domain.user.dto.AlertDto;
-import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
-import com.ssafy.lighthouse.domain.user.dto.UserEvalDto;
-import com.ssafy.lighthouse.domain.user.dto.UserMyPageDto;
-import com.ssafy.lighthouse.domain.user.entity.AlertQueue;
-import com.ssafy.lighthouse.domain.user.entity.Follow;
-import com.ssafy.lighthouse.domain.user.entity.User;
-import com.ssafy.lighthouse.domain.user.entity.UserEval;
-import com.ssafy.lighthouse.domain.user.entity.UserTag;
 import com.ssafy.lighthouse.domain.user.exception.UserNotFoundException;
 import com.ssafy.lighthouse.domain.user.repository.AlertQueueRepository;
 import com.ssafy.lighthouse.domain.user.repository.FollowRepository;
@@ -38,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
+	private static final String CATEGORY = "profileImage";
 	private final UserRepository userRepository;
 	private final UserTagRepository userTagRepository;
 	private final UserEvalRepository userEvalRepository;
@@ -47,10 +40,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addUser(UserMyPageDto userMyPageDto) {
+		userMyPageDto.setProfileImgUrl(S3Utils.uploadFile(CATEGORY , userMyPageDto.getProfileImgFile()));
 		User user = User.from(userMyPageDto);
 		user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
 		User savedUser = userRepository.save(user);
 		List<Long> list = userMyPageDto.getUserTagList();
+		if(list == null) {
+			return;
+		}
 		for (Long tagId : list) {
 			UserTag userTag = UserTag.from(savedUser.getId(), tagId);
 			userTagRepository.save(userTag);
@@ -60,6 +57,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserMyPageDto loginUser(String userEmail, String userPwd) {
 		User loginUser = userRepository.findByEmailAndIsValid(userEmail, 1);
+
 		if (loginUser != null && BCrypt.checkpw(userPwd,
 			userRepository.getReferenceById(loginUser.getId()).getPassword())) {
 			return UserMyPageDto.from(loginUser);
@@ -89,18 +87,29 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUser(UserMyPageDto userMyPageDto) {
 		User foundUser = userRepository.findById(userMyPageDto.getId()).get();
-
+		MultipartFile file = userMyPageDto.getProfileImgFile();
+		String fileUrl = foundUser.getProfileImgUrl();
+		if (file != null && !file.isEmpty()) {
+			//이전 파일 삭제
+			if (fileUrl != null) {
+				S3Utils.deleteFile(fileUrl);
+			}
+			fileUrl = S3Utils.uploadFile(CATEGORY, file);
+		}
 		foundUser.updateUserInfo(
 			userMyPageDto.getPassword() == null ? foundUser.getPassword() :
 				BCrypt.hashpw(userMyPageDto.getPassword(), BCrypt.gensalt()),
 			userMyPageDto.getName(),
-			userMyPageDto.getNickname(), userMyPageDto.getProfileImgUrl(),
+			userMyPageDto.getNickname(), fileUrl,
 			userMyPageDto.getAge(), userMyPageDto.getSidoId(), userMyPageDto.getGugunId(),
 			userMyPageDto.getPhoneNumber(), userMyPageDto.getDescription());
 
 		userTagRepository.updateIsValidToZeroByUserId(foundUser.getId());
 
 		List<Long> list = userMyPageDto.getUserTagList();
+		if(list == null) {
+			return;
+		}
 		for (Long tagId : list) {
 			UserTag userTag = UserTag.from(foundUser.getId(), tagId);
 			userTagRepository.save(userTag);
