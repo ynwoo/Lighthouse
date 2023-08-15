@@ -72,7 +72,7 @@ function StudyCard({ study }) {
           </div>
         </Card>
         {/* 레이어 카드 */}
-        <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+        <Link to={`/study/${study.id}`} state={{ id: study.id }}>
           <Card
             onMouseLeave={handleMouseLeave}
             className={isHovered ? 'hovered-card' : ''}
