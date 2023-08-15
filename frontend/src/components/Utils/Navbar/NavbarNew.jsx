@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import logo from '../../../static/main_logo.png'
 import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
@@ -28,7 +27,7 @@ export default function Navbar({ isLoggedIn }) {
         <Col xl={6} lg={6} md={6} sm={20} xs={20}>
           <Link to="/" state={{ status: 1 }}>
             <div style={{ paddingLeft: '10px', marginRight: '-10px' }}>
-              <img src={logo} alt="엑박" style={{ height: '50px' }} />
+              <img src="main_logo.PNG" alt="엑박" style={{ height: '50px' }} />
             </div>
           </Link>
         </Col>
