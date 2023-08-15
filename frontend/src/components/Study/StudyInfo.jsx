@@ -25,7 +25,7 @@ export default function StudyInfo({ study }) {
     StringToDate(study.recruitFinishedAt),
   )
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
-
+  const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
 
   const navigate = useNavigate()
@@ -77,7 +77,7 @@ export default function StudyInfo({ study }) {
     formData.append('isOnline', study.isOnline)
     formData.append('likeCnt', study.likeCnt)
     formData.append('bookmarkCnt', study.bookmarkCnt)
-    formData.append('originalId', study.originalId)
+    formData.append('originalId', study.originalId ?? 0)
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
@@ -352,6 +352,44 @@ export default function StudyInfo({ study }) {
         </div>
       </div>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <div className="info_text">
+        <p>스터디 공지</p>
+      </div>
+      <h2>
+        {/* 가장 마지막에 올린 공지 추리는 코드 */}
+        {
+          study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).content
+        }
+      </h2>
+      <input
+        type="text"
+        value={notice}
+        onChange={e => {
+          setNotice(e.target.value)
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          const data = {
+            studyId: study.id,
+            content: notice,
+          }
+          dispatch(studyAction.addNotice(data)).then(() =>
+            dispatch(studyAction.studyDetail(study.id)),
+          )
+          setNotice('')
+        }}
+      >
+        +
+      </button>
       <div className="info_text">
         <p>스터디 정보</p>
       </div>

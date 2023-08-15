@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<String> handleUnAuthorizedException(UnAuthorizedException e) {
         log.debug("handleUnAuthorizedException : {}", e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(StudyNotFoundException.class)
@@ -42,6 +42,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessTokenException.class)
     public ResponseEntity<String> handleAccessTokenException(AccessTokenException e) {
         log.debug("handleAccessTokenException : {}", e.getMessage());
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 }
