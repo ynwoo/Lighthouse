@@ -13,6 +13,7 @@ body {
   /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
+
 /* WaveComponent CSS */
 @import url(//fonts.googleapis.com/css?family=Lato:300:400);
 
@@ -876,4 +877,29 @@ h1 span:nth-child(9) {
 .badge {
   height: 15px;
   width: 15px;
+}
+
+
+.user-info {
+  & .badge {
+    width: 20px;
+    height: 20px;
+    border: 5px;
+  }
+
+  & .pie-chart {
+    width: 400px; 
+    height: 300px; 
+    margin: 0 auto;
+  }
+
+  & .bar-chart {
+    width: 500px; 
+    height: 300px; 
+    margin: 0 auto;
+  }
+
+  & .user-star-rating {
+    margin-left:auto;
+  }
 }

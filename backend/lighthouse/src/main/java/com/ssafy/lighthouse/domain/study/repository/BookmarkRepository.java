@@ -17,6 +17,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long> {
     Optional<Bookmark> find(@Param("studyId") Long studyId, @Param("userId") Long userId);
 
     // userId 가 bookmark한 studyIdList
-    @Query("select bm from Bookmark bm where bm.userId = :userId and bm.isValid = 1")
+    @Query("select bm.studyId from Bookmark bm where bm.userId = :userId and bm.isValid = 1")
     Set<Long> findAllByUserId(@Param("userId") Long userId);
 }

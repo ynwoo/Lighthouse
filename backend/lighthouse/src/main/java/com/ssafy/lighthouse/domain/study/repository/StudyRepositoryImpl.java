@@ -9,6 +9,7 @@ import com.ssafy.lighthouse.domain.common.entity.QBadge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
 import com.ssafy.lighthouse.domain.study.dto.StudySearchOption;
 import com.ssafy.lighthouse.domain.study.entity.Study;
+import com.ssafy.lighthouse.domain.user.entity.QUser;
 import com.ssafy.lighthouse.domain.user.repository.UserRepository;
 import com.ssafy.lighthouse.global.util.PAGE;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import static com.ssafy.lighthouse.domain.common.entity.QGugun.gugun;
 import static com.ssafy.lighthouse.domain.common.entity.QSido.sido;
 import static com.ssafy.lighthouse.domain.study.entity.QStudy.study;
 import static com.ssafy.lighthouse.domain.study.entity.QStudyTag.studyTag;
+import static com.ssafy.lighthouse.domain.user.entity.QUser.user;
 
 @Repository
 @Slf4j
@@ -73,7 +75,9 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
                         checkStatus(options),
                         isOnline(options),
                         checkByTagIds(options),
-                        searchByKeyword(options))
+                        searchByKeyword(options),
+                        checkSidoId(options.getSidoId()),
+                        checkGugunId(options.getGugunId()))
                 .fetchOne();
         if(total == null) total = 0L;
         log.debug("total : {}", total);
@@ -84,7 +88,17 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         PageRequest pageable = PageRequest.of(options.getPage(), PAGE.LIMIT, sort);
         return new PageImpl<>(contents, pageable, total);
     }
-    
+
+    // 구군 일치 여부 확인
+    private BooleanExpression checkGugunId(Long gugunId) {
+        return gugunId != null ? study.gugunId.eq(gugunId) : null;
+    }
+
+    // 시도 일치 여부 확인
+    private BooleanExpression checkSidoId(Long sidoId) {
+        return sidoId != null ? study.sidoId.eq(sidoId) : null;
+    }
+
     // tag 일치 여부 확인
     private BooleanExpression checkByTagIds(StudySearchOption options) {
         return options.getTagIds() != null ? studyTag.tag.id.in(options.getTagIds()) : null;
@@ -113,9 +127,20 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         // key값이 없으면 null
         if(key == null) return null;
 
-        if(key.equals("title")) {
-            return study.title.contains(word);
+        switch (key) {
+            case "title":
+                return study.title.contains(word);
+            case "description":
+                return study.description.contains(word);
+            case "leader":
+                // leader의 nickname 관련 검색
+                List<Long> studyIds = jpaQueryFactory.select(user.id)
+                        .from(user)
+                        .where(user.nickname.contains(word))
+                        .fetch();
+                return study.leaderId.in(studyIds);
         }
+
         return null;
     }
     
@@ -129,6 +154,12 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
         // orderKey가 있는 경우
         if(orderKey != null) {
             switch (orderKey) {
+                case "createdAt":
+                    result = study.createdAt;
+                    break;
+                case "hit":
+                    result = study.hit;
+                    break;
                 case "like":
                     result = study.likeCnt;
                     break;

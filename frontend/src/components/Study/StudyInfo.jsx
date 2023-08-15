@@ -62,19 +62,131 @@ export default function StudyInfo({ study }) {
     setCreatedDate(date)
   }
 
+  // const copyStudy = (status = study.status) => {
+  //   return {
+  //     ...study,
+  //     sessions: [...study.sessions],
+  //     studyTags: [...study.studyTags],
+  //     studyNotices: [...study.studyNotices],
+  //     startedAt: startDateToString(startDate) ?? study.startedAt,
+  //     endedAt: endDateToString(endDate) ?? study.endedAt,
+  //     recruitFinishedAt:
+  //       endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+  //     createdAt: startDateToString(createdDate) ?? study.createdAt,
+  //     status,
+  //     originalId: 0,
+  //   }
+  // }
+
   const copyStudy = (status = study.status) => {
-    return {
-      ...study,
-      sessions: [...study.sessions],
-      studyTags: [...study.studyTags],
-      studyNotices: [...study.studyNotices],
-      startedAt: startDateToString(startDate) ?? study.startedAt,
-      endedAt: endDateToString(endDate) ?? study.endedAt,
-      recruitFinishedAt:
-        endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-      createdAt: startDateToString(createdDate) ?? study.createdAt,
-      status,
-    }
+    const formData = new FormData()
+    // console.log();
+    formData.append('id', study.id)
+    formData.append('isValid', study.isValid)
+    formData.append('title', `${study.title}수정완료!!`)
+    formData.append('description', study.description)
+    formData.append('hit', study.hit)
+    formData.append('rule', study.rule)
+    formData.append('maxMember', study.maxMember)
+    formData.append('minMember', study.minMember)
+    formData.append('currentMember', study.currentMember)
+    formData.append('isOnline', study.isOnline)
+    formData.append('likeCnt', study.likeCnt)
+    formData.append('bookmarkCnt', study.bookmarkCnt)
+    formData.append('originalId', study.originalId ?? 0)
+    if (study.sidoId) formData.append('sidoId', study.sidoId)
+    if (study.gugunId) formData.append('gugunId', study.gugunId)
+    formData.append('status', status)
+    formData.append(
+      'createdAt',
+      startDateToString(createdDate) ?? study.createdAt,
+    )
+    formData.append(
+      'startedAt',
+      startDateToString(startDate) ?? study.startedAt,
+    )
+    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    formData.append(
+      'recruitFinishedAt',
+      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    )
+
+    Object.keys(study).forEach(sKey => {
+      // studyTags
+      if (sKey === 'studyTags') {
+        study.studyTags?.forEach((studyTag, index) => {
+          Object.keys(studyTag).forEach(key => {
+            if (key !== 'tag') {
+              formData.append(`studyTags[${index}].${key}`, studyTag[key])
+            } else {
+              Object.keys(studyTag[key]).forEach(tagKey => {
+                formData.append(
+                  `studyTags[${index}].${key}.${tagKey}`,
+                  studyTag[key][tagKey],
+                )
+              })
+            }
+          })
+        })
+      }
+
+      // sessions
+      else if (sKey === 'sessions') {
+        study.sessions?.forEach((session, index) => {
+          Object.keys(session).forEach(key => {
+            // studyMaterials
+            if (key === 'studyMaterials') {
+              session.studyMaterials?.forEach((studyMaterial, smIndex) => {
+                Object.keys(studyMaterial).forEach(smKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${smIndex}].${smKey}`,
+                    studyMaterial[smKey],
+                  )
+                })
+              })
+            }
+
+            // sessionChecks
+            else if (key === 'sessionChecks') {
+              session.sessionChecks?.forEach((sessionCheck, scIndex) => {
+                Object.keys(sessionCheck).forEach(scKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${scIndex}].${scKey}`,
+                    sessionCheck[scKey],
+                  )
+                })
+              })
+            }
+
+            // sessions
+            else {
+              formData.append(`sessions[${index}].${key}`, session[key])
+            }
+          })
+        })
+      }
+
+      // studyNotices
+      else if (sKey === 'studyNotices') {
+        // formData.append('studyNotices', null)
+        console.log(sKey)
+      }
+
+      // studyEvals
+      else if (sKey === 'studyEvals') {
+        // formData.append('studyEvals', null)
+        console.log(sKey)
+      }
+
+      // badge
+      else if (sKey === 'badge' && study.badge) {
+        Object.keys(study.badge).forEach(key => {
+          if (key !== 'isValid')
+            formData.append(`badge.${key}`, study.badge[key])
+        })
+      }
+    })
+    return formData
   }
 
   const callStudyUpdateApi = async studyRequest => {
