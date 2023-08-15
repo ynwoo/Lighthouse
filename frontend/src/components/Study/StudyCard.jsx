@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
-import { HeartOutlined, BookOutlined } from '@ant-design/icons'
+import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
 
@@ -63,7 +63,18 @@ function StudyCard({ study }) {
                 {study.leaderProfile?.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
-              <p>{`좋아요 ${study.likeCnt}  북마크 ${study.bookmarkCnt}`}</p>
+              <Row>
+                <Col span={5}>
+                  <HeartOutlined /> {study.likeCnt}
+                </Col>
+                <Col span={5}>
+                  <BookOutlined /> {study.bookmarkCnt}
+                </Col>
+                <Col>
+                  <EyeOutlined /> {study.hit}
+                </Col>
+              </Row>
+              <p />
             </div>
           </div>
         </Card>

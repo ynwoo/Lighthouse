@@ -3,13 +3,14 @@ import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import logo from '../../../static/main_logo.PNG'
+import logo from '../../../static/main_logo.png'
 import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
   const location = useLocation()
   console.log(location.pathname)
+
   const handleLogout = () => {
     dispatch(userAction.logout()).then(() => {
       window.location.href = '/'
@@ -58,16 +59,6 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
               </>
             )}
-            <Menu.Item key="/temp" style={{ float: 'right' }}>
-              <Link to="/temp" state={{ status: 5 }}>
-                템플릿 둘러보기
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/" style={{ float: 'right' }}>
-              <Link to="/" state={{ status: 5 }}>
-                스터디 모집
-              </Link>
-            </Menu.Item>
             {isLoggedIn && (
               <>
                 <Menu.Item
@@ -87,6 +78,16 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
               </>
             )}
+            <Menu.Item key="/temp" style={{ float: 'right' }}>
+              <Link to="/temp" state={{ status: 5 }}>
+                템플릿 둘러보기
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/" style={{ float: 'right' }}>
+              <Link to="/" state={{ status: 5 }}>
+                스터디 모집
+              </Link>
+            </Menu.Item>
           </Menu>
         </Col>
       </Row>

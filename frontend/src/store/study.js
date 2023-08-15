@@ -176,6 +176,15 @@ export const studyAction = {
       }
     },
   ),
+  addNotice: createAsyncThunk('study/addNotice', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/study-notice`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const studySlice = createSlice({
