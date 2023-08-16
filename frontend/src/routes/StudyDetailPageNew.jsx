@@ -47,7 +47,7 @@ export default function TempDetailPage({ isLoggedIn }) {
     )?.id
       ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
       : [
-          { 'Q&A': <StudyQnA qnas={study?.qnas} /> },
+          { 'Q&A': <StudyQnA study={study} /> },
           { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
           { 리뷰: <StudyReview study={study} /> },
         ]),
