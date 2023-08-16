@@ -72,9 +72,7 @@ public class StudyController {
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
-    log.debug("study: {}", studyRequest);
-//        log.debug("studyId : {}", studyRequest.getId());
-//        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
+        log.debug("study: {}", studyRequest);
         StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
         return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
@@ -171,12 +169,12 @@ public class StudyController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    // studyBadge 교체
-    @PutMapping("/badge")
-    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
-                                              @RequestPart(value = "img") MultipartFile img,
-                                              @RequestPart(value = "studyId") Long studyId) {
-        studyService.updateStudyBadge(badgeRequest, img, studyId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+//    // studyBadge 교체
+//    @PutMapping("/badge")
+//    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+//                                              @RequestPart(value = "img") MultipartFile img,
+//                                              @RequestPart(value = "studyId") Long studyId) {
+//        studyService.updateStudyBadge(badgeRequest,studyId);
+//        return new ResponseEntity<Void>(HttpStatus.OK);
+//    }
 }

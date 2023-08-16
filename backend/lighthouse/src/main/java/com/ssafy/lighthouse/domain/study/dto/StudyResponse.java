@@ -76,6 +76,7 @@ public class StudyResponse {
         this.originalId = study.getOriginalId();
         this.sidoId = study.getSidoId();
         this.gugunId = study.getGugunId();
+        this.coverImgUrl = study.getCoverImgUrl();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.studyTags = study.getStudyTags() != null ? study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList()) : null;
         this.studyEvals = study.getStudyEvals() != null ? study.getStudyEvals().stream().filter(BaseEntity::isValid).map(StudyEvalDto::new).collect(Collectors.toList()) : null;
