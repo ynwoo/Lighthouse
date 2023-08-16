@@ -31,4 +31,5 @@ public class ProfileResponse {
     private Long following;
     private Long follower;
     private SimpleUserResponse simpleUserResponse;
+    private List<SimpleProfileResponse> participatedUserProfiles;
 }
