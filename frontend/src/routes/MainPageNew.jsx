@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
-import Pagenation from '../components/Study/utils/button/Pagenation'
 import { STATUS } from '../utils'
 
 function getCookie(name) {
@@ -92,8 +91,9 @@ export default function MainPage({ isLoggedIn, status }) {
         {status === STATUS.RECRUITING ? '모집 중인 스터디' : '템플릿 둘러보기'}
       </h2>
       <SearchComponent />
-      <StudyList studies={studies} isLoggedIn={isLoggedIn} />
-      <Pagenation
+      <StudyList
+        studies={studies}
+        isLoggedIn={isLoggedIn}
         handleMovePage={handleMovePage}
         totalPage={totalPage}
         currentPage={params.page}

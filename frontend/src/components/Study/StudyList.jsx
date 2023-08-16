@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { List } from 'antd'
 import StudyCard from './StudyCard'
+import { PAGE } from '../../utils'
+import Pagenation from './utils/button/Pagenation'
 
-function StudyList({ studies }) {
+function StudyList({ studies, handleMovePage, totalPage, currentPage }) {
+  const [page, setPage] = useState(0)
+  const start = page * PAGE
+  const end = (page + 1) * PAGE
+
   return (
     <div style={{ width: '100%' }}>
       <List
@@ -16,12 +22,26 @@ function StudyList({ studies }) {
           xl: 4,
           xxl: 4,
         }}
-        dataSource={studies}
+        dataSource={
+          studies.length > 8
+            ? studies.filter(study => study.id >= start && study.id < end)
+            : studies
+        }
         renderItem={study => (
           <List.Item>
             <StudyCard study={study} />
           </List.Item>
         )}
+      />
+      <Pagenation
+        handleMovePage={
+          handleMovePage &&
+          (newPage => {
+            setPage(newPage)
+          })
+        }
+        totalPage={totalPage && Math.floor(studies.length / 8)}
+        currentPage={currentPage && page}
       />
     </div>
   )
