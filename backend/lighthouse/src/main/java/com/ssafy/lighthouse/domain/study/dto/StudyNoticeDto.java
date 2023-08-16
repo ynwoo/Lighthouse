@@ -3,10 +3,7 @@ package com.ssafy.lighthouse.domain.study.dto;
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.study.entity.StudyNotice;
 import com.ssafy.lighthouse.domain.study.entity.StudyNoticeCheck;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.stream.Collectors;
 
 public class StudyNoticeDto {
 	@Getter
+	@Setter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class StudyNoticeReq {
 		private Long id;

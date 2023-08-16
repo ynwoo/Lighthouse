@@ -75,8 +75,8 @@ public class StudyController {
     log.debug("study: {}", studyRequest);
 //        log.debug("studyId : {}", studyRequest.getId());
 //        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
-//        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+        return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
 
     // 스터디 삭제
