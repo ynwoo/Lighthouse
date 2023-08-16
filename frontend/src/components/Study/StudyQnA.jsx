@@ -10,7 +10,7 @@ function QnA({ study }) {
   const myInfo = useSelector(state => state.user.myProfile)
 
   return (
-    <div>
+    <div style={{ minHeight: '600px' }}>
       <h3 style={{ marginBottom: '10px' }}>질문하기</h3>
       <Space direction="horizontal">
         <Input

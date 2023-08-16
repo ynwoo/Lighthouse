@@ -75,6 +75,14 @@ export default function Navbar({ isLoggedIn }) {
                     마이페이지
                   </Link>
                 </Menu.Item>
+                <Menu.Item key="/mystudies" style={{ float: 'right' }}>
+                  <Link
+                    to="/mystudies"
+                    state={{ userId: Number(sessionStorage.getItem('userId')) }}
+                  >
+                    내 스터디
+                  </Link>
+                </Menu.Item>
               </>
             )}
             <Menu.Item key="/templates" style={{ float: 'right' }}>

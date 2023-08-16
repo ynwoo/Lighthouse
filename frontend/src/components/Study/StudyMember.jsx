@@ -6,7 +6,7 @@ export default function StudyMember({ members }) {
   console.log(members)
 
   return (
-    <div>
+    <div style={{ minHeight: '600px' }}>
       <h3>스터디원 총 {members.length} 명</h3>
       <Divider />
       <List
