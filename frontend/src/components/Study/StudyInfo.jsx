@@ -10,6 +10,7 @@ import {
   startDateToString,
   image,
   StringToDate,
+  STATUS,
 } from '../../utils/index'
 import { createStudy } from '../../api/study'
 import likemark from '../../static/mark/like.png'
@@ -233,7 +234,19 @@ export default function StudyInfo({ study }) {
     callStudyUpdateApi(copyStudy())
   }
   const handleRecruitStudy = () => {
-    callStudyUpdateApi(copyStudy(1))
+    callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+  }
+
+  const handleProgressStudy = () => {
+    callStudyUpdateApi(copyStudy(STATUS.PROGRESS))
+  }
+
+  const handleTerminateStudy = () => {
+    callStudyUpdateApi(copyStudy(STATUS.TERMINATED))
+  }
+
+  const handleShareStudy = () => {
+    callStudyUpdateApi(copyStudy(STATUS.SHARE))
   }
 
   const handleCreateStudy = () => {
@@ -263,9 +276,30 @@ export default function StudyInfo({ study }) {
           style={{ width: '100%' }}
         />
         <div className="study_box">
-          {study.status === 5 && (
+          {study.status === STATUS.SHARE && (
             <CreateButton onClick={handleCreateStudy}>템플릿 복제</CreateButton>
           )}
+          {study.status === STATUS.RECRUITING &&
+            study.leaderProfile?.id ===
+              Number(sessionStorage.getItem('userId')) && (
+              <CreateButton onClick={handleProgressStudy}>
+                스터디 시작
+              </CreateButton>
+            )}
+          {study.status === STATUS.PROGRESS &&
+            study.leaderProfile?.id ===
+              Number(sessionStorage.getItem('userId')) && (
+              <CreateButton onClick={handleTerminateStudy}>
+                스터디 종료
+              </CreateButton>
+            )}
+          {study.status === STATUS.TERMINATED &&
+            study.leaderProfile?.id ===
+              Number(sessionStorage.getItem('userId')) && (
+              <CreateButton onClick={handleShareStudy}>
+                스터디 공유
+              </CreateButton>
+            )}
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
