@@ -194,7 +194,6 @@ export default function StudyInfo({ study }) {
         })
       }
     })
-
     return formData
   }
 
