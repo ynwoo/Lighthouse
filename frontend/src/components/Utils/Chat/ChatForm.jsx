@@ -23,7 +23,7 @@ const MessageForm = styled.form`
   }
 `
 
-function ChatForm() {
+function ChatForm({ roomId }) {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
 
@@ -33,7 +33,6 @@ function ChatForm() {
     }
   }
 
-  const roomId = 1
   const userName = sessionStorage.getItem('nickname')
   const senderId = sessionStorage.getItem('userId')
 
@@ -69,6 +68,10 @@ function ChatForm() {
       </ButtonContainer>
     </MessageForm>
   )
+}
+
+ChatForm.defaultProps = {
+  roomId: 1,
 }
 
 export default ChatForm
