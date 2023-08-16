@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import Navbar from './components/Utils/Navbar/NavbarNew'
 import WaveComponent from './components/Utils/WaveComponent'
 import MainPage from './routes/MainPageNew'
-import StudyDetailPage from './routes/StudyDetailPage'
+import StudyDetailPage from './routes/StudyDetailPageNew'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
@@ -83,11 +83,11 @@ function App() {
                     element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
                   />
                   <Route
-                    path="/temp"
+                    path="/templates"
                     element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
                   />
                   <Route
-                    path="/temp/:id"
+                    path="/study/:id"
                     element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
                   />
                   <Route path="/user/:id" element={<UserPage />} />
@@ -105,8 +105,9 @@ function App() {
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}
       </Footer>
-      <button
-        type="submit"
+      <FloatButton
+        icon={<CommentOutlined style={{ fontSize: '20px' }} />}
+        onClick={handleChatClick}
         style={{
           position: 'fixed',
           bottom: '20px',
@@ -117,12 +118,10 @@ function App() {
           padding: 0,
           margin: 0,
           zIndex: '1',
-          // width: '200px',
+          width: '50px',
+          height: '50px',
         }}
-        onClick={handleChatClick}
-      >
-        <FloatButton icon={<CommentOutlined />} />
-      </button>
+      />
       {showChat && (
         // 채팅창이 보일 때만 아래 코드가 렌더링됨
         <div

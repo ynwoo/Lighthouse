@@ -243,7 +243,7 @@ export default function StudyInfo({ study }) {
       ({ data }) => {
         console.log(data)
         alert('템플릿 복제 완료!!')
-        navigate(`/temp/${data.id}`)
+        navigate(`/study/${data.id}`)
       },
       ({ data }) => {
         console.log(data)
