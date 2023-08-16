@@ -173,7 +173,7 @@ export default function TempDetailPage({ isLoggedIn }) {
                         dispatch(userAction.profile(myInfo.id))
                       })
                     }}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="북마크 취소">
                       <BookFilled /> {study.bookmarkCnt}
@@ -189,7 +189,7 @@ export default function TempDetailPage({ isLoggedIn }) {
                         dispatch(userAction.profile(myInfo.id))
                       })
                     }}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="북마크">
                       <BookOutlined /> {study.bookmarkCnt}
@@ -207,7 +207,7 @@ export default function TempDetailPage({ isLoggedIn }) {
                         dispatch(studyAction.getLike())
                       })
                     }}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요 취소">
                       <HeartFilled /> {study.likeCnt}
@@ -223,7 +223,7 @@ export default function TempDetailPage({ isLoggedIn }) {
                         dispatch(studyAction.getLike())
                       })
                     }}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요">
                       <HeartOutlined /> {study.likeCnt}
