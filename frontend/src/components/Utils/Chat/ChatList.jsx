@@ -5,10 +5,12 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { Avatar, List } from 'antd'
 
 import { useSelector } from 'react-redux'
+import ChatContainer from './ChatContainer'
 
-function App() {
+function ChattingList() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
+  const [roomId, setRoomId] = useState(-1)
 
   const profile = useSelector(state => state.user.profile)
   const studiesToShow =
@@ -29,10 +31,10 @@ function App() {
 
   console.log('profile in chat list: ', profile)
 
-  function clickHandler(e) {
-    console.log('click', e)
+  const clickHandler = id => {
+    console.log('clicked', id)
+    setRoomId(id)
   }
-
   const loadMoreData = () => {
     if (loading) {
       return
@@ -53,7 +55,7 @@ function App() {
 
   useEffect(() => {
     loadMoreData()
-  }, [])
+  }, [roomId])
 
   return (
     <div
@@ -65,45 +67,52 @@ function App() {
         // border: '1px solid rgba(140, 140, 140, 0.35)',
       }}
     >
-      <InfiniteScroll
-        dataLength={data.length}
-        // next={loadMoreData}
-        // hasMore={data.length < 50}
-        // loader={
-        //   <Skeleton
-        //     avatar
-        //     paragraph={{
-        //       rows: 1,
-        //     }}
-        //     active
-        //   />
-        // }
-        // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-        scrollableTarget="scrollableDiv"
-      >
-        <List
-          dataSource={studiesToShow}
-          renderItem={item => (
-            <List.Item key={item.id}>
-              <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={`${process.env.REACT_APP_S3_DOMAIN_URL}${item.avatar}`}
-                  />
-                }
-                title={
-                  <button type="button" onClick={clickHandler}>
-                    {item.title}
-                  </button>
-                }
-                description={item.description}
-              />
-              <div>GO</div>
-            </List.Item>
-          )}
-        />
-      </InfiniteScroll>
+      {roomId !== -1 ? (
+        <div>
+          <ChatContainer studyId={roomId} setRoomId={setRoomId} />
+        </div>
+      ) : (
+        <InfiniteScroll
+          dataLength={data.length}
+          // next={loadMoreData}
+          // hasMore={data.length < 50}
+          // loader={
+          //   <Skeleton
+          //     avatar
+          //     paragraph={{
+          //       rows: 1,
+          //     }}
+          //     active
+          //   />
+          // }
+          // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+          scrollableTarget="scrollableDiv"
+        >
+          <List
+            dataSource={studiesToShow}
+            renderItem={item => (
+              <List.Item key={item.id}>
+                <List.Item.Meta
+                  avatar={
+                    <Avatar
+                      src={`${process.env.REACT_APP_S3_DOMAIN_URL}${item.avatar}`}
+                    />
+                  }
+                  title={
+                    <button type="button" onClick={() => clickHandler(item.id)}>
+                      {item.title}
+                    </button>
+                  }
+                  description={item.description}
+                />
+                <div>GO</div>
+              </List.Item>
+            )}
+          />
+        </InfiniteScroll>
+      )}
     </div>
   )
 }
-export default App
+
+export default ChattingList
