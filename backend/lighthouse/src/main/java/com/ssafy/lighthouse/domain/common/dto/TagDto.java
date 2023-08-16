@@ -3,8 +3,12 @@ package com.ssafy.lighthouse.domain.common.dto;
 import com.ssafy.lighthouse.domain.common.entity.Tag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class TagDto {
     private Long id;
