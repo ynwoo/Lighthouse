@@ -5,7 +5,7 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 import { Avatar, List } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { chatAction, receiveMessage } from '../../../store/chat'
-
+import base from '../../../static/base.png'
 import ChatContainer from './ChatContainer'
 import { userAction } from '../../../store/user'
 
@@ -58,11 +58,12 @@ function ChattingList() {
     // dispatch(chatAction.getChat(studyId))
   }, [])
 
-  client.onConnect = frame => {
+  client.onConnect = () => {
     // Do something, all subscribes must be done is this callback
     // This is needed because this will be executed after a (re)connect
-    console.log(`connection established: ${frame}`)
+
     for (let i = 0; i < studiesToShow.length; i += 1) {
+      console.log(`connection established sid: ${studiesToShow[i].id}`)
       client.subscribe(`/sub/${studiesToShow[i].id}`, msg => {
         const messageData = JSON.parse(msg.body)
         dispatch(receiveMessage(messageData))
@@ -119,12 +120,22 @@ function ChattingList() {
         height: 500,
         overflow: 'auto',
         padding: '0 16px',
+        zIndex: '99999999',
         // border: '1px solid rgba(140, 140, 140, 0.35)',
       }}
     >
       {roomId !== -1 ? (
         <div>
-          <ChatContainer studyId={roomId} setRoomId={setRoomId} />
+          <ChatContainer
+            studyId={roomId}
+            setRoomId={setRoomId}
+            srcImg={
+              studiesToShow.filter(s => {
+                // eslint-disable-next-line eqeqeq
+                return s.id == roomId
+              })[0].avatar
+            }
+          />
         </div>
       ) : (
         <InfiniteScroll
@@ -138,11 +149,25 @@ function ChattingList() {
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={`${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${item.avatar}`}
+                      src={
+                        item.avatar
+                          ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${item.avatar}`
+                          : base
+                      }
                     />
                   }
                   title={
-                    <button type="button" onClick={() => clickHandler(item.id)}>
+                    <button
+                      type="button"
+                      onClick={() => clickHandler(item.id)}
+                      style={{
+                        padding: '7px',
+                        borderRadius: '20px',
+                        backgroundColor: '#4D67C1',
+                        border: '2px solid #4D67C1',
+                        color: 'white',
+                      }}
+                    >
                       {item.title}
                     </button>
                   }
