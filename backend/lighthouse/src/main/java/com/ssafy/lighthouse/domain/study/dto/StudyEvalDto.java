@@ -3,8 +3,10 @@ package com.ssafy.lighthouse.domain.study.dto;
 import com.ssafy.lighthouse.domain.study.entity.StudyEval;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class StudyEvalDto {
     private Long id;
