@@ -86,51 +86,13 @@ function UserInfoModify({ profile }) {
             }
             // redux => server
             dispatch(userAction.profileUpdate(values))
+              .unwrap()
+              .then(() => alert('변경이 완료되었습니다!'))
           } else {
             alert('닉네임 중복확인을 해주세요.')
           }
         }}
       >
-        <Form.Item
-          name="password"
-          label="비밀번호"
-          tooltip="영문/숫자/특수문자 2가지 이상 포함, 8자 이상 32자 이하 입력 (공백 제외)"
-          rules={[
-            {
-              required: true,
-              message: '비밀번호를 입력해주세요.',
-            },
-          ]}
-          hasFeedback
-        >
-          <Input.Password placeholder="********" />
-        </Form.Item>
-
-        <Form.Item
-          name="confirm"
-          label="비밀번호 확인"
-          dependencies={['password']}
-          hasFeedback
-          rules={[
-            {
-              required: true,
-              message: '비밀번호가 일치하지 않습니다.',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve()
-                }
-                return Promise.reject(
-                  new Error('비밀번호가 일치하지 않습니다.'),
-                )
-              },
-            }),
-          ]}
-        >
-          <Input.Password placeholder="********" />
-        </Form.Item>
-
         <Form.Item label="이름" name="name">
           <Input defaultValue={profile.name} />
         </Form.Item>
@@ -243,6 +205,45 @@ function UserInfoModify({ profile }) {
 
         <Form.Item label="자기소개" name="description">
           <TextArea rows={4} defaultValue={profile.description} />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          label="비밀번호"
+          tooltip="영문/숫자/특수문자 2가지 이상 포함, 8자 이상 32자 이하 입력 (공백 제외)"
+          rules={[
+            {
+              required: true,
+              message: '비밀번호를 입력해주세요.',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password placeholder="********" />
+        </Form.Item>
+
+        <Form.Item
+          name="confirm"
+          label="비밀번호 확인"
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: '비밀번호가 일치하지 않습니다.',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(
+                  new Error('비밀번호가 일치하지 않습니다.'),
+                )
+              },
+            }),
+          ]}
+        >
+          <Input.Password placeholder="********" />
         </Form.Item>
         <div
           style={{
