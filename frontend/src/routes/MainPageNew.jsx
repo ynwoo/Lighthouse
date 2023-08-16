@@ -60,6 +60,7 @@ export default function MainPage({ isLoggedIn, status }) {
 
   console.log(studies)
   console.log(params)
+  console.log('totalPage', totalPage)
 
   const handleMovePage = page => () => dispatch(setParams({ ...params, page }))
 

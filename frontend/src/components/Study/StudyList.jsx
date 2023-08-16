@@ -8,6 +8,10 @@ function StudyList({ studies, handleMovePage, totalPage, currentPage }) {
   const [page, setPage] = useState(0)
   const start = page * PAGE
   const end = (page + 1) * PAGE
+  console.log('handleMovePage', handleMovePage)
+  console.log('totalPage', totalPage)
+  console.log('currentPage', currentPage)
+  console.log('Math.ceil(studies.length / 8)', Math.ceil(studies.length / 8))
 
   return (
     <div style={{ width: '100%' }}>
@@ -23,9 +27,9 @@ function StudyList({ studies, handleMovePage, totalPage, currentPage }) {
           xxl: 4,
         }}
         dataSource={
-          studies.length > 8
-            ? studies.filter(study => study.id >= start && study.id < end)
-            : studies
+          handleMovePage
+            ? studies
+            : studies.filter((study, index) => index >= start && index < end)
         }
         renderItem={study => (
           <List.Item>
@@ -35,13 +39,13 @@ function StudyList({ studies, handleMovePage, totalPage, currentPage }) {
       />
       <Pagenation
         handleMovePage={
-          handleMovePage &&
-          (newPage => {
+          handleMovePage ||
+          (newPage => () => {
             setPage(newPage)
           })
         }
-        totalPage={totalPage && Math.floor(studies.length / 8)}
-        currentPage={currentPage && page}
+        totalPage={totalPage || Math.ceil(studies.length / 8)}
+        currentPage={currentPage || page}
       />
     </div>
   )
