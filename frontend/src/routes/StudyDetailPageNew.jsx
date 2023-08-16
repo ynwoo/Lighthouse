@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
 import { Row, Col, Tag, Tabs, Button, Tooltip } from 'antd'
-import {
-  HeartOutlined,
-  HeartFilled,
-  BookOutlined,
-  BookFilled,
-} from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
-// import SideComponent from '../components/Utils/SideComponent'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faBookmark as faBookmarkSolid,
+  faHeart as faHeartSolid,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faBookmark as faBookmarkRegular,
+  faHeart as faHeartRegular,
+} from '@fortawesome/free-regular-svg-icons'
 import StudyInfo from '../components/Study/StudyInfoNew'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyEdit from '../components/Study/StudyEdit'
@@ -178,7 +180,12 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="북마크 취소">
-                      <BookFilled /> {study.bookmarkCnt}
+                      <FontAwesomeIcon
+                        className="blue"
+                        icon={faBookmarkSolid}
+                        beat
+                      />{' '}
+                      {study.bookmarkCnt}
                     </Tooltip>
                   </Col>
                 ) : (
@@ -194,7 +201,12 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="북마크">
-                      <BookOutlined /> {study.bookmarkCnt}
+                      <FontAwesomeIcon
+                        className="blue"
+                        icon={faBookmarkRegular}
+                        beat
+                      />{' '}
+                      {study.bookmarkCnt}
                     </Tooltip>
                   </Col>
                 )}
@@ -212,7 +224,12 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요 취소">
-                      <HeartFilled /> {study.likeCnt}
+                      <FontAwesomeIcon
+                        className="red"
+                        icon={faHeartSolid}
+                        beat
+                      />{' '}
+                      {study.likeCnt}
                     </Tooltip>
                   </Col>
                 ) : (
@@ -228,7 +245,12 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요">
-                      <HeartOutlined /> {study.likeCnt}
+                      <FontAwesomeIcon
+                        className="red"
+                        icon={faHeartRegular}
+                        beat
+                      />{' '}
+                      {study.likeCnt}
                     </Tooltip>
                   </Col>
                 )}
