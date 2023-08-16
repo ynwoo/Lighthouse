@@ -77,8 +77,8 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
               </>
             )}
-            <Menu.Item key="/temp" style={{ float: 'right' }}>
-              <Link to="/temp" state={{ status: 5 }}>
+            <Menu.Item key="/templates" style={{ float: 'right' }}>
+              <Link to="/tempplates" state={{ status: 5 }}>
                 템플릿 둘러보기
               </Link>
             </Menu.Item>

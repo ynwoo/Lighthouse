@@ -10,7 +10,7 @@ export default function StudyReview({ study }) {
   const [score, setScore] = useState(0)
   const [comment, setComment] = useState('')
   return (
-    <div className="big_box">
+    <div>
       <div>
         <input
           type="text"
