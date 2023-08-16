@@ -42,6 +42,7 @@ const initialState = {
     originalId: 0,
     sidoId: 0,
     gugunId: 0,
+    coverImgUrl: null,
     badge: {
       id: 0,
       imgUrl: '',

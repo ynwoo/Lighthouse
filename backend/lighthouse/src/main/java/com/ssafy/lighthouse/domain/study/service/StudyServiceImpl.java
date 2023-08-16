@@ -201,10 +201,16 @@ public class StudyServiceImpl implements StudyService {
     // 변경사항이 있으면 update 진행
     @Override
     public StudyResponse updateStudyByStudyId(StudyRequest studyRequest) {
-        studyRequest.setCoverImgUrl(S3Utils.uploadFile(CATEGORY, studyRequest.getCoverImgFile()));
+        // fileUpload
+        if(studyRequest.getCoverImgFile() != null) {
+            studyRequest.setCoverImgUrl(S3Utils.uploadFile(CATEGORY, studyRequest.getCoverImgFile()));
+        }
         Study changedStudy = studyRequest.toEntity();
         Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
         log.debug("studyId : {}", study.getId());
+        log.debug("startedAt : {}", study.getStartedAt());
+        log.debug("endedAt : {}", study.getEndedAt());
+        log.debug("recruitFinishedAt : {}", study.getRecruitFinishedAt());
 
         int prevStatus = study.getStatus();
         int curStatus = studyRequest.getStatus();

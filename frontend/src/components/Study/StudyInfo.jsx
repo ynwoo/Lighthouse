@@ -5,8 +5,8 @@ import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
 import {
-  // endDateToString,
-  // startDateToString,
+  endDateToString,
+  startDateToString,
   image,
   StringToDate,
 } from '../../utils/index'
@@ -84,20 +84,21 @@ export default function StudyInfo({ study }) {
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
     console.log('uploadedImageFile', uploadedImageFile)
-    formData.append('coverImgFile', uploadedImageFile)
-    // formData.append(
-    //   'createdAt',
-    //   startDateToString(createdDate) ?? study.createdAt,
-    // )
-    // formData.append(
-    //   'startedAt',
-    //   startDateToString(startDate) ?? study.startedAt,
-    // )
-    // formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
-    // formData.append(
-    //   'recruitFinishedAt',
-    //   endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-    // )
+    if (uploadedImageFile) formData.append('coverImgFile', uploadedImageFile)
+    formData.append('coverImgUrl', study.coverImgUrl)
+    formData.append(
+      'createdAt',
+      startDateToString(createdDate) ?? study.createdAt,
+    )
+    formData.append(
+      'startedAt',
+      startDateToString(startDate) ?? study.startedAt,
+    )
+    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    formData.append(
+      'recruitFinishedAt',
+      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    )
     console.log(createdDate, startDate, recruitFinishedDate, endDate)
 
     Object.keys(study).forEach(sKey => {
@@ -205,6 +206,7 @@ export default function StudyInfo({ study }) {
   const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
     dispatch(studyAction.studyUpdate(studyRequest))
+    setUploadedImageFile(null)
   }
 
   const handleUpdateStudy = () => {
