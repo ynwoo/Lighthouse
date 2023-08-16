@@ -1,14 +1,14 @@
 
 .star-ratings {
-  color: #f8f8f8;
+  color: #dddddd;
   position: relative;
   unicode-bidi: bidi-override;
   width: max-content;
   -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
   -webkit-text-stroke-width: 1.3px;
-  -webkit-text-stroke-color: #2b2a29;
+  -webkit-text-stroke-color: #2a292b;
   font-size: 30px;
-  --my-star-color : yellow;
+  --my-star-color : rgb(215, 159, 248);
 }
 
 .star {
@@ -25,9 +25,25 @@
   left: 0;
   overflow: hidden;
   -webkit-text-fill-color: var(--my-star-color);
+   & #star-1 {
+    color: red;
+   }
+   & #star-2 {
+    color: orange;
+   }
+   & #star-3 {
+    color: green;
+   }
+   & #star-4 {
+    color: blue;
+   }
+   & #star-5 {
+    color: violet;
+   }
 }
 
 .star-ratings-base {
+  display: flex;
   z-index: -1;
   padding: 0;
 }
