@@ -10,7 +10,7 @@ import {
   image,
   StringToDate,
 } from '../../utils/index'
-import { createStudy, updateStudy } from '../../api/study'
+import { createStudy } from '../../api/study'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
@@ -67,7 +67,7 @@ export default function StudyInfo({ study }) {
     // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
-    formData.append('title', `${study.title}수정완료!!`)
+    formData.append('title', study.title)
     formData.append('description', study.description)
     formData.append('hit', study.hit)
     formData.append('rule', study.rule)
@@ -194,21 +194,24 @@ export default function StudyInfo({ study }) {
         })
       }
     })
+
     return formData
   }
 
   const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
-    await updateStudy(
-      studyRequest,
-      ({ response }) => {
-        console.log(response)
-        dispatch(studyAction.studyDetail(study.id))
-      },
-      ({ error }) => {
-        console.log(error)
-      },
-    )
+    dispatch(studyAction.studyUpdate(studyRequest))
+    // await updateStudy(
+    //   studyRequest,
+    //   ({ data }) => {
+    //     console.log(data)
+    //     // redux에 저장
+    //     dispatch(studyAction.studyDetail(study.id))
+    //   },
+    //   ({ data }) => {
+    //     console.log(data)
+    //   },
+    // )
   }
 
   const handleUpdateStudy = () => {

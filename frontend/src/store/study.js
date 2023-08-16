@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { authApi } from './user'
+import { authFormInstance } from '../api'
 
 const API_URL = process.env.REACT_APP_API_URL
+const authFormApi = authFormInstance()
 
 const initialState = {
   params: {
@@ -99,6 +101,14 @@ export const studyAction = {
   studyDetail: createAsyncThunk('study/detail', async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}/study/${payload}`)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  studyUpdate: createAsyncThunk('study/update', async (payload, thunkAPI) => {
+    try {
+      const response = await authFormApi.put(`/study`, payload)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -231,7 +241,9 @@ export const studySlice = createSlice({
       state.totalPage = action.payload.totalPages - 1
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
-      // state.studyDetail.push(action.payload)
+      state.studyDetail = action.payload
+    },
+    [studyAction.studyUpdate.fulfilled]: (state, action) => {
       state.studyDetail = action.payload
     },
     [studyAction.getTags.fulfilled]: (state, action) => {
