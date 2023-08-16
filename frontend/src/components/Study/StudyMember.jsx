@@ -2,9 +2,9 @@ import React from 'react'
 import { Table } from 'antd'
 import { Link } from 'react-router-dom'
 
-export default function StudyMember({ members }) {
-  console.log(members)
-  const dataSource = members?.map(member => {
+export default function StudyMember({ study }) {
+  console.log(study.memberProfiles)
+  const dataSource = study.memberProfiles?.map(member => {
     return {
       key: member.id,
       nickname: (
@@ -39,8 +39,8 @@ export default function StudyMember({ members }) {
     <div className="big_box">
       <Table dataSource={dataSource} columns={columns} />
       <h1>회원정보</h1>
-      {/* <Table dataSource={members} columns={members} /> */}
-      {members?.map(member => (
+      {/* <Table dataSource={study.memberProfiles} columns={study.memberProfiles} /> */}
+      {study.memberProfiles?.map(member => (
         <div>
           <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
             {member.nickname}

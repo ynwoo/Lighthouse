@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'antd'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
 import {
-  // endDateToString,
-  // startDateToString,
+  endDateToString,
+  startDateToString,
   image,
   StringToDate,
 } from '../../utils/index'
-import { createStudy, updateStudy } from '../../api/study'
+import { createStudy } from '../../api/study'
 import likemark from '../../static/mark/like.png'
 import bookmark from '../../static/mark/bookmark-white.png'
 import view from '../../static/mark/view.png'
@@ -27,6 +28,9 @@ export default function StudyInfo({ study }) {
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
   const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
+  const [uploadedImageFile, setUploadedImageFile] = useState(null)
+  const [uploadedBadgeImage, setUploadedBadgeImage] = useState(null)
+  const [uploadedBadgeImageFile, setUploadedBadgeImageFile] = useState(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,8 +50,19 @@ export default function StudyInfo({ study }) {
     if (imageFile) {
       const imageUrl = URL.createObjectURL(imageFile)
       setUploadedImage(imageUrl)
+      setUploadedImageFile(imageFile)
     }
   }
+
+  const handleBadgeImageUpload = event => {
+    const imageFile = event.target.files[0]
+    if (imageFile) {
+      const imageUrl = URL.createObjectURL(imageFile)
+      setUploadedBadgeImage(imageUrl)
+      setUploadedBadgeImageFile(imageFile)
+    }
+  }
+
   const handleStartDateChange = date => {
     setStartDate(date)
   }
@@ -67,7 +82,7 @@ export default function StudyInfo({ study }) {
     // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
-    formData.append('title', `${study.title}수정완료!!`)
+    formData.append('title', study.title)
     formData.append('description', study.description)
     formData.append('hit', study.hit)
     formData.append('rule', study.rule)
@@ -81,19 +96,22 @@ export default function StudyInfo({ study }) {
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
-    // formData.append(
-    //   'createdAt',
-    //   startDateToString(createdDate) ?? study.createdAt,
-    // )
-    // formData.append(
-    //   'startedAt',
-    //   startDateToString(startDate) ?? study.startedAt,
-    // )
-    // formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
-    // formData.append(
-    //   'recruitFinishedAt',
-    //   endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-    // )
+    console.log('uploadedImageFile', uploadedImageFile)
+    if (uploadedImageFile) formData.append('coverImgFile', uploadedImageFile)
+    formData.append('coverImgUrl', study.coverImgUrl)
+    formData.append(
+      'createdAt',
+      startDateToString(createdDate) ?? study.createdAt,
+    )
+    formData.append(
+      'startedAt',
+      startDateToString(startDate) ?? study.startedAt,
+    )
+    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    formData.append(
+      'recruitFinishedAt',
+      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    )
     console.log(createdDate, startDate, recruitFinishedDate, endDate)
 
     Object.keys(study).forEach(sKey => {
@@ -187,11 +205,17 @@ export default function StudyInfo({ study }) {
       }
 
       // badge
-      else if (sKey === 'badge' && study.badge) {
-        Object.keys(study.badge).forEach(key => {
-          if (key !== 'isValid')
-            formData.append(`badge.${key}`, study.badge[key])
-        })
+      else if (sKey === 'badge') {
+        if (study.badge) {
+          Object.keys(study.badge).forEach(key => {
+            if (key !== 'img') {
+              formData.append(`badge.${key}`, study.badge[key])
+            }
+          })
+        }
+        if (uploadedBadgeImageFile) {
+          formData.append(`badge.img`, uploadedBadgeImageFile)
+        }
       }
     })
 
@@ -200,16 +224,10 @@ export default function StudyInfo({ study }) {
 
   const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
-    await updateStudy(
-      studyRequest,
-      ({ response }) => {
-        console.log(response)
-        dispatch(studyAction.studyDetail(study.id))
-      },
-      ({ error }) => {
-        console.log(error)
-      },
-    )
+    dispatch(studyAction.studyUpdate(studyRequest)).then(() => {
+      setUploadedImageFile(null)
+      setUploadedBadgeImageFile(null)
+    })
   }
 
   const handleUpdateStudy = () => {
@@ -241,7 +259,7 @@ export default function StudyInfo({ study }) {
     <div className="big_box">
       <div className="study_container">
         <img
-          src={uploadedImage || photo}
+          src={uploadedImage || image(study.coverImgUrl) || photo}
           alt="아리스"
           style={{ width: '100%' }}
         />
@@ -252,14 +270,18 @@ export default function StudyInfo({ study }) {
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
-            {study.badge?.imgUrl && (
-              <img
-                src={image(study.badge.imgUrl)}
-                alt={study.badge?.description}
-                className="badge"
-              />
-            )}
+            <img
+              src={uploadedBadgeImage || image(study.badge?.imgUrl)}
+              alt={study.badge?.description}
+              className="badge"
+            />
+            <br />
           </h1>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBadgeImageUpload}
+          />
           <h3>
             스터디장 :{' '}
             <Link
@@ -377,6 +399,7 @@ export default function StudyInfo({ study }) {
           ).content
         }
       </h2>
+
       <input
         type="text"
         value={notice}
@@ -384,7 +407,7 @@ export default function StudyInfo({ study }) {
           setNotice(e.target.value)
         }}
       />
-      <button
+      <Button
         type="button"
         onClick={() => {
           const data = {
@@ -397,8 +420,32 @@ export default function StudyInfo({ study }) {
           setNotice('')
         }}
       >
-        +
-      </button>
+        공지 추가
+      </Button>
+      <Button
+        type="button"
+        onClick={() => {
+          const noticeId = study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).id
+          const data = {
+            noticeId,
+            studyId: study.id,
+            content: notice,
+          }
+          dispatch(studyAction.putNotice(data)).then(() =>
+            dispatch(studyAction.studyDetail(study.id)),
+          )
+          setNotice('')
+        }}
+      >
+        공지 수정
+      </Button>
       <div className="info_text">
         <p>스터디 정보</p>
       </div>
