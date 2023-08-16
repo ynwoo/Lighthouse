@@ -79,7 +79,6 @@ export default function StudyInfo({ study }) {
 
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
-    // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
     formData.append('title', study.title)
@@ -438,7 +437,7 @@ export default function StudyInfo({ study }) {
             studyId: study.id,
             content: notice,
           }
-          dispatch(studyAction.putNotice(data)).then(() =>
+          dispatch(studyAction.updateNotice(data)).then(() =>
             dispatch(studyAction.studyDetail(study.id)),
           )
           setNotice('')

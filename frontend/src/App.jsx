@@ -128,8 +128,8 @@ function App() {
         <div
           style={{
             position: 'fixed',
-            width: '300px',
-            height: '500px',
+            width: '400px',
+            height: '520px',
             bottom: '90px',
             right: '70px',
             backgroundColor: 'white',
