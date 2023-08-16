@@ -6,6 +6,19 @@ const API_URL = process.env.REACT_APP_API_URL
 
 const initialState = {
   messages: [],
+  client: new Client({
+    brokerURL: `ws://i9a409.p.ssafy.io:8082/ws/chat`,
+    connectHeaders: {
+      login: `${sessionStorage.getItem('userId')}`,
+      passcode: 'password',
+    },
+    debug(callbackLog) {
+      console.log(`connection:  ${callbackLog}`)
+    },
+    reconnectDelay: 5000, // 자동 재 연결
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  }),
 }
 export const chatAction = {
   getChat: createAsyncThunk('chat/get', async (payload, thunkAPI) => {
