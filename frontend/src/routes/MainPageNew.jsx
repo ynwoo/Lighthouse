@@ -4,6 +4,7 @@ import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
 import Pagenation from '../components/Study/utils/button/Pagenation'
+import { STATUS } from '../utils'
 
 function getCookie(name) {
   const nameOfCookie = `${name}=` // 쿠키=값 의 형태로 되어 있음
@@ -88,7 +89,7 @@ export default function MainPage({ isLoggedIn, status }) {
   return (
     <div>
       <h2 style={{ marginBottom: '20px' }}>
-        {status === 1 ? '스터디 모집' : '템플릿 둘러보기'}
+        {status === STATUS.RECRUITING ? '스터디 모집' : '템플릿 둘러보기'}
       </h2>
       <SearchComponent />
       <StudyList studies={studies} isLoggedIn={isLoggedIn} />
