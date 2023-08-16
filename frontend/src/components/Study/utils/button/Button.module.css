@@ -53,6 +53,7 @@
   align-content: center;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 
   & :hover {
     color: var(--my-pagenation-button-color);
