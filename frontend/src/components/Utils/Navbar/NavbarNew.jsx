@@ -12,7 +12,7 @@ export default function Navbar({ isLoggedIn }) {
 
   const handleLogout = () => {
     dispatch(userAction.logout()).then(() => {
-      // window.location.href = '/'
+      window.location.href = '/'
     })
   }
 
