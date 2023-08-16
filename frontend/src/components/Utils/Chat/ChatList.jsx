@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { chatAction, receiveMessage } from '../../../store/chat'
 
 import ChatContainer from './ChatContainer'
+import { userAction } from '../../../store/user'
 
 function ChattingList() {
   const dispatch = useDispatch()
@@ -15,7 +16,7 @@ function ChattingList() {
   const [data, setData] = useState([])
   const [roomId, setRoomId] = useState(-1)
 
-  const profile = useSelector(state => state.user.profile)
+  const profile = useSelector(state => state.user.myProfile)
   const studiesToShow =
     profile.participatedStudies && profile.progressStudies
       ? [...profile.participatedStudies, ...profile.progressStudies].map(
@@ -35,6 +36,7 @@ function ChattingList() {
   // console.log(messages)
   // console.log(studyId)
   useEffect(() => {
+    dispatch(userAction.profile(sessionStorage.getItem('userId')))
     const sts =
       profile.participatedStudies && profile.progressStudies
         ? [...profile.participatedStudies, ...profile.progressStudies].map(

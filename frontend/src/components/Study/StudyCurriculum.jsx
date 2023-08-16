@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { Tree, Button, Input } from 'antd'
+import { useDispatch } from 'react-redux'
+import { studyAction } from '../../store/study'
 
 const { DirectoryTree } = Tree
 
-export default function StudyCurriculum() {
+export default function StudyCurriculum({ study }) {
+  const dispatch = useDispatch()
   const [treeData, setTreeData] = useState([
     {
       title: 'parent 0',
@@ -38,6 +41,7 @@ export default function StudyCurriculum() {
       ],
     },
   ])
+  const [text, setText] = useState('')
 
   // const onSelect = (keys, info) => {
   //   console.log('Trigger Select', keys, info)
@@ -135,6 +139,18 @@ export default function StudyCurriculum() {
 
   return (
     <div>
+      <input type="text" value={text} onChange={e => setText(e.target.value)} />
+      <Button
+        onClick={() => {
+          const data = {
+            studyId: study.id,
+            title: text,
+          }
+          dispatch(studyAction.addCurr(data))
+        }}
+      >
+        add Cur
+      </Button>
       <Button onClick={handleAddParent}>Add Parent</Button>
       <Button onClick={() => handleAddLeaf('0-0')}>Add Leaf</Button>
       <DirectoryTree

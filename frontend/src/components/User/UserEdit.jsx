@@ -38,7 +38,7 @@ export default function UserEdit() {
     },
     {
       key: '4',
-      label: `참여중인 스터디`,
+      label: `참여 중인 스터디`,
       children: (
         <StudyList
           studies={[...profile.progressStudies, ...profile.recruitingStudies]}
@@ -52,7 +52,7 @@ export default function UserEdit() {
     },
     {
       key: '6',
-      label: `북마크 스터디`,
+      label: `북마크한 스터디`,
       children: <StudyList studies={profile.bookmarkStudies} />,
     },
   ]
@@ -61,7 +61,7 @@ export default function UserEdit() {
       ...items,
       {
         key: '2',
-        label: `생성중인 스터디`,
+        label: `수정 중인 스터디`,
         children: (
           <StudyList
             studies={profile.participatedStudies?.filter(
@@ -108,9 +108,8 @@ export default function UserEdit() {
             src={profileImage(profile.profileImgUrl)}
             shape="circle"
           />
-          <h3 style={{ marginBottom: '0px' }}>
-            {profile.nickname}님의 페이지 입니다
-          </h3>
+          <h3 style={{ marginBottom: '0px' }}>{profile.nickname}</h3>
+          <p>님의 페이지 입니다.</p>
           {/* {userId === loginId && <p>유저 이름</p>} */}
           {/* 버튼 렌더링 */}
           {profile.id === myInfo.id ? (

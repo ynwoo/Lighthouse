@@ -251,6 +251,15 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  addCurr: createAsyncThunk('study/addCurr', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/session`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const studySlice = createSlice({
@@ -310,12 +319,6 @@ export const studySlice = createSlice({
     [studyAction.getLike.fulfilled]: (state, action) => {
       state.likeList = action.payload
       console.log(action.payload)
-    },
-    [studyAction.like.fulfilled]: () => {
-      alert('따봉')
-    },
-    [studyAction.dislike.fulfilled]: () => {
-      alert('따봉 취소')
     },
     [studyAction.bookmark.fulfilled]: () => {
       alert('북마크')
