@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import StudyList from '../components/Study/StudyList'
 import SearchComponent from '../components/Utils/SearchComponent'
 import { setParams, studyAction } from '../store/study'
-import Pagenation from '../components/Study/utils/button/Pagenation'
+import { STATUS } from '../utils'
 
 function getCookie(name) {
   const nameOfCookie = `${name}=` // 쿠키=값 의 형태로 되어 있음
@@ -60,6 +60,7 @@ export default function MainPage({ isLoggedIn, status }) {
 
   console.log(studies)
   console.log(params)
+  console.log('totalPage', totalPage)
 
   const handleMovePage = page => () => dispatch(setParams({ ...params, page }))
 
@@ -88,11 +89,12 @@ export default function MainPage({ isLoggedIn, status }) {
   return (
     <div>
       <h2 style={{ marginBottom: '20px' }}>
-        {status === 1 ? '모집 중인 스터디' : '템플릿 둘러보기'}
+        {status === STATUS.RECRUITING ? '모집 중인 스터디' : '템플릿 둘러보기'}
       </h2>
       <SearchComponent />
-      <StudyList studies={studies} isLoggedIn={isLoggedIn} />
-      <Pagenation
+      <StudyList
+        studies={studies}
+        isLoggedIn={isLoggedIn}
         handleMovePage={handleMovePage}
         totalPage={totalPage}
         currentPage={params.page}
