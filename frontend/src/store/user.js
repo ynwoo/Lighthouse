@@ -39,7 +39,7 @@ authApi.interceptors.response.use(
         console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
-        const newAccessToken = response.headers['access-token']
+        const newAccessToken = response.data['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
