@@ -8,10 +8,6 @@ function StudyList({ studies, handleMovePage, totalPage, currentPage }) {
   const [page, setPage] = useState(0)
   const start = page * PAGE
   const end = (page + 1) * PAGE
-  console.log('handleMovePage', handleMovePage)
-  console.log('totalPage', totalPage)
-  console.log('currentPage', currentPage)
-  console.log('Math.ceil(studies.length / 8)', Math.ceil(studies.length / 8))
 
   return (
     <div style={{ width: '100%' }}>
