@@ -67,7 +67,7 @@ export default function StudyInfo({ study }) {
     // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
-    formData.append('title', `${study.title}수정완료!!`)
+    formData.append('title', study.title)
     formData.append('description', study.description)
     formData.append('hit', study.hit)
     formData.append('rule', study.rule)
