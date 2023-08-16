@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
@@ -21,10 +21,14 @@ export default function UserEdit() {
     console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
+    dispatch(userAction.getFollowing())
   }, [userId])
   const profile = useSelector(state => state.user.profile)
   const myInfo = useSelector(state => state.user.myInfo)
+  const following = useSelector(state => state.user.following)
   const myProfile = { ...myInfo, ...profile }
+
+  const [score, setScore] = useState(0)
 
   let items = [
     {
@@ -108,9 +112,72 @@ export default function UserEdit() {
             {profile.nickname}님의 페이지 입니다
           </h3>
           {/* {userId === loginId && <p>유저 이름</p>} */}
-          <Button block style={{ margin: '2vh 0' }}>
-            팔로우
-          </Button>
+          {/* 버튼 렌더링 */}
+          {profile.id === myInfo.id ? (
+            <br />
+          ) : !following?.find(id => id === profile.id) ? (
+            <Button
+              type="primary"
+              block
+              style={{ margin: '2vh 0' }}
+              onClick={() => {
+                dispatch(userAction.follow(profile.id)).then(() => {
+                  dispatch(userAction.getFollowing())
+                  dispatch(userAction.profile(profile.id))
+                })
+                // window.location.reload()
+              }}
+            >
+              팔로우
+            </Button>
+          ) : (
+            <Button
+              type="default"
+              block
+              style={{ margin: '2vh 0' }}
+              onClick={() => {
+                dispatch(userAction.unfollow(profile.id)).then(() => {
+                  dispatch(userAction.getFollowing())
+                  dispatch(userAction.profile(profile.id))
+                })
+              }}
+            >
+              언팔로우
+            </Button>
+          )}
+          {profile.id === myInfo.id ? (
+            <br />
+          ) : (
+            <>
+              <input
+                type="number"
+                value={score}
+                onChange={e => setScore(e.target.value)}
+              />
+              <Button
+                type="submit"
+                onClick={() => {
+                  const data = {
+                    userId: profile.id,
+                    score,
+                  }
+                  dispatch(userAction.userReview(data))
+                    .unwrap()
+                    .then(() => {
+                      alert('리뷰 등록이 완료되었습니다!')
+                      dispatch(userAction.profile(userId))
+                    })
+                    .catch(res => {
+                      if (res.response.status === 404) {
+                        alert('리뷰는 한 개만 작성 가능합니다!')
+                      }
+                    })
+                }}
+              >
+                review!
+              </Button>
+            </>
+          )}
           <Row>
             <Col span={12} align="middle">
               <Link to="/">{profile.follower} 팔로워</Link>
