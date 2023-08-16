@@ -105,8 +105,9 @@ function App() {
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}
       </Footer>
-      <button
-        type="submit"
+      <FloatButton
+        icon={<CommentOutlined style={{ fontSize: '20px' }} />}
+        onClick={handleChatClick}
         style={{
           position: 'fixed',
           bottom: '20px',
@@ -117,12 +118,10 @@ function App() {
           padding: 0,
           margin: 0,
           zIndex: '1',
-          // width: '200px',
+          width: '50px',
+          height: '50px',
         }}
-        onClick={handleChatClick}
-      >
-        <FloatButton icon={<CommentOutlined />} />
-      </button>
+      />
       {showChat && (
         // 채팅창이 보일 때만 아래 코드가 렌더링됨
         <div
