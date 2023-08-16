@@ -1,8 +1,11 @@
 // import React, { useState } from 'react'
 import styled from 'styled-components'
+// import { useDispatch, useSelector } from 'react-redux'
+// import React, { useEffect } from 'react'
 import ChatForm from './ChatForm'
 import Conversation from './Conversation'
 import { Description } from '../styled/Description'
+// import { chatAction, receiveMessage } from '../../../store/chat'
 
 const CenterContainer = styled.div`
   display: flex;
@@ -51,7 +54,34 @@ const Header = styled.header`
   }
 `
 
-function ChatContainer() {
+function ChatContainer({ studyId, setRoomId }) {
+  // const dispatch = useDispatch()
+  // // const userInfo = useSelector(state => state.user.myInfo)
+  // const messages = useSelector(state => state.chat.messages)
+  // const client = useSelector(state => state.chat.client)
+
+  // console.log(messages)
+  // console.log(studyId)
+  // useEffect(() => {
+  //   dispatch(chatAction.getChat(studyId))
+  // }, [])
+
+  // client.onConnect = frame => {
+  //   // Do something, all subscribes must be done is this callback
+  //   // This is needed because this will be executed after a (re)connect
+  //   console.log(`connection established: ${frame}`)
+  //   client.subscribe(`/sub/${studyId}`, data => {
+  //     const messageData = JSON.parse(data.body)
+  //     dispatch(receiveMessage(messageData))
+  //   })
+  // }
+  // client.activate()
+
+  // client.onStompError = function (frame) {
+  //   console.log(`Broker reported error: ${frame.headers.message}`)
+  //   console.log(`Additional details: ${frame.body}`)
+  // }
+
   // const roomImgSrc = './aris.png'
   const roomImgSrc = `${process.env.REACT_APP_S3_DOMAIN_URL}badge/logo192_1691135473033.png`
   const roomName = '블루 아카이브 스터디 22'
@@ -63,6 +93,9 @@ function ChatContainer() {
       <Chat>
         <>
           <Header>
+            <button type="button" onClick={() => setRoomId(-1)}>
+              뒤로
+            </button>
             <img alt="room-img" src={roomImgSrc} />
 
             <div>
@@ -73,12 +106,19 @@ function ChatContainer() {
             </div>
           </Header>
 
-          <Conversation />
-          <ChatForm />
+          <Conversation roomId={studyId} />
+          <ChatForm roomId={studyId} />
         </>
       </Chat>
     </CenterContainer>
   )
+}
+
+ChatContainer.defaultProps = {
+  studyId: 1,
+  setRoomId: () => {
+    console.log('no setRoomId function set')
+  },
 }
 
 export default ChatContainer

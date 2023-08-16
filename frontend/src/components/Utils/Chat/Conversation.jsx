@@ -100,7 +100,7 @@ const BotMessage = styled.div`
   background: rgba(0, 0, 0, 0.05);
 `
 
-function Conversation() {
+function Conversation({ roomId }) {
   //   const { socket } = useChat()
   //   const messages = useMessages()
   const messages = useSelector(state => state.chat.messages)
@@ -113,27 +113,36 @@ function Conversation() {
   useEffect(() => {
     chatConversation.current.scrollTo(0, chatConversation.current.scrollHeight)
     console.log('mess: ', messages)
-  }, [messages])
+  }, [useSelector(state => state.chat.messages)])
 
   return (
     <ConversationContainer ref={chatConversation}>
-      {messages.map(m => {
-        const { type, senderName, senderId, message, time } = m
+      {messages
+        .filter(m => {
+          // eslint-disable-next-line eqeqeq
+          return m.roomId == roomId
+        })
+        .map(m => {
+          const { type, senderName, senderId, message, time } = m
 
-        // const isBot = author === 'BOT' && !socketId
-        const isBot = type !== 'TALK'
-        return isBot ? (
-          <BotMessage>{message}</BotMessage>
-        ) : (
-          //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
-          <MessageContainer key={time} incomingMessage={senderId !== userId}>
-            <UserProfile content={senderName ? senderName.toString() : 'Y'} />
-            <MessageContent>{message}</MessageContent>
-          </MessageContainer>
-        )
-      })}
+          // const isBot = author === 'BOT' && !socketId
+          const isBot = type !== 'TALK'
+          return isBot ? (
+            <BotMessage>{message}</BotMessage>
+          ) : (
+            //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
+            <MessageContainer key={time} incomingMessage={senderId !== userId}>
+              <UserProfile content={senderName ? senderName.toString() : 'Y'} />
+              <MessageContent>{message}</MessageContent>
+            </MessageContainer>
+          )
+        })}
     </ConversationContainer>
   )
+}
+
+Conversation.defaultProps = {
+  roomId: 1,
 }
 
 export default Conversation
