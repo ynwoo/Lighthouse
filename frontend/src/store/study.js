@@ -253,13 +253,27 @@ export const studyAction = {
   }),
   addCurr: createAsyncThunk('study/addCurr', async (payload, thunkAPI) => {
     try {
-      const response = await authApi.post(`${API_URL}/session`, payload)
+      const response = await authApi.post(`${API_URL}/session`, payload, {
+        headers: { 'content-type': 'multipart/form-data' },
+      })
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  deleteCurr: createAsyncThunk(
+    'study/deleteCurr',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.delete(`${API_URL}/session/${payload}`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
 }
 
 export const studySlice = createSlice({
