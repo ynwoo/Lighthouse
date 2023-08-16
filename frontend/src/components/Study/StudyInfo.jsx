@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'antd'
 import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
@@ -374,6 +375,7 @@ export default function StudyInfo({ study }) {
           ).content
         }
       </h2>
+
       <input
         type="text"
         value={notice}
@@ -381,7 +383,7 @@ export default function StudyInfo({ study }) {
           setNotice(e.target.value)
         }}
       />
-      <button
+      <Button
         type="button"
         onClick={() => {
           const data = {
@@ -394,8 +396,32 @@ export default function StudyInfo({ study }) {
           setNotice('')
         }}
       >
-        +
-      </button>
+        공지 추가
+      </Button>
+      <Button
+        type="button"
+        onClick={() => {
+          const noticeId = study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).id
+          const data = {
+            noticeId,
+            studyId: study.id,
+            content: notice,
+          }
+          dispatch(studyAction.putNotice(data)).then(() =>
+            dispatch(studyAction.studyDetail(study.id)),
+          )
+          setNotice('')
+        }}
+      >
+        공지 수정
+      </Button>
       <div className="info_text">
         <p>스터디 정보</p>
       </div>
