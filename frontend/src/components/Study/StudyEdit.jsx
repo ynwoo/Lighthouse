@@ -1,24 +1,19 @@
-import React from 'react'
 import { Card, Button, Input, Form, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-// import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import StudyCurriculum from './StudyCurriculum'
 import { studyAction } from '../../store/study'
+// import DatePicker from './utils/DatePicker'
+import {
+  endDateToString,
+  startDateToString,
+  StringToDate,
+} from '../../utils/index'
+import { updateStudy } from '../../api/study'
 
 const { TextArea } = Input
-// import DatePicker from './utils/DatePicker'
-// import {
-//   endDateToString,
-//   startDateToString,
-//   image,
-//   StringToDate,
-// } from '../../utils/index'
-// import { createStudy, updateStudy } from '../../api/study'
-// import likemark from '../../static/mark/like.png'
-// import bookmark from '../../static/mark/bookmark-white.png'
-// import view from '../../static/mark/view.png'
 // import { CreateButton } from './utils/button'
 // import { studyAction } from '../../store/study'
 // import { userAction } from '../../store/user'
@@ -37,12 +32,11 @@ const normFile = e => {
 
 export default function StudyEdit({ study }) {
   const [form] = Form.useForm()
-  // const [startDate, setStartDate] = useState(StringToDate(study.startedAt))
-  // const [endDate, setEndDate] = useState(StringToDate(study.endedAt))
-  // const [recruitFinishedDate, setRecruitFinishedDate] = useState(
-  //   StringToDate(study.recruitFinishedAt),
-  // )
-  // const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
+  const [startDate] = useState(StringToDate(study.startedAt))
+  const [endDate] = useState(StringToDate(study.endedAt))
+  const [recruitFinishedDate] = useState(StringToDate(study.recruitFinishedAt))
+  const [createdDate] = useState(StringToDate(study.createdAt))
+  const [description, setDescription] = useState(study.description)
   // const [notice, setNotice] = useState('')
   // const [uploadedImage, setUploadedImage] = useState(null)
 
@@ -96,134 +90,134 @@ export default function StudyEdit({ study }) {
   // //   }
   // // }
 
-  // const copyStudy = (status = study.status) => {
-  //   const formData = new FormData()
-  //   // console.log();
-  //   formData.append('id', study.id)
-  //   formData.append('isValid', study.isValid)
-  //   formData.append('title', `${study.title}수정완료!!`)
-  //   formData.append('description', study.description)
-  //   formData.append('hit', study.hit)
-  //   formData.append('rule', study.rule)
-  //   formData.append('maxMember', study.maxMember)
-  //   formData.append('minMember', study.minMember)
-  //   formData.append('currentMember', study.currentMember)
-  //   formData.append('isOnline', study.isOnline)
-  //   formData.append('likeCnt', study.likeCnt)
-  //   formData.append('bookmarkCnt', study.bookmarkCnt)
-  //   formData.append('originalId', study.originalId ?? 0)
-  //   if (study.sidoId) formData.append('sidoId', study.sidoId)
-  //   if (study.gugunId) formData.append('gugunId', study.gugunId)
-  //   formData.append('status', status)
-  //   formData.append(
-  //     'createdAt',
-  //     startDateToString(createdDate) ?? study.createdAt,
-  //   )
-  //   formData.append(
-  //     'startedAt',
-  //     startDateToString(startDate) ?? study.startedAt,
-  //   )
-  //   formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
-  //   formData.append(
-  //     'recruitFinishedAt',
-  //     endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-  //   )
+  const copyStudy = (status = study.status) => {
+    const formData = new FormData()
+    // console.log();
+    formData.append('id', study.id)
+    formData.append('isValid', study.isValid)
+    formData.append('title', study.title)
+    formData.append('description', study.description)
+    formData.append('hit', study.hit)
+    formData.append('rule', study.rule)
+    formData.append('maxMember', study.maxMember)
+    formData.append('minMember', study.minMember)
+    formData.append('currentMember', study.currentMember)
+    formData.append('isOnline', study.isOnline)
+    formData.append('likeCnt', study.likeCnt)
+    formData.append('bookmarkCnt', study.bookmarkCnt)
+    formData.append('originalId', study.originalId ?? 0)
+    if (study.sidoId) formData.append('sidoId', study.sidoId)
+    if (study.gugunId) formData.append('gugunId', study.gugunId)
+    formData.append('status', status)
+    formData.append(
+      'createdAt',
+      startDateToString(createdDate) ?? study.createdAt,
+    )
+    formData.append(
+      'startedAt',
+      startDateToString(startDate) ?? study.startedAt,
+    )
+    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    formData.append(
+      'recruitFinishedAt',
+      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    )
 
-  //   Object.keys(study).forEach(sKey => {
-  //     // studyTags
-  //     if (sKey === 'studyTags') {
-  //       study.studyTags?.forEach((studyTag, index) => {
-  //         Object.keys(studyTag).forEach(key => {
-  //           if (key !== 'tag') {
-  //             formData.append(`studyTags[${index}].${key}`, studyTag[key])
-  //           } else {
-  //             Object.keys(studyTag[key]).forEach(tagKey => {
-  //               formData.append(
-  //                 `studyTags[${index}].${key}.${tagKey}`,
-  //                 studyTag[key][tagKey],
-  //               )
-  //             })
-  //           }
-  //         })
-  //       })
-  //     }
+    Object.keys(study).forEach(sKey => {
+      // studyTags
+      if (sKey === 'studyTags') {
+        study.studyTags?.forEach((studyTag, index) => {
+          Object.keys(studyTag).forEach(key => {
+            if (key !== 'tag') {
+              formData.append(`studyTags[${index}].${key}`, studyTag[key])
+            } else {
+              Object.keys(studyTag[key]).forEach(tagKey => {
+                formData.append(
+                  `studyTags[${index}].${key}.${tagKey}`,
+                  studyTag[key][tagKey],
+                )
+              })
+            }
+          })
+        })
+      }
 
-  //     // sessions
-  //     else if (sKey === 'sessions') {
-  //       study.sessions?.forEach((session, index) => {
-  //         Object.keys(session).forEach(key => {
-  //           // studyMaterials
-  //           if (key === 'studyMaterials') {
-  //             session.studyMaterials?.forEach((studyMaterial, smIndex) => {
-  //               Object.keys(studyMaterial).forEach(smKey => {
-  //                 formData.append(
-  //                   `sessions[${index}].${key}[${smIndex}].${smKey}`,
-  //                   studyMaterial[smKey],
-  //                 )
-  //               })
-  //             })
-  //           }
+      // sessions
+      else if (sKey === 'sessions') {
+        study.sessions?.forEach((session, index) => {
+          Object.keys(session).forEach(key => {
+            // studyMaterials
+            if (key === 'studyMaterials') {
+              session.studyMaterials?.forEach((studyMaterial, smIndex) => {
+                Object.keys(studyMaterial).forEach(smKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${smIndex}].${smKey}`,
+                    studyMaterial[smKey],
+                  )
+                })
+              })
+            }
 
-  //           // sessionChecks
-  //           else if (key === 'sessionChecks') {
-  //             session.sessionChecks?.forEach((sessionCheck, scIndex) => {
-  //               Object.keys(sessionCheck).forEach(scKey => {
-  //                 formData.append(
-  //                   `sessions[${index}].${key}[${scIndex}].${scKey}`,
-  //                   sessionCheck[scKey],
-  //                 )
-  //               })
-  //             })
-  //           }
+            // sessionChecks
+            else if (key === 'sessionChecks') {
+              session.sessionChecks?.forEach((sessionCheck, scIndex) => {
+                Object.keys(sessionCheck).forEach(scKey => {
+                  formData.append(
+                    `sessions[${index}].${key}[${scIndex}].${scKey}`,
+                    sessionCheck[scKey],
+                  )
+                })
+              })
+            }
 
-  //           // sessions
-  //           else {
-  //             formData.append(`sessions[${index}].${key}`, session[key])
-  //           }
-  //         })
-  //       })
-  //     }
+            // sessions
+            else {
+              formData.append(`sessions[${index}].${key}`, session[key])
+            }
+          })
+        })
+      }
 
-  //     // studyNotices
-  //     else if (sKey === 'studyNotices') {
-  //       // formData.append('studyNotices', null)
-  //       console.log(sKey)
-  //     }
+      // studyNotices
+      else if (sKey === 'studyNotices') {
+        // formData.append('studyNotices', null)
+        console.log(sKey)
+      }
 
-  //     // studyEvals
-  //     else if (sKey === 'studyEvals') {
-  //       // formData.append('studyEvals', null)
-  //       console.log(sKey)
-  //     }
+      // studyEvals
+      else if (sKey === 'studyEvals') {
+        // formData.append('studyEvals', null)
+        console.log(sKey)
+      }
 
-  //     // badge
-  //     else if (sKey === 'badge' && study.badge) {
-  //       Object.keys(study.badge).forEach(key => {
-  //         if (key !== 'isValid')
-  //           formData.append(`badge.${key}`, study.badge[key])
-  //       })
-  //     }
-  //   })
-  //   return formData
-  // }
+      // badge
+      else if (sKey === 'badge' && study.badge) {
+        Object.keys(study.badge).forEach(key => {
+          if (key !== 'isValid')
+            formData.append(`badge.${key}`, study.badge[key])
+        })
+      }
+    })
+    return formData
+  }
 
-  // const callStudyUpdateApi = async studyRequest => {
-  //   console.log('callStudyUpdateApi', studyRequest)
-  //   await updateStudy(
-  //     studyRequest,
-  //     ({ response }) => {
-  //       console.log(response)
-  //       dispatch(studyAction.studyDetail(studyRequest.id))
-  //     },
-  //     ({ error }) => {
-  //       console.log(error)
-  //     },
-  //   )
-  // }
+  const callStudyUpdateApi = async studyRequest => {
+    console.log('callStudyUpdateApi', studyRequest)
+    await updateStudy(
+      studyRequest,
+      ({ response }) => {
+        console.log(response)
+        dispatch(studyAction.studyDetail(studyRequest.id))
+      },
+      ({ error }) => {
+        console.log(error)
+      },
+    )
+  }
 
-  // const handleUpdateStudy = () => {
-  //   callStudyUpdateApi(copyStudy())
-  // }
+  const handleUpdateStudy = () => {
+    callStudyUpdateApi(copyStudy())
+  }
   // const handleRecruitStudy = () => {
   //   callStudyUpdateApi(copyStudy(1))
   // }
@@ -266,10 +260,16 @@ export default function StudyEdit({ study }) {
             if (values.coverImgFile != null) {
               values.coverImgFile = values.coverImgFile[0].originFileObj
             }
-
             console.log('submitting values: ', values)
             // redux => server
-            dispatch(studyAction.studyUpdate(values))
+            console.log(description)
+            setDescription(values.description)
+            console.log(description)
+            // study.rule = values.rule
+            // study.coverImgFile = values.coverImgFile
+            console.log('update study: ', study)
+            dispatch(handleUpdateStudy())
+            alert('스터디 정보 수정이 완료되었습니다.')
           }}
         >
           <Form.Item label="스터디 정보" name="description">
@@ -298,17 +298,20 @@ export default function StudyEdit({ study }) {
               </div>
             </Upload>
           </Form.Item>
+          <Card
+            title="스터디 계획"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <div>
+              <StudyCurriculum />
+            </div>
+          </Card>
+          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+            {' '}
+            수정하기
+          </Button>
         </Form>
-        <Card
-          title="스터디 계획"
-          bordered={false}
-          style={{ boxShadow: 'none' }}
-        >
-          <div>
-            <StudyCurriculum />
-          </div>
-        </Card>
-        <Button style={{ width: '100%' }}> 수정하기</Button>
       </div>
     </div>
   )
