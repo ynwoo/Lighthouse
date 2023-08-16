@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PAGE {
-    public static final int LIMIT = 6;
+    public static final int LIMIT = 8;
 }
