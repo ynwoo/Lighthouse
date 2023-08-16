@@ -43,7 +43,7 @@ authApi.interceptors.response.use(
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
-        alert('다시 로그인 해주세요!')
+        alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
       return Promise.reject(err)
