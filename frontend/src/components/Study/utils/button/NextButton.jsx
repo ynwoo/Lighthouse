@@ -7,7 +7,9 @@ export default function NextButton({ onClick, disabled, children }) {
   return (
     <button
       disabled={disabled}
-      className={[styles.button, styles[disabled]].join(' ')}
+      className={[styles.button, styles[disabled], styles['button-right']].join(
+        ' ',
+      )}
       type="button"
       onClick={onClick}
     >

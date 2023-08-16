@@ -1,8 +1,8 @@
 .button {
-  background-color: #09e0ef;
+  background-color: var(--my-pagenation-button-color);
   color: black;
   border: 1px solid #080f1c;
-  /* border-radius: 20px; */
+  border-radius: 2px;
   padding: 10px;
   font-weight: bold;
   width: 20px;
@@ -13,10 +13,23 @@
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
+  --my-border-radius: 10px;
+  --my-pagenation-button-color: rgb(84, 201, 247);
+  --my-pagenation-button-hover-color: red;
+}
+
+.button-right {
+  border-top-right-radius: var(--my-border-radius);
+  border-bottom-right-radius: var(--my-border-radius);
+}
+
+.button-left {
+  border-top-left-radius: var(--my-border-radius);
+  border-bottom-left-radius: var(--my-border-radius);
 }
 
 .button-create {
-  background-color: #09e0ef;
+  background-color: var(--my-pagenation-button-color);
   color: black;
   border: 1px solid #080f1c;
   /* border-radius: 20px; */
@@ -39,7 +52,7 @@
   justify-content: center;
 
   & :hover {
-    background-color: #db3518;
+    background-color: var(--my-pagenation-button-hover-color);
   }
 
   .disabled {
@@ -51,5 +64,5 @@
 }
 
 .currentPage {
-  background-color: #db3518;
+  background-color: var(--my-pagenation-button-hover-color);
 }
