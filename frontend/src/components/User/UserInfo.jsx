@@ -3,6 +3,7 @@ import { Card, Space } from 'antd'
 import Piechart from '../Study/utils/chart/PieChart'
 import { image } from '../../utils/image'
 import Barchart from '../Study/utils/chart/BarChart'
+import UserStarRating from '../atoms/UserStarRating'
 
 // 템플릿 상세의 질의응답
 
@@ -29,7 +30,10 @@ export default function UserInfo({ profile }) {
       style={{ display: 'flex' }}
     >
       <Card title="자기소개" bordered={false}>
-        <p>{profile.description}</p>
+        <div style={{ display: 'flex', flexGrow: 1 }}>
+          <p style={{ 'margin-right': 'auto' }}>{profile.description}</p>
+          <UserStarRating className="user-star-rating" score={profile.score} />
+        </div>
       </Card>
       <Card title="통계" bordered={false}>
         <p>현재 진행 예정인 스터디: {profile.recruitingStudies.length}</p>
@@ -40,10 +44,7 @@ export default function UserInfo({ profile }) {
           함께한 스터디원:{' '}
           {profile.recruitingStudies
             .concat(profile.terminatedStudies)
-            .map(study => study.currentMember)
-            .reduce((a, b) => {
-              return a + b
-            }, 0)}
+            .reduce((a, b) => a + b.currentMember, 0)}
         </p>
         <p>
           스터디장 맡은 횟수:{' '}
@@ -63,9 +64,11 @@ export default function UserInfo({ profile }) {
           />
         ))}
       </Card>
-      <Card title="차트" bordered={false} style={{ display: 'flex' }}>
-        <Barchart className="chart" data={barData} />
-        <Piechart className="chart" data={chartData} />
+      <Card title="차트" bordered={false}>
+        <div style={{ display: 'flex' }}>
+          <Barchart className="chart" data={barData} />
+          <Piechart className="chart" data={chartData} />
+        </div>
       </Card>
     </Space>
   )

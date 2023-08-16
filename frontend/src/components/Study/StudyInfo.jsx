@@ -5,8 +5,8 @@ import photo from '../../static/aris.png'
 import StudyCurriculum from './StudyCurriculum'
 import DatePicker from './utils/DatePicker'
 import {
-  endDateToString,
-  startDateToString,
+  // endDateToString,
+  // startDateToString,
   image,
   StringToDate,
 } from '../../utils/index'
@@ -25,7 +25,7 @@ export default function StudyInfo({ study }) {
     StringToDate(study.recruitFinishedAt),
   )
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
-
+  const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
 
   const navigate = useNavigate()
@@ -62,22 +62,6 @@ export default function StudyInfo({ study }) {
     setCreatedDate(date)
   }
 
-  // const copyStudy = (status = study.status) => {
-  //   return {
-  //     ...study,
-  //     sessions: [...study.sessions],
-  //     studyTags: [...study.studyTags],
-  //     studyNotices: [...study.studyNotices],
-  //     startedAt: startDateToString(startDate) ?? study.startedAt,
-  //     endedAt: endDateToString(endDate) ?? study.endedAt,
-  //     recruitFinishedAt:
-  //       endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-  //     createdAt: startDateToString(createdDate) ?? study.createdAt,
-  //     status,
-  //     originalId: 0,
-  //   }
-  // }
-
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
     // console.log();
@@ -97,19 +81,20 @@ export default function StudyInfo({ study }) {
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
-    formData.append(
-      'createdAt',
-      startDateToString(createdDate) ?? study.createdAt,
-    )
-    formData.append(
-      'startedAt',
-      startDateToString(startDate) ?? study.startedAt,
-    )
-    formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
-    formData.append(
-      'recruitFinishedAt',
-      endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-    )
+    // formData.append(
+    //   'createdAt',
+    //   startDateToString(createdDate) ?? study.createdAt,
+    // )
+    // formData.append(
+    //   'startedAt',
+    //   startDateToString(startDate) ?? study.startedAt,
+    // )
+    // formData.append('endedAt', endDateToString(endDate) ?? study.createdAt)
+    // formData.append(
+    //   'recruitFinishedAt',
+    //   endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
+    // )
+    console.log(createdDate, startDate, recruitFinishedDate, endDate)
 
     Object.keys(study).forEach(sKey => {
       // studyTags
@@ -168,14 +153,37 @@ export default function StudyInfo({ study }) {
 
       // studyNotices
       else if (sKey === 'studyNotices') {
-        // formData.append('studyNotices', null)
-        console.log(sKey)
+        study.studyNotices.forEach((studyNotice, index) => {
+          Object.keys(studyNotice).forEach(key => {
+            // studyNoticeChecks
+            if (key === 'studyNoticeChecks') {
+              studyNotice.studyNoticeChecks?.forEach(
+                (studyNoticeCheck, scIndex) => {
+                  Object.keys(studyNoticeCheck).forEach(scKey => {
+                    formData.append(
+                      `studyNotices[${index}].${key}[${scIndex}].${scKey}`,
+                      studyNoticeCheck[scKey],
+                    )
+                  })
+                },
+              )
+            }
+
+            // studyNotices
+            else {
+              formData.append(`studyNotices[${index}].${key}`, studyNotice[key])
+            }
+          })
+        })
       }
 
       // studyEvals
       else if (sKey === 'studyEvals') {
-        // formData.append('studyEvals', null)
-        console.log(sKey)
+        study.studyEvals?.forEach((studyEval, index) => {
+          Object.keys(studyEval).forEach(key => {
+            formData.append(`studyEvals[${index}].${key}`, studyEval[key])
+          })
+        })
       }
 
       // badge
@@ -195,7 +203,7 @@ export default function StudyInfo({ study }) {
       studyRequest,
       ({ response }) => {
         console.log(response)
-        dispatch(studyAction.studyDetail(studyRequest.id))
+        dispatch(studyAction.studyDetail(study.id))
       },
       ({ error }) => {
         console.log(error)
@@ -352,6 +360,44 @@ export default function StudyInfo({ study }) {
         </div>
       </div>
       <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <div className="info_text">
+        <p>스터디 공지</p>
+      </div>
+      <h2>
+        {/* 가장 마지막에 올린 공지 추리는 코드 */}
+        {
+          study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).content
+        }
+      </h2>
+      <input
+        type="text"
+        value={notice}
+        onChange={e => {
+          setNotice(e.target.value)
+        }}
+      />
+      <button
+        type="button"
+        onClick={() => {
+          const data = {
+            studyId: study.id,
+            content: notice,
+          }
+          dispatch(studyAction.addNotice(data)).then(() =>
+            dispatch(studyAction.studyDetail(study.id)),
+          )
+          setNotice('')
+        }}
+      >
+        +
+      </button>
       <div className="info_text">
         <p>스터디 정보</p>
       </div>
