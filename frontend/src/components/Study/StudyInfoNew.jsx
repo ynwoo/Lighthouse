@@ -279,7 +279,7 @@ export default function StudyInfo({ study }) {
           style={{ boxShadow: 'none' }}
         >
           <div>
-            <StudyCurriculum />
+            <StudyCurriculum study={study} />
           </div>
         </Card>
       </div>
