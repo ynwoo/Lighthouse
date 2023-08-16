@@ -1,3 +1,4 @@
+
 .star-ratings {
   color: #f8f8f8;
   position: relative;
@@ -7,6 +8,7 @@
   -webkit-text-stroke-width: 1.3px;
   -webkit-text-stroke-color: #2b2a29;
   font-size: 30px;
+  --my-star-color : yellow;
 }
 
 .star {
@@ -14,7 +16,7 @@
 }
 
 .star-ratings-fill {
-  color: #f5f50d;
+  color: var(--my-star-color);
   padding: 0;
   position: absolute;
   z-index: 0;
@@ -22,7 +24,7 @@
   top: 0;
   left: 0;
   overflow: hidden;
-  -webkit-text-fill-color: rgb(248, 234, 109);
+  -webkit-text-fill-color: var(--my-star-color);
 }
 
 .star-ratings-base {

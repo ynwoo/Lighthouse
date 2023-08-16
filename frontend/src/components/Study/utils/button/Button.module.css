@@ -1,7 +1,7 @@
 .button {
   background-color: var(--my-pagenation-button-background-color);
   color: black;
-  border: 1px solid #080f1c;
+  border: 1px solid white;
   border-radius: 2px;
   padding: 10px;
   font-weight: bold;
@@ -13,8 +13,9 @@
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
-  margin: 5px;
+  margin: 3px;
   --my-border-radius: 10px;
+  --my-pagenation-button-border-color: gray;
   --my-pagenation-button-color: #ffffff;
   --my-pagenation-button-background-color: #e9f2ee;
   --my-pagenation-button-hover-color: #1dc078;
@@ -33,7 +34,7 @@
 .button-create {
   background-color: var(--my-pagenation-button-color);
   color: black;
-  border: 1px solid #080f1c;
+  border: 1px solid var(--my-pagenation-button-border-color);
   /* border-radius: 20px; */
   padding: 10px;
   font-weight: bold;
@@ -60,10 +61,10 @@
 
   .disabled {
     & :hover {
-      color: black;
+      color: var(--my-pagenation-button-border-color);
       background-color: rgb(231, 226, 226);
     }
-    color: black;
+    color: var(--my-pagenation-button-border-color);
     background-color: rgb(231, 226, 226);
   }
 }
