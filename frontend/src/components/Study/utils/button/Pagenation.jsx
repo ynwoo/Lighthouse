@@ -6,10 +6,10 @@ import styles from './Button.module.css'
 
 export default function Pagenation({ handleMovePage, totalPage, currentPage }) {
   const start = Math.floor(currentPage / 10) * 10
-  const end = Math.min(start + 9, totalPage)
+  const end = Math.min(start + 10, totalPage)
   const pages = []
   // eslint-disable-next-line no-plusplus
-  for (let index = start; index <= end; index++) {
+  for (let index = start; index < end; index++) {
     pages.push(
       <PageButton
         currentPage={index === currentPage && 'currentPage'}
@@ -28,7 +28,7 @@ export default function Pagenation({ handleMovePage, totalPage, currentPage }) {
       />
       {pages}
       <NextButton
-        disabled={currentPage === totalPage && 'disabled'}
+        disabled={currentPage === totalPage - 1 && 'disabled'}
         onClick={handleMovePage(currentPage + 1)}
       />
     </div>

@@ -1,16 +1,30 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Input, List, Space, Divider } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { studyAction } from '../../store/study'
+import { userAction } from '../../store/user'
 
 function QnA({ study }) {
   const dispatch = useDispatch()
   const [text, setText] = useState('')
   const [answer, setAnswer] = useState('')
   const myInfo = useSelector(state => state.user.myProfile)
+  const [askers, setAskers] = useState([])
+
+  useEffect(() => {
+    study.qnas.forEach(qna => {
+      dispatch(userAction.profile(qna.userId))
+        .unwrap()
+        .then(res => {
+          setAskers(a => [...a, res])
+          console.log(dispatch(userAction.profile(qna.userId)))
+        })
+    })
+  }, [study])
 
   return (
-    <div>
+    <div style={{ minHeight: '600px' }}>
       <h3 style={{ marginBottom: '10px' }}>질문하기</h3>
       <Space direction="horizontal">
         <Input
@@ -83,7 +97,16 @@ function QnA({ study }) {
                   <br />
                   <br />
                   <p style={{ fontSize: '12px' }}>
-                    {qna.createdAt} 작성자: {qna.userId}
+                    {qna.createdAt} 작성자:
+                    <Link
+                      to={`/user_edit/${qna.userId}`}
+                      state={{ userId: qna.userId }}
+                    >
+                      {askers?.length === 0
+                        ? 'loading...'
+                        : askers?.find(user => user.id === qna.userId)
+                            ?.nickname}
+                    </Link>
                   </p>
                 </div>
               }
