@@ -14,6 +14,7 @@ import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleUserResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
+import com.ssafy.lighthouse.global.util.ROLE;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -133,6 +134,27 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         // userInfo
 //        SimpleUserResponse userInfo = findUserInfo(loginId);
 
+        // participatedUserProfiles
+        List<SimpleProfileResponse> participatedUserProfiles = new ArrayList<>();
+        if(userId.equals(loginId)) {
+            // 내가 리더인 스터디
+            List<Long> leaderStudies = recruitingStudies.stream()
+                    .filter(study -> study.getLeaderProfile().getId().equals(loginId))
+                    .map(SimpleStudyDto::getId)
+                    .collect(Collectors.toList());
+            
+            // 내가 리더인 스터디에 참가 신청한 유저 아이디
+            List<Long> userIds = jpaQueryFactory.select(participationHistory.userId)
+                    .from(participationHistory)
+                    .where(participationHistory.studyId.in(leaderStudies),
+                            participationHistory.isValid.eq(1),
+                            participationHistory.status.eq(STATUS.PREPARING),
+                            participationHistory.userRole.eq(ROLE.TEAMMATE))
+                    .fetch();
+
+            participatedUserProfiles = findSimpleProfileByUserIds(userIds);
+        }
+
         return ProfileResponse.builder()
                 .id(result.getId())
                 .isValid(result.getIsValid())
@@ -146,6 +168,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .progressStudies(progressStudies)
                 .terminatedStudies(terminatedStudies)
                 .bookmarkStudies(bookmarkStudies)
+                .participatedUserProfiles(participatedUserProfiles)
                 .score(result.getScore())
                 .following(result.getFollowing())
                 .follower(result.getFollower())

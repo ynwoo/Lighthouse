@@ -7,7 +7,9 @@ export default function PrevButton({ onClick, disabled, children }) {
   return (
     <button
       disabled={disabled}
-      className={[styles.button, styles[disabled]].join(' ')}
+      className={[styles.button, styles[disabled], styles['button-left']].join(
+        ' ',
+      )}
       type="button"
       onClick={onClick}
     >

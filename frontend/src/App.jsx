@@ -16,6 +16,9 @@ import SignUp from './components/User/SignUp'
 import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
+import TemplateDetailPage from './routes/TemplateDetailPage'
+import MyStudyPage from './routes/MyStudiesPage'
+import StudyInProgressPage from './routes/StudyInProgressPage'
 
 const { Footer } = Layout
 // 푸터
@@ -90,6 +93,15 @@ function App() {
                     path="/study/:id"
                     element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
                   />
+                  <Route
+                    path="/template/:id"
+                    element={<TemplateDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
+                    path="/inprogress/:id"
+                    element={<StudyInProgressPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route path="/mystudies" element={<MyStudyPage />} />
                   <Route path="/user/:id" element={<UserPage />} />
                   <Route path="/login" element={<LogIn />} />
                   <Route path="/signup" element={<SignUp />} />

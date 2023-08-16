@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Row, Col, Tag, Tabs, Button, Tooltip } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBookmark as faBookmarkSolid,
@@ -10,17 +9,15 @@ import {
   faBookmark as faBookmarkRegular,
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
+import { useDispatch, useSelector } from 'react-redux'
 import StudyInfo from '../components/Study/StudyInfoNew'
-import StudyQnA from '../components/Study/StudyQnA'
-import StudyEdit from '../components/Study/StudyEdit'
-import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
-import StudyMember from '../components/Study/StudyMember'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
+import StudyReview from '../components/Study/StudyReview'
 
-export default function StudyDetailPage({ isLoggedIn }) {
+export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
@@ -44,17 +41,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { 정보: <StudyInfo study={study} /> },
-    ...(study?.memberProfiles?.find(
-      memberProfile => memberProfile.id === Number(userId),
-    )?.id
-      ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
-      : [
-          { 'Q&A': <StudyQnA study={study} /> },
-          { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
-          myInfo.id === study.leaderProfile.id
-            ? { '정보 수정': <StudyEdit study={study} /> }
-            : '',
-        ]),
+    { '템플릿 리뷰': <StudyReview study={study} /> },
   ]
 
   return (
@@ -155,14 +142,11 @@ export default function StudyDetailPage({ isLoggedIn }) {
                 padding: '10px',
               }}
             >
-              <p style={{ fontSize: '12px', textAlign: 'left' }}>
-                모집 기간: {study.createdAt} - {study.recruitFinishedAt}
-              </p>
               <Button
                 type="primary"
                 style={{ marginTop: '30px', width: '100%' }}
               >
-                스터디 참가 신청
+                템플릿 사용하기
               </Button>
               <Row style={{ marginTop: '10px' }}>
                 {myInfo.bookmarkStudies?.find(
