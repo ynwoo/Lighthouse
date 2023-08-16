@@ -17,7 +17,7 @@ function Barchart({ data }) {
 
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-    <div style={{ width: '500px', height: '400px', margin: '0 auto' }}>
+    <div className="bar-chart">
       <ResponsiveBar
         /**
          * chart에 사용될 데이터
@@ -38,7 +38,7 @@ function Barchart({ data }) {
         /**
          * chart padding (bar간 간격)
          */
-        padding={0.3}
+        padding={0.5}
         /**
          * chart 색상
          */

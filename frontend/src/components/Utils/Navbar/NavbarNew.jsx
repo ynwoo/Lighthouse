@@ -3,13 +3,13 @@ import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Row, Col, Menu } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import logo from '../../../static/main_logo.PNG'
 import { userAction } from '../../../store/user'
 
 export default function Navbar({ isLoggedIn }) {
   const dispatch = useDispatch()
   const location = useLocation()
   console.log(location.pathname)
+
   const handleLogout = () => {
     dispatch(userAction.logout()).then(() => {
       window.location.href = '/'
@@ -27,7 +27,7 @@ export default function Navbar({ isLoggedIn }) {
         <Col xl={6} lg={6} md={6} sm={20} xs={20}>
           <Link to="/" state={{ status: 1 }}>
             <div style={{ paddingLeft: '10px', marginRight: '-10px' }}>
-              <img src={logo} alt="엑박" style={{ height: '50px' }} />
+              <img src="main_logo.PNG" alt="엑박" style={{ height: '50px' }} />
             </div>
           </Link>
         </Col>
@@ -58,16 +58,6 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
               </>
             )}
-            <Menu.Item key="/temp" style={{ float: 'right' }}>
-              <Link to="/temp" state={{ status: 5 }}>
-                템플릿 둘러보기
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/" style={{ float: 'right' }}>
-              <Link to="/" state={{ status: 5 }}>
-                스터디 모집
-              </Link>
-            </Menu.Item>
             {isLoggedIn && (
               <>
                 <Menu.Item
@@ -87,6 +77,16 @@ export default function Navbar({ isLoggedIn }) {
                 </Menu.Item>
               </>
             )}
+            <Menu.Item key="/temp" style={{ float: 'right' }}>
+              <Link to="/temp" state={{ status: 5 }}>
+                템플릿 둘러보기
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/" style={{ float: 'right' }}>
+              <Link to="/" state={{ status: 5 }}>
+                스터디 모집
+              </Link>
+            </Menu.Item>
           </Menu>
         </Col>
       </Row>
