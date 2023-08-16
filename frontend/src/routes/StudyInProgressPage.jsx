@@ -1,24 +1,16 @@
 import React, { useEffect } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip } from 'antd'
-import {
-  HeartOutlined,
-  HeartFilled,
-  BookOutlined,
-  BookFilled,
-} from '@ant-design/icons'
+import { Row, Col, Tag, Tabs } from 'antd'
+
 import { useDispatch, useSelector } from 'react-redux'
 // import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfoNew'
-import StudyQnA from '../components/Study/StudyQnA'
-import StudyEdit from '../components/Study/StudyEdit'
-import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
-import StudyMember from '../components/Study/StudyMember'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
+import StudyCurrent from '../components/Study/StudyCurrent'
 
-export default function StudyDetailPage({ isLoggedIn }) {
+export default function StudyInProgressPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
@@ -41,18 +33,9 @@ export default function StudyDetailPage({ isLoggedIn }) {
   console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
+    { '진행 상황': <StudyCurrent study={study} /> },
     { 정보: <StudyInfo study={study} /> },
-    ...(study?.memberProfiles?.find(
-      memberProfile => memberProfile.id === Number(userId),
-    )?.id
-      ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
-      : [
-          { 'Q&A': <StudyQnA study={study} /> },
-          { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
-          myInfo.id === study.leaderProfile.id
-            ? { '정보 수정': <StudyEdit study={study} /> }
-            : '',
-        ]),
+    { 기록: <div>스터디 기록</div> },
   ]
 
   return (
@@ -153,86 +136,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                 padding: '10px',
               }}
             >
-              <p style={{ fontSize: '12px', textAlign: 'left' }}>
-                모집 기간: {study.createdAt} - {study.recruitFinishedAt}
-              </p>
-              <Button
-                type="primary"
-                style={{ marginTop: '30px', width: '100%' }}
-              >
-                스터디 참가 신청
-              </Button>
-              <Row style={{ marginTop: '10px' }}>
-                {myInfo.bookmarkStudies?.find(
-                  bookmarkStudy => bookmarkStudy.id === study.id,
-                ) ? (
-                  <Col
-                    span={12}
-                    align="middle"
-                    onClick={() => {
-                      dispatch(studyAction.disbookmark(study.id)).then(() => {
-                        dispatch(studyAction.studyDetail(study.id))
-                        dispatch(userAction.profile(myInfo.id))
-                      })
-                    }}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    <Tooltip title="북마크 취소">
-                      <BookFilled /> {study.bookmarkCnt}
-                    </Tooltip>
-                  </Col>
-                ) : (
-                  <Col
-                    span={12}
-                    align="middle"
-                    onClick={() => {
-                      dispatch(studyAction.bookmark(study.id)).then(() => {
-                        dispatch(studyAction.studyDetail(study.id))
-                        dispatch(userAction.profile(myInfo.id))
-                      })
-                    }}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    <Tooltip title="북마크">
-                      <BookOutlined /> {study.bookmarkCnt}
-                    </Tooltip>
-                  </Col>
-                )}
-
-                {likeList.find(id => id === study.id) ? (
-                  <Col
-                    span={12}
-                    align="middle"
-                    onClick={() => {
-                      dispatch(studyAction.dislike(study.id)).then(() => {
-                        dispatch(studyAction.studyDetail(study.id))
-                        dispatch(studyAction.getLike())
-                      })
-                    }}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    <Tooltip title="좋아요 취소">
-                      <HeartFilled /> {study.likeCnt}
-                    </Tooltip>
-                  </Col>
-                ) : (
-                  <Col
-                    span={12}
-                    align="middle"
-                    onClick={() => {
-                      dispatch(studyAction.like(study.id)).then(() => {
-                        dispatch(studyAction.studyDetail(study.id))
-                        dispatch(studyAction.getLike())
-                      })
-                    }}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    <Tooltip title="좋아요">
-                      <HeartOutlined /> {study.likeCnt}
-                    </Tooltip>
-                  </Col>
-                )}
-              </Row>
+              채팅
             </div>
           </Col>
         </Row>
