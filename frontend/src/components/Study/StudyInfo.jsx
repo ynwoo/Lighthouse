@@ -29,6 +29,8 @@ export default function StudyInfo({ study }) {
   const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
   const [uploadedImageFile, setUploadedImageFile] = useState(null)
+  const [uploadedBadgeImage, setUploadedBadgeImage] = useState(null)
+  const [uploadedBadgeImageFile, setUploadedBadgeImageFile] = useState(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -51,6 +53,16 @@ export default function StudyInfo({ study }) {
       setUploadedImageFile(imageFile)
     }
   }
+
+  const handleBadgeImageUpload = event => {
+    const imageFile = event.target.files[0]
+    if (imageFile) {
+      const imageUrl = URL.createObjectURL(imageFile)
+      setUploadedBadgeImage(imageUrl)
+      setUploadedBadgeImageFile(imageFile)
+    }
+  }
+
   const handleStartDateChange = date => {
     setStartDate(date)
   }
@@ -193,11 +205,17 @@ export default function StudyInfo({ study }) {
       }
 
       // badge
-      else if (sKey === 'badge' && study.badge) {
-        Object.keys(study.badge).forEach(key => {
-          if (key !== 'isValid')
-            formData.append(`badge.${key}`, study.badge[key])
-        })
+      else if (sKey === 'badge') {
+        if (study.badge) {
+          Object.keys(study.badge).forEach(key => {
+            if (key !== 'img') {
+              formData.append(`badge.${key}`, study.badge[key])
+            }
+          })
+        }
+        if (uploadedBadgeImageFile) {
+          formData.append(`badge.img`, uploadedBadgeImageFile)
+        }
       }
     })
 
@@ -206,8 +224,10 @@ export default function StudyInfo({ study }) {
 
   const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
-    dispatch(studyAction.studyUpdate(studyRequest))
-    setUploadedImageFile(null)
+    dispatch(studyAction.studyUpdate(studyRequest)).then(() => {
+      setUploadedImageFile(null)
+      setUploadedBadgeImageFile(null)
+    })
   }
 
   const handleUpdateStudy = () => {
@@ -250,14 +270,18 @@ export default function StudyInfo({ study }) {
 
           <h1>
             {study.title}( {study.currentMember} / {study.maxMember} )
-            {study.badge?.imgUrl && (
-              <img
-                src={image(study.badge.imgUrl)}
-                alt={study.badge?.description}
-                className="badge"
-              />
-            )}
+            <img
+              src={uploadedBadgeImage || image(study.badge?.imgUrl)}
+              alt={study.badge?.description}
+              className="badge"
+            />
+            <br />
           </h1>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBadgeImageUpload}
+          />
           <h3>
             스터디장 :{' '}
             <Link

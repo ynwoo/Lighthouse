@@ -169,12 +169,12 @@ public class StudyController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    // studyBadge 교체
-    @PutMapping("/badge")
-    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
-                                              @RequestPart(value = "img") MultipartFile img,
-                                              @RequestPart(value = "studyId") Long studyId) {
-        studyService.updateStudyBadge(badgeRequest, img, studyId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+//    // studyBadge 교체
+//    @PutMapping("/badge")
+//    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+//                                              @RequestPart(value = "img") MultipartFile img,
+//                                              @RequestPart(value = "studyId") Long studyId) {
+//        studyService.updateStudyBadge(badgeRequest,studyId);
+//        return new ResponseEntity<Void>(HttpStatus.OK);
+//    }
 }

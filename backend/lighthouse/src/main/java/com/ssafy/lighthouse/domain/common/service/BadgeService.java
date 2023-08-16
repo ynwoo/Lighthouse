@@ -6,6 +6,6 @@ import com.ssafy.lighthouse.domain.common.entity.Badge;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface BadgeService {
-    Badge createBadge(BadgeRequest badgeRequest, MultipartFile img);
+    Badge createBadge(BadgeRequest badgeRequest);
     void removeBadge(Long badgeId);
 }

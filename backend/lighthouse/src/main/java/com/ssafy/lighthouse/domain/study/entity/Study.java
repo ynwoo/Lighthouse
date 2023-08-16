@@ -103,5 +103,6 @@ public class Study extends BaseEntity {
         this.sidoId = study.getSidoId();
         this.gugunId = study.getGugunId();
         this.coverImgUrl = study.getCoverImgUrl();
+        this.badge = study.getBadge();
     }
 }
