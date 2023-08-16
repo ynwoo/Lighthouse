@@ -1,5 +1,5 @@
 import React from 'react'
-import { List } from 'antd'
+import { List, Divider } from 'antd'
 import UserName from './UserName'
 
 export default function StudyMember({ members }) {
@@ -7,6 +7,8 @@ export default function StudyMember({ members }) {
 
   return (
     <div>
+      <h3>스터디원 총 {members.length} 명</h3>
+      <Divider />
       <List
         itemLayout="horizontal"
         dataSource={members}
@@ -23,19 +25,5 @@ export default function StudyMember({ members }) {
         )}
       />
     </div>
-    // <div className="big_box">
-    //   <Table dataSource={dataSource} columns={columns} />
-    //   <h1>회원정보</h1>
-    //   {/* <Table dataSource={members} columns={members} /> */}
-    //   {members?.map(member => (
-    //     <div>
-    //       <Link to={`/user_edit/${member?.id}`} state={{ userId: member?.id }}>
-    //         {member.nickname}
-    //         {member.description}
-    //         {member.score}
-    //       </Link>
-    //     </div>
-    //   ))}
-    // </div>
   )
 }

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 // import SideComponent from '../components/Utils/SideComponent'
 import StudyInfo from '../components/Study/StudyInfoNew'
 import StudyQnA from '../components/Study/StudyQnA'
-import StudyReview from '../components/Study/StudyReview'
+import StudyEdit from '../components/Study/StudyEdit'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 import StudyMember from '../components/Study/StudyMember'
 import { studyAction } from '../store/study'
@@ -49,7 +49,9 @@ export default function TempDetailPage({ isLoggedIn }) {
       : [
           { 'Q&A': <StudyQnA study={study} /> },
           { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
-          { 리뷰: <StudyReview study={study} /> },
+          myInfo.id === study.leaderProfile.id
+            ? { '정보 수정': <StudyEdit study={study} /> }
+            : '',
         ]),
   ]
 
@@ -143,8 +145,8 @@ export default function TempDetailPage({ isLoggedIn }) {
               style={{
                 width: '80%',
                 height: '160px',
-                border: 'solid 1px rgb(208, 208, 208)',
-                borderColor: '',
+                border: 'solid 1px',
+                borderColor: ' rgb(216, 216, 216)',
                 borderRadius: '5%',
                 position: 'sticky',
                 top: '70px',
