@@ -395,18 +395,26 @@ export default function StudyInfo({ study }) {
       <Button
         type="button"
         onClick={() => {
+          const noticeId = study.studyNotices?.reduce(
+            (res, now) =>
+              new Date(res.createdAt).getTime() >
+              new Date(now.createdAt).getTime()
+                ? res
+                : now,
+            0,
+          ).id
           const data = {
-            userId: myInfo.id,
+            noticeId,
             studyId: study.id,
-            question: notice,
+            content: notice,
           }
-          dispatch(studyAction.addQnA(data)).then(() =>
+          dispatch(studyAction.putNotice(data)).then(() =>
             dispatch(studyAction.studyDetail(study.id)),
           )
           setNotice('')
         }}
       >
-        QnA 등록
+        공지 수정
       </Button>
       <div className="info_text">
         <p>스터디 정보</p>
