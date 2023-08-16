@@ -75,7 +75,7 @@ public class StudyController {
     log.debug("study: {}", studyRequest);
 //        log.debug("studyId : {}", studyRequest.getId());
 //        log.debug("studyNotices : {}", studyRequest.getStudyNotices().stream().map(n -> n.getId()));
-//        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
+        StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
