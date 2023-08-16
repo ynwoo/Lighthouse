@@ -79,7 +79,6 @@ export default function StudyInfo({ study }) {
 
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
-    // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
     formData.append('title', study.title)
