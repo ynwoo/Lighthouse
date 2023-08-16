@@ -94,8 +94,8 @@ export default function StudyDetailPage({ isLoggedIn }) {
                 ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
                 : '오프라인'}
               <br />
-              현재 인원: {study.currentMemeber} 최대 인원: {study.maxMemeber}{' '}
-              최소 인원: {study.minMemeber}
+              현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
+              인원: {study.minMember}
               <br />
               스터디 기간: <br />
               {study.startedAt} - {study.endedAt}
