@@ -243,12 +243,6 @@ export const studySlice = createSlice({
       state.likeList = action.payload
       console.log(action.payload)
     },
-    [studyAction.like.fulfilled]: () => {
-      alert('따봉')
-    },
-    [studyAction.dislike.fulfilled]: () => {
-      alert('따봉 취소')
-    },
     [studyAction.bookmark.fulfilled]: () => {
       alert('북마크')
     },

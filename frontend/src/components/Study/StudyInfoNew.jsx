@@ -1,9 +1,10 @@
 import React from 'react'
+import { Card } from 'antd'
 // import React, { useEffect, useState } from 'react'
 // import { Link, useNavigate } from 'react-router-dom'
 // import { useDispatch, useSelector } from 'react-redux'
 // import photo from '../../static/aris.png'
-// import StudyCurriculum from './StudyCurriculum'
+import StudyCurriculum from './StudyCurriculum'
 // import DatePicker from './utils/DatePicker'
 // import {
 //   endDateToString,
@@ -235,10 +236,52 @@ export default function StudyInfo({ study }) {
         style={{
           height: '1000px',
           width: '100%',
-          backgroundColor: 'rgb(174, 255, 255)',
+          backgroundColor: 'rgb(255, 255, 255)',
         }}
       >
-        study info
+        <Card
+          title="스터디 공지"
+          bordered={false}
+          style={{ boxShadow: 'none' }}
+        >
+          <div style={{ display: 'flex', flexGrow: 1 }}>
+            <p>
+              {
+                study.studyNotices?.reduce(
+                  (res, now) =>
+                    new Date(res.createdAt).getTime() >
+                    new Date(now.createdAt).getTime()
+                      ? res
+                      : now,
+                  0,
+                ).content
+              }
+            </p>
+          </div>
+        </Card>
+        <Card
+          title="스터디 정보"
+          bordered={false}
+          style={{ boxShadow: 'none' }}
+        >
+          <div>
+            <p>{study.description}</p>
+            <br />
+            스터디 규칙: <br />
+            {study.rule?.split('\n')?.map((rulee, i) => (
+              <p key={i}>{rulee}</p>
+            ))}
+          </div>
+        </Card>
+        <Card
+          title="스터디 계획"
+          bordered={false}
+          style={{ boxShadow: 'none' }}
+        >
+          <div>
+            <StudyCurriculum />
+          </div>
+        </Card>
       </div>
     </div>
   )
