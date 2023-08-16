@@ -3,16 +3,20 @@ import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 // import { Avatar, Divider, List, Skeleton } from 'antd'
 import { Avatar, List } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
+import { chatAction, receiveMessage } from '../../../store/chat'
 
-import { useSelector } from 'react-redux'
 import ChatContainer from './ChatContainer'
+import { userAction } from '../../../store/user'
 
 function ChattingList() {
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState([])
   const [roomId, setRoomId] = useState(-1)
 
-  const profile = useSelector(state => state.user.profile)
+  const profile = useSelector(state => state.user.myProfile)
   const studiesToShow =
     profile.participatedStudies && profile.progressStudies
       ? [...profile.participatedStudies, ...profile.progressStudies].map(
@@ -26,6 +30,55 @@ function ChattingList() {
           },
         )
       : []
+
+  const client = useSelector(state => state.chat.client)
+
+  // console.log(messages)
+  // console.log(studyId)
+  useEffect(() => {
+    dispatch(userAction.profile(sessionStorage.getItem('userId')))
+    const sts =
+      profile.participatedStudies && profile.progressStudies
+        ? [...profile.participatedStudies, ...profile.progressStudies].map(
+            study => {
+              return {
+                id: study.id,
+                title: study.title,
+                description: study.description,
+                avatar: study.badge ? study.badge.imgUrl : '',
+              }
+            },
+          )
+        : []
+    console.log('chat list user effect')
+    for (let i = 0; i < sts.length; i += 1) {
+      dispatch(chatAction.getChat(sts[i].id))
+    }
+
+    // dispatch(chatAction.getChat(studyId))
+  }, [])
+
+  client.onConnect = frame => {
+    // Do something, all subscribes must be done is this callback
+    // This is needed because this will be executed after a (re)connect
+    console.log(`connection established: ${frame}`)
+    for (let i = 0; i < studiesToShow.length; i += 1) {
+      client.subscribe(`/sub/${studiesToShow[i].id}`, msg => {
+        const messageData = JSON.parse(msg.body)
+        dispatch(receiveMessage(messageData))
+      })
+    }
+    // client.subscribe(`/sub/${studyId}`, data => {
+    //   const messageData = JSON.parse(data.body)
+    //   dispatch(receiveMessage(messageData))
+    // })
+  }
+  client.activate()
+
+  client.onStompError = function (frame) {
+    console.log(`Broker reported error: ${frame.headers.message}`)
+    console.log(`Additional details: ${frame.body}`)
+  }
 
   console.log('to show: ', studiesToShow)
 
@@ -57,6 +110,8 @@ function ChattingList() {
     loadMoreData()
   }, [roomId])
 
+  console.log('env', process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL)
+
   return (
     <div
       id="scrollableDiv"
@@ -74,18 +129,6 @@ function ChattingList() {
       ) : (
         <InfiniteScroll
           dataLength={data.length}
-          // next={loadMoreData}
-          // hasMore={data.length < 50}
-          // loader={
-          //   <Skeleton
-          //     avatar
-          //     paragraph={{
-          //       rows: 1,
-          //     }}
-          //     active
-          //   />
-          // }
-          // endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
           scrollableTarget="scrollableDiv"
         >
           <List
@@ -95,7 +138,7 @@ function ChattingList() {
                 <List.Item.Meta
                   avatar={
                     <Avatar
-                      src={`${process.env.REACT_APP_S3_DOMAIN_URL}${item.avatar}`}
+                      src={`${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${item.avatar}`}
                     />
                   }
                   title={
@@ -105,7 +148,6 @@ function ChattingList() {
                   }
                   description={item.description}
                 />
-                <div>GO</div>
               </List.Item>
             )}
           />

@@ -8,10 +8,10 @@
 //   const dispatch = useDispatch()
 //   const navigate = useNavigate()
 
-  const handleLogout = e => {
-    e.preventDefault()
-    dispatch(userAction.logout()).then(() => navigate('/'))
-  }
+const handleLogout = e => {
+  e.preventDefault()
+  dispatch(userAction.logout()).then(() => navigate('/'))
+
   return (
     <div
       style={{
@@ -31,7 +31,7 @@
       <div style={{ display: 'flex', flexDirection: 'end-flex', zIndex: '1' }}>
         <div className="container nav_main">
           <div className="item nav_item">
-            <Link to="/temp" state={{ status: 5 }}>
+            <Link to="/templates" state={{ status: 5 }}>
               템플릿 더보기
             </Link>
           </div>

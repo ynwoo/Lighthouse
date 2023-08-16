@@ -17,9 +17,9 @@ public class BadgeServiceImpl implements BadgeService {
     private final BadgeRepository badgeRepository;
 
     @Override
-    public Badge createBadge(BadgeRequest badgeRequest, MultipartFile img) {
+    public Badge createBadge(BadgeRequest badgeRequest) {
         // aws에 업로드
-        String imgUrl = S3Utils.uploadFile("badge", img);
+        String imgUrl = S3Utils.uploadFile("badge", badgeRequest.getImg());
 
         // db에 badge정보 저장
         return badgeRepository.save(Badge.builder()

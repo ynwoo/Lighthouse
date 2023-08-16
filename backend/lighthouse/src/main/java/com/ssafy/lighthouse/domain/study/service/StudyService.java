@@ -35,6 +35,6 @@ public interface StudyService {
     void removeStudyTag(Long studyId, Long tagId);
 
     // study-badge
-    void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long prevBadgeId);
+    void updateStudyBadge(BadgeRequest badgeRequest, Long prevBadgeId);
 
 }

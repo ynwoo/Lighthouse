@@ -1,24 +1,9 @@
 import React, { useEffect } from 'react'
 import { Input, Row, Select, Space, Col, Button } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { setParams, studyAction } from '../../store/study'
+import { setParams } from '../../store/study'
 import { userAction } from '../../store/user'
 
-// const styles = {
-//   backgroundColor: 'white',
-//   color: 'black',
-//   border: '1px solid #A4C3FF',
-//   borderRadius: '20px',
-//   padding: '10px',
-//   fontWeight: 'bold',
-//   width: '100px',
-//   display: 'flex',
-//   alignContent: 'center',
-//   alignItems: 'center',
-//   justifyContent: 'center',
-//   marginBottom: '10px',
-//   marginTop: '10px',
-// }
 // 검색창
 const { Search } = Input
 
@@ -33,9 +18,8 @@ function SearchComponent() {
   }, [dispatch])
 
   const onSearch = word => {
-    const newParams = { ...params, word }
+    const newParams = { ...params, word, page: 0 }
     dispatch(setParams(newParams))
-    dispatch(studyAction.studyList(newParams))
   }
 
   // 지역
@@ -52,9 +36,6 @@ function SearchComponent() {
   const OnOrderKeyChange = value => {
     dispatch(setParams({ ...params, orderKey: value }))
   }
-  // const onChange = e => {
-  //   dispatch(setParams({ ...params, [e.target.name]: e.target.value }))
-  // }
 
   const setOrderBy = () => {
     dispatch(
