@@ -195,22 +195,25 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
-  putNotice: createAsyncThunk('study/putNotice', async (payload, thunkAPI) => {
-    try {
-      const data = {
-        studyId: payload.studyId,
-        content: payload.content,
+  updateNotice: createAsyncThunk(
+    'study/updateNotice',
+    async (payload, thunkAPI) => {
+      try {
+        const data = {
+          studyId: payload.studyId,
+          content: payload.content,
+        }
+        const response = await authApi.put(
+          `${API_URL}/study-notice/${payload.noticeId}`,
+          data,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
       }
-      const response = await authApi.put(
-        `${API_URL}/study-notice/${payload.noticeId}`,
-        data,
-      )
-      console.log(response)
-      return thunkAPI.fulfillWithValue(response.data)
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error)
-    }
-  }),
+    },
+  ),
   addQnA: createAsyncThunk('study/addQnA', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/qna`, payload)
