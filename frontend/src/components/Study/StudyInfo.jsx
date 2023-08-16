@@ -27,6 +27,7 @@ export default function StudyInfo({ study }) {
   const [createdDate, setCreatedDate] = useState(StringToDate(study.createdAt))
   const [notice, setNotice] = useState('')
   const [uploadedImage, setUploadedImage] = useState(null)
+  const [uploadedImageFile, setUploadedImageFile] = useState(null)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,6 +47,7 @@ export default function StudyInfo({ study }) {
     if (imageFile) {
       const imageUrl = URL.createObjectURL(imageFile)
       setUploadedImage(imageUrl)
+      setUploadedImageFile(imageFile)
     }
   }
   const handleStartDateChange = date => {
@@ -81,6 +83,8 @@ export default function StudyInfo({ study }) {
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
+    console.log('uploadedImageFile', uploadedImageFile)
+    formData.append('coverImgFile', uploadedImageFile)
     // formData.append(
     //   'createdAt',
     //   startDateToString(createdDate) ?? study.createdAt,
@@ -201,17 +205,6 @@ export default function StudyInfo({ study }) {
   const callStudyUpdateApi = async studyRequest => {
     console.log('callStudyUpdateApi', studyRequest)
     dispatch(studyAction.studyUpdate(studyRequest))
-    // await updateStudy(
-    //   studyRequest,
-    //   ({ data }) => {
-    //     console.log(data)
-    //     // redux에 저장
-    //     dispatch(studyAction.studyDetail(study.id))
-    //   },
-    //   ({ data }) => {
-    //     console.log(data)
-    //   },
-    // )
   }
 
   const handleUpdateStudy = () => {
@@ -243,7 +236,7 @@ export default function StudyInfo({ study }) {
     <div className="big_box">
       <div className="study_container">
         <img
-          src={uploadedImage || photo}
+          src={uploadedImage || image(study.coverImgUrl) || photo}
           alt="아리스"
           style={{ width: '100%' }}
         />
