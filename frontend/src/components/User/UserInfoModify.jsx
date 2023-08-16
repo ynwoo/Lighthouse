@@ -86,6 +86,12 @@ function UserInfoModify({ profile }) {
             }
             // redux => server
             dispatch(userAction.profileUpdate(values))
+              .unwrap()
+              .then(() => {
+                alert('프로필 수정이 완료되었습니다!')
+                dispatch(userAction.profile(sessionStorage.getItem('userId')))
+                dispatch(userAction.myPage())
+              })
           } else {
             alert('닉네임 중복확인을 해주세요.')
           }
