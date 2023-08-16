@@ -8,10 +8,10 @@
 //   const dispatch = useDispatch()
 //   const navigate = useNavigate()
 
-  const handleLogout = e => {
-    e.preventDefault()
-    dispatch(userAction.logout()).then(() => navigate('/'))
-  }
+const handleLogout = e => {
+  e.preventDefault()
+  dispatch(userAction.logout()).then(() => navigate('/'))
+
   return (
     <div
       style={{
