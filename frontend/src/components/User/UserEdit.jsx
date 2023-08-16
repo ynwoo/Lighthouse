@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
@@ -27,6 +27,8 @@ export default function UserEdit() {
   const myInfo = useSelector(state => state.user.myInfo)
   const following = useSelector(state => state.user.following)
   const myProfile = { ...myInfo, ...profile }
+
+  const [score, setScore] = useState(0)
 
   let items = [
     {
@@ -142,6 +144,39 @@ export default function UserEdit() {
             >
               언팔로우
             </Button>
+          )}
+          {profile.id === myInfo.id ? (
+            <br />
+          ) : (
+            <>
+              <input
+                type="number"
+                value={score}
+                onChange={e => setScore(e.target.value)}
+              />
+              <Button
+                type="submit"
+                onClick={() => {
+                  const data = {
+                    userId: profile.id,
+                    score,
+                  }
+                  dispatch(userAction.userReview(data))
+                    .unwrap()
+                    .then(() => {
+                      alert('리뷰 등록이 완료되었습니다!')
+                      dispatch(userAction.profile(userId))
+                    })
+                    .catch(res => {
+                      if (res.response.status === 404) {
+                        alert('리뷰는 한 개만 작성 가능합니다!')
+                      }
+                    })
+                }}
+              >
+                review!
+              </Button>
+            </>
           )}
           <Row>
             <Col span={12} align="middle">

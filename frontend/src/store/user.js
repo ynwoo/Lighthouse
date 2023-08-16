@@ -268,6 +268,15 @@ export const userAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  userReview: createAsyncThunk('user/userReview', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`/users/eval`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
 }
 
 export const userSlice = createSlice({
