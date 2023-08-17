@@ -1,11 +1,9 @@
 import { Card, Button, Input, Form, Upload } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import React, { useState } from 'react'
-// import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import StudyCurriculum from './StudyCurriculum'
 import { studyAction } from '../../store/study'
-// import DatePicker from './utils/DatePicker'
 import {
   endDateToString,
   startDateToString,
@@ -14,9 +12,7 @@ import {
 import { updateStudy } from '../../api/study'
 
 const { TextArea } = Input
-// import { CreateButton } from './utils/button'
-// import { studyAction } from '../../store/study'
-// import { userAction } from '../../store/user'
+
 const dummyRequest = ({ file, onSuccess }) => {
   console.log('file upload successful', file)
   setTimeout(() => {
@@ -36,63 +32,11 @@ export default function StudyEdit({ study }) {
   const [endDate] = useState(StringToDate(study.endedAt))
   const [recruitFinishedDate] = useState(StringToDate(study.recruitFinishedAt))
   const [createdDate] = useState(StringToDate(study.createdAt))
-  const [description, setDescription] = useState(study.description)
-  // const [notice, setNotice] = useState('')
-  // const [uploadedImage, setUploadedImage] = useState(null)
 
-  // const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //   dispatch(userAction.profile(sessionStorage.getItem('userId')))
-  //   dispatch(studyAction.getLike())
-  // }, [])
-
-  // const myInfo = useSelector(state => state.user.myProfile)
-  // const likeList = useSelector(state => state.study.likeList)
-  // console.log(myInfo)
-  // console.log(likeList)
-
-  // const handleImageUpload = event => {
-  //   const imageFile = event.target.files[0]
-  //   if (imageFile) {
-  //     const imageUrl = URL.createObjectURL(imageFile)
-  //     setUploadedImage(imageUrl)
-  //   }
-  // }
-  // const handleStartDateChange = date => {
-  //   setStartDate(date)
-  // }
-
-  // const handleEndDateChange = date => {
-  //   setEndDate(date)
-  // }
-  // const handleRecruitFinishedDateChange = date => {
-  //   setRecruitFinishedDate(date)
-  // }
-  // const handleCreatedDateChange = date => {
-  //   setCreatedDate(date)
-  // }
-
-  // // const copyStudy = (status = study.status) => {
-  // //   return {
-  // //     ...study,
-  // //     sessions: [...study.sessions],
-  // //     studyTags: [...study.studyTags],
-  // //     studyNotices: [...study.studyNotices],
-  // //     startedAt: startDateToString(startDate) ?? study.startedAt,
-  // //     endedAt: endDateToString(endDate) ?? study.endedAt,
-  // //     recruitFinishedAt:
-  // //       endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
-  // //     createdAt: startDateToString(createdDate) ?? study.createdAt,
-  // //     status,
-  // //     originalId: 0,
-  // //   }
-  // // }
 
   const copyStudy = (status = study.status) => {
     const formData = new FormData()
-    // console.log();
     formData.append('id', study.id)
     formData.append('isValid', study.isValid)
     formData.append('title', study.title)
@@ -181,13 +125,11 @@ export default function StudyEdit({ study }) {
       // studyNotices
       else if (sKey === 'studyNotices') {
         // formData.append('studyNotices', null)
-        console.log(sKey)
       }
 
       // studyEvals
       else if (sKey === 'studyEvals') {
         // formData.append('studyEvals', null)
-        console.log(sKey)
       }
 
       // badge
@@ -202,11 +144,9 @@ export default function StudyEdit({ study }) {
   }
 
   const callStudyUpdateApi = async studyRequest => {
-    console.log('callStudyUpdateApi', studyRequest)
     await updateStudy(
       studyRequest,
-      ({ response }) => {
-        console.log(response)
+      () => {
         dispatch(studyAction.studyDetail(studyRequest.id))
       },
       ({ error }) => {
@@ -218,27 +158,6 @@ export default function StudyEdit({ study }) {
   const handleUpdateStudy = () => {
     callStudyUpdateApi(copyStudy())
   }
-  // const handleRecruitStudy = () => {
-  //   callStudyUpdateApi(copyStudy(1))
-  // }
-
-  // const handleCreateStudy = () => {
-  //   // 생성 해야함
-  //   createStudy(
-  //     study.id,
-  //     ({ data }) => {
-  //       console.log(data)
-  //       alert('템플릿 복제 완료!!')
-  //       navigate(`/study/${data.id}`)
-  //     },
-  //     ({ data }) => {
-  //       console.log(data)
-  //       alert(data)
-  //     },
-  //   )
-  // }
-
-  console.log('studyInfo : ', study)
 
   return (
     <div>
@@ -260,14 +179,7 @@ export default function StudyEdit({ study }) {
             if (values.coverImgFile != null) {
               values.coverImgFile = values.coverImgFile[0].originFileObj
             }
-            console.log('submitting values: ', values)
             // redux => server
-            console.log(description)
-            setDescription(values.description)
-            console.log(description)
-            // study.rule = values.rule
-            // study.coverImgFile = values.coverImgFile
-            console.log('update study: ', study)
             dispatch(handleUpdateStudy())
             alert('스터디 정보 수정이 완료되었습니다.')
           }}

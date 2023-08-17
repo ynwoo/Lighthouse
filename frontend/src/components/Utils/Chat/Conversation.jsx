@@ -1,8 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-// import { getFirstLetter } from '../helpers'
-// import useMessages from '../hooks/useMessages'
-// import { useChat } from '../context/ChatProvider'
 import { useSelector } from 'react-redux'
 
 export const dateFormat = timestamp => {

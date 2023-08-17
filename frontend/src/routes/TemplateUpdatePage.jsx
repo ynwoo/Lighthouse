@@ -24,11 +24,10 @@ import {
   startDateToString,
 } from '../utils'
 
-export default function TemplateUpdatePage({ isLoggedIn }) {
+export default function TemplateUpdatePage() {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/template/update/')[1]
   const originalStudy = useSelector(state => state.study.studyDetail)
-  console.log(originalStudy)
   const [startDate, setStartDate] = useState(
     StringToDate(originalStudy.startedAt),
   )
@@ -57,8 +56,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
 
   const navigate = useNavigate()
 
-  console.log(study)
-
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
     dispatch(userAction.profile(sessionStorage.getItem('userId')))
@@ -70,7 +67,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   }, [originalStudy])
 
   const handleChangeStudy = e => {
-    console.log('handleChangeStudy', e.target)
     setStudy({ ...study, currentMember: e })
   }
 
@@ -124,7 +120,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
     if (study.sidoId) formData.append('sidoId', study.sidoId)
     if (study.gugunId) formData.append('gugunId', study.gugunId)
     formData.append('status', status)
-    console.log('uploadedImageFile', uploadedImageFile)
     if (uploadedImageFile) formData.append('coverImgFile', uploadedImageFile)
     formData.append('coverImgUrl', study.coverImgUrl)
     formData.append(
@@ -140,7 +135,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
       'recruitFinishedAt',
       endDateToString(recruitFinishedDate) ?? study.recruitFinishedAt,
     )
-    console.log(createdDate, startDate, recruitFinishedDate, endDate)
 
     Object.keys(study).forEach(sKey => {
       // studyTags
@@ -251,7 +245,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   }
 
   const callStudyUpdateApi = async studyRequest => {
-    console.log('callStudyUpdateApi', studyRequest)
     dispatch(studyAction.studyUpdate(studyRequest)).then(() => {
       setUploadedImageFile(null)
       setUploadedBadgeImageFile(null)
@@ -268,11 +261,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
 
   const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
-  console.log(myInfo)
-  console.log(likeList)
-  const userId = sessionStorage.getItem('userId')
-  console.log(study)
-  console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     {

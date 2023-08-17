@@ -19,12 +19,7 @@ export default function UserPage() {
   const { userId } = location.state
   const myId = Number(sessionStorage.getItem('userId'))
 
-  console.log(userId, typeof userId, myId, typeof myId)
-
   const following = useSelector(state => state.user.following)
-
-  console.log(following)
-  console.log(profile)
 
   const showModal = () => {
     setIsModalVisible(true)
