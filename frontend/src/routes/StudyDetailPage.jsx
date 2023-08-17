@@ -157,7 +157,7 @@ export default function StudyDetailPage() {
           </Col>
           <Col
             style={{
-              padding: '30px 0 0 0',
+              padding: '20px 0 0 0',
             }}
           >
             <h1 style={{ height: '40px' }}>{study.title}</h1>
