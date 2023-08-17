@@ -315,7 +315,9 @@ export default function TemplateUpdatePage() {
               name="rule"
               onChange={handleChangeStudy}
               value={study.rule}
-              style={{ height: `${study.rule.split('\n').length * 25}px` }}
+              style={{
+                height: study.rule && `${study.rule.split('\n').length * 25}px`,
+              }}
             />
           </Card>
           <Card
