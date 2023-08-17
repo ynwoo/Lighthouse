@@ -58,7 +58,6 @@ const Header = styled.header`
 `
 
 function ChatContainer({ studyId, setRoomId, studyInfo }) {
-  console.log('sudy info', studyInfo)
   const roomName = studyInfo.title
   const roomDescription = studyInfo.description
 
