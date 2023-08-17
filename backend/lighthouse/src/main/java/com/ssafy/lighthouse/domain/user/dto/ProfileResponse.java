@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -31,5 +32,5 @@ public class ProfileResponse {
     private Long following;
     private Long follower;
     private SimpleUserResponse simpleUserResponse;
-    private List<SimpleProfileResponse> participatedUserProfiles;
+    private Map<Long, List<SimpleProfileResponse>> participatedUserProfiles;
 }
