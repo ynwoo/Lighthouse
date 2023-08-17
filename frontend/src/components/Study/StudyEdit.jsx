@@ -215,9 +215,7 @@ export default function StudyEdit({ study }) {
             bordered={false}
             style={{ boxShadow: 'none' }}
           >
-            <div>
-              <StudyCurriculum />
-            </div>
+            <StudyCurriculum study={study} />
           </Card>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             {' '}

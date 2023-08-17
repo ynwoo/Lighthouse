@@ -6,9 +6,10 @@ import { studyAction } from '../../store/study'
 export default function StudyCurriculum({ study }) {
   const dispatch = useDispatch()
   const [form] = Form.useForm()
-  const sessions = study.sessions?.toSorted((a, b) => a.seqNum - b.seqNum)
-  // 모달
+  const sessions =
+    study?.sessions && [...study.sessions].sort((a, b) => a.seqNum - b.seqNum)
 
+  // 모달
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const showModal = () => {
