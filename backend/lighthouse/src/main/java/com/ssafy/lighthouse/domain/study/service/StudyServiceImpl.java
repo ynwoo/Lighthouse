@@ -478,6 +478,43 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public void updateStudyStatusByStudyId(Long studyId, int status) {
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+        int prevStatus = study.getStatus();
+
+        // study 상태 변경
+        if(prevStatus != status) {
+            study.changeStatus(status);
+
+            if(status == STATUS.TERMINATED) {
+                // 스터디에 해당하는 뱃지 확인
+                Badge badge = badgeRepository.findByBadgeId(study.getBadge().getId()).orElseThrow(BadgeException::new);
+                List<UserBadge> newUserBadges = new ArrayList<>();
+
+                participationHistoryRepository.findAllByStudyId(studyId, STATUS.PROGRESS)
+                        .forEach(participationHistory -> {
+                            // 기록 수정
+                            participationHistory.changeStatus(STATUS.TERMINATED);
+
+                            // 뱃지 지급
+                            newUserBadges.add(UserBadge.builder()
+                                    .badge(badge)
+                                    .userId(participationHistory.getUserId())
+                                    .build());
+                        });
+
+                // 뱃지 지급
+                userBadgeRepository.saveAll(newUserBadges);
+
+            } else {
+                // study에 참여한 사람들의 상태 변경
+                participationHistoryRepository.findAllByStudyId(studyId, prevStatus)
+                        .forEach(participationHistory -> participationHistory.changeStatus(status));
+            }
+        }
+    }
+
+    @Override
     public void createStudyLike(Long studyId, Long userId) {
         Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
         if(result.isPresent()) {

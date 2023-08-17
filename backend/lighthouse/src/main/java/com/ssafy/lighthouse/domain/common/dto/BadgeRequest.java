@@ -16,4 +16,9 @@ public class BadgeRequest {
     private String name;
     private String description;
     private MultipartFile img;
+
+
+    public void setImg(MultipartFile img) {
+        this.img = img;
+    }
 }
