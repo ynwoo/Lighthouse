@@ -61,13 +61,10 @@ export default function StudyReview({ study }) {
         </Button>
       </div>
       <div className="review_box">
-        <div>
-          사용한 스터디 목록
-          <div className="review_mini">응애</div>
-        </div>
+        <div>사용한 스터디 목록</div>
 
         <div>
-          사용자들
+          사용자 목록
           {study.studyEvals?.length !== 0 ? (
             study.studyEvals?.map(review => (
               <div className="review_mini">
@@ -76,7 +73,7 @@ export default function StudyReview({ study }) {
                   state={{ userId: review.userId }}
                 >
                   {reviewers?.length === 0
-                    ? '누구게'
+                    ? '사용자 없음'
                     : reviewers?.find(user => user.id === review.userId)
                         ?.nickname}
                 </Link>{' '}
@@ -84,7 +81,7 @@ export default function StudyReview({ study }) {
               </div>
             ))
           ) : (
-            <div className="review_mini">아직 리뷰가 없어요...</div>
+            <div>사용자가 없습니다.</div>
           )}
         </div>
       </div>
