@@ -410,7 +410,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
           </Col>
         </Row>
       </div>
-
       <div>
         <Row>
           <Col span={18}>
