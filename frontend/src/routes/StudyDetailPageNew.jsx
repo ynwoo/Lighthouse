@@ -231,15 +231,19 @@ export default function StudyDetailPage({ isLoggedIn }) {
               </p>
               <div style={{ paddingTop: '30px' }}>
                 {myInfo.id === study.leaderProfile.id ? (
-                  <Button
-                    type="primary"
-                    style={{
-                      width: '100%',
-                    }}
-                    onClick={handleChangeStatus}
-                  >
-                    {buttonMessage}
-                  </Button>
+                  study.status !== STATUS.SHARE ? (
+                    <Button
+                      type="primary"
+                      style={{
+                        width: '100%',
+                      }}
+                      onClick={handleChangeStatus}
+                    >
+                      {buttonMessage}
+                    </Button>
+                  ) : (
+                    ''
+                  )
                 ) : (
                   <Button
                     type="primary"
