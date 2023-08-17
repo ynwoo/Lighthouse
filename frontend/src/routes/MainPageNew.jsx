@@ -36,7 +36,7 @@ const initParams = {
   page: 0,
   key: 'title',
   word: '',
-  isOnline: 0,
+  isOnline: 1,
   orderKey: 'like',
   orderBy: 'desc',
   tagIds: [],

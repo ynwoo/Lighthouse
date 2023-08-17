@@ -71,14 +71,19 @@ function UserInfoModify({ profile }) {
         onFinish={values => {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
-          if (nicknameIsValid) {
+          console.log('nickname ', values.nickname, profile.nickname)
+          if (values.nickname == null || nicknameIsValid) {
             delete values.confirm
             values.userTagList = []
             values.id = Number(sessionStorage.getItem('userId'))
             // 비어있는 요소를 undefined => null로 바꾸어주는 작업
             Object.keys(values).forEach(key => {
               if (values[key] === undefined) {
-                values[key] = null
+                if (profile[key] != null) {
+                  values[key] = profile[key]
+                } else {
+                  values[key] = null
+                }
               }
             })
             if (values.profileImgFile != null) {
@@ -101,12 +106,12 @@ function UserInfoModify({ profile }) {
           name="password"
           label="비밀번호"
           tooltip="영문/숫자/특수문자 2가지 이상 포함, 8자 이상 32자 이하 입력 (공백 제외)"
-          rules={[
-            {
-              required: true,
-              message: '비밀번호를 입력해주세요.',
-            },
-          ]}
+          // rules={[
+          //   {
+          //     required: true,
+          //     message: '비밀번호를 입력해주세요.',
+          //   },
+          // ]}
           hasFeedback
         >
           <Input.Password placeholder="********" />
@@ -118,10 +123,10 @@ function UserInfoModify({ profile }) {
           dependencies={['password']}
           hasFeedback
           rules={[
-            {
-              required: true,
-              message: '비밀번호가 일치하지 않습니다.',
-            },
+            // {
+            //   required: true,
+            //   message: '비밀번호가 일치하지 않습니다.',
+            // },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
