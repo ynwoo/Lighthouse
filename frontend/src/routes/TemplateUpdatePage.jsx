@@ -331,7 +331,7 @@ export default function TemplateUpdatePage() {
                 transform: 'translateX(-50%)',
                 objectFit: 'cover',
               }}
-              src={uploadedImage || coverImage(study.coverImgUrl)}
+              src={uploadedImage || coverImage(originalStudy?.coverImgUrl)}
               alt="coverImage"
             />
           </Col>
@@ -343,7 +343,7 @@ export default function TemplateUpdatePage() {
             <h1 style={{ height: '40px' }}>
               {study.title}{' '}
               <img
-                src={uploadedBadgeImage || image(study.badge?.imgUrl)}
+                src={uploadedBadgeImage || image(originalStudy.badge?.imgUrl)}
                 alt={study.badge?.description}
                 className="badge"
                 style={{ height: '20px', width: '20px' }}
