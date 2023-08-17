@@ -93,15 +93,15 @@ export default function StudyDetailPage() {
 
   const handleChangeStatus = () => {
     let { status } = study
-    if (study.status === STATUS.PREPARING) {
+    if (status === STATUS.PREPARING) {
       status = STATUS.RECRUITING
-    } else if (study.status === STATUS.RECRUITING) {
+    } else if (status === STATUS.RECRUITING) {
       status = STATUS.PROGRESS
-    } else if (study.status === STATUS.PROGRESS) {
+    } else if (status === STATUS.PROGRESS) {
       status = STATUS.TERMINATED
-    } else if (study.status === STATUS.TERMINATED) {
+    } else if (status === STATUS.TERMINATED) {
       status = STATUS.SHARE
-    } else if (study.status === STATUS.SHARE) {
+    } else if (status === STATUS.SHARE) {
       status = STATUS.TERMINATED
     }
     updateStudyStatus(

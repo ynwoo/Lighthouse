@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
@@ -9,12 +9,34 @@ import { STATUS } from '../../utils'
 function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
 
+  const navigate = useNavigate()
+
   const handleMouseEnter = () => {
     setIsHovered(true)
   }
 
   const handleMouseLeave = () => {
     setIsHovered(false)
+  }
+
+  const handleMovePage = () => {
+    const { status, leaderProfile } = study
+    if (
+      status === STATUS.PREPARING &&
+      leaderProfile?.id === Number(sessionStorage.getItem('userId'))
+    ) {
+      navigate(`/template/update/${study.id}`)
+    } else if (status === STATUS.RECRUITING) {
+      navigate(`/study/${study.id}`)
+    } else if (status === STATUS.PROGRESS) {
+      navigate(`/inprogress/${study.id}`)
+    } else if (status === STATUS.TERMINATED) {
+      navigate(`/study/${study.id}`)
+    } else if (status === STATUS.SHARE) {
+      navigate(`/template/${study.id}`)
+    } else {
+      navigate(`/study/${study.id}`)
+    }
   }
   const cardWidth = '100%'
   const cardHeight = '250px'
@@ -72,113 +94,98 @@ function StudyCard({ study }) {
             </div>
           </div>
         </Card>
-        {/* 레이어 카드 */}
-        <Link
-          to={
-            study.status === STATUS.SHARE
-              ? `/template/${study.id}`
-              : study.status === STATUS.PROGRESS
-              ? `/inprogress/${study.id}`
-              : study.status === STATUS.PREPARING &&
-                study.leaderProfile.id ===
-                  Number(sessionStorage.getItem('userId'))
-              ? `/template/update/${study.id}`
-              : `/study/${study.id}`
-          }
-          state={{ id: study.id }}
+        <Card
+          onClick={handleMovePage}
+          onMouseLeave={handleMouseLeave}
+          className={isHovered ? 'hovered-card' : ''}
+          bordered={false}
+          style={{
+            width: '100%',
+            height: { cardHeight },
+            padding: '5px',
+            whiteSpace: 'pre-line',
+            boxShadow: 'none',
+            backgroundColor: 'rgba(21, 21, 21, 0.88)',
+            position: 'absolute',
+            top: '0',
+            zIndex: '10',
+            visibility: isHovered ? 'visible' : 'hidden',
+          }}
+          bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
         >
-          <Card
-            onMouseLeave={handleMouseLeave}
-            className={isHovered ? 'hovered-card' : ''}
-            bordered={false}
-            style={{
-              width: '100%',
-              height: { cardHeight },
-              padding: '5px',
-              whiteSpace: 'pre-line',
-              boxShadow: 'none',
-              backgroundColor: 'rgba(21, 21, 21, 0.88)',
-              position: 'absolute',
-              top: '0',
-              zIndex: '10',
-              visibility: isHovered ? 'visible' : 'hidden',
-            }}
-            bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
-          >
-            <div style={{ color: '#f2f2f2' }}>
-              <CustomTitle text={study.title} />
+          <div style={{ color: '#f2f2f2' }}>
+            <CustomTitle text={study.title} />
+            <div
+              style={{
+                minHeight: '85px',
+                marginTop: '5px',
+              }}
+            >
               <div
                 style={{
-                  minHeight: '85px',
-                  marginTop: '5px',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '13px',
-                    overflow: 'hidden',
-                    whiteSpace: 'normal',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 4,
-                    WebkitBoxOrient: 'vertical',
-                    wordBreak: 'keep-all',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {study.description}
-                </div>
-              </div>
-              <div
-                style={{
-                  fontSize: '14px',
-                  marginTop: '5px',
-                  height: '55px',
+                  fontSize: '13px',
                   overflow: 'hidden',
+                  whiteSpace: 'normal',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: 'vertical',
+                  wordBreak: 'keep-all',
                   marginBottom: '10px',
                 }}
               >
-                {study.studyTags.map(tag => {
-                  return (
-                    <Tag
-                      key={tag.id}
-                      style={{
-                        margin: '3px',
-                        color: '#ace8ff',
-                        borderColor: '#ace8ff',
-                      }}
-                    >
-                      #{tag.tag.keyword}
-                    </Tag>
-                  )
-                })}
+                {study.description}
               </div>
-              <hr />
-              <Row justify="end" style={{ margin: '10px 10px' }}>
-                <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
-                  <Tooltip title="좋아요">
-                    <HeartOutlined
-                      style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
-                      onClick={e => {
-                        e.preventDefault()
-                      }}
-                    />
-                  </Tooltip>
-                </Col>
-                <Col span={4}>
-                  <Tooltip title="북마크">
-                    <BookOutlined
-                      style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
-                      onClick={e => {
-                        e.preventDefault()
-                      }}
-                    />
-                  </Tooltip>
-                </Col>
-              </Row>
             </div>
-          </Card>
-        </Link>
+            <div
+              style={{
+                fontSize: '14px',
+                marginTop: '5px',
+                height: '55px',
+                overflow: 'hidden',
+                marginBottom: '10px',
+              }}
+            >
+              {study.studyTags.map(tag => {
+                return (
+                  <Tag
+                    key={tag.id}
+                    style={{
+                      margin: '3px',
+                      color: '#ace8ff',
+                      borderColor: '#ace8ff',
+                    }}
+                  >
+                    #{tag.tag.keyword}
+                  </Tag>
+                )
+              })}
+            </div>
+            <hr />
+            <Row justify="end" style={{ margin: '10px 10px' }}>
+              <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
+                <Tooltip title="좋아요">
+                  <HeartOutlined
+                    style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+              <Col span={4}>
+                <Tooltip title="북마크">
+                  <BookOutlined
+                    style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+            </Row>
+          </div>
+        </Card>
       </div>
     </div>
   )
