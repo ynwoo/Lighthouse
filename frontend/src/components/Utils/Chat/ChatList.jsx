@@ -118,12 +118,11 @@ function ChattingList() {
 
   return (
     <div
-      id="scrollableDiv"
       style={{
-        height: 500,
+        height: '90%',
         overflow: 'auto',
-        padding: '0 16px',
-        zIndex: '99999999',
+        backgroundColor: 'white',
+        padding: '0 15px',
         // border: '1px solid rgba(140, 140, 140, 0.35)',
       }}
     >
@@ -150,6 +149,7 @@ function ChattingList() {
             renderItem={item => (
               <List.Item key={item.id}>
                 <List.Item.Meta
+                  onClick={() => clickHandler(item.id)}
                   avatar={
                     <Avatar
                       src={
@@ -159,23 +159,10 @@ function ChattingList() {
                       }
                     />
                   }
-                  title={
-                    <button
-                      type="button"
-                      onClick={() => clickHandler(item.id)}
-                      style={{
-                        padding: '7px',
-                        borderRadius: '20px',
-                        backgroundColor: '#4D67C1',
-                        border: '2px solid #4D67C1',
-                        color: 'white',
-                      }}
-                    >
-                      {item.title}
-                    </button>
-                  }
+                  title={item.title}
                   // description={item.description}
                   description={getFirstMessageContent(item.id)}
+                  style={{ cursor: 'pointer' }}
                 />
               </List.Item>
             )}
