@@ -60,39 +60,44 @@ export default function StudyCurriculum({ study }) {
             })
         }}
       />
-      <div>
-        <Form>
-          <Button type="primary" onClick={showModal}>
-            입력하기
-          </Button>
-        </Form>
-
-        <Modal
-          title="Add Cur"
-          visible={isModalVisible}
-          onOk={() => {
-            form
-              .validateFields()
-              .then(values => {
-                handleOk(values)
-              })
-              .catch(errorInfo => {
-                console.log('Validation failed:', errorInfo)
-              })
-          }}
-          onCancel={handleCancel}
-        >
-          <Form form={form}>
-            <Form.Item label="title" name="title">
-              <Input />
-            </Form.Item>
-            <Form.Item label="description" name="description">
-              <Input.TextArea />
-            </Form.Item>
+      {study.leaderProfile?.id === Number(sessionStorage.getItem('userId')) ? (
+        <div>
+          <Form>
+            <Button type="primary" onClick={showModal}>
+              입력하기
+            </Button>
           </Form>
-        </Modal>
-      </div>
-      <Divider />
+
+          <Modal
+            title="Add Cur"
+            visible={isModalVisible}
+            onOk={() => {
+              form
+                .validateFields()
+                .then(values => {
+                  handleOk(values)
+                })
+                .catch(errorInfo => {
+                  console.log('Validation failed:', errorInfo)
+                })
+            }}
+            onCancel={handleCancel}
+          >
+            <Form form={form}>
+              <Form.Item label="title" name="title">
+                <Input />
+              </Form.Item>
+              <Form.Item label="description" name="description">
+                <Input.TextArea />
+              </Form.Item>
+            </Form>
+          </Modal>
+          <Divider />
+        </div>
+      ) : (
+        <p />
+      )}
+
       <List
         itemLayout="horizontal"
         dataSource={sessions}
@@ -106,16 +111,22 @@ export default function StudyCurriculum({ study }) {
                 </div>
               }
             />
-            <Button
-              onClick={() => {
-                dispatch(studyAction.deleteCurr(session.id)).then(() => {
-                  alert('커리큘럼이 삭제되었습니다!')
-                  dispatch(studyAction.studyDetail(study.id))
-                })
-              }}
-            >
-              🗑
-            </Button>
+            {session.status === 0 ? <p>✔</p> : <p>🕑</p>}
+            {study.leaderProfile?.id ===
+            Number(sessionStorage.getItem('userId')) ? (
+              <Button
+                onClick={() => {
+                  dispatch(studyAction.deleteCurr(session.id)).then(() => {
+                    alert('커리큘럼이 삭제되었습니다!')
+                    dispatch(studyAction.studyDetail(study.id))
+                  })
+                }}
+              >
+                🗑
+              </Button>
+            ) : (
+              <p />
+            )}
           </List.Item>
         )}
       />
