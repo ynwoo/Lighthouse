@@ -27,6 +27,10 @@ body {
   }
 }
 
+.text-area {
+  height: 100%;
+}
+
 .file-upload {
   margin: 20px;
 }
