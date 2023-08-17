@@ -106,6 +106,7 @@ public class StudyServiceImpl implements StudyService {
                 .isOnline(study.getIsOnline())
                 .originalId(study.getId())
                 .leaderId(userId)
+                .currentMember(1)
                 .maxMember(study.getMaxMember())
                 .minMember(study.getMinMember())
                 .coverImgUrl(study.getCoverImgUrl())
@@ -141,21 +142,21 @@ public class StudyServiceImpl implements StudyService {
                         .build())
                 .collect(Collectors.toSet()));
 
-        // studyMaterial
-        Set<StudyMaterial> studyMaterials = new HashSet<>();
-        sessions.forEach(session -> studyMaterials.addAll(session.getStudyMaterials()
-                .stream()
-                .map(studyMaterial -> StudyMaterial.builder()
-                        .isValid(studyMaterial.getIsValid())
-                        .studyId(newStudyId)
-                        .sessionId(session.getId())
-                        .content(studyMaterial.getContent())
-                        .type(studyMaterial.getType())
-                        .fileUrl(studyMaterial.getFileUrl())
-                        .build())
-                .collect(Collectors.toSet())));
-
-        studyMaterialRepository.saveAll(studyMaterials);
+//        // studyMaterial
+//        Set<StudyMaterial> studyMaterials = new HashSet<>();
+//        sessions.forEach(session -> studyMaterials.addAll(session.getStudyMaterials()
+//                .stream()
+//                .map(studyMaterial -> StudyMaterial.builder()
+//                        .isValid(studyMaterial.getIsValid())
+//                        .studyId(newStudyId)
+//                        .sessionId(session.getId())
+//                        .content(studyMaterial.getContent())
+//                        .type(studyMaterial.getType())
+//                        .fileUrl(studyMaterial.getFileUrl())
+//                        .build())
+//                .collect(Collectors.toSet())));
+//
+//        studyMaterialRepository.saveAll(studyMaterials);
 
         // studyNotice
         Set<StudyNotice> studyNotices = study.getStudyNotices();
