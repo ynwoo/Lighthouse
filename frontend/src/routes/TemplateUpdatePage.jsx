@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip, DatePicker, Input } from 'antd'
+import { Row, Col, Tag, Tabs, Button, Tooltip, Input } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBookmark as faBookmarkSolid,
@@ -23,6 +23,7 @@ import {
   endDateToString,
   startDateToString,
 } from '../utils'
+import DateRangePicker from '../components/Study/utils/DatePicker'
 
 export default function TemplateUpdatePage() {
   const dispatch = useDispatch()
@@ -279,17 +280,21 @@ export default function TemplateUpdatePage() {
     {
       '스터디 기간': (
         <>
-          <DatePicker
-            changeStartDate={handleCreatedDateChange}
-            changeEndDate={handleRecruitFinishedDateChange}
-            initStartDate={study.createdAt}
-            initEndDate={study.recruitFinishedAt}
-          />
-          <DatePicker
+          <h3>스터디 기간</h3>
+          <DateRangePicker
             changeStartDate={handleStartDateChange}
             changeEndDate={handleEndDateChange}
             initStartDate={study.startedAt}
             initEndDate={study.endedAt}
+          />
+          <hr />
+          <br />
+          <h3>스터디 모집 기간</h3>
+          <DateRangePicker
+            changeStartDate={handleCreatedDateChange}
+            changeEndDate={handleRecruitFinishedDateChange}
+            initStartDate={study.createdAt}
+            initEndDate={study.recruitFinishedAt}
           />
         </>
       ),
