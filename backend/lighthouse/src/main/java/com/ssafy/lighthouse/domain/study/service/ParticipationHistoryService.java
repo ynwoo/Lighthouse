@@ -10,4 +10,6 @@ public interface ParticipationHistoryService {
     
     // 스터디 탈퇴
     void leaveStudy(Long studyId, Long userId);
+
+    void rejectStudy(Long studyId, Long userId);
 }
