@@ -218,12 +218,14 @@ public class StudyServiceImpl implements StudyService {
         // studyBadge fileUpload
         if(studyRequest.getBadge() != null) {
             // 이전 뱃지 삭제
-            if(studyRequest.getBadge().getId() != null) {
-                badgeService.removeBadge(studyRequest.getBadge().getId());
-            }
+//            if(studyRequest.getBadge().getId() != null) {
+//                badgeService.removeBadge(studyRequest.getBadge().getId());
+//            }
 
-            // 새로운 뱃지 등록
-            changedStudy.changeBadge(badgeService.createBadge(studyRequest.getBadge()));
+            if(studyRequest.getBadge().getImg() != null) {
+                // 새로운 뱃지 등록
+                changedStudy.changeBadge(badgeService.createBadge(studyRequest.getBadge()));
+            }
         }
 
         Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
