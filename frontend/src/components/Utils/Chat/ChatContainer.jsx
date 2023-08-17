@@ -19,7 +19,6 @@ const CenterContainer = styled.div`
 `
 
 const Chat = styled.div`
-  padding: 0vh 3vh 1.5vh 3vh;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -44,7 +43,7 @@ const Header = styled.header`
   padding-top: 20px;
   height: 60px;
   position: fixed;
-  z-index: 9999999999;
+  z-index: 99;
 
   & img {
     height: 100%;
@@ -65,12 +64,11 @@ function ChatContainer({ studyId, setRoomId, studyInfo }) {
     <CenterContainer>
       <Chat>
         <div>
-          <Header>
+          <Header style={{ width: '375px' }}>
             <button
               type="button"
               onClick={() => setRoomId(-1)}
               style={{
-                padding: '7px',
                 height: '60px',
                 backgroundColor: 'white',
                 border: 'none',
@@ -79,7 +77,7 @@ function ChatContainer({ studyId, setRoomId, studyInfo }) {
               {/* <h1>🔙</h1> */}
               <img
                 src={backLogo}
-                alt="응애"
+                alt="arrow"
                 style={{ width: '20px', height: '20px' }}
               />
             </button>
@@ -90,17 +88,20 @@ function ChatContainer({ studyId, setRoomId, studyInfo }) {
                   ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${studyInfo.avatar}`
                   : base
               }
+              style={{}}
             />
 
             <div>
               <h2>{roomName}</h2>
-              <Description color="#000" size="0.75em">
+              <Description color="#818181" size="0.75em">
                 {roomDescription}
               </Description>
             </div>
           </Header>
-          <div style={{ marginTop: '70px' }}>
+          <div style={{ padding: '50px 0px 30px 0px' }}>
             <Conversation roomId={studyId} />
+          </div>
+          <div style={{ position: 'fixed', bottom: '110px', width: '375px' }}>
             <ChatForm roomId={studyId} />
           </div>
         </div>
