@@ -122,10 +122,7 @@ export default function UserEdit() {
                       }}
                       width={200}
                     >
-                      <Card
-                        onClick={handleMoveProfile(userProfile.id)}
-                        bordered={false}
-                      >
+                      <Card bordered={false}>
                         <Avatar
                           size={{
                             sm: 100,
@@ -134,6 +131,7 @@ export default function UserEdit() {
                             xl: 150,
                             xxl: 150,
                           }}
+                          onClick={handleMoveProfile(userProfile.id)}
                           src={profileImage(userProfile.profileImgUrl)}
                           shape="circle"
                         />
