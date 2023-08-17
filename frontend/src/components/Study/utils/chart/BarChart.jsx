@@ -107,9 +107,9 @@ function Barchart({ data }) {
           tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
           tickPadding: 5, // tick padding
           tickRotation: 0, // tick 기울기
-          legend: '개수', // left 글씨
+          legend: 'count', // left 글씨
           legendPosition: 'middle', // 글씨 위치
-          legendOffset: -60, // 글씨와 chart간 간격
+          legendOffset: -50, // 글씨와 chart간 간격
         }}
         /**
          * label 안보이게 할 기준 width

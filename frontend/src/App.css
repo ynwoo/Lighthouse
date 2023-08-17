@@ -903,3 +903,15 @@ h1 span:nth-child(9) {
     margin-left:auto;
   }
 }
+
+.blue {
+  color: blue;
+}
+
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}

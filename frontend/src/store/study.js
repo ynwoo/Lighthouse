@@ -335,10 +335,10 @@ export const studySlice = createSlice({
       console.log(action.payload)
     },
     [studyAction.bookmark.fulfilled]: () => {
-      alert('북마크')
+      // alert('북마크')
     },
     [studyAction.disbookmark.fulfilled]: () => {
-      alert('북마크 취소')
+      // alert('북마크 취소')
     },
     [studyAction.joinStudy.rejected]: () => {
       alert('이미 신청 된 스터디입니다!')
