@@ -115,11 +115,17 @@ function ChattingList() {
           <ChatContainer
             studyId={roomId}
             setRoomId={setRoomId}
-            srcImg={
+            // srcImg={
+            //   studiesToShow.filter(s => {
+            //     // eslint-disable-next-line eqeqeq
+            //     return s.id == roomId
+            //   })[0].avatar
+            // }
+            studyInfo={
               studiesToShow.filter(s => {
                 // eslint-disable-next-line eqeqeq
                 return s.id == roomId
-              })[0].avatar
+              })[0]
             }
           />
         </div>

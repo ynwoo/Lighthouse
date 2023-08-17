@@ -57,10 +57,10 @@ const Header = styled.header`
   }
 `
 
-function ChatContainer({ studyId, setRoomId, srcImg }) {
-  const roomName = '블루 아카이브 스터디 22'
-  const roomDescription =
-    '이 스터디는 영국에서 시작되어 5명의 사람에게 추천하지 않으면 ... '
+function ChatContainer({ studyId, setRoomId, studyInfo }) {
+  console.log('sudy info', studyInfo)
+  const roomName = studyInfo.title
+  const roomDescription = studyInfo.description
 
   return (
     <CenterContainer>
@@ -87,8 +87,8 @@ function ChatContainer({ studyId, setRoomId, srcImg }) {
             <img
               alt="room-img"
               src={
-                srcImg
-                  ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${srcImg}`
+                studyInfo.avatar
+                  ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${studyInfo.avatar}`
                   : base
               }
             />
