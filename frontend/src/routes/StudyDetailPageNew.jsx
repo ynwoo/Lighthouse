@@ -19,6 +19,8 @@ import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
+import { STATUS } from '../utils'
+import { updateStudyStatus } from '../api/study'
 
 export default function StudyDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -94,6 +96,37 @@ export default function StudyDetailPage({ isLoggedIn }) {
     setMessage(e.target.value)
   }
 
+  const handleChangeStatus = () => {
+    let { status } = study
+    if (study.status === STATUS.PREPARING) {
+      status = STATUS.RECRUITING
+    } else if (study.status === STATUS.RECRUITING) {
+      status = STATUS.PROGRESS
+    } else if (study.status === STATUS.PROGRESS) {
+      status = STATUS.TERMINATED
+    } else if (study.status === STATUS.TERMINATED) {
+      status = STATUS.SHARE
+    }
+    updateStudyStatus(
+      { studyId: study.id, status },
+      () => {
+        dispatch(studyAction.studyDetail(study.id))
+      },
+      () => {},
+    )
+  }
+
+  let buttonMessage = ''
+  if (study.status === STATUS.PREPARING) {
+    buttonMessage = '모집 시작'
+  } else if (study.status === STATUS.RECRUITING) {
+    buttonMessage = '스터디 시작'
+  } else if (study.status === STATUS.PROGRESS) {
+    buttonMessage = '스터디 종료'
+  } else if (study.status === STATUS.TERMINATED) {
+    buttonMessage = '스터디 공유'
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div>
@@ -126,7 +159,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
             <p style={{ fontSize: '16px' }}>
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
-            <p style={{ marginTop: '30px' }}>
+            <p style={{ marginTop: '20px' }}>
               {study.isOnline
                 ? '온라인'
                 : study.sido && study.gugun
@@ -135,6 +168,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
               <br />
               현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
               인원: {study.minMember}
+              <br />
               <br />
               스터디 기간: <br />
               {study.startedAt} - {study.endedAt}
@@ -195,26 +229,28 @@ export default function StudyDetailPage({ isLoggedIn }) {
               <p style={{ fontSize: '12px', textAlign: 'left' }}>
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
-              <div>
-                <Button
-                  type="primary"
-                  style={{
-                    // backgroundColor: '#FFF1A9',
-                    // color: 'black',
-                    // border: '1px solid #FFF1A9',
-                    // borderRadius: '20px',
-                    // padding: '8px',
-                    // fontWeight: 'bold',
-                    width: '100%',
-                    // display: 'flex',
-                    // alignContent: 'center',
-                    // alignItems: 'center',
-                    // justifyContent: 'center',
-                  }}
-                  onClick={showModal}
-                >
-                  JOIN
-                </Button>
+              <div style={{ paddingTop: '30px' }}>
+                {myInfo.id === study.leaderProfile.id ? (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                    }}
+                    onClick={handleChangeStatus}
+                  >
+                    {buttonMessage}
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                    }}
+                    onClick={showModal}
+                  >
+                    스터디 참가 신청
+                  </Button>
+                )}
 
                 <Modal
                   title="스터디 신청"
@@ -222,7 +258,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                   onOk={handleOk}
                   onCancel={handleCancel}
                 >
-                  <p>스터디장에게 하고 싶은 말을 남겨주세요!</p>
+                  <p>스터디장에게 하고 싶은 말을 남겨주세요.</p>
                   <Input
                     placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                     value={message}
@@ -237,7 +273,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                   onCancel={handleConfirmationOk}
                 >
                   <p>스터디 신청이 성공적으로 완료되었습니다.</p>
-                  <p>Thank you for submitting your message!</p>
                 </Modal>
               </div>
               <Row style={{ marginTop: '10px' }}>
@@ -259,7 +294,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkSolid}
-                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -280,7 +314,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkRegular}
-                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -300,11 +333,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요 취소">
-                      <FontAwesomeIcon
-                        className="red"
-                        icon={faHeartSolid}
-                        beat
-                      />{' '}
+                      <FontAwesomeIcon className="red" icon={faHeartSolid} />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>
@@ -321,11 +350,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요">
-                      <FontAwesomeIcon
-                        className="red"
-                        icon={faHeartRegular}
-                        beat
-                      />{' '}
+                      <FontAwesomeIcon className="red" icon={faHeartRegular} />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>
