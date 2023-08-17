@@ -9,6 +9,7 @@ import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
 import StudyCurrent from '../components/Study/StudyCurrent'
+import StudyRecord from '../components/Study/StudyRecord'
 
 export default function StudyInProgressPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -35,7 +36,7 @@ export default function StudyInProgressPage({ isLoggedIn }) {
   const tabMenu = [
     { '진행 상황': <StudyCurrent study={study} /> },
     { 정보: <StudyInfo study={study} /> },
-    { 기록: <div>스터디 기록</div> },
+    { 기록: <StudyRecord study={study} /> },
   ]
 
   return (
