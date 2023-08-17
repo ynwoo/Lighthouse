@@ -95,6 +95,7 @@ export default function TempDetailPage() {
               현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
               인원: {study.minMember}
               <br />
+              <br />
               스터디 기간: <br />
               {study.startedAt} - {study.endedAt}
             </p>
