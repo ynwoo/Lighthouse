@@ -85,7 +85,11 @@ function StudyCard({ study }) {
               <p style={{ fontSize: '12px', marginBottom: '20px' }}>
                 {study.leaderProfile?.nickname}
               </p>
-              <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
+              {study.status === STATUS.SHARE ? (
+                <p>템플릿</p>
+              ) : (
+                <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
+              )}
 
               <p>
                 <HeartOutlined /> {study.likeCnt} <BookOutlined />{' '}
@@ -110,6 +114,7 @@ function StudyCard({ study }) {
             top: '0',
             zIndex: '10',
             visibility: isHovered ? 'visible' : 'hidden',
+            cursor: 'pointer',
           }}
           bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
         >
