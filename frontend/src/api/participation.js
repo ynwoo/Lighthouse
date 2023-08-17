@@ -9,9 +9,9 @@ async function participateStudy(studyId, success, fail) {
     .catch(fail)
 }
 
-async function joinStudy(studyId, success, fail) {
+async function joinStudy({ studyId, userId }, success, fail) {
   await authApi
-    .put(`/participation-history/${studyId}`)
+    .put(`/participation-history/${studyId}/${userId}`)
     .then(success)
     .catch(fail)
 }
@@ -23,4 +23,11 @@ async function leaveStudy(studyId, success, fail) {
     .catch(fail)
 }
 
-export { participateStudy, joinStudy, leaveStudy }
+async function rejectStudy({ studyId, userId }, success, fail) {
+  await authApi
+    .delete(`/participation-history/${studyId}/${userId}`)
+    .then(success)
+    .catch(fail)
+}
+
+export { participateStudy, joinStudy, leaveStudy, rejectStudy }

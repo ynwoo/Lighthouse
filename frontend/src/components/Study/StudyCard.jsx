@@ -4,6 +4,7 @@ import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
+import { STATUS } from '../../utils'
 
 function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -74,9 +75,9 @@ function StudyCard({ study }) {
         {/* 레이어 카드 */}
         <Link
           to={
-            study.status === 5
+            study.status === STATUS.SHARE
               ? `/template/${study.id}`
-              : study.status === 2
+              : study.status === STATUS.PROGRESS
               ? `/inprogress/${study.id}`
               : `/study/${study.id}`
           }

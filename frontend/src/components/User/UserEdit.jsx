@@ -18,6 +18,8 @@ import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
+import UserStarRating from '../atoms/UserStarRating'
+import { joinStudy, rejectStudy } from '../../api/participation'
 
 const { Content, Sider } = Layout
 
@@ -39,6 +41,25 @@ export default function UserEdit() {
   const myProfile = { ...myInfo, ...profile }
 
   const [score, setScore] = useState(0)
+
+  const handleJoinStudy = (studyId, userProfileId) => () => {
+    joinStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
+  const handleRejectStudy = (studyId, userProfileId) => () => {
+    rejectStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
 
   let items = [
     {
@@ -100,7 +121,25 @@ export default function UserEdit() {
                         <h3 style={{ marginBottom: '0px' }}>
                           {userProfile.nickname}
                         </h3>
-                        <p>님의 페이지 입니다.</p>
+                        <UserStarRating score={userProfile.score} />
+                        <Button
+                          type="primary"
+                          style={{
+                            width: '100%',
+                          }}
+                          onClick={handleJoinStudy(studyId, userProfile.id)}
+                        >
+                          가입 수락
+                        </Button>
+                        <Button
+                          type="primary"
+                          style={{
+                            width: '100%',
+                          }}
+                          onClick={handleRejectStudy(studyId, userProfile.id)}
+                        >
+                          가입 거절
+                        </Button>
                       </Card>
                     </Sider>
                     // <div>{userProfile}</div>s

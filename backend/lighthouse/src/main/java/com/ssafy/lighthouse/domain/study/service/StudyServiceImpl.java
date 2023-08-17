@@ -108,6 +108,7 @@ public class StudyServiceImpl implements StudyService {
                 .leaderId(userId)
                 .maxMember(study.getMaxMember())
                 .minMember(study.getMinMember())
+                .coverImgUrl(study.getCoverImgUrl())
                 .badge(study.getBadge())
                 .build());
 
