@@ -98,6 +98,7 @@ export default function TempDetailPage({ isLoggedIn }) {
                 ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
                 : '오프라인'}
               <br />
+              <br />
               현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
               인원: {study.minMember}
               <br />
