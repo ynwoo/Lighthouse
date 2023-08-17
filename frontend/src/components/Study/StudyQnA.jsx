@@ -18,7 +18,6 @@ function QnA({ study }) {
         .unwrap()
         .then(res => {
           setAskers(a => [...a, res])
-          console.log(dispatch(userAction.profile(qna.userId)))
         })
     })
   }, [study])
@@ -103,7 +102,7 @@ function QnA({ study }) {
                       state={{ userId: qna.userId }}
                     >
                       {askers?.length === 0
-                        ? 'loading...'
+                        ? '누구게'
                         : askers?.find(user => user.id === qna.userId)
                             ?.nickname}
                     </Link>
