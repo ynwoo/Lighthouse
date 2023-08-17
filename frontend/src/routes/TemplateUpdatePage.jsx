@@ -422,11 +422,7 @@ export default function TemplateUpdatePage() {
               alt="coverImage"
             />
           </Col>
-          <Col
-            style={{
-              padding: '30px 0 0 0',
-            }}
-          >
+          <Col>
             <h1 style={{ height: '40px' }}>
               <Input
                 style={{ width: 'auto' }}
@@ -442,10 +438,10 @@ export default function TemplateUpdatePage() {
                 style={{ height: '20px', width: '20px' }}
               />
             </h1>
-            <p type="text" style={{ fontSize: '16px' }}>
+            <p type="text" style={{ fontSize: '16px', margin: '10px 0' }}>
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
-            <p style={{ marginTop: '30px' }}>
+            <p>
               <Button
                 style={{ width: 80 }}
                 name="isOnline"
@@ -458,8 +454,7 @@ export default function TemplateUpdatePage() {
                   ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
                   : '오프라인'}
               </Button>
-              <br />
-              <div className="flex-container">
+              <div className="flex-container" style={{ margin: '10px 0' }}>
                 <span className="flex-item">
                   현재 인원&nbsp; : &nbsp;&nbsp;
                 </span>

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Card, Space, Row, Col } from 'antd'
 import Piechart from '../Study/utils/chart/PieChart'
-import { image } from '../../utils/image'
 import Barchart from '../Study/utils/chart/BarChart'
 import UserStarRating from '../atoms/UserStarRating'
+import UserBadge from './UserBadge'
 
 // 템플릿 상세의 질의응답
 
@@ -59,13 +59,7 @@ export default function UserInfo({ profile }) {
         </p>
       </Card>
       <Card title="뱃지" bordered={false}>
-        {profile.badges?.map(badge => (
-          <img
-            src={image(badge.imgUrl)}
-            alt={badge.description}
-            className="badge"
-          />
-        ))}
+        <UserBadge badges={profile?.badges} />
       </Card>
       <Card title="차트" bordered={false}>
         <Row>
