@@ -19,7 +19,6 @@ export default function StudyCurriculum({ study }) {
     values.studyId = study.id
     values.status = 0
     values.seqNum = study.sessions?.length
-    console.log(values)
 
     dispatch(studyAction.addCurr(values))
       .unwrap()
@@ -47,7 +46,6 @@ export default function StudyCurriculum({ study }) {
           values.studyId = study.id
           values.status = 0
           values.seqNum = study.sessions?.length
-          console.log(values)
           dispatch(studyAction.addCurr(values))
             .unwrap()
             .then(() => {

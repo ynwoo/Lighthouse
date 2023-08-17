@@ -25,10 +25,7 @@ export default function SideComponent({ isLoggedIn, study }) {
   }
 
   const handleOk = () => {
-    console.log('Message:', message)
-    console.log(study.id)
     dispatch(studyAction.joinStudy(study.id)).then(res => {
-      console.log(res)
       if (res.type !== 'study/joinStudy/rejected') {
         setIsModalVisible(false)
         setIsConfirmationVisible(true)
@@ -75,7 +72,6 @@ export default function SideComponent({ isLoggedIn, study }) {
     document.body.style.overflow = 'auto'
   }
 
-  console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>

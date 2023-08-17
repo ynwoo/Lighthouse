@@ -31,15 +31,16 @@ export const chatAction = {
   }),
   sendChat: createAsyncThunk('chat/send', async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .post(`http://i9a409.p.ssafy.io:8081/kafka/publish`, {
+      const response = await axios.post(
+        `http://i9a409.p.ssafy.io:8081/kafka/publish`,
+        {
           type: payload.type,
           roomId: payload.roomId,
           senderId: payload.senderId,
           senderName: payload.userName,
           message: payload.text,
-        })
-        .then(console.log('payload 발송 성공 +=> \n', payload))
+        },
+      )
       return thunkAPI.fulfillWithValue(response.data)
     } catch (err) {
       return thunkAPI.rejectWithValue(err)
@@ -80,15 +81,12 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     receiveMessage: (state, action) => {
-      console.log('받았다')
       state.messages.push(action.payload)
     },
   },
   extraReducers: {
     [chatAction.getChat.fulfilled]: (state, action) => {
-      console.log(action.payload.log)
       state.messages = [...state.messages, ...action.payload.log]
-      console.log(state.messages)
       // state.messages = action.payload.log
     },
   },

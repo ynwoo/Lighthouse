@@ -101,7 +101,6 @@ function SignUp() {
                 values.profileImgFile = values.profileImgFile[0].originFileObj
               }
 
-              console.log('submitting values: ', values)
               // redux => server
               dispatch(userAction.signUp(values))
               navigate('/')

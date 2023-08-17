@@ -31,7 +31,6 @@ export default function UserEdit() {
   const userId = Number(location.state.userId)
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
-    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
     dispatch(userAction.getFollowing())
@@ -65,7 +64,6 @@ export default function UserEdit() {
   }
 
   const handleMoveProfile = userProfileId => () => {
-    console.log('userProfileId', userProfileId)
     navigate(`/user_edit/${userProfileId}`, {
       state: { userId: userProfileId },
     })

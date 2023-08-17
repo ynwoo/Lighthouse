@@ -9,7 +9,6 @@ const UserStarRating = ({ score }) => {
   for (let index = 1; index <= 5; index++) {
     stars.push(<FontAwesomeIcon id={`star-${index}`} icon={faStar} />)
   }
-  console.log(width)
   return (
     <div className="star-ratings">
       <div className="star-ratings-fill" style={{ width }}>
