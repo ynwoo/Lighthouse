@@ -55,7 +55,8 @@ export default function StudyCurrent({ study }) {
           backgroundColor: 'rgb(255, 255, 255)',
         }}
       >
-        {study.leaderProfile?.id === sessionStorage.getItem('userId') ? (
+        {study.leaderProfile?.id ===
+        Number(sessionStorage.getItem('userId')) ? (
           <div>
             <Button type="primary" onClick={showModal}>
               새 공지 등록
