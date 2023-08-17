@@ -10,7 +10,7 @@ pipeline {
         SSH_CONNECTION = "ubuntu@i9a409.p.ssafy.io"
         ENV_DIR = "./config/.env"
         PORT_BACK = "8081"
-        PORT_FRONT = "80"
+        PORT_FRONT = "3000"
     }
     stages {
         stage('Build Backend') {
