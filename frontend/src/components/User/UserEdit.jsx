@@ -20,6 +20,8 @@ import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
 import UserStarRating from '../atoms/UserStarRating'
 import { joinStudy, rejectStudy } from '../../api/participation'
+import CreateButton from '../Study/utils/button/CreateButton'
+import StudyCard from '../Study/StudyCard'
 
 const { Content, Sider } = Layout
 
@@ -27,7 +29,6 @@ export default function UserEdit() {
   const dispatch = useDispatch()
   const location = useLocation()
   const userId = Number(location.state.userId)
-  // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
     console.log(userId)
@@ -96,8 +97,14 @@ export default function UserEdit() {
         children: (
           <div>
             {Object.keys(profile?.participatedUserProfiles)?.map(studyId => (
-              <div>
-                {studyId}:
+              <div className="flex-container">
+                <StudyCard
+                  study={
+                    profile?.recruitingStudies?.find(
+                      study => study.id === Number(studyId),
+                    ) ?? false
+                  }
+                />
                 {profile.participatedUserProfiles[`${studyId}`].map(
                   userProfile => (
                     <Sider
@@ -122,37 +129,29 @@ export default function UserEdit() {
                           {userProfile.nickname}
                         </h3>
                         <UserStarRating score={userProfile.score} />
-                        <Button
-                          type="primary"
-                          style={{
-                            width: '100%',
-                          }}
-                          onClick={handleJoinStudy(studyId, userProfile.id)}
-                        >
-                          가입 수락
-                        </Button>
-                        <Button
-                          type="primary"
-                          style={{
-                            width: '100%',
-                          }}
-                          onClick={handleRejectStudy(studyId, userProfile.id)}
-                        >
-                          가입 거절
-                        </Button>
+                        <div className="flex-container">
+                          <CreateButton
+                            color="accept"
+                            type="primary"
+                            onClick={handleJoinStudy(studyId, userProfile.id)}
+                          >
+                            수락
+                          </CreateButton>
+                          <CreateButton
+                            color="reject"
+                            type="primary"
+                            onClick={handleRejectStudy(studyId, userProfile.id)}
+                          >
+                            거절
+                          </CreateButton>
+                        </div>
                       </Card>
                     </Sider>
-                    // <div>{userProfile}</div>s
                   ),
                 )}
               </div>
             ))}
           </div>
-          // <StudyList
-          //   studies={profile.participatedStudies?.filter(
-          //     study => study.leaderProfile.id === userId,
-          //   )}
-          // />
         ),
       },
       {

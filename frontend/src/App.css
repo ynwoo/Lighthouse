@@ -13,6 +13,12 @@ body {
   /* background-image: linear-gradient(to bottom, #74a3ff, #ffffff 25%); */
 }
 
+.flex-container {
+  display: flex;
+  /* justify-content: space-between; */
+  margin-top: 5px;
+  align-items: center;
+}
 
 /* WaveComponent CSS */
 @import url(//fonts.googleapis.com/css?family=Lato:300:400);
@@ -879,7 +885,6 @@ h1 span:nth-child(9) {
   width: 15px;
 }
 
-
 .user-info {
   & .badge {
     width: 20px;
@@ -888,19 +893,19 @@ h1 span:nth-child(9) {
   }
 
   & .pie-chart {
-    width: 400px; 
-    height: 300px; 
+    width: 400px;
+    height: 300px;
     margin: 0 auto;
   }
 
   & .bar-chart {
-    width: 500px; 
-    height: 300px; 
+    width: 500px;
+    height: 300px;
     margin: 0 auto;
   }
 
   & .user-star-rating {
-    margin-left:auto;
+    margin-left: auto;
   }
 }
 
