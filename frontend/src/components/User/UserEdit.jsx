@@ -30,6 +30,11 @@ export default function UserEdit() {
 
   const [score, setScore] = useState(0)
 
+  console.log(
+    'profile.participatedUserProfiles',
+    profile.participatedUserProfiles['27'],
+  )
+
   let items = [
     {
       key: '1',
@@ -37,7 +42,7 @@ export default function UserEdit() {
       children: <UserInfo profile={profile} />,
     },
     {
-      key: '4',
+      key: '5',
       label: `참여 중인 스터디`,
       children: (
         <StudyList
@@ -46,12 +51,12 @@ export default function UserEdit() {
       ),
     },
     {
-      key: '5',
+      key: '6',
       label: `완료한 스터디`,
       children: <StudyList studies={profile.terminatedStudies} />,
     },
     {
-      key: '6',
+      key: '7',
       label: `북마크한 스터디`,
       children: <StudyList studies={profile.bookmarkStudies} />,
     },
@@ -61,6 +66,52 @@ export default function UserEdit() {
       ...items,
       {
         key: '2',
+        label: `신청 명단`,
+        children: (
+          <div>
+            {Object.keys(profile.participatedUserProfiles).map(studyId => (
+              <div>
+                {studyId}:
+                {profile.participatedUserProfiles[`${studyId}`].map(
+                  userProfile => (
+                    <Sider
+                      style={{
+                        background: 'rgb(255, 255, 255)',
+                      }}
+                      width={200}
+                    >
+                      <Card bordered={false}>
+                        <Avatar
+                          size={{
+                            sm: 100,
+                            md: 150,
+                            lg: 150,
+                            xl: 150,
+                            xxl: 150,
+                          }}
+                          src={profileImage(userProfile.profileImgUrl)}
+                          shape="circle"
+                        />
+                        <h3 style={{ marginBottom: '0px' }}>
+                          {userProfile.nickname}
+                        </h3>
+                        <p>님의 페이지 입니다.</p>
+                      </Card>
+                    </Sider>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+          // <StudyList
+          //   studies={profile.participatedStudies?.filter(
+          //     study => study.leaderProfile.id === userId,
+          //   )}
+          // />
+        ),
+      },
+      {
+        key: '3',
         label: `수정 중인 스터디`,
         children: (
           <StudyList
@@ -71,7 +122,7 @@ export default function UserEdit() {
         ),
       },
       {
-        key: '3',
+        key: '4',
         label: `신청한 스터디`,
         children: (
           <StudyList
@@ -82,7 +133,7 @@ export default function UserEdit() {
         ),
       },
       {
-        key: '7',
+        key: '8',
         label: `프로필 수정`,
         children: <UserInfoModify profile={myProfile} />,
       },
