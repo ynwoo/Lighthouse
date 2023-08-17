@@ -17,18 +17,12 @@ import { userAction } from '../../store/user'
 const { Title } = Typography
 // 로그인
 
-const onFinishFailed = errorInfo => {
-  console.log('Failed:', errorInfo)
-}
-
 function LogIn() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [form] = Form.useForm()
 
   const onFinish = value => {
-    console.log(value)
-
     dispatch(userAction.login(value)).then(res => {
       // 실패하면 안된다 함
       if (res.type === 'user/login/rejected') {
@@ -66,7 +60,6 @@ function LogIn() {
           className="login-form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item

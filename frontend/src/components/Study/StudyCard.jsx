@@ -161,7 +161,6 @@ function StudyCard({ study }) {
                       style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
                       onClick={e => {
                         e.preventDefault()
-                        console.log('like')
                       }}
                     />
                   </Tooltip>
@@ -172,7 +171,6 @@ function StudyCard({ study }) {
                       style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
                       onClick={e => {
                         e.preventDefault()
-                        console.log('bookmark')
                       }}
                     />
                   </Tooltip>
