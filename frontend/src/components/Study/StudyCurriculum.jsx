@@ -98,6 +98,7 @@ export default function StudyCurriculum({ study }) {
 
       <List
         itemLayout="horizontal"
+        style={{ height: '500px', overflow: 'auto' }}
         dataSource={sessions}
         renderItem={session => (
           <List.Item>
