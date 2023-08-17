@@ -126,7 +126,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
             <p style={{ fontSize: '16px' }}>
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
-            <p style={{ marginTop: '30px' }}>
+            <p style={{ marginTop: '20px' }}>
               {study.isOnline
                 ? '온라인'
                 : study.sido && study.gugun
@@ -197,15 +197,27 @@ export default function StudyDetailPage({ isLoggedIn }) {
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
               <div style={{ paddingTop: '30px' }}>
-                <Button
-                  type="primary"
-                  style={{
-                    width: '100%',
-                  }}
-                  onClick={showModal}
-                >
-                  스터디 참가 신청
-                </Button>
+                {myInfo.id === study.leaderProfile.id ? (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                    }}
+                    onClick={showModal}
+                  >
+                    스터디 시작
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                    }}
+                    onClick={showModal}
+                  >
+                    스터디 참가 신청
+                  </Button>
+                )}
 
                 <Modal
                   title="스터디 신청"
