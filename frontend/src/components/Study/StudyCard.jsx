@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Card, Tag, Row, Col, Tooltip } from 'antd'
-import { HeartOutlined, BookOutlined } from '@ant-design/icons'
+import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
+import { STATUS } from '../../utils'
 
 function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -14,6 +17,26 @@ function StudyCard({ study }) {
 
   const handleMouseLeave = () => {
     setIsHovered(false)
+  }
+
+  const handleMovePage = () => {
+    const { status, leaderProfile } = study
+    if (
+      status === STATUS.PREPARING &&
+      leaderProfile?.id === Number(sessionStorage.getItem('userId'))
+    ) {
+      navigate(`/template/update/${study.id}`)
+    } else if (status === STATUS.RECRUITING) {
+      navigate(`/study/${study.id}`)
+    } else if (status === STATUS.PROGRESS) {
+      navigate(`/inprogress/${study.id}`)
+    } else if (status === STATUS.TERMINATED) {
+      navigate(`/study/${study.id}`)
+    } else if (status === STATUS.SHARE) {
+      navigate(`/template/${study.id}`)
+    } else {
+      navigate(`/study/${study.id}`)
+    }
   }
   const cardWidth = '100%'
   const cardHeight = '250px'
@@ -50,7 +73,7 @@ function StudyCard({ study }) {
                   transform: 'translateX(-50%)',
                   objectFit: 'cover',
                 }}
-                alt="example"
+                alt="coverImage"
                 src={coverImage(study.coverImgUrl)}
               />
             </div>
@@ -60,109 +83,114 @@ function StudyCard({ study }) {
             <CustomTitle text={study.title} />
             <div style={{ fontSize: '13px', color: '#6e6e6e' }}>
               <p style={{ fontSize: '12px', marginBottom: '20px' }}>
-                {study.leaderProfile.nickname}
+                {study.leaderProfile?.nickname}
               </p>
-              <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
-              <p>{`좋아요 ${study.likeCnt}  북마크 ${study.bookmarkCnt}`}</p>
+              {study.status === STATUS.SHARE ? (
+                <p>템플릿</p>
+              ) : (
+                <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
+              )}
+
+              <p>
+                <HeartOutlined /> {study.likeCnt} <BookOutlined />{' '}
+                {study.bookmarkCnt} <EyeOutlined /> {study.hit}
+              </p>
             </div>
           </div>
         </Card>
-        {/* 레이어 카드 */}
-        <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
-          <Card
-            onMouseLeave={handleMouseLeave}
-            className={isHovered ? 'hovered-card' : ''}
-            bordered={false}
-            style={{
-              width: '100%',
-              height: { cardHeight },
-              padding: '5px',
-              whiteSpace: 'pre-line',
-              boxShadow: 'none',
-              backgroundColor: 'rgba(21, 21, 21, 0.88)',
-              position: 'absolute',
-              top: '0',
-              zIndex: '10',
-              visibility: isHovered ? 'visible' : 'hidden',
-            }}
-            bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
-          >
-            <div style={{ color: '#f2f2f2' }}>
-              <CustomTitle text={study.title} />
+        <Card
+          onClick={handleMovePage}
+          onMouseLeave={handleMouseLeave}
+          className={isHovered ? 'hovered-card' : ''}
+          bordered={false}
+          style={{
+            width: '100%',
+            height: { cardHeight },
+            padding: '5px',
+            whiteSpace: 'pre-line',
+            boxShadow: 'none',
+            backgroundColor: 'rgba(21, 21, 21, 0.88)',
+            position: 'absolute',
+            top: '0',
+            zIndex: '10',
+            visibility: isHovered ? 'visible' : 'hidden',
+            cursor: 'pointer',
+          }}
+          bodyStyle={{ padding: '0px 1px', textAlign: 'left' }}
+        >
+          <div style={{ color: '#f2f2f2' }}>
+            <CustomTitle text={study.title} />
+            <div
+              style={{
+                minHeight: '85px',
+                marginTop: '5px',
+              }}
+            >
               <div
                 style={{
-                  minHeight: '85px',
-                  marginTop: '5px',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '13px',
-                    overflow: 'hidden',
-                    whiteSpace: 'normal',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 4,
-                    WebkitBoxOrient: 'vertical',
-                    wordBreak: 'keep-all',
-                    marginBottom: '10px',
-                  }}
-                >
-                  {study.description}
-                </div>
-              </div>
-              <div
-                style={{
-                  fontSize: '12px',
-                  marginTop: '5px',
-                  height: '55px',
+                  fontSize: '13px',
                   overflow: 'hidden',
+                  whiteSpace: 'normal',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: 'vertical',
+                  wordBreak: 'keep-all',
                   marginBottom: '10px',
                 }}
               >
-                {study.studyTags.map(tag => {
-                  return (
-                    <Tag
-                      key={tag.id}
-                      style={{
-                        margin: '3px',
-                        color: '#ace8ff',
-                        borderColor: '#ace8ff',
-                      }}
-                    >
-                      #{tag.tag.keyword}
-                    </Tag>
-                  )
-                })}
+                {study.description}
               </div>
-              <hr />
-              <Row justify="end" style={{ margin: '10px 10px' }}>
-                <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
-                  <Tooltip title="좋아요">
-                    <HeartOutlined
-                      style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
-                      onClick={e => {
-                        e.preventDefault()
-                        console.log('like')
-                      }}
-                    />
-                  </Tooltip>
-                </Col>
-                <Col span={4}>
-                  <Tooltip title="북마크">
-                    <BookOutlined
-                      style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
-                      onClick={e => {
-                        e.preventDefault()
-                        console.log('bookmark')
-                      }}
-                    />
-                  </Tooltip>
-                </Col>
-              </Row>
             </div>
-          </Card>
-        </Link>
+            <div
+              style={{
+                fontSize: '14px',
+                marginTop: '5px',
+                height: '55px',
+                overflow: 'hidden',
+                marginBottom: '10px',
+              }}
+            >
+              {study.studyTags.map(tag => {
+                return (
+                  <Tag
+                    key={tag.id}
+                    style={{
+                      margin: '3px',
+                      color: '#ace8ff',
+                      borderColor: '#ace8ff',
+                    }}
+                  >
+                    #{tag.tag.keyword}
+                  </Tag>
+                )
+              })}
+            </div>
+            <hr />
+            <Row justify="end" style={{ margin: '10px 10px' }}>
+              <Col span={4} align="middle" style={{ margin: '0px 5px' }}>
+                <Tooltip title="좋아요">
+                  <HeartOutlined
+                    style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+              <Col span={4}>
+                <Tooltip title="북마크">
+                  <BookOutlined
+                    style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
+                    onClick={e => {
+                      e.preventDefault()
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+            </Row>
+          </div>
+        </Card>
       </div>
     </div>
   )

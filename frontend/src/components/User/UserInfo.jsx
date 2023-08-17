@@ -1,16 +1,45 @@
 import React from 'react'
-import { Card, Space } from 'antd'
+import { Card, Space, Row, Col } from 'antd'
+import Piechart from '../Study/utils/chart/PieChart'
+import Barchart from '../Study/utils/chart/BarChart'
+import UserStarRating from '../atoms/UserStarRating'
+import UserBadge from './UserBadge'
 
 // 템플릿 상세의 질의응답
 
 export default function UserInfo({ profile }) {
+  const recruit = profile.recruitingStudies.length
+  const progress = profile.progressStudies.length
+  const terminated = profile.terminatedStudies.length
+  const chartData = [
+    { id: '모집중', value: recruit },
+    { id: '진행중', value: progress },
+    { id: '완료', value: terminated },
+  ]
+
+  const barData = [
+    { study: '모집중', recruit },
+    { study: '진행중', progress },
+    { study: '완료', terminated },
+  ]
   return (
-    <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+    <Space
+      className="user-info"
+      direction="vertical"
+      size="middle"
+      style={{ display: 'flex', minWidth: '600px' }}
+    >
       <Card title="자기소개" bordered={false}>
-        <p>{profile.description}</p>
+        <div style={{ display: 'flex', flexGrow: 1 }}>
+          <p style={{ 'margin-right': 'auto' }}>{profile.description}</p>
+        </div>
       </Card>
       <Card title="통계" bordered={false}>
-        <p>현재 진행 예정인 스터디: {profile.recruitingStudies.length}</p>
+        <UserStarRating className="user-star-rating" score={profile.score} />
+        평균 평가 점수: {profile.score}
+        <p style={{ marginTop: '10px' }}>
+          현재 진행 예정인 스터디: {profile.recruitingStudies.length}
+        </p>
         <p>현재 진행 중인 스터디: {profile.progressStudies.length}</p>
         <p>완료한 스터디: {profile.terminatedStudies.length}</p>
         <p>북마크한 스터디: {profile.bookmarkStudies.length}</p>
@@ -18,10 +47,7 @@ export default function UserInfo({ profile }) {
           함께한 스터디원:{' '}
           {profile.recruitingStudies
             .concat(profile.terminatedStudies)
-            .map(study => study.currentMember)
-            .reduce((a, b) => {
-              return a + b
-            }, 0)}
+            .reduce((a, b) => a + b.currentMember, 0)}
         </p>
         <p>
           스터디장 맡은 횟수:{' '}
@@ -31,6 +57,19 @@ export default function UserInfo({ profile }) {
               .filter(study => study.leaderProfile.id === profile.id).length
           }
         </p>
+      </Card>
+      <Card title="뱃지" bordered={false}>
+        <UserBadge badges={profile?.badges} />
+      </Card>
+      <Card title="차트" bordered={false}>
+        <Row>
+          <Col>
+            <Barchart className="chart" data={barData} />
+          </Col>
+          <Col>
+            <Piechart className="chart" data={chartData} />
+          </Col>
+        </Row>
       </Card>
     </Space>
   )

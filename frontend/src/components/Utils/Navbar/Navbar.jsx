@@ -1,75 +1,102 @@
-// import React from 'react'
-// import { Link, useNavigate } from 'react-router-dom'
-// import { useDispatch } from 'react-redux'
-// import logo from '../../../static/main_logo.PNG'
-// import { userAction } from '../../../store/user'
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Row, Col, Menu } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
+import { userAction } from '../../../store/user'
 
-// export default function Navbar({ isLoggedIn }) {
-//   const dispatch = useDispatch()
-//   const navigate = useNavigate()
+export default function Navbar({ isLoggedIn }) {
+  const dispatch = useDispatch()
+  const location = useLocation()
 
-  const handleLogout = e => {
-    e.preventDefault()
-    dispatch(userAction.logout()).then(() => navigate('/'))
+  const handleLogout = () => {
+    dispatch(userAction.logout()).then(() => {
+      window.location.href = '/'
+    })
   }
+
   return (
     <div
       style={{
-        display: 'flex',
-        justifyContent: 'space-between',
+        backgroundColor: 'white',
+        height: '100%',
       }}
     >
-      <Link
-        to="/"
-        state={{ status: 1 }}
-        style={{ zIndex: 2, position: 'relative' }}
-      >
-        <div style={{ paddingLeft: '10px', display: 'flex', zIndex: '999' }}>
-          <img src={logo} alt="엑박" style={{ height: '50px' }} />
-        </div>
-      </Link>
-      <div style={{ display: 'flex', flexDirection: 'end-flex', zIndex: '1' }}>
-        <div className="container nav_main">
-          <div className="item nav_item">
-            <Link to="/temp" state={{ status: 5 }}>
-              템플릿 더보기
-            </Link>
-          </div>
-          {!isLoggedIn ? (
-            <>
-              <div className="item nav_item">
-                <Link to="/signup">JOIN</Link>
-              </div>
-              <div className="item dropdown_king nav_item">
-                <Link to="/login" className="dropdown_toggle">
-                  LOGIN
-                </Link>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="item dropdown_king nav_item">
-                <Link
-                  to={`/user_edit/${Number(sessionStorage.getItem('userId'))}`}
-                  state={{ userId: Number(sessionStorage.getItem('userId')) }}
-                  className="dropdown_toggle"
-                >
-                  MYPAGE
-                </Link>
-              </div>
-              <div className="item dropdown_king nav_item">
-                <Link
-                  to={false}
+      <Row justify="space-between" align="middle">
+        <Col xl={6} lg={6} md={6} sm={20} xs={20}>
+          <Link to="/" state={{ status: 1 }}>
+            <div style={{ paddingLeft: '10px', marginRight: '-10px' }}>
+              <img src="main_logo.PNG" alt="엑박" style={{ height: '50px' }} />
+            </div>
+          </Link>
+        </Col>
+        <Col
+          xl={18}
+          lg={18}
+          md={18}
+          sm={4}
+          xs={4}
+          align="center"
+          style={{ height: '50px' }}
+        >
+          <Menu
+            backgroundColor="white"
+            mode="horizontal"
+            defaultSelectedKeys={['/']}
+            overflowedIndicator={<MenuOutlined />}
+            style={{ display: 'block', height: '100%' }}
+            selectedKeys={[location.pathname]}
+          >
+            {!isLoggedIn && (
+              <>
+                <Menu.Item key="/login" style={{ float: 'right' }}>
+                  <Link to="/login">로그인</Link>
+                </Menu.Item>
+                <Menu.Item key="/signup" style={{ float: 'right' }}>
+                  <Link to="/signup">회원가입</Link>
+                </Menu.Item>
+              </>
+            )}
+            {isLoggedIn && (
+              <>
+                <Menu.Item
+                  key="item3"
                   onClick={handleLogout}
-                  className="dropdown_toggle"
+                  style={{ float: 'right' }}
                 >
-                  LOGOUT
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+                  로그아웃
+                </Menu.Item>
+                <Menu.Item key="/user/me" style={{ float: 'right' }}>
+                  <Link
+                    to={`/user_edit/${sessionStorage.getItem('userId')}`}
+                    state={{ userId: Number(sessionStorage.getItem('userId')) }}
+                  >
+                    마이페이지
+                  </Link>
+                </Menu.Item>
+                <Menu.Item key="/mystudies" style={{ float: 'right' }}>
+                  <Link
+                    to="/mystudies"
+                    state={{ userId: Number(sessionStorage.getItem('userId')) }}
+                  >
+                    내 스터디
+                  </Link>
+                </Menu.Item>
+              </>
+            )}
+            <Menu.Item key="/templates" style={{ float: 'right' }}>
+              <Link to="/templates" state={{ status: 5 }}>
+                템플릿 둘러보기
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/" style={{ float: 'right' }}>
+              <Link to="/" state={{ status: 5 }}>
+                스터디 모집
+              </Link>
+            </Menu.Item>
+          </Menu>
+        </Col>
+      </Row>
     </div>
   )
 }

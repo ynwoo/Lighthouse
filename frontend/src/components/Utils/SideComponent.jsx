@@ -25,10 +25,7 @@ export default function SideComponent({ isLoggedIn, study }) {
   }
 
   const handleOk = () => {
-    console.log('Message:', message)
-    console.log(study.id)
     dispatch(studyAction.joinStudy(study.id)).then(res => {
-      console.log(res)
       if (res.type !== 'study/joinStudy/rejected') {
         setIsModalVisible(false)
         setIsConfirmationVisible(true)
@@ -54,7 +51,7 @@ export default function SideComponent({ isLoggedIn, study }) {
 
   const location = useLocation()
   // 현재 URL에 "/temp"가 포함되어 있는지 여부를 체크합니다.
-  const isTempPath = location.pathname.includes('/temp')
+  const isTempPath = location.pathname.includes('/study')
 
   // 스터디 목록 모달
   const showConfirmationModal = () => {
@@ -75,7 +72,6 @@ export default function SideComponent({ isLoggedIn, study }) {
     document.body.style.overflow = 'auto'
   }
 
-  console.log(myInfo)
   if (isLoggedIn) {
     return (
       <div className={isTempPath ? 'sidebar1' : 'sidebar'}>
@@ -122,7 +118,7 @@ export default function SideComponent({ isLoggedIn, study }) {
               {myInfo.participatedStudies?.map(studyData => (
                 <>
                   <Link
-                    to={`/temp/${studyData.id}`}
+                    to={`/study/${studyData.id}`}
                     state={{ id: studyData.id }}
                   >
                     {studyData.title}

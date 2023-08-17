@@ -30,25 +30,19 @@ authApi.interceptors.response.use(
     return response
   },
   async function (err) {
-    console.log(axios.defaults.headers)
-    console.log(err)
     if (err.response && err.response.status === 401) {
       try {
-        console.log('try 진입')
         delete axios.defaults.headers.common['access-token']
-        console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
-        console.log(response)
-        const newAccessToken = response.headers['access-token']
+        const newAccessToken = response.data['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
-        alert('다시 로그인 해주세요!')
+        alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
       return Promise.reject(err)
     }
-    console.log('else')
     return Promise.reject(err)
   },
 )
@@ -79,6 +73,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   profile: {
     id: 0,
@@ -97,6 +92,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   following: null,
   userInfo: {},
@@ -127,7 +123,6 @@ export const userAction = {
   // raw에 값을 주기 위한 센딩 폼
   checkEmail: createAsyncThunk('user/chekcEmail', async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       const response = await axios.post(
         `${API_URL}/users/check-email`,
         {
@@ -150,7 +145,6 @@ export const userAction = {
     'user/checkNickname',
     async (payload, thunkAPI) => {
       try {
-        console.log(payload)
         const response = await axios.post(
           `${API_URL}/users/check-nickname`,
           {
@@ -162,7 +156,6 @@ export const userAction = {
             },
           },
         )
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -173,9 +166,7 @@ export const userAction = {
   // 회원가입
   signUp: createAsyncThunk('user/signup', async (payload, thunkAPI) => {
     try {
-      console.log(payload)
       const response = await formApi.post(`${API_URL}/users`, payload)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -186,7 +177,6 @@ export const userAction = {
   login: createAsyncThunk('user/login', async (payload, thunkAPI) => {
     try {
       const response = await axios.post(`${API_URL}/users/login`, payload)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -196,7 +186,6 @@ export const userAction = {
   logout: createAsyncThunk('user/logout', async (_, thunkAPI) => {
     try {
       const response = await authApi.get(`/users/logout`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -206,7 +195,6 @@ export const userAction = {
   myPage: createAsyncThunk('user/mypage', async (_, thunkAPI) => {
     try {
       const response = await authApi.get(`/users/mypage`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -216,7 +204,6 @@ export const userAction = {
   profile: createAsyncThunk('user/profile', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/users/profile/${payload}`)
-      console.log('getProfile : ', response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -230,7 +217,6 @@ export const userAction = {
         const response = await authApi.put(`${API_URL}/users/update`, payload, {
           headers: { 'content-type': 'multipart/form-data' },
         })
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -243,7 +229,6 @@ export const userAction = {
     async (payload, thunkAPI) => {
       try {
         const response = await authApi.get(`${API_URL}/users/follow`)
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -253,7 +238,6 @@ export const userAction = {
   follow: createAsyncThunk('user/follow', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`/users/follow/${payload}`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -262,7 +246,14 @@ export const userAction = {
   unfollow: createAsyncThunk('user/unfollow', async (payload, thunkAPI) => {
     try {
       const response = await authApi.delete(`/users/follow/${payload}`)
-      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  userReview: createAsyncThunk('user/userReview', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`/users/eval`, payload)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -289,25 +280,17 @@ export const userSlice = createSlice({
     },
     // email 중복 체크 시 결과 저장
     [userAction.checkEmail.fulfilled]: (state, action) => {
-      console.log(action.payload.available)
       state.emailIsValid = action.payload.available
     },
     [userAction.checkEmail.rejected]: (state, action) => {
-      console.log(action.payload.available)
       state.emailIsValid = action.payload.available
     },
     // nickname 중복 체크 시 결과 저장
     [userAction.checkNickname.fulfilled]: (state, action) => {
-      console.log(action.payload.available)
       state.nicknameIsValid = action.payload.available
     },
     [userAction.checkNickname.rejected]: (state, action) => {
-      console.log(action.payload.available)
       state.nicknameIsValid = action.payload.available
-    },
-    // 회원가입 성공 시 확인용
-    [userAction.signUp.fulfilled]: (state, action) => {
-      console.log(action.payload)
     },
     // 로그인 성공 시
     [userAction.login.fulfilled]: (state, action) => {
@@ -317,11 +300,8 @@ export const userSlice = createSlice({
       sessionStorage.setItem('isLoggedIn', true)
       sessionStorage.setItem('userId', action.payload['user-id'])
       sessionStorage.setItem('nickname', action.payload.nickname)
-      console.log('action.payload', action.payload)
       state.isLoggedIn = true
       state.userInfo = action.payload.userInfo
-      console.log(action.payload.userInfo)
-      console.log(sessionStorage.getItem('refresh_token'))
     },
     // 로그아웃 성공 시 토큰 삭제
     [userAction.logout.fulfilled]: state => {
@@ -331,12 +311,10 @@ export const userSlice = createSlice({
     },
     // 마이페이지
     [userAction.myPage.fulfilled]: (state, action) => {
-      console.log(action.payload.userInfo)
       state.myInfo = action.payload.userInfo
     },
     // 프로필
     [userAction.profile.fulfilled]: (state, action) => {
-      console.log(action.payload.id)
       if (action.payload.id === Number(sessionStorage.getItem('userId'))) {
         state.myProfile = action.payload
         state.profile = action.payload
@@ -346,7 +324,6 @@ export const userSlice = createSlice({
     },
     // 팔로우
     [userAction.getFollowing.fulfilled]: (state, action) => {
-      console.log(action.payload)
       state.following = action.payload
     },
   },

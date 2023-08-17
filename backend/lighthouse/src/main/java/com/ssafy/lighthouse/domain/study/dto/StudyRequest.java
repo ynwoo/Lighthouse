@@ -1,6 +1,7 @@
 package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.dto.BadgeRequest;
+import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,8 +67,9 @@ public class StudyRequest {
                 .originalId(this.originalId)
                 .sidoId(this.sidoId)
                 .gugunId(this.gugunId)
+                .badge(this.badge != null ? Badge.builder().id(this.badge.getId()).name(this.badge.getName()).description(this.badge.getDescription()).build() : null)
                 .studyTags(this.studyTags != null ? this.studyTags.stream().map(StudyTagDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
-                .studyEvals(this.studyTags != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
+                .studyEvals(this.studyEvals != null ? this.studyEvals.stream().map(StudyEvalDto::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .studyNotices(this.studyNotices != null ? this.studyNotices.stream().map(StudyNoticeDto.StudyNoticeReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .sessions(this.sessions != null ? this.sessions.stream().map(SessionDto.SessionReq::toEntity).collect(Collectors.toSet()) : new HashSet<>())
                 .coverImgUrl(this.coverImgUrl)

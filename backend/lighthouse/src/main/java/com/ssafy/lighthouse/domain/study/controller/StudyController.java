@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/study")
@@ -67,11 +69,18 @@ public class StudyController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @PutMapping ("/{study-id}/{status}")
+    public ResponseEntity<?> updateStudyStatusByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                        @PathVariable(name = "status") int status) {
+        log.debug("studyId : {}", studyId);
+        studyService.updateStudyStatusByStudyId(studyId, status);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {
-
-        log.debug("studyId : {}", studyRequest.getId());
+        log.debug("study: {}", studyRequest);
         StudyResponse studyResponse = studyService.updateStudyByStudyId(studyRequest);
         return new ResponseEntity<>(studyResponse, HttpStatus.OK);
     }
@@ -168,12 +177,12 @@ public class StudyController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    // studyBadge 교체
-    @PutMapping("/badge")
-    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
-                                              @RequestPart(value = "img") MultipartFile img,
-                                              @RequestPart(value = "studyId") Long studyId) {
-        studyService.updateStudyBadge(badgeRequest, img, studyId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
-    }
+//    // studyBadge 교체
+//    @PutMapping("/badge")
+//    public ResponseEntity<?> updateStudyBadge(@RequestPart(value = "badge") BadgeRequest badgeRequest,
+//                                              @RequestPart(value = "img") MultipartFile img,
+//                                              @RequestPart(value = "studyId") Long studyId) {
+//        studyService.updateStudyBadge(badgeRequest,studyId);
+//        return new ResponseEntity<Void>(HttpStatus.OK);
+//    }
 }

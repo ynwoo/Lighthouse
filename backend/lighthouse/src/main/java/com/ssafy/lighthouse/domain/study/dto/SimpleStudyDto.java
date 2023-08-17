@@ -2,8 +2,6 @@ package com.ssafy.lighthouse.domain.study.dto;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
-import com.ssafy.lighthouse.domain.common.dto.GugunDto;
-import com.ssafy.lighthouse.domain.common.dto.SidoDto;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import lombok.Getter;
@@ -38,6 +36,7 @@ public class SimpleStudyDto {
     private BadgeResponse badge;
     private List<StudyTagDto> studyTags;
     private SimpleProfileResponse leaderProfile;
+    private String coverImgUrl;
 
     public void setLeaderProfile(SimpleProfileResponse leaderProfile) {
         this.leaderProfile = leaderProfile;
@@ -66,5 +65,6 @@ public class SimpleStudyDto {
         this.status = study.getStatus();
         this.badge = study.getBadge() != null ? new BadgeResponse(study.getBadge()) : null;
         this.studyTags = study.getStudyTags() == null ? null : study.getStudyTags().stream().filter(BaseEntity::isValid).map(StudyTagDto::new).collect(Collectors.toList());
+        this.coverImgUrl = study.getCoverImgUrl();
     }
 }

@@ -16,14 +16,14 @@ const MessageForm = styled.form`
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 
   & input {
-    flex: 1;
-    height: 100%;
-    width: 100%;
+    height: 25px;
+    width: 90%;
+    margin-right: 10px;
     border: none;
   }
 `
 
-function ChatForm() {
+function ChatForm({ roomId }) {
   const dispatch = useDispatch()
   const inputRef = useRef(null)
 
@@ -33,7 +33,6 @@ function ChatForm() {
     }
   }
 
-  const roomId = 1
   const userName = sessionStorage.getItem('nickname')
   const senderId = sessionStorage.getItem('userId')
 
@@ -55,7 +54,13 @@ function ChatForm() {
 
   return (
     <MessageForm onSubmit={onSubmit}>
-      <input type="text" placeholder="Type a message here" ref={inputRef} />
+      <input
+        placeholder="Type a message here"
+        ref={inputRef}
+        style={{
+          boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.1)',
+        }}
+      />
       <ButtonContainer
         flex="0"
         padding="0"
@@ -69,6 +74,10 @@ function ChatForm() {
       </ButtonContainer>
     </MessageForm>
   )
+}
+
+ChatForm.defaultProps = {
+  roomId: 1,
 }
 
 export default ChatForm

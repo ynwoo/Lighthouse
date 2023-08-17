@@ -7,6 +7,7 @@ import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
+import com.ssafy.lighthouse.domain.study.entity.ParticipationHistory;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
 import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryRepository;
@@ -14,13 +15,12 @@ import com.ssafy.lighthouse.domain.user.dto.ProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleProfileResponse;
 import com.ssafy.lighthouse.domain.user.dto.SimpleUserResponse;
 import com.ssafy.lighthouse.domain.user.entity.QFollow;
+import com.ssafy.lighthouse.global.util.ROLE;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
@@ -49,25 +49,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         Set<Long> allStudyIdSet = participationHistoryRepository.findStudyIdAllByUserId(userId);
         // participated StudyIdSet
         Set<Long> participatedStudyIdSet = participationHistoryRepository.findStudyIdAllByUserIdandStatus(userId, STATUS.PREPARING);
-        // bookmark studyIdSet
-        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
-        // tag
-        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
-        QFollow followee = new QFollow("followee");
 
-        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
         List<Study> studyList = jpaQueryFactory.select(study).from(study).where(study.id.in(allStudyIdSet), study.isValid.eq(1)).fetch();
         List<SimpleStudyDto> participatedStudies = new ArrayList<>();
         List<SimpleStudyDto> recruitingStudies = new ArrayList<>();
         List<SimpleStudyDto> progressStudies = new ArrayList<>();
         List<SimpleStudyDto> terminatedStudies = new ArrayList<>();
-        List<SimpleStudyDto> bookmarkStudies = new ArrayList<>();
 
         studyList.forEach((study) -> {
             SimpleStudyDto simpleStudyDto = new SimpleStudyDto(study);
-            simpleStudyDto.setLeaderProfile(SimpleProfileResponse.builder()
-                    .id(study.getLeaderId())
-                    .build());
+            simpleStudyDto.setLeaderProfile(findSimpleProfileByUserId(study.getLeaderId()));
 
             // status에 따른 스터디 분류
             switch(study.getStatus()) {
@@ -103,13 +94,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     terminatedStudies.add(simpleStudyDto);
                     break;
             }
-
-            // 북마크 한 스터디
-            if(bookmarkSet.contains(study.getId())) {
-                bookmarkStudies.add(simpleStudyDto);
-            }
         });
 
+        // 북마크한 스터디
+        Set<Long> bookmarkSet = bookmarkRepository.findAllByUserId(userId);
+        List<SimpleStudyDto> bookmarkStudies = jpaQueryFactory.select(study)
+                .from(study)
+                .where(study.id.in(bookmarkSet),
+                        study.isValid.eq(1))
+                .fetch()
+                .stream()
+                .map(SimpleStudyDto::new)
+                .collect(Collectors.toList());
+
+        QFollow followee = new QFollow("followee");
         ProfileResponse result = jpaQueryFactory.select(Projections.fields(ProfileResponse.class,
                         user.id,
                         user.isValid,
@@ -126,8 +124,38 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
         // badgeList
         List<BadgeResponse> badgeResponses = getBadgeResponsesByUserId(userId);
 
+        // tag
+        Set<Long> tagSet = userTagRepository.findTagIdAllByUserId(userId);
+        List<TagDto> tags = jpaQueryFactory.select(Projections.constructor(TagDto.class, tag)).from(tag).where(tag.id.in(tagSet), tag.isValid.eq(1)).fetch();
+
         // userInfo
 //        SimpleUserResponse userInfo = findUserInfo(loginId);
+
+        // participatedUserProfiles
+        Map<Long, List<SimpleProfileResponse>> participatedUserProfiles = new HashMap<>();
+        if(userId.equals(loginId)) {
+            // 내가 리더인 스터디
+            List<Long> leaderStudies = recruitingStudies.stream()
+                    .filter(study -> study.getLeaderProfile().getId().equals(loginId))
+                    .map(SimpleStudyDto::getId)
+                    .collect(Collectors.toList());
+            
+            // 내가 리더인 스터디에 참가 신청한 유저 아이디
+            List<ParticipationHistory> participationHistories = jpaQueryFactory.selectFrom(participationHistory)
+                    .where(participationHistory.studyId.in(leaderStudies),
+                            participationHistory.isValid.eq(1),
+                            participationHistory.status.eq(STATUS.PREPARING),
+                            participationHistory.userRole.eq(ROLE.TEAMMATE))
+                    .fetch();
+
+            // map에 담기
+            participationHistories.stream()
+                    .collect(Collectors.groupingBy(ParticipationHistory::getStudyId))
+                    .forEach((studyId, val) -> {
+                        List<Long> userIds = val.stream().map(ParticipationHistory::getUserId).collect(Collectors.toList());
+                        participatedUserProfiles.put(studyId, findSimpleProfileByUserIds(userIds));
+                    });
+        }
 
         return ProfileResponse.builder()
                 .id(result.getId())
@@ -142,6 +170,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                 .progressStudies(progressStudies)
                 .terminatedStudies(terminatedStudies)
                 .bookmarkStudies(bookmarkStudies)
+                .participatedUserProfiles(participatedUserProfiles)
                 .score(result.getScore())
                 .following(result.getFollowing())
                 .follower(result.getFollower())

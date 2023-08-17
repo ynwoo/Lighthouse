@@ -2,6 +2,7 @@ package com.ssafy.lighthouse.domain.study.entity;
 
 import com.ssafy.lighthouse.domain.common.BaseEntity;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
+import com.ssafy.lighthouse.global.util.LocalDateTime;
 import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +56,7 @@ public class Study extends BaseEntity {
     public void removeMember() {this.currentMember--;}
 
     public void changeBadge(Badge badge) {this.badge = badge;}
+    public void changeStatus(int status) {this.status = status;}
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "badgeId")
@@ -89,9 +91,9 @@ public class Study extends BaseEntity {
         this.description = study.getDescription();
         this.hit = study.getHit();
         this.rule = study.getRule();
-        this.startedAt = study.getStartedAt();
-        this.endedAt = study.getEndedAt();
-        this.recruitFinishedAt = study.getRecruitFinishedAt();
+        this.startedAt = study.getStartedAt() != null ? study.getStartedAt() : LocalDateTime.now();
+        this.endedAt = study.getEndedAt() != null ? study.getEndedAt() : LocalDateTime.now();
+        this.recruitFinishedAt = study.getRecruitFinishedAt() != null ? study.getRecruitFinishedAt() : LocalDateTime.now();
         this.maxMember = study.getMaxMember();
         this.minMember = study.getMinMember();
         this.currentMember = study.getCurrentMember();
@@ -102,5 +104,6 @@ public class Study extends BaseEntity {
         this.sidoId = study.getSidoId();
         this.gugunId = study.getGugunId();
         this.coverImgUrl = study.getCoverImgUrl();
+        this.badge = study.getBadge() != null ? study.getBadge() : this.badge;
     }
 }

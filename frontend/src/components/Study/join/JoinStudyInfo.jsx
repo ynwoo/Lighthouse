@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 // 템플릿 상세의 인원정보(멤버)
 
 export default function JoinStudyInfo({ study }) {
-  console.log(study)
   const dataSource = study.memberProfiles.map(member => {
     return {
       key: member.id,

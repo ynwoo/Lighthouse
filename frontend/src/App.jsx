@@ -4,18 +4,21 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
 import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
-import Navbar from './components/Utils/Navbar/NavbarNew'
+import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
-import MainPage from './routes/MainPageNew'
+import MainPage from './routes/MainPage'
 import StudyDetailPage from './routes/StudyDetailPage'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
-import Chat from './components/Utils/Chat/Chat'
-import SignUp from './components/User/SignUp'
-import LogIn from './components/User/LogIn'
+import SignUp from './routes/SignUpPage'
+import LogIn from './routes/LogInPage'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
+import TemplateDetailPage from './routes/TemplateDetailPage'
+import TemplateUpdatePage from './routes/TemplateUpdatePage'
+import MyStudyPage from './routes/MyStudiesPage'
+import StudyInProgressPage from './routes/StudyInProgressPage'
 
 const { Footer } = Layout
 // 푸터
@@ -83,19 +86,30 @@ function App() {
                     element={<MainPage isLoggedIn={isLoggedIn} status={1} />}
                   />
                   <Route
-                    path="/temp"
+                    path="/templates"
                     element={<MainPage isLoggedIn={isLoggedIn} status={5} />}
                   />
                   <Route
-                    path="/temp/:id"
+                    path="/study/:id"
                     element={<StudyDetailPage isLoggedIn={isLoggedIn} />}
                   />
+                  <Route
+                    path="/template/:id"
+                    element={<TemplateDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
+                    path="/template/update/:id"
+                    element={<TemplateUpdatePage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
+                    path="/inprogress/:id"
+                    element={<StudyInProgressPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route path="/mystudies" element={<MyStudyPage />} />
                   <Route path="/user/:id" element={<UserPage />} />
                   <Route path="/login" element={<LogIn />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/user_edit/:id" element={<UserEditPage />} />
-                  <Route path="/chat" element={<Chat />} />
-                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
                 </Routes>
               </div>
             </>
@@ -105,8 +119,9 @@ function App() {
       <Footer style={footerStyle}>
         &copy; Lighthouse {new Date().getFullYear()}
       </Footer>
-      <button
-        type="submit"
+      <FloatButton
+        icon={<CommentOutlined style={{ fontSize: '20px' }} />}
+        onClick={handleChatClick}
         style={{
           position: 'fixed',
           bottom: '20px',
@@ -117,29 +132,39 @@ function App() {
           padding: 0,
           margin: 0,
           zIndex: '1',
-          // width: '200px',
+          width: '50px',
+          height: '50px',
         }}
-        onClick={handleChatClick}
-      >
-        <FloatButton icon={<CommentOutlined />} />
-      </button>
+      />
       {showChat && (
         // 채팅창이 보일 때만 아래 코드가 렌더링됨
         <div
           style={{
             position: 'fixed',
-            width: '300px',
-            height: '500px',
-            bottom: '90px',
-            right: '70px',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            padding: '10px',
-            borderRadius: '5px',
-            boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.3)',
+            width: '400px',
+            height: '520px',
+            bottom: '80px',
+            right: '20px',
+            backgroundColor: '#2e4e92',
+            // border: '1px solid #ccc',
+            padding: '10px 0px',
+            borderRadius: '10px',
+            boxShadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+            zIndex: '999',
           }}
         >
           {/* 채팅창 내용 */}
+          <div
+            style={{
+              height: '30px',
+              width: '350px',
+              zIndex: '100',
+              padding: '0 10px',
+              color: 'white',
+            }}
+          >
+            <h3>채팅</h3>
+          </div>
           <ChatList />
         </div>
       )}

@@ -4,9 +4,13 @@ import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.study.entity.StudyTag;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
+@Setter
 @NoArgsConstructor
+@ToString
 public class StudyTagDto {
     private Long id;
     private int isValid;

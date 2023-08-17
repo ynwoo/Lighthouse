@@ -1,8 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-// import { getFirstLetter } from '../helpers'
-// import useMessages from '../hooks/useMessages'
-// import { useChat } from '../context/ChatProvider'
 import { useSelector } from 'react-redux'
 
 export const dateFormat = timestamp => {
@@ -100,40 +97,50 @@ const BotMessage = styled.div`
   background: rgba(0, 0, 0, 0.05);
 `
 
-function Conversation() {
+function Conversation({ roomId }) {
   //   const { socket } = useChat()
   //   const messages = useMessages()
   const messages = useSelector(state => state.chat.messages)
   const userId = sessionStorage.getItem('userId')
-
+  const scrollRef = useRef()
   console.log('temp messages: ', messages)
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
   useEffect(() => {
-    chatConversation.current.scrollTo(0, chatConversation.current.scrollHeight)
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     console.log('mess: ', messages)
-  }, [messages])
+  }, [useSelector(state => state.chat.messages)])
 
   return (
     <ConversationContainer ref={chatConversation}>
-      {messages.map(m => {
-        const { type, senderName, senderId, message, time } = m
+      {messages
+        .filter(m => {
+          // eslint-disable-next-line eqeqeq
+          return m.roomId == roomId
+        })
+        .map(m => {
+          const { type, senderName, senderId, message, time } = m
 
-        // const isBot = author === 'BOT' && !socketId
-        const isBot = type !== 'TALK'
-        return isBot ? (
-          <BotMessage>{message}</BotMessage>
-        ) : (
-          //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
-          <MessageContainer key={time} incomingMessage={senderId !== userId}>
-            <UserProfile content={senderName ? senderName.toString() : 'Y'} />
-            <MessageContent>{message}</MessageContent>
-          </MessageContainer>
-        )
-      })}
+          // const isBot = author === 'BOT' && !socketId
+          const isBot = type !== 'TALK'
+          return isBot ? (
+            <BotMessage>{message}</BotMessage>
+          ) : (
+            //   <MessageContainer key={id} incomingMessage={socket_id !== socket.id}>
+            <MessageContainer key={time} incomingMessage={senderId !== userId}>
+              <UserProfile content={senderName ? senderName.toString() : 'Y'} />
+              <MessageContent>{message}</MessageContent>
+            </MessageContainer>
+          )
+        })}
+      <div ref={scrollRef} />
     </ConversationContainer>
   )
+}
+
+Conversation.defaultProps = {
+  roomId: 1,
 }
 
 export default Conversation

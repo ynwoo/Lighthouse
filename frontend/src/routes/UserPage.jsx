@@ -19,12 +19,7 @@ export default function UserPage() {
   const { userId } = location.state
   const myId = Number(sessionStorage.getItem('userId'))
 
-  console.log(userId, typeof userId, myId, typeof myId)
-
   const following = useSelector(state => state.user.following)
-
-  console.log(following)
-  console.log(profile)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -198,7 +193,7 @@ export default function UserPage() {
                 ?.filter(study => study.leaderProfile.id !== myId)
                 .map(study => (
                   <Select.Option value={study.id} key={study.id}>
-                    <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                    <Link to={`/study/${study.id}`} state={{ id: study.id }}>
                       {study.title}
                     </Link>
                   </Select.Option>
@@ -230,7 +225,7 @@ export default function UserPage() {
             <Select className="u_item2" value="진행 예정인 스터디">
               {profile.recruitingStudies?.map(study => (
                 <Select.Option value={study.title} key={study.id}>
-                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                  <Link to={`/study/${study.id}`} state={{ id: study.id }}>
                     {study.title}
                   </Link>
                 </Select.Option>
@@ -242,7 +237,7 @@ export default function UserPage() {
             <Select className="u_item2" value="진행중인 스터디">
               {profile.progressStudies?.map(study => (
                 <Select.Option value={study.title} key={study.id}>
-                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                  <Link to={`/study/${study.id}`} state={{ id: study.id }}>
                     {study.title}
                   </Link>
                 </Select.Option>
@@ -255,7 +250,7 @@ export default function UserPage() {
             <Select className="u_item2" value="참여했던 스터디">
               {profile.terminatedStudies?.map(study => (
                 <Select.Option value={study.title} key={study.id}>
-                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                  <Link to={`/study/${study.id}`} state={{ id: study.id }}>
                     {study.title}
                   </Link>
                 </Select.Option>
@@ -268,7 +263,7 @@ export default function UserPage() {
             <Select className="u_item2" value="북마크한 스터디">
               {profile.bookmarkStudies?.map(study => (
                 <Select.Option value={study.title} key={study.id}>
-                  <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+                  <Link to={`/study/${study.id}`} state={{ id: study.id }}>
                     {study.title}
                   </Link>
                 </Select.Option>
