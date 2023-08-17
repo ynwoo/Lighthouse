@@ -108,6 +108,9 @@ export default function StudyDetailPage() {
       { studyId: study.id, status },
       () => {
         dispatch(studyAction.studyDetail(study.id))
+        if (status === STATUS.SHARE) {
+          navigate(`/templates`)
+        }
       },
       () => {},
     )
