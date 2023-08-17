@@ -10,6 +10,7 @@ import {
   faBookmark as faBookmarkRegular,
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
+import { useNavigate } from 'react-router-dom'
 import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyEdit from '../components/Study/StudyEdit'
@@ -26,6 +27,8 @@ export default function StudyDetailPage() {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
+
+  const navigate = useNavigate()
 
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
 
@@ -117,6 +120,10 @@ export default function StudyDetailPage() {
     buttonMessage = '스터디 종료'
   } else if (study.status === STATUS.TERMINATED) {
     buttonMessage = '스터디 공유'
+  }
+
+  const handleMoveUpdatePage = () => {
+    navigate(`/template/update/${study.id}`)
   }
 
   return (
@@ -221,12 +228,23 @@ export default function StudyDetailPage() {
               <p style={{ fontSize: '12px', textAlign: 'left' }}>
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
-              <div style={{ paddingTop: '30px' }}>
+              <div style={{ paddingTop: '10px' }}>
+                <Button
+                  type="primary"
+                  style={{
+                    width: '100%',
+                    backgroundColor: 'green',
+                  }}
+                  onClick={handleMoveUpdatePage}
+                >
+                  수정 하러 가기
+                </Button>
                 {myInfo.id === study.leaderProfile.id ? (
                   study.status !== STATUS.SHARE ? (
                     <Button
                       type="primary"
                       style={{
+                        marginTop: '10px',
                         width: '100%',
                       }}
                       onClick={handleChangeStatus}
@@ -240,6 +258,7 @@ export default function StudyDetailPage() {
                   <Button
                     type="primary"
                     style={{
+                      marginTop: '10px',
                       width: '100%',
                     }}
                     onClick={showModal}
