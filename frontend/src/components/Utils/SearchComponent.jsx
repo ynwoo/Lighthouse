@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Input, Row, Select, Space, Col, Button } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { setParams } from '../../store/study'
+import { setParams, studyAction } from '../../store/study'
 import { userAction } from '../../store/user'
 
 // 검색창
@@ -16,6 +16,10 @@ function SearchComponent() {
   useEffect(() => {
     dispatch(userAction.sido())
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(studyAction.studyList(params))
+  }, [params])
 
   const onSearch = word => {
     const newParams = { ...params, word, page: 0 }
