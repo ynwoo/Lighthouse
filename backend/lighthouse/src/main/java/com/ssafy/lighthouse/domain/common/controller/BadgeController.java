@@ -22,7 +22,8 @@ public class BadgeController {
                                          @RequestPart(value = "img") MultipartFile img) {
         log.debug("badge name : {} ", badgeRequest.getName());
         log.debug("badge description : {} ", badgeRequest.getDescription());
-        badgeService.createBadge(badgeRequest, img);
+        badgeRequest.setImg(img);
+        badgeService.createBadge(badgeRequest);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

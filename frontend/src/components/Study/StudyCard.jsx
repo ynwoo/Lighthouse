@@ -4,6 +4,7 @@ import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
+import { STATUS } from '../../utils'
 
 function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -50,7 +51,7 @@ function StudyCard({ study }) {
                   transform: 'translateX(-50%)',
                   objectFit: 'cover',
                 }}
-                alt="example"
+                alt="coverImage"
                 src={coverImage(study.coverImgUrl)}
               />
             </div>
@@ -63,23 +64,29 @@ function StudyCard({ study }) {
                 {study.leaderProfile?.nickname}
               </p>
               <p>{`현재 ${study.currentMember}명 / 총 ${study.maxMember}명`}</p>
-              <Row>
-                <Col span={5}>
-                  <HeartOutlined /> {study.likeCnt}
-                </Col>
-                <Col span={5}>
-                  <BookOutlined /> {study.bookmarkCnt}
-                </Col>
-                <Col>
-                  <EyeOutlined /> {study.hit}
-                </Col>
-              </Row>
-              <p />
+
+              <p>
+                <HeartOutlined /> {study.likeCnt} <BookOutlined />{' '}
+                {study.bookmarkCnt} <EyeOutlined /> {study.hit}
+              </p>
             </div>
           </div>
         </Card>
         {/* 레이어 카드 */}
-        <Link to={`/temp/${study.id}`} state={{ id: study.id }}>
+        <Link
+          to={
+            study.status === STATUS.SHARE
+              ? `/template/${study.id}`
+              : study.status === STATUS.PROGRESS
+              ? `/inprogress/${study.id}`
+              : study.status === STATUS.PREPARING &&
+                study.leaderProfile.id ===
+                  Number(sessionStorage.getItem('userId'))
+              ? `/template/update/${study.id}`
+              : `/study/${study.id}`
+          }
+          state={{ id: study.id }}
+        >
           <Card
             onMouseLeave={handleMouseLeave}
             className={isHovered ? 'hovered-card' : ''}
@@ -124,7 +131,7 @@ function StudyCard({ study }) {
               </div>
               <div
                 style={{
-                  fontSize: '12px',
+                  fontSize: '14px',
                   marginTop: '5px',
                   height: '55px',
                   overflow: 'hidden',

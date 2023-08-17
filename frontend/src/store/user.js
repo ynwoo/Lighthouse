@@ -39,11 +39,11 @@ authApi.interceptors.response.use(
         console.log(axios.defaults.headers.common)
         const response = await authApi.post(`${API_URL}/users/refresh`)
         console.log(response)
-        const newAccessToken = response.headers['access-token']
+        const newAccessToken = response.data['access-token']
         sessionStorage.setItem('access_token', newAccessToken)
         window.location.reload()
       } catch (error) {
-        alert('다시 로그인 해주세요!')
+        alert('로그인이 필요합니다!')
         window.location.href = '/login'
       }
       return Promise.reject(err)
@@ -79,6 +79,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   profile: {
     id: 0,
@@ -97,6 +98,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   following: null,
   userInfo: {},
@@ -262,6 +264,15 @@ export const userAction = {
   unfollow: createAsyncThunk('user/unfollow', async (payload, thunkAPI) => {
     try {
       const response = await authApi.delete(`/users/follow/${payload}`)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  userReview: createAsyncThunk('user/userReview', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`/users/eval`, payload)
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {

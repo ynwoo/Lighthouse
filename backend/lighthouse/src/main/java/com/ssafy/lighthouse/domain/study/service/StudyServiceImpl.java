@@ -21,7 +21,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import java.util.*;
@@ -109,6 +108,7 @@ public class StudyServiceImpl implements StudyService {
                 .leaderId(userId)
                 .maxMember(study.getMaxMember())
                 .minMember(study.getMinMember())
+                .coverImgUrl(study.getCoverImgUrl())
                 .badge(study.getBadge())
                 .build());
 
@@ -201,10 +201,35 @@ public class StudyServiceImpl implements StudyService {
     // 변경사항이 있으면 update 진행
     @Override
     public StudyResponse updateStudyByStudyId(StudyRequest studyRequest) {
-        studyRequest.setCoverImgUrl(S3Utils.uploadFile(CATEGORY, studyRequest.getCoverImgFile()));
+        // studyCoverImg fileUpload
+        if(studyRequest.getCoverImgFile() != null) {
+            // 이전 커버 이미지 삭제
+            if(studyRequest.getCoverImgUrl() != null) {
+                S3Utils.deleteFile(studyRequest.getCoverImgUrl());
+            }
+            
+            // 새로운 커버 이미지 등록
+            studyRequest.setCoverImgUrl(S3Utils.uploadFile(CATEGORY, studyRequest.getCoverImgFile()));
+        }
+
         Study changedStudy = studyRequest.toEntity();
+
+        // studyBadge fileUpload
+        if(studyRequest.getBadge() != null) {
+            // 이전 뱃지 삭제
+            if(studyRequest.getBadge().getId() != null) {
+                badgeService.removeBadge(studyRequest.getBadge().getId());
+            }
+
+            // 새로운 뱃지 등록
+            changedStudy.changeBadge(badgeService.createBadge(studyRequest.getBadge()));
+        }
+
         Study study = studyRepository.findDetailById(studyRequest.getId()).orElseThrow(StudyNotFoundException::new);
         log.debug("studyId : {}", study.getId());
+        log.debug("startedAt : {}", study.getStartedAt());
+        log.debug("endedAt : {}", study.getEndedAt());
+        log.debug("recruitFinishedAt : {}", study.getRecruitFinishedAt());
 
         int prevStatus = study.getStatus();
         int curStatus = studyRequest.getStatus();
@@ -454,6 +479,45 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public void updateStudyStatusByStudyId(Long studyId, int status) {
+        Study study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+        int prevStatus = study.getStatus();
+
+        // study 상태 변경
+        if(prevStatus != status) {
+            study.changeStatus(status);
+
+            if(status == STATUS.TERMINATED && study.getBadge() != null) {
+                // 스터디에 해당하는 뱃지 확인
+                Badge badge = badgeRepository.findByBadgeId(study.getBadge().getId()).orElseThrow(BadgeException::new);
+                List<UserBadge> newUserBadges = new ArrayList<>();
+
+                participationHistoryRepository.findAllByStudyId(studyId, STATUS.PROGRESS)
+                        .forEach(participationHistory -> {
+                            // 기록 수정
+                            participationHistory.changeStatus(STATUS.TERMINATED);
+
+                            // 뱃지 지급
+                            newUserBadges.add(UserBadge.builder()
+                                    .badge(badge)
+                                    .userId(participationHistory.getUserId())
+                                    .build());
+                        });
+
+                // 뱃지 지급
+                userBadgeRepository.saveAll(newUserBadges);
+
+            }
+
+            if(status != STATUS.SHARE) {
+                // study에 참여한 사람들의 상태 변경
+                participationHistoryRepository.findAllByStudyId(studyId, prevStatus)
+                        .forEach(participationHistory -> participationHistory.changeStatus(status));
+            }
+        }
+    }
+
+    @Override
     public void createStudyLike(Long studyId, Long userId) {
         Optional<StudyLike> result = studyLikeRepository.find(studyId, userId);
         if(result.isPresent()) {
@@ -541,7 +605,7 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void updateStudyBadge(BadgeRequest badgeRequest, MultipartFile img, Long studyId) {
+    public void updateStudyBadge(BadgeRequest badgeRequest, Long studyId) {
         Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
         Badge badge = study.getBadge();
 
@@ -551,6 +615,6 @@ public class StudyServiceImpl implements StudyService {
         }
 
         // 새로운 badge 생성 & 스터디 badgeId 변경
-        study.changeBadge(badgeService.createBadge(badgeRequest, img));
+        study.changeBadge(badgeService.createBadge(badgeRequest));
     }
 }

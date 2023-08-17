@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { authApi } from './user'
+import { authFormInstance } from '../api'
 
 const API_URL = process.env.REACT_APP_API_URL
+const authFormApi = authFormInstance()
 
 const initialState = {
   params: {
@@ -10,9 +12,9 @@ const initialState = {
     page: 0,
     key: 'title',
     word: '',
-    isOnline: 0,
-    orderKey: 'like',
-    orderBy: 'desc',
+    isOnline: 1,
+    orderKey: 'createdAt',
+    orderBy: 'asc',
     tagIds: [],
     sidoId: '',
     gugunId: '',
@@ -40,6 +42,7 @@ const initialState = {
     originalId: 0,
     sidoId: 0,
     gugunId: 0,
+    coverImgUrl: null,
     badge: {
       id: 0,
       imgUrl: '',
@@ -99,6 +102,14 @@ export const studyAction = {
   studyDetail: createAsyncThunk('study/detail', async (payload, thunkAPI) => {
     try {
       const response = await axios.get(`${API_URL}/study/${payload}`)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  studyUpdate: createAsyncThunk('study/update', async (payload, thunkAPI) => {
+    try {
+      const response = await authFormApi.put(`/study`, payload)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -185,6 +196,84 @@ export const studyAction = {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  updateNotice: createAsyncThunk(
+    'study/updateNotice',
+    async (payload, thunkAPI) => {
+      try {
+        const data = {
+          studyId: payload.studyId,
+          content: payload.content,
+        }
+        const response = await authApi.put(
+          `${API_URL}/study-notice/${payload.noticeId}`,
+          data,
+        )
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
+  addQnA: createAsyncThunk('study/addQnA', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/qna`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  updateQnA: createAsyncThunk('study/updateQnA', async (payload, thunkAPI) => {
+    try {
+      const data = {
+        userId: payload.userId,
+        studyId: payload.studyId,
+        question: payload.question,
+        answer: payload.answer,
+      }
+      const response = await authApi.put(
+        `${API_URL}/qna/${payload.qnaId}`,
+        data,
+      )
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  addEval: createAsyncThunk('study/addEval', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/study/eval`, payload)
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  addCurr: createAsyncThunk('study/addCurr', async (payload, thunkAPI) => {
+    try {
+      const response = await authApi.post(`${API_URL}/session`, payload, {
+        headers: { 'content-type': 'multipart/form-data' },
+      })
+      console.log(response)
+      return thunkAPI.fulfillWithValue(response.data)
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }),
+  deleteCurr: createAsyncThunk(
+    'study/deleteCurr',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.delete(`${API_URL}/session/${payload}`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
 }
 
 export const studySlice = createSlice({
@@ -216,7 +305,7 @@ export const studySlice = createSlice({
         page: 0,
         key: 'title',
         word: '',
-        isOnline: 0,
+        isOnline: 1,
         orderKey: 'like',
         orderBy: 'desc',
         tagIds: [],
@@ -228,10 +317,12 @@ export const studySlice = createSlice({
   extraReducers: {
     [studyAction.studyList.fulfilled]: (state, action) => {
       state.studies = action.payload.content
-      state.totalPage = action.payload.totalPages - 1
+      state.totalPage = action.payload.totalPagess
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
-      // state.studyDetail.push(action.payload)
+      state.studyDetail = action.payload
+    },
+    [studyAction.studyUpdate.fulfilled]: (state, action) => {
       state.studyDetail = action.payload
     },
     [studyAction.getTags.fulfilled]: (state, action) => {
@@ -243,20 +334,14 @@ export const studySlice = createSlice({
       state.likeList = action.payload
       console.log(action.payload)
     },
-    [studyAction.like.fulfilled]: () => {
-      alert('따봉')
-    },
-    [studyAction.dislike.fulfilled]: () => {
-      alert('따봉 취소')
-    },
     [studyAction.bookmark.fulfilled]: () => {
-      alert('북마크')
+      // alert('북마크')
     },
     [studyAction.disbookmark.fulfilled]: () => {
-      alert('북마크 취소')
+      // alert('북마크 취소')
     },
     [studyAction.joinStudy.rejected]: () => {
-      alert('이미 가입된 스터디입니다!')
+      alert('이미 신청 된 스터디입니다!')
     },
   },
 })

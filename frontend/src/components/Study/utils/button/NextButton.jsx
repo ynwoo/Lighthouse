@@ -1,11 +1,20 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import styles from './Button.module.css'
 
-export default function NextButton({ onClick, children }) {
+export default function NextButton({ onClick, disabled, children }) {
   return (
-    <button className={styles.button} type="button" onClick={onClick}>
+    <button
+      disabled={disabled}
+      className={[styles.button, styles[disabled], styles['button-right']].join(
+        ' ',
+      )}
+      type="button"
+      onClick={onClick}
+    >
       {children}
+      <FontAwesomeIcon icon={faChevronRight} />
     </button>
   )
 }
