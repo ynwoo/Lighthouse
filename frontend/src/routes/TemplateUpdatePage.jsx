@@ -76,8 +76,11 @@ export default function TemplateUpdatePage() {
   }, [originalStudy])
 
   const handleChangeStudy = e => {
-    console.log(e.target.name, e.target.value)
     setStudy({ ...study, [e.target.name]: e.target.value })
+  }
+
+  const setIsOnline = isOnline => () => {
+    setStudy({ ...study, isOnline })
   }
 
   const handleImageUpload = event => {
@@ -425,7 +428,13 @@ export default function TemplateUpdatePage() {
             }}
           >
             <h1 style={{ height: '40px' }}>
-              {study.title}{' '}
+              <Input
+                style={{ width: 'auto' }}
+                className="input"
+                name="title"
+                onChange={handleChangeStudy}
+                value={study.title}
+              />
               <img
                 src={uploadedBadgeImage || image(originalStudy.badge?.imgUrl)}
                 alt={study.badge?.description}
@@ -437,11 +446,18 @@ export default function TemplateUpdatePage() {
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
             <p style={{ marginTop: '30px' }}>
-              {study.isOnline
-                ? '온라인'
-                : study.sido && study.gugun
-                ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
-                : '오프라인'}
+              <Button
+                style={{ width: 80 }}
+                name="isOnline"
+                onClick={setIsOnline(study.isOnline === 1 ? 0 : 1)}
+                defaultValue="title"
+              >
+                {study.isOnline
+                  ? '온라인'
+                  : study.sido && study.gugun
+                  ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
+                  : '오프라인'}
+              </Button>
               <br />
               <div className="flex-container">
                 <span className="flex-item">
