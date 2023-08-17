@@ -1,11 +1,7 @@
-// import React, { useState } from 'react'
 import styled from 'styled-components'
-// import { useDispatch, useSelector } from 'react-redux'
-// import React, { useEffect } from 'react'
 import ChatForm from './ChatForm'
 import Conversation from './Conversation'
 import { Description } from '../styled/Description'
-// import { chatAction, receiveMessage } from '../../../store/chat'
 import backLogo from '../../../static/arrow.png'
 import base from '../../../static/base.png'
 
@@ -61,40 +57,10 @@ const Header = styled.header`
   }
 `
 
-function ChatContainer({ studyId, setRoomId, srcImg }) {
-  console.log(`src Img in: ${srcImg}`)
-  // const dispatch = useDispatch()
-  // // const userInfo = useSelector(state => state.user.myInfo)
-  // const messages = useSelector(state => state.chat.messages)
-  // const client = useSelector(state => state.chat.client)
-
-  // console.log(messages)
-  // console.log(studyId)
-  // useEffect(() => {
-  //   dispatch(chatAction.getChat(studyId))
-  // }, [])
-
-  // client.onConnect = frame => {
-  //   // Do something, all subscribes must be done is this callback
-  //   // This is needed because this will be executed after a (re)connect
-  //   console.log(`connection established: ${frame}`)
-  //   client.subscribe(`/sub/${studyId}`, data => {
-  //     const messageData = JSON.parse(data.body)
-  //     dispatch(receiveMessage(messageData))
-  //   })
-  // }
-  // client.activate()
-
-  // client.onStompError = function (frame) {
-  //   console.log(`Broker reported error: ${frame.headers.message}`)
-  //   console.log(`Additional details: ${frame.body}`)
-  // }
-
-  // const roomImgSrc = './aris.png'
-  // const roomImgSrc = `${process.env.REACT_APP_S3_DOMAIN_URL}badge/logo192_1691135473033.png`
-  const roomName = '블루 아카이브 스터디 22'
-  const roomDescription =
-    '이 스터디는 영국에서 시작되어 5명의 사람에게 추천하지 않으면 ... '
+function ChatContainer({ studyId, setRoomId, studyInfo }) {
+  console.log('sudy info', studyInfo)
+  const roomName = studyInfo.title
+  const roomDescription = studyInfo.description
 
   return (
     <CenterContainer>
@@ -121,8 +87,8 @@ function ChatContainer({ studyId, setRoomId, srcImg }) {
             <img
               alt="room-img"
               src={
-                srcImg
-                  ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${srcImg}`
+                studyInfo.avatar
+                  ? `${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}${studyInfo.avatar}`
                   : base
               }
             />
