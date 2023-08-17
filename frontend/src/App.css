@@ -908,6 +908,7 @@ h1 span:nth-child(9) {
 .badge {
   height: 15px;
   width: 15px;
+  margin-right: 5px;
 }
 
 .user-info {

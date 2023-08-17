@@ -488,7 +488,7 @@ public class StudyServiceImpl implements StudyService {
         if(prevStatus != status) {
             study.changeStatus(status);
 
-            if(status == STATUS.TERMINATED && study.getBadge() != null) {
+            if(status == STATUS.TERMINATED && study.getBadge() != null && prevStatus != STATUS.SHARE) {
                 // 스터디에 해당하는 뱃지 확인
                 Badge badge = badgeRepository.findByBadgeId(study.getBadge().getId()).orElseThrow(BadgeException::new);
                 List<UserBadge> newUserBadges = new ArrayList<>();
@@ -507,10 +507,9 @@ public class StudyServiceImpl implements StudyService {
 
                 // 뱃지 지급
                 userBadgeRepository.saveAll(newUserBadges);
-
             }
 
-            if(status != STATUS.SHARE) {
+            if(status != STATUS.SHARE && prevStatus != STATUS.SHARE) {
                 // study에 참여한 사람들의 상태 변경
                 participationHistoryRepository.findAllByStudyId(studyId, prevStatus)
                         .forEach(participationHistory -> participationHistory.changeStatus(status));
