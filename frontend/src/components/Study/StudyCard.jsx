@@ -79,6 +79,10 @@ function StudyCard({ study }) {
               ? `/template/${study.id}`
               : study.status === STATUS.PROGRESS
               ? `/inprogress/${study.id}`
+              : study.status === STATUS.PREPARING &&
+                study.leaderProfile.id ===
+                  Number(sessionStorage.getItem('userId'))
+              ? `/template/update/${study.id}`
               : `/study/${study.id}`
           }
           state={{ id: study.id }}
