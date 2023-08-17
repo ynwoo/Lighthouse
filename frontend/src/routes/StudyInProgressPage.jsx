@@ -1,8 +1,17 @@
 import React, { useEffect } from 'react'
-import { Row, Col, Tag, Tabs } from 'antd'
+import { Row, Col, Tag, Tabs, Tooltip, Button } from 'antd'
+import {
+  faBookmark as faBookmarkSolid,
+  faHeart as faHeartSolid,
+} from '@fortawesome/free-solid-svg-icons'
+import {
+  faBookmark as faBookmarkRegular,
+  faHeart as faHeartRegular,
+} from '@fortawesome/free-regular-svg-icons'
 
 import { useDispatch, useSelector } from 'react-redux'
 // import SideComponent from '../components/Utils/SideComponent'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import StudyInfo from '../components/Study/StudyInfo'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
@@ -10,6 +19,8 @@ import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
 import StudyCurrent from '../components/Study/StudyCurrent'
 import StudyRecord from '../components/Study/StudyRecord'
+import { STATUS } from '../utils'
+import { updateStudyStatus } from '../api/study'
 
 export default function StudyInProgressPage() {
   const dispatch = useDispatch()
@@ -23,6 +34,8 @@ export default function StudyInProgressPage() {
     dispatch(userAction.profile(sessionStorage.getItem('userId')))
     dispatch(studyAction.getLike())
   }, [])
+  const myInfo = useSelector(state => state.user.myProfile)
+  const likeList = useSelector(state => state.study.likeList)
 
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
@@ -30,6 +43,36 @@ export default function StudyInProgressPage() {
     { 정보: <StudyInfo study={study} /> },
     { 기록: <StudyRecord study={study} /> },
   ]
+
+  const handleChangeStatus = () => {
+    let { status } = study
+    if (study.status === STATUS.PREPARING) {
+      status = STATUS.RECRUITING
+    } else if (study.status === STATUS.RECRUITING) {
+      status = STATUS.PROGRESS
+    } else if (study.status === STATUS.PROGRESS) {
+      status = STATUS.TERMINATED
+    } else if (study.status === STATUS.TERMINATED) {
+      status = STATUS.SHARE
+    }
+    updateStudyStatus(
+      { studyId: study.id, status },
+      () => {
+        dispatch(studyAction.studyDetail(study.id))
+      },
+      () => {},
+    )
+  }
+  let buttonMessage = ''
+  if (study.status === STATUS.PREPARING) {
+    buttonMessage = '모집 시작'
+  } else if (study.status === STATUS.RECRUITING) {
+    buttonMessage = '스터디 시작'
+  } else if (study.status === STATUS.PROGRESS) {
+    buttonMessage = '스터디 종료'
+  } else if (study.status === STATUS.TERMINATED) {
+    buttonMessage = '스터디 공유'
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -129,7 +172,104 @@ export default function StudyInProgressPage() {
                 padding: '10px',
               }}
             >
-              채팅
+              <p style={{ fontSize: '12px', textAlign: 'left' }}>
+                모집 기간: {study.createdAt} - {study.recruitFinishedAt}
+              </p>
+              <div style={{ paddingTop: '30px' }}>
+                {myInfo.id === study.leaderProfile.id ? (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                    }}
+                    onClick={handleChangeStatus}
+                  >
+                    {buttonMessage}
+                  </Button>
+                ) : (
+                  <p />
+                )}
+              </div>
+              <Row style={{ marginTop: '10px' }}>
+                {myInfo.bookmarkStudies?.find(
+                  bookmarkStudy => bookmarkStudy.id === study.id,
+                ) ? (
+                  <Col
+                    span={12}
+                    align="middle"
+                    onClick={() => {
+                      dispatch(studyAction.disbookmark(study.id)).then(() => {
+                        dispatch(studyAction.studyDetail(study.id))
+                        dispatch(userAction.profile(myInfo.id))
+                      })
+                    }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    <Tooltip title="북마크 취소">
+                      <FontAwesomeIcon
+                        className="blue"
+                        icon={faBookmarkSolid}
+                      />{' '}
+                      {study.bookmarkCnt}
+                    </Tooltip>
+                  </Col>
+                ) : (
+                  <Col
+                    span={12}
+                    align="middle"
+                    onClick={() => {
+                      dispatch(studyAction.bookmark(study.id)).then(() => {
+                        dispatch(studyAction.studyDetail(study.id))
+                        dispatch(userAction.profile(myInfo.id))
+                      })
+                    }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    <Tooltip title="북마크">
+                      <FontAwesomeIcon
+                        className="blue"
+                        icon={faBookmarkRegular}
+                      />{' '}
+                      {study.bookmarkCnt}
+                    </Tooltip>
+                  </Col>
+                )}
+                {likeList.find(id => id === study.id) ? (
+                  <Col
+                    span={12}
+                    align="middle"
+                    onClick={() => {
+                      dispatch(studyAction.dislike(study.id)).then(() => {
+                        dispatch(studyAction.studyDetail(study.id))
+                        dispatch(studyAction.getLike())
+                      })
+                    }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    <Tooltip title="좋아요 취소">
+                      <FontAwesomeIcon className="red" icon={faHeartSolid} />{' '}
+                      {study.likeCnt}
+                    </Tooltip>
+                  </Col>
+                ) : (
+                  <Col
+                    span={12}
+                    align="middle"
+                    onClick={() => {
+                      dispatch(studyAction.like(study.id)).then(() => {
+                        dispatch(studyAction.studyDetail(study.id))
+                        dispatch(studyAction.getLike())
+                      })
+                    }}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    <Tooltip title="좋아요">
+                      <FontAwesomeIcon className="red" icon={faHeartRegular} />{' '}
+                      {study.likeCnt}
+                    </Tooltip>
+                  </Col>
+                )}
+              </Row>
             </div>
           </Col>
         </Row>
