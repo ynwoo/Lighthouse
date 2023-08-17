@@ -125,7 +125,7 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
     formData.append('status', status)
     console.log('uploadedImageFile', uploadedImageFile)
     if (uploadedImageFile) formData.append('coverImgFile', uploadedImageFile)
-    if (study.coverImgUrl) formData.append('coverImgUrl', study.coverImgUrl)
+    formData.append('coverImgUrl', study.coverImgUrl)
     formData.append(
       'createdAt',
       startDateToString(createdDate) ?? study.createdAt,
