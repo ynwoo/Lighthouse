@@ -59,8 +59,6 @@ export default function TemplateUpdatePage() {
     }
   }
 
-  console.log(originalStudy)
-
   const [study, setStudy] = useState(copyOriginalStudy())
 
   const navigate = useNavigate()
