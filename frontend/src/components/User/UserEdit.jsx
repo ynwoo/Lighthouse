@@ -40,11 +40,6 @@ export default function UserEdit() {
 
   const [score, setScore] = useState(0)
 
-  console.log(
-    'profile.participatedUserProfiles',
-    profile.participatedUserProfiles['27'],
-  )
-
   let items = [
     {
       key: '1',
@@ -79,7 +74,7 @@ export default function UserEdit() {
         label: `신청 명단`,
         children: (
           <div>
-            {Object.keys(profile.participatedUserProfiles).map(studyId => (
+            {Object.keys(profile?.participatedUserProfiles)?.map(studyId => (
               <div>
                 {studyId}:
                 {profile.participatedUserProfiles[`${studyId}`].map(
@@ -108,6 +103,7 @@ export default function UserEdit() {
                         <p>님의 페이지 입니다.</p>
                       </Card>
                     </Sider>
+                    // <div>{userProfile}</div>s
                   ),
                 )}
               </div>
