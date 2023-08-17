@@ -3,7 +3,7 @@ import { Row, Col, Tag, Tabs } from 'antd'
 
 import { useDispatch, useSelector } from 'react-redux'
 // import SideComponent from '../components/Utils/SideComponent'
-import StudyInfo from '../components/Study/StudyInfoNew'
+import StudyInfo from '../components/Study/StudyInfo'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
