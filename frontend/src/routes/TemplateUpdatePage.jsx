@@ -270,7 +270,9 @@ export default function TemplateUpdatePage() {
     callStudyUpdateApi(copyStudy())
   }
   const handleRecruitStudy = () => {
-    callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+    if (study.status === STATUS.PREPARING) {
+      callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+    }
     navigate(`/study/${study.id}`)
   }
 
@@ -301,6 +303,7 @@ export default function TemplateUpdatePage() {
               />
             </Card>
             <Card
+              className="flex-container-col"
               title="스터디 규칙"
               bordered={false}
               style={{ boxShadow: 'none' }}
@@ -310,6 +313,7 @@ export default function TemplateUpdatePage() {
                 name="rule"
                 onChange={handleChangeStudy}
                 value={study.rule}
+                style={{ height: `${study.rule.split('\n').length * 25}px` }}
               />
             </Card>
             <Card
@@ -493,22 +497,26 @@ export default function TemplateUpdatePage() {
                 padding: '10px',
               }}
             >
-              <Button
-                type="primary"
-                style={{ marginTop: '30px', width: '100%' }}
-                onClick={handleUpdateStudy}
-              >
-                템플릿 수정
-              </Button>
-              {study.status === STATUS.PREPARING && (
+              <div className="flex-container-col align-center">
                 <Button
                   type="primary"
-                  style={{ marginTop: '30px', width: '100%' }}
+                  style={{
+                    marginTop: '30px',
+                    width: '100%',
+                    backgroundColor: 'green',
+                  }}
+                  onClick={handleUpdateStudy}
+                >
+                  템플릿 수정
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ marginTop: '10px', width: '100%' }}
                   onClick={handleRecruitStudy}
                 >
-                  모집 시작
+                  수정 완료
                 </Button>
-              )}
+              </div>
               <Row style={{ marginTop: '10px' }}>
                 {myInfo.bookmarkStudies?.find(
                   bookmarkStudy => bookmarkStudy.id === study.id,

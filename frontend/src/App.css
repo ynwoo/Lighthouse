@@ -27,8 +27,18 @@ body {
   }
 }
 
-.text-area {
-  height: 100%;
+.flex-container-col {
+  display: flex;
+  flex-direction: column;
+
+  & .text-area {
+    height: auto;
+    overflow: hidden;
+  }
+
+  & .align-center {
+    align-items: center;
+  }
 }
 
 .file-upload {
