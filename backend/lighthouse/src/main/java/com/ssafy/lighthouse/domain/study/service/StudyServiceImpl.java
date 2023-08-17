@@ -473,12 +473,10 @@ public class StudyServiceImpl implements StudyService {
             }
         }
 
-
         em.flush();
         em.clear();
 
-        return new StudyResponse(studyRepository.findDetailById(studyRequest.getId())
-                .orElseThrow(StudyNotFoundException::new));
+        return findDetailByStudyId(studyRequest.getId());
     }
 
     @Override

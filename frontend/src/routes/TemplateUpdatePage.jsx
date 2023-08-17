@@ -46,11 +46,18 @@ export default function TemplateUpdatePage() {
   const copyOriginalStudy = () => {
     return {
       ...originalStudy,
-      studyTags: [...originalStudy.studyTags],
-      // sessions: [...originalStudy.sessions],
-      // studyNotices: [...originalStudy.studyNotices],
+      leaderProfile: { ...originalStudy.leaderProfile },
+      studyTags: originalStudy?.studyTags && [...originalStudy.studyTags],
+      sessions: originalStudy?.sessions && [...originalStudy.sessions],
+      studyNotices: originalStudy?.studyNotices && [
+        ...originalStudy.studyNotices,
+      ],
+      studyEvals: originalStudy?.studyEvals && [...originalStudy.studyEvals],
+      badge: originalStudy?.badge && { ...originalStudy.badge },
     }
   }
+
+  console.log(originalStudy)
 
   const [study, setStudy] = useState(copyOriginalStudy())
 
@@ -221,6 +228,13 @@ export default function TemplateUpdatePage() {
           Object.keys(studyEval).forEach(key => {
             formData.append(`studyEvals[${index}].${key}`, studyEval[key])
           })
+        })
+      }
+
+      // leaderProfile
+      else if (sKey === 'leaderProfile') {
+        Object.keys(study.leaderProfile).forEach(key => {
+          formData.append(`badge.${key}`, study.leaderProfile[key])
         })
       }
 
