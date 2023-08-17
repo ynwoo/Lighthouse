@@ -51,7 +51,9 @@ export default function MainPage({ isLoggedIn, status }) {
   }
 
   useEffect(() => {
-    dispatch(studyAction.studyList(initParams))
+    const newParams = { ...initParams, status }
+    dispatch(setParams(newParams))
+    dispatch(studyAction.studyList(newParams))
   }, [status])
 
   const handleMovePage = page => () => dispatch(setParams({ ...params, page }))
