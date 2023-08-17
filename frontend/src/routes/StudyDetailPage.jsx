@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom'
 import StudyInfo from '../components/Study/StudyInfo'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyEdit from '../components/Study/StudyEdit'
-import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
 import StudyMember from '../components/Study/StudyMember'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
@@ -50,7 +49,7 @@ export default function StudyDetailPage() {
     ...(study?.memberProfiles?.find(
       memberProfile => memberProfile.id === Number(userId),
     )?.id
-      ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
+      ? []
       : [
           { 'Q&A': <StudyQnA study={study} /> },
           { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
@@ -206,7 +205,7 @@ export default function StudyDetailPage() {
         </Row>
       </div>
       <div>
-        <Row>
+        <Row style={{ height: '1500px' }}>
           <Col span={18}>
             <Tabs
               items={tabMenu.map((menu, index) => {
