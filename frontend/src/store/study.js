@@ -13,7 +13,7 @@ const initialState = {
     key: 'title',
     word: '',
     isOnline: 1,
-    orderKey: 'createAt',
+    orderKey: 'createdAt',
     orderBy: 'asc',
     tagIds: [],
     sidoId: '',
