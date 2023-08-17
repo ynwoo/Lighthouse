@@ -306,7 +306,7 @@ export default function TemplateUpdatePage() {
               style={{ boxShadow: 'none' }}
             >
               <TextArea
-                className="flex-container"
+                className="text-area"
                 name="rule"
                 onChange={handleChangeStudy}
                 value={study.rule}
