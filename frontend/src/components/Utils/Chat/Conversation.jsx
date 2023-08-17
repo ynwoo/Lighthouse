@@ -102,13 +102,13 @@ function Conversation({ roomId }) {
   //   const messages = useMessages()
   const messages = useSelector(state => state.chat.messages)
   const userId = sessionStorage.getItem('userId')
-
+  const scrollRef = useRef()
   console.log('temp messages: ', messages)
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
   useEffect(() => {
-    chatConversation.current.scrollTo(0, chatConversation.current.scrollHeight)
+    scrollRef.current.scrollIntoView({ behavior: 'smooth' })
     console.log('mess: ', messages)
   }, [useSelector(state => state.chat.messages)])
 
@@ -134,6 +134,7 @@ function Conversation({ roomId }) {
             </MessageContainer>
           )
         })}
+      <div ref={scrollRef} />
     </ConversationContainer>
   )
 }
