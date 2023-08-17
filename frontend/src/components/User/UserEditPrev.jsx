@@ -34,7 +34,6 @@ export default function UserEditPrev() {
         borderRadius: '20px',
         textAlign: 'center',
         backgroundColor: 'white',
-        // display: 'flex',
         justifyContent: 'center',
         alignContent: 'center',
         boxShadow: '4px 4px 15px rgba(0, 0, 0, 0.4)',
@@ -55,17 +54,10 @@ export default function UserEditPrev() {
         <div className="u_item1">별점</div>
         <div className="u_item">자기소개</div>
         <div className="u_item1">자기소개</div>
-        {/* <div className="u_item">뱃지 목록</div>
-        <div className="u_item1">뱃지 목록</div>
-        <div className="u_item">진행 중</div>
-        <div className="u_item1">진행 중</div>
-        <div className="u_item">통계</div>
-        <div className="u_item1">통계</div> */}
         <div className="u_item">참여했던 스터디</div>
         <div
           style={{
             display: 'flex',
-            // margin: '0px',
             justifyContent: 'center',
             alignContent: 'center',
             alignItems: 'center',
@@ -104,8 +96,6 @@ export default function UserEditPrev() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
-            // marginRight: '20px',
-            // marginBottom: '20px',
           }}
         >
           <div className="ue_item">관심 분야를 선택해주세요.</div>
@@ -219,9 +209,6 @@ export default function UserEditPrev() {
             </div>
           </div>
         </div>
-        {/* <div classN
-        {/* <div className="u_item">북마크</div>
-        <div className="u_item1">북마크</div> */}
       </div>
     </div>
   )

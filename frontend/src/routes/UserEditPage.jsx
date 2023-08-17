@@ -10,7 +10,6 @@ export default function UserPage() {
 
   useEffect(() => {
     const { userId } = location.state
-    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.getFollowing())
   }, [location.state.userId])

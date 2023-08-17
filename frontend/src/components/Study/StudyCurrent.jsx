@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { studyAction } from '../../store/study'
 // 현재 진행 중인 스터디의 상세 페이지
 export default function StudyCurrent({ study }) {
-  console.log('studyInfo : ', study)
   const dispatch = useDispatch()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)

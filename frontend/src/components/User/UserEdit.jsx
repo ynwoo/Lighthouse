@@ -28,7 +28,6 @@ export default function UserEdit() {
   // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
-    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
     dispatch(userAction.getFollowing())
