@@ -10,6 +10,7 @@ import {
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import StudyInfo from '../components/Study/StudyInfoNew'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
@@ -27,7 +28,7 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/template/update/')[1]
   const originalStudy = useSelector(state => state.study.studyDetail)
-
+  console.log(originalStudy)
   const [startDate, setStartDate] = useState(
     StringToDate(originalStudy.startedAt),
   )
@@ -42,12 +43,19 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   const [uploadedImageFile, setUploadedImageFile] = useState(null)
   const [uploadedBadgeImage, setUploadedBadgeImage] = useState(null)
   const [uploadedBadgeImageFile, setUploadedBadgeImageFile] = useState(null)
-  const [study, setStudy] = useState({
-    ...originalStudy,
-    studyTags: [...originalStudy.studyTags],
-    // sessions: [...originalStudy.sessions],
-    // studyNotices: [...originalStudy.studyNotices],
-  })
+
+  const copyOriginalStudy = () => {
+    return {
+      ...originalStudy,
+      studyTags: [...originalStudy.studyTags],
+      // sessions: [...originalStudy.sessions],
+      // studyNotices: [...originalStudy.studyNotices],
+    }
+  }
+
+  const [study, setStudy] = useState(copyOriginalStudy())
+
+  const navigate = useNavigate()
 
   console.log(study)
 
@@ -55,7 +63,11 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
     dispatch(studyAction.studyDetail(studyId))
     dispatch(userAction.profile(sessionStorage.getItem('userId')))
     dispatch(studyAction.getLike())
-  }, [studyId])
+  }, [])
+
+  useEffect(() => {
+    setStudy(copyOriginalStudy())
+  }, [originalStudy])
 
   const handleChangeStudy = e => {
     console.log('handleChangeStudy', e.target)
@@ -251,6 +263,7 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   }
   const handleRecruitStudy = () => {
     callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+    navigate(`/study/${study.id}`)
   }
 
   const myInfo = useSelector(state => state.user.myProfile)
