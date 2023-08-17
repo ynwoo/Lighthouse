@@ -282,88 +282,115 @@ export default function TemplateUpdatePage() {
   const tabMenu = [
     {
       정보: (
-        <div>
-          <div
-            style={{
-              height: '1000px',
-              width: '100%',
-              backgroundColor: 'rgb(255, 255, 255)',
-            }}
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="스터디 정보"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
           >
-            <Card
-              title="스터디 정보"
-              bordered={false}
-              style={{ boxShadow: 'none' }}
-            >
-              <Input
-                className="input"
-                name="description"
-                onChange={handleChangeStudy}
-                value={study.description}
-              />
-            </Card>
-            <Card
-              className="flex-container-col"
-              title="스터디 규칙"
-              bordered={false}
-              style={{ boxShadow: 'none' }}
-            >
-              <TextArea
-                className="text-area"
-                name="rule"
-                onChange={handleChangeStudy}
-                value={study.rule}
-                style={{ height: `${study.rule.split('\n').length * 25}px` }}
-              />
-            </Card>
-            <Card
-              title="스터디 계획"
-              bordered={false}
-              style={{ boxShadow: 'none' }}
-            >
-              <div>
-                <StudyCurriculum study={study} />
-              </div>
-            </Card>
-          </div>
+            <Input
+              className="input"
+              name="description"
+              onChange={handleChangeStudy}
+              value={study.description}
+            />
+          </Card>
+          <Card
+            className="flex-container-col"
+            title="스터디 규칙"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <TextArea
+              className="text-area"
+              name="rule"
+              onChange={handleChangeStudy}
+              value={study.rule}
+              style={{ height: `${study.rule.split('\n').length * 25}px` }}
+            />
+          </Card>
+          <Card
+            title="스터디 계획"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <div>
+              <StudyCurriculum study={study} />
+            </div>
+          </Card>
         </div>
       ),
     },
     {
       '스터디 기간': (
-        <>
-          <h3>스터디 기간</h3>
-          <DateRangePicker
-            changeStartDate={handleStartDateChange}
-            changeEndDate={handleEndDateChange}
-            initStartDate={study.startedAt}
-            initEndDate={study.endedAt}
-          />
-          <hr />
-          <br />
-          <h3>스터디 모집 기간</h3>
-          <DateRangePicker
-            changeStartDate={handleCreatedDateChange}
-            changeEndDate={handleRecruitFinishedDateChange}
-            initStartDate={study.createdAt}
-            initEndDate={study.recruitFinishedAt}
-          />
-        </>
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="스터디 기간"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <DateRangePicker
+              changeStartDate={handleStartDateChange}
+              changeEndDate={handleEndDateChange}
+              initStartDate={study.startedAt}
+              initEndDate={study.endedAt}
+            />
+          </Card>
+          <Card
+            title="스터디 모집 기간"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <DateRangePicker
+              changeStartDate={handleCreatedDateChange}
+              changeEndDate={handleRecruitFinishedDateChange}
+              initStartDate={study.createdAt}
+              initEndDate={study.recruitFinishedAt}
+            />
+          </Card>
+        </div>
       ),
     },
     {
       '커버이미지 & 뱃지 수정': (
-        <>
-          <div className="file-upload">커버이미지 수정</div>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          <hr />
-          <div className="file-upload">뱃지 수정</div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleBadgeImageUpload}
-          />
-        </>
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="커버 이미지 수정"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+          </Card>
+          <Card
+            title="뱃지 수정"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleBadgeImageUpload}
+            />
+          </Card>
+        </div>
       ),
     },
     { '템플릿 리뷰': <StudyReview study={study} /> },
