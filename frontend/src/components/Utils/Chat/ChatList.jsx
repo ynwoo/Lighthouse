@@ -139,11 +139,11 @@ function ChattingList() {
           <ChatContainer
             studyId={roomId}
             setRoomId={setRoomId}
-            studyInfo={
+            srcImg={
               studiesToShow.filter(s => {
                 // eslint-disable-next-line eqeqeq
                 return s.id == roomId
-              })[0]
+              })[0].avatar
             }
           />
         </div>
