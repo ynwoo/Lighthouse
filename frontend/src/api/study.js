@@ -10,7 +10,6 @@ async function getStudyAll(options, success, fail) {
   Object.keys(options).forEach((option, index) => {
     if (option === 'tagIds') {
       if (!option.length) {
-        console.log('tag', options[option])
         options[option]?.forEach(tagId => {
           uri += `${option}=${tagId}`
         })
@@ -21,7 +20,6 @@ async function getStudyAll(options, success, fail) {
       uri += `${option}=${options[option]}`
     }
   })
-  console.log(uri)
   await api.get(uri).then(success).catch(fail)
 }
 

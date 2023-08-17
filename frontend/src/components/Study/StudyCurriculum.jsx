@@ -19,7 +19,6 @@ export default function StudyCurriculum({ study }) {
     values.studyId = study.id
     values.status = 0
     values.seqNum = study.sessions?.length
-    console.log(values)
 
     dispatch(studyAction.addCurr(values))
       .unwrap()
@@ -47,7 +46,6 @@ export default function StudyCurriculum({ study }) {
           values.studyId = study.id
           values.status = 0
           values.seqNum = study.sessions?.length
-          console.log(values)
           dispatch(studyAction.addCurr(values))
             .unwrap()
             .then(() => {
@@ -72,14 +70,9 @@ export default function StudyCurriculum({ study }) {
             title="Add Cur"
             visible={isModalVisible}
             onOk={() => {
-              form
-                .validateFields()
-                .then(values => {
-                  handleOk(values)
-                })
-                .catch(errorInfo => {
-                  console.log('Validation failed:', errorInfo)
-                })
+              form.validateFields().then(values => {
+                handleOk(values)
+              })
             }}
             onCancel={handleCancel}
           >
