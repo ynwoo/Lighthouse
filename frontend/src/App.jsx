@@ -4,16 +4,15 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
 import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
-import Navbar from './components/Utils/Navbar/NavbarNew'
+import Navbar from './components/Utils/Navbar/Navbar'
 import WaveComponent from './components/Utils/WaveComponent'
-import MainPage from './routes/MainPageNew'
-import StudyDetailPage from './routes/StudyDetailPageNew'
+import MainPage from './routes/MainPage'
+import StudyDetailPage from './routes/StudyDetailPage'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
-import Chat from './components/Utils/Chat/Chat'
-import SignUp from './components/User/SignUp'
-import LogIn from './components/User/LogIn'
+import SignUp from './routes/SignUpPage'
+import LogIn from './routes/LogInPage'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
 import TemplateDetailPage from './routes/TemplateDetailPage'
@@ -111,8 +110,6 @@ function App() {
                   <Route path="/login" element={<LogIn />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/user_edit/:id" element={<UserEditPage />} />
-                  <Route path="/chat" element={<Chat />} />
-                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
                 </Routes>
               </div>
             </>
