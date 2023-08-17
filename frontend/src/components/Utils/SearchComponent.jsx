@@ -76,16 +76,6 @@ function SearchComponent() {
               { value: 'leader', label: '리더 닉네임' },
             ]}
           />
-          {/* <select
-            style={styles}
-            name="key"
-            value={params.key}
-            onChange={onChange}
-          >
-            <option value="title">제목</option>
-            <option value="description">설명</option>
-            <option value="leader">리더닉네임</option>
-          </select> */}
           <Select
             style={{ width: 120 }}
             name="orderKey"
@@ -98,19 +88,6 @@ function SearchComponent() {
               { value: 'bookmark', label: '북마크순' },
             ]}
           />
-          {/* 정렬 key */}
-          {/* <select
-            style={styles}
-            name="orderKey"
-            value={params.orderKey}
-            onChange={onChange}
-          >
-            <option value="createdAt">생성순</option>
-            <option value="hit">조회순</option>
-            <option value="like">좋아요순</option>
-            <option value="bookmark">북마크순</option>
-          </select> */}
-
           <Button
             style={{ width: 80 }}
             name="orderBy"
@@ -119,15 +96,6 @@ function SearchComponent() {
           >
             {params.orderBy === 'desc' ? '내림차순' : '오름차순'}
           </Button>
-          {/* 오름차순 내림차순 */}
-          {/* <button
-            style={styles}
-            type="button"
-            onClick={setOrderBy}
-            name="orderBy"
-          >
-            {params.orderBy === 'desc' ? '내림차순' : '오름차순'}
-          </button> */}
           <Button
             style={{ width: 80 }}
             name="isOnline"
@@ -136,15 +104,6 @@ function SearchComponent() {
           >
             {params.isOnline ? '온라인' : '오프라인'}
           </Button>
-          {/* 온라인 오프라인 스위치 버튼 */}
-          {/* <button
-            style={styles}
-            type="button"
-            onClick={setIsOnline}
-            name="isOnline"
-          >
-            {params.isOnline ? 'Online' : 'Offline'}
-          </button> */}
           {!params.isOnline && (
             <Select
               onChange={sidoChange}

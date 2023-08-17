@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-// import { getFirstLetter } from '../helpers'
-// import useMessages from '../hooks/useMessages'
-// import { useChat } from '../context/ChatProvider'
+
 import { useSelector } from 'react-redux'
 
 export const dateFormat = timestamp => {
@@ -16,18 +14,6 @@ export const dateFormat = timestamp => {
 
 export const getFirstLetter = name => {
   return name[0]
-
-  // const lettersArray = name.split(' ').map(word => word[0])
-
-  // if (lettersArray.length === 1) {
-  //   return lettersArray[0].toString().toUpperCase()
-  // }
-
-  // const firstLetters = [lettersArray[0], lettersArray[lettersArray.length - 1]]
-  //   .join('')
-  //   .toUpperCase()
-
-  // return firstLetters
 }
 
 const ConversationContainer = styled.div`
@@ -101,18 +87,14 @@ const BotMessage = styled.div`
 `
 
 function Conversation({ roomId }) {
-  //   const { socket } = useChat()
-  //   const messages = useMessages()
   const messages = useSelector(state => state.chat.messages)
   const userId = sessionStorage.getItem('userId')
 
-  console.log('temp messages: ', messages)
   const chatConversation = useRef(null)
 
   // auto scroll to bottom on new message receive / sent
   useEffect(() => {
     chatConversation.current.scrollTo(0, chatConversation.current.scrollHeight)
-    console.log('mess: ', messages)
   }, [useSelector(state => state.chat.messages)])
 
   return (

@@ -5,8 +5,6 @@ import { IoIosSend } from 'react-icons/io'
 import { useDispatch } from 'react-redux'
 import { chatAction } from '../../../store/chat'
 import { ButtonContainer } from '../styled/Button'
-// import useChatActions from '../hooks/useChatActions'
-// import { useChat } from '../context/ChatProvider'
 
 const MessageForm = styled.form`
   padding: 0.5vw 0;

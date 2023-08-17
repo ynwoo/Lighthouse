@@ -10,20 +10,19 @@ import {
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
-import StudyInfo from '../components/Study/StudyInfoNew'
+import StudyInfo from '../components/Study/StudyInfo'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
 import StudyReview from '../components/Study/StudyReview'
 
-export default function TempDetailPage({ isLoggedIn }) {
+export default function TempDetailPage() {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
 
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
-  console.log(study)
 
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
@@ -33,11 +32,6 @@ export default function TempDetailPage({ isLoggedIn }) {
 
   const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
-  console.log(myInfo)
-  console.log(likeList)
-  const userId = sessionStorage.getItem('userId')
-  console.log(study)
-  console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { 정보: <StudyInfo study={study} /> },

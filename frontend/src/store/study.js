@@ -76,12 +76,10 @@ export const studyAction = {
   studyList: createAsyncThunk('study/list', async (payload, thunkAPI) => {
     try {
       const options = payload
-      console.log('payload : ', payload)
       let uri = '/study?'
       Object.keys(options).forEach((option, index) => {
         if (option === 'tagIds') {
           if (!option.length) {
-            console.log('tag', options[option])
             options[option]?.forEach(tagId => {
               uri += `${option}=${tagId}`
             })
@@ -92,7 +90,6 @@ export const studyAction = {
           uri += `${option}=${options[option]}`
         }
       })
-      console.log(uri)
       const response = await axios.get(`${API_URL}${uri}`)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
@@ -129,7 +126,6 @@ export const studyAction = {
       const response = await authApi.post(
         `${API_URL}/participation-history/${payload}`,
       )
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -138,7 +134,6 @@ export const studyAction = {
   getLike: createAsyncThunk('study/getLike', async (payload, thunkAPI) => {
     try {
       const response = await authApi.get(`${API_URL}/study/like`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -147,7 +142,6 @@ export const studyAction = {
   like: createAsyncThunk('study/like', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/study/like/${payload}`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -156,7 +150,6 @@ export const studyAction = {
   dislike: createAsyncThunk('study/dislike', async (payload, thunkAPI) => {
     try {
       const response = await authApi.delete(`${API_URL}/study/like/${payload}`)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -167,7 +160,6 @@ export const studyAction = {
       const response = await authApi.post(
         `${API_URL}/study/bookmark/${payload}`,
       )
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -180,7 +172,6 @@ export const studyAction = {
         const response = await authApi.delete(
           `${API_URL}/study/bookmark/${payload}`,
         )
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -190,7 +181,6 @@ export const studyAction = {
   addNotice: createAsyncThunk('study/addNotice', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/study-notice`, payload)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -208,7 +198,6 @@ export const studyAction = {
           `${API_URL}/study-notice/${payload.noticeId}`,
           data,
         )
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -218,7 +207,6 @@ export const studyAction = {
   addQnA: createAsyncThunk('study/addQnA', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/qna`, payload)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -236,7 +224,6 @@ export const studyAction = {
         `${API_URL}/qna/${payload.qnaId}`,
         data,
       )
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -245,7 +232,6 @@ export const studyAction = {
   addEval: createAsyncThunk('study/addEval', async (payload, thunkAPI) => {
     try {
       const response = await authApi.post(`${API_URL}/study/eval`, payload)
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -256,7 +242,6 @@ export const studyAction = {
       const response = await authApi.post(`${API_URL}/session`, payload, {
         headers: { 'content-type': 'multipart/form-data' },
       })
-      console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
@@ -267,7 +252,6 @@ export const studyAction = {
     async (payload, thunkAPI) => {
       try {
         const response = await authApi.delete(`${API_URL}/session/${payload}`)
-        console.log(response)
         return thunkAPI.fulfillWithValue(response.data)
       } catch (error) {
         return thunkAPI.rejectWithValue(error)
@@ -286,8 +270,7 @@ export const studySlice = createSlice({
       }
       state.params.word = action.payload
     },
-    setOnline: (state, action) => {
-      console.log(action.payload)
+    setOnline: state => {
       if (state.params.isOnline) {
         state.params.isOnline = 0
       } else {
@@ -296,10 +279,8 @@ export const studySlice = createSlice({
     },
     setParams: (state, action) => {
       state.params = action.payload
-      console.log('setParams', action.payload, state.params)
     },
-    initParams: (state, action) => {
-      console.log(action)
+    initParams: state => {
       state.params = {
         status: 1,
         page: 0,
@@ -326,13 +307,11 @@ export const studySlice = createSlice({
       state.studyDetail = action.payload
     },
     [studyAction.getTags.fulfilled]: (state, action) => {
-      console.log(action.payload.tagList)
       state.tags = action.payload.tagList
       localStorage.setItem('tags', JSON.stringify(action.payload.tagList))
     },
     [studyAction.getLike.fulfilled]: (state, action) => {
       state.likeList = action.payload
-      console.log(action.payload)
     },
     [studyAction.bookmark.fulfilled]: () => {
       // alert('북마크')

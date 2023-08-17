@@ -50,9 +50,6 @@ function UserInfoModify({ profile }) {
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
   const nicknameIsValid = useSelector(state => state.user.nicknameIsValid)
-  // const myProfile = useSelector(state => state.user.myProfile)
-  // const myInfo = useSelector(state => state.user.myInfo)
-  // const profile = { ...myInfo, ...myProfile }
 
   // sido가 바뀔 때 마다 dispatch를 통해 redux => 서버에 요청을 보내 gugun을 갱신
   const sidoChange = e => {
@@ -71,7 +68,6 @@ function UserInfoModify({ profile }) {
         onFinish={values => {
           // submit버튼을 누르면 이루어지는 동작
           // 비밀번호 확인 지우기
-          console.log('nickname ', values.nickname, profile.nickname)
           if (values.nickname == null || nicknameIsValid) {
             delete values.confirm
             values.userTagList = []
