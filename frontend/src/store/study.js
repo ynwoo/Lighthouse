@@ -341,7 +341,7 @@ export const studySlice = createSlice({
       // alert('북마크 취소')
     },
     [studyAction.joinStudy.rejected]: () => {
-      alert('이미 가입된 스터디입니다!')
+      alert('이미 신청 된 스터디입니다!')
     },
   },
 })

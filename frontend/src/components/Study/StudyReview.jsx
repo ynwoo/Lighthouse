@@ -1,7 +1,9 @@
 import { Button } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { studyAction } from '../../store/study'
+import { userAction } from '../../store/user'
 
 // 템플릿 상세의 인원정보(멤버)
 
@@ -9,6 +11,17 @@ export default function StudyReview({ study }) {
   const dispatch = useDispatch()
   const [score, setScore] = useState(0)
   const [comment, setComment] = useState('')
+  const [reviewers, setReviewers] = useState([])
+
+  useEffect(() => {
+    study.studyEvals?.forEach(review => {
+      dispatch(userAction.profile(review.userId))
+        .unwrap()
+        .then(res => {
+          setReviewers(a => [...a, res])
+        })
+    })
+  }, [study])
   return (
     <div>
       <div>
@@ -58,7 +71,16 @@ export default function StudyReview({ study }) {
           {study.studyEvals?.length !== 0 ? (
             study.studyEvals?.map(review => (
               <div className="review_mini">
-                {review.userId} : {review.comment} - {review.score}
+                <Link
+                  to={`/user_edit/${review.userId}`}
+                  state={{ userId: review.userId }}
+                >
+                  {reviewers?.length === 0
+                    ? '누구게'
+                    : reviewers?.find(user => user.id === review.userId)
+                        ?.nickname}
+                </Link>{' '}
+                : {review.comment} - {review.score}점
               </div>
             ))
           ) : (
