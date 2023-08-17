@@ -100,7 +100,7 @@ public class StudyServiceImpl implements StudyService {
         // 새로운 스터디 만들기
         Study newStudy = studyRepository.save(Study.builder()
                 .isValid(study.getIsValid())
-                .title(study.getTitle())
+                .title(study.getTitle() + " copy")
                 .description(study.getDescription())
                 .rule(study.getRule())
                 .isOnline(study.getIsOnline())

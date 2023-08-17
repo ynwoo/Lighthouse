@@ -21,6 +21,7 @@ import StudyCurrent from '../components/Study/StudyCurrent'
 import StudyRecord from '../components/Study/StudyRecord'
 import { STATUS } from '../utils'
 import { updateStudyStatus } from '../api/study'
+import StudyMember from '../components/Study/StudyMember'
 
 export default function StudyInProgressPage() {
   const dispatch = useDispatch()
@@ -41,6 +42,7 @@ export default function StudyInProgressPage() {
   const tabMenu = [
     { '진행 상황': <StudyCurrent study={study} /> },
     { 정보: <StudyInfo study={study} /> },
+    { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
     { 기록: <StudyRecord study={study} /> },
   ]
 
