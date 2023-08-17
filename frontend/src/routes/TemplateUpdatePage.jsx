@@ -70,8 +70,7 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   }, [originalStudy])
 
   const handleChangeStudy = e => {
-    console.log('handleChangeStudy', e.target)
-    setStudy({ ...study, currentMember: e })
+    setStudy({ ...study, [e.target.name]: Number(e.target.value) })
   }
 
   const handleImageUpload = event => {
@@ -126,7 +125,7 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
     formData.append('status', status)
     console.log('uploadedImageFile', uploadedImageFile)
     if (uploadedImageFile) formData.append('coverImgFile', uploadedImageFile)
-    formData.append('coverImgUrl', study.coverImgUrl)
+    if (study.coverImgUrl) formData.append('coverImgUrl', study.coverImgUrl)
     formData.append(
       'createdAt',
       startDateToString(createdDate) ?? study.createdAt,
@@ -163,38 +162,36 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
 
       // sessions
       else if (sKey === 'sessions') {
-        study.sessions?.forEach((session, index) => {
-          Object.keys(session).forEach(key => {
-            // studyMaterials
-            if (key === 'studyMaterials') {
-              session.studyMaterials?.forEach((studyMaterial, smIndex) => {
-                Object.keys(studyMaterial).forEach(smKey => {
-                  formData.append(
-                    `sessions[${index}].${key}[${smIndex}].${smKey}`,
-                    studyMaterial[smKey],
-                  )
-                })
-              })
-            }
-
-            // sessionChecks
-            else if (key === 'sessionChecks') {
-              session.sessionChecks?.forEach((sessionCheck, scIndex) => {
-                Object.keys(sessionCheck).forEach(scKey => {
-                  formData.append(
-                    `sessions[${index}].${key}[${scIndex}].${scKey}`,
-                    sessionCheck[scKey],
-                  )
-                })
-              })
-            }
-
-            // sessions
-            else {
-              formData.append(`sessions[${index}].${key}`, session[key])
-            }
-          })
-        })
+        // study.sessions?.forEach((session, index) => {
+        //   Object.keys(session).forEach(key => {
+        //     // studyMaterials
+        //     if (key === 'studyMaterials') {
+        //       session.studyMaterials?.forEach((studyMaterial, smIndex) => {
+        //         Object.keys(studyMaterial).forEach(smKey => {
+        //           formData.append(
+        //             `sessions[${index}].${key}[${smIndex}].${smKey}`,
+        //             studyMaterial[smKey],
+        //           )
+        //         })
+        //       })
+        //     }
+        //     // sessionChecks
+        //     else if (key === 'sessionChecks') {
+        //       session.sessionChecks?.forEach((sessionCheck, scIndex) => {
+        //         Object.keys(sessionCheck).forEach(scKey => {
+        //           formData.append(
+        //             `sessions[${index}].${key}[${scIndex}].${scKey}`,
+        //             sessionCheck[scKey],
+        //           )
+        //         })
+        //       })
+        //     }
+        //     // sessions
+        //     else {
+        //       formData.append(`sessions[${index}].${key}`, session[key])
+        //     }
+        //   })
+        // })
       }
 
       // studyNotices
@@ -275,27 +272,40 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
   console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
+    { 정보: <StudyInfo study={study} /> },
     {
       '스터디 기간': (
-        <DatePicker
-          changeStartDate={handleStartDateChange}
-          changeEndDate={handleEndDateChange}
-          initStartDate={study.startedAt}
-          initEndDate={study.endedAt}
-        />
+        <>
+          <DatePicker
+            changeStartDate={handleCreatedDateChange}
+            changeEndDate={handleRecruitFinishedDateChange}
+            initStartDate={study.createdAt}
+            initEndDate={study.recruitFinishedAt}
+          />
+          <DatePicker
+            changeStartDate={handleStartDateChange}
+            changeEndDate={handleEndDateChange}
+            initStartDate={study.startedAt}
+            initEndDate={study.endedAt}
+          />
+        </>
       ),
     },
     {
-      '스터디 모집 기간': (
-        <DatePicker
-          changeStartDate={handleCreatedDateChange}
-          changeEndDate={handleRecruitFinishedDateChange}
-          initStartDate={study.createdAt}
-          initEndDate={study.recruitFinishedAt}
-        />
+      '커버이미지 & 뱃지 수정': (
+        <>
+          <div className="file-upload">커버이미지 수정</div>
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          <hr />
+          <div className="file-upload">뱃지 수정</div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleBadgeImageUpload}
+          />
+        </>
       ),
     },
-    { 정보: <StudyInfo study={study} /> },
     { '템플릿 리뷰': <StudyReview study={study} /> },
   ]
 
@@ -327,12 +337,15 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
               padding: '30px 0 0 0',
             }}
           >
-            <img
-              src={uploadedBadgeImage || image(study.badge?.imgUrl)}
-              alt={study.badge?.description}
-              className="badge"
-            />
-            <h1 style={{ height: '40px' }}>{study.title}</h1>
+            <h1 style={{ height: '40px' }}>
+              {study.title}{' '}
+              <img
+                src={uploadedBadgeImage || image(study.badge?.imgUrl)}
+                alt={study.badge?.description}
+                className="badge"
+                style={{ height: '20px', width: '20px' }}
+              />
+            </h1>
             <p type="text" style={{ fontSize: '16px' }}>
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
@@ -343,17 +356,35 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
                 ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
                 : '오프라인'}
               <br />
-              현재 인원:{' '}
-              <Input value={study.currentMember} onChange={handleChangeStudy} />
-              {/* <input
-                type="text"
-                value={study.currentMember}
-                onChange={handleChangeStudy}
-              />{' '} */}
-              최대 인원: {study.maxMember} 최소 인원: {study.minMember}
-              <br />
+              <div className="flex-container">
+                <span className="flex-item">
+                  현재 인원&nbsp; : &nbsp;&nbsp;
+                </span>
+                <span>{study.currentMember}</span>
+              </div>
+              <div className="flex-container">
+                <span className="flex-item">
+                  최대 인원&nbsp; : &nbsp;&nbsp;
+                </span>
+                <Input
+                  className="input"
+                  name="maxMember"
+                  onChange={handleChangeStudy}
+                  value={study.maxMember}
+                />
+              </div>
+              <div className="flex-container">
+                <span className="flex-item">
+                  최소 인원&nbsp; : &nbsp;&nbsp;
+                </span>
+                <Input
+                  className="input"
+                  name="minMember"
+                  onChange={handleChangeStudy}
+                  value={study.minMember}
+                />
+              </div>
             </p>
-
             <div
               style={{
                 fontSize: '12px',
@@ -379,8 +410,6 @@ export default function TemplateUpdatePage({ isLoggedIn }) {
           </Col>
         </Row>
       </div>
-      <input type="file" accept="image/*" onChange={handleImageUpload} />
-      <input type="file" accept="image/*" onChange={handleBadgeImageUpload} />
       <div>
         <Row>
           <Col span={18}>
