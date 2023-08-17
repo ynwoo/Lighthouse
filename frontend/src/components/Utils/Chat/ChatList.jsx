@@ -111,17 +111,7 @@ function ChattingList() {
     loadMoreData()
   }, [roomId])
 
-  const messages = useSelector(state => state.chat.messages)
-
-  function getFirstMessageContent(studyId) {
-    for (let i = messages.length - 1; i >= 0; i -= 1) {
-      // eslint-disable-next-line eqeqeq
-      if (messages[i].roomId == studyId) {
-        return messages[i].message
-      }
-    }
-    return '채팅방에 참여해보세요!'
-  }
+  console.log('env', process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL)
 
   return (
     <div
@@ -139,11 +129,11 @@ function ChattingList() {
           <ChatContainer
             studyId={roomId}
             setRoomId={setRoomId}
-            studyInfo={
+            srcImg={
               studiesToShow.filter(s => {
                 // eslint-disable-next-line eqeqeq
                 return s.id == roomId
-              })[0]
+              })[0].avatar
             }
           />
         </div>
@@ -181,8 +171,7 @@ function ChattingList() {
                       {item.title}
                     </button>
                   }
-                  // description={item.description}
-                  description={getFirstMessageContent(item.id)}
+                  description={item.description}
                 />
               </List.Item>
             )}
