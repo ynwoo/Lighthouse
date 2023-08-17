@@ -18,17 +18,7 @@ body {
   /* justify-content: space-between; */
   margin-top: 5px;
   align-items: center;
-
-  & .flex-item {
-  }
-
-  & .input {
-    width: 40%;
-  }
-}
-
-.file-upload {
-  margin: 20px;
+  flex: 1;
 }
 
 /* WaveComponent CSS */
