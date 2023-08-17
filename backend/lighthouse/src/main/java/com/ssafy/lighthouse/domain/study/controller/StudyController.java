@@ -69,6 +69,14 @@ public class StudyController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
+    @PutMapping ("/{study-id}/{status}")
+    public ResponseEntity<?> updateStudyStatusByStudyId(@PathVariable(name = "study-id") Long studyId,
+                                                        @PathVariable(name = "status") int status) {
+        log.debug("studyId : {}", studyId);
+        studyService.updateStudyStatusByStudyId(studyId, status);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
     // 스터디 정보 수정
     @PutMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> updateStudy(@ModelAttribute StudyRequest studyRequest) {

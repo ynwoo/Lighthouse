@@ -19,6 +19,8 @@ import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
+import { STATUS } from '../utils'
+import { updateStudyStatus } from '../api/study'
 
 export default function StudyDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
@@ -92,6 +94,37 @@ export default function StudyDetailPage({ isLoggedIn }) {
 
   const handleChangeMessage = e => {
     setMessage(e.target.value)
+  }
+
+  const handleChangeStatus = () => {
+    let { status } = study
+    if (study.status === STATUS.PREPARING) {
+      status = STATUS.RECRUITING
+    } else if (study.status === STATUS.RECRUITING) {
+      status = STATUS.PROGRESS
+    } else if (study.status === STATUS.PROGRESS) {
+      status = STATUS.TERMINATED
+    } else if (study.status === STATUS.TERMINATED) {
+      status = STATUS.SHARE
+    }
+    updateStudyStatus(
+      { studyId: study.id, status },
+      () => {
+        dispatch(studyAction.studyDetail(study.id))
+      },
+      () => {},
+    )
+  }
+
+  let buttonMessage = ''
+  if (study.status === STATUS.PREPARING) {
+    buttonMessage = '모집 시작'
+  } else if (study.status === STATUS.RECRUITING) {
+    buttonMessage = '스터디 시작'
+  } else if (study.status === STATUS.PROGRESS) {
+    buttonMessage = '스터디 종료'
+  } else if (study.status === STATUS.TERMINATED) {
+    buttonMessage = '스터디 공유'
   }
 
   return (
@@ -203,9 +236,9 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{
                       width: '100%',
                     }}
-                    onClick={showModal}
+                    onClick={handleChangeStatus}
                   >
-                    스터디 시작
+                    {buttonMessage}
                   </Button>
                 ) : (
                   <Button
