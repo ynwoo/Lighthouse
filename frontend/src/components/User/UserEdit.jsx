@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import {
   Layout,
   Card,
@@ -18,10 +18,10 @@ import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
-import UserStarRating from '../atoms/UserStarRating'
 import { joinStudy, rejectStudy } from '../../api/participation'
 import CreateButton from '../Study/utils/button/CreateButton'
 import StudyCard from '../Study/StudyCard'
+import UserProfile from './UserProfile'
 
 const { Content, Sider } = Layout
 
@@ -42,8 +42,6 @@ export default function UserEdit() {
 
   const [score, setScore] = useState(0)
 
-  const navigate = useNavigate()
-
   const handleJoinStudy = (studyId, userProfileId) => () => {
     joinStudy(
       { studyId, userId: userProfileId },
@@ -61,12 +59,6 @@ export default function UserEdit() {
       },
       () => {},
     )
-  }
-
-  const handleMoveProfile = userProfileId => () => {
-    navigate(`/user_edit/${userProfileId}`, {
-      state: { userId: userProfileId },
-    })
   }
 
   let items = [
@@ -114,47 +106,24 @@ export default function UserEdit() {
                 />
                 {profile.participatedUserProfiles[`${studyId}`].map(
                   userProfile => (
-                    <Sider
-                      style={{
-                        background: 'rgb(255, 255, 255)',
-                      }}
-                      width={200}
-                    >
-                      <Card bordered={false}>
-                        <Avatar
-                          size={{
-                            sm: 100,
-                            md: 150,
-                            lg: 150,
-                            xl: 150,
-                            xxl: 150,
-                          }}
-                          onClick={handleMoveProfile(userProfile.id)}
-                          src={profileImage(userProfile.profileImgUrl)}
-                          shape="circle"
-                        />
-                        <h3 style={{ marginBottom: '0px' }}>
-                          {userProfile.nickname}
-                        </h3>
-                        <UserStarRating score={userProfile.score} />
-                        <div className="flex-container">
-                          <CreateButton
-                            color="accept"
-                            type="primary"
-                            onClick={handleJoinStudy(studyId, userProfile.id)}
-                          >
-                            수락
-                          </CreateButton>
-                          <CreateButton
-                            color="reject"
-                            type="primary"
-                            onClick={handleRejectStudy(studyId, userProfile.id)}
-                          >
-                            거절
-                          </CreateButton>
-                        </div>
-                      </Card>
-                    </Sider>
+                    <UserProfile userProfile={userProfile}>
+                      <div className="flex-container">
+                        <CreateButton
+                          color="accept"
+                          type="primary"
+                          onClick={handleJoinStudy(studyId, userProfile.id)}
+                        >
+                          수락
+                        </CreateButton>
+                        <CreateButton
+                          color="reject"
+                          type="primary"
+                          onClick={handleRejectStudy(studyId, userProfile.id)}
+                        >
+                          거절
+                        </CreateButton>
+                      </div>
+                    </UserProfile>
                   ),
                 )}
               </div>
