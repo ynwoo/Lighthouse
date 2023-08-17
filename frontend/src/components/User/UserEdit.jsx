@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Layout,
   Card,
@@ -43,6 +43,8 @@ export default function UserEdit() {
 
   const [score, setScore] = useState(0)
 
+  const navigate = useNavigate()
+
   const handleJoinStudy = (studyId, userProfileId) => () => {
     joinStudy(
       { studyId, userId: userProfileId },
@@ -60,6 +62,13 @@ export default function UserEdit() {
       },
       () => {},
     )
+  }
+
+  const handleMoveProfile = userProfileId => () => {
+    console.log('userProfileId', userProfileId)
+    navigate(`/user_edit/${userProfileId}`, {
+      state: { userId: userProfileId },
+    })
   }
 
   let items = [
@@ -122,6 +131,7 @@ export default function UserEdit() {
                             xl: 150,
                             xxl: 150,
                           }}
+                          onClick={handleMoveProfile(userProfile.id)}
                           src={profileImage(userProfile.profileImgUrl)}
                           shape="circle"
                         />
