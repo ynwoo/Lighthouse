@@ -39,19 +39,10 @@ export default function MainPage({ isLoggedIn, status }) {
   const studies = useSelector(state => state.study.studies)
   const totalPage = useSelector(state => state.study.totalPage)
 
-  const initParams = {
-    status,
-    page: 0,
-    key: 'title',
-    word: '',
-    isOnline: 1,
-    orderKey: 'createdAt',
-    orderBy: 'asc',
-    tagIds: [],
-  }
-
   useEffect(() => {
-    dispatch(studyAction.studyList(initParams))
+    const newParams = { ...params, status }
+    dispatch(setParams(newParams))
+    dispatch(studyAction.studyList(newParams))
   }, [status])
 
   const handleMovePage = page => () => dispatch(setParams({ ...params, page }))
