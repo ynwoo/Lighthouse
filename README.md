@@ -84,6 +84,10 @@ Lighthouse에서는 이전의 노하우와 성공경험이 담긴 템플릿을 �
 - Jenkins
 - Docker
 
+### Storage
+- AWS S3
+- AWS CloudFront
+
 ## 🌟 프로젝트 산출물
 
 <details>
