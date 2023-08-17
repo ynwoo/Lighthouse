@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip, Input } from 'antd'
+import { Row, Col, Tag, Tabs, Button, Tooltip, Input, Card } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBookmark as faBookmarkSolid,
@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import StudyInfo from '../components/Study/StudyInfo'
+import TextArea from 'antd/es/input/TextArea'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage, image } from '../utils/image'
@@ -24,6 +24,7 @@ import {
   startDateToString,
 } from '../utils'
 import DateRangePicker from '../components/Study/utils/DatePicker'
+import StudyCurriculum from '../components/Study/StudyCurriculum'
 
 export default function TemplateUpdatePage() {
   const dispatch = useDispatch()
@@ -75,7 +76,8 @@ export default function TemplateUpdatePage() {
   }, [originalStudy])
 
   const handleChangeStudy = e => {
-    setStudy({ ...study, [e.target.name]: Number(e.target.value) })
+    console.log(e.target.name, e.target.value)
+    setStudy({ ...study, [e.target.name]: e.target.value })
   }
 
   const handleImageUpload = event => {
@@ -276,7 +278,53 @@ export default function TemplateUpdatePage() {
   const likeList = useSelector(state => state.study.likeList)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
-    { 정보: <StudyInfo study={study} /> },
+    {
+      정보: (
+        <div>
+          <div
+            style={{
+              height: '1000px',
+              width: '100%',
+              backgroundColor: 'rgb(255, 255, 255)',
+            }}
+          >
+            <Card
+              title="스터디 정보"
+              bordered={false}
+              style={{ boxShadow: 'none' }}
+            >
+              <Input
+                className="input"
+                name="description"
+                onChange={handleChangeStudy}
+                value={study.description}
+              />
+            </Card>
+            <Card
+              title="스터디 규칙"
+              bordered={false}
+              style={{ boxShadow: 'none' }}
+            >
+              <TextArea
+                className="flex-container"
+                name="rule"
+                onChange={handleChangeStudy}
+                value={study.rule}
+              />
+            </Card>
+            <Card
+              title="스터디 계획"
+              bordered={false}
+              style={{ boxShadow: 'none' }}
+            >
+              <div>
+                <StudyCurriculum study={study} />
+              </div>
+            </Card>
+          </div>
+        </div>
+      ),
+    },
     {
       '스터디 기간': (
         <>
