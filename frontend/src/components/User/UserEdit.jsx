@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import {
+  Layout,
+  Card,
+  Avatar,
+  Button,
+  Row,
+  Col,
+  Tabs,
+  Input,
+  Space,
+} from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
@@ -8,6 +18,10 @@ import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
+import UserStarRating from '../atoms/UserStarRating'
+import { joinStudy, rejectStudy } from '../../api/participation'
+import CreateButton from '../Study/utils/button/CreateButton'
+import StudyCard from '../Study/StudyCard'
 
 const { Content, Sider } = Layout
 
@@ -15,7 +29,6 @@ export default function UserEdit() {
   const dispatch = useDispatch()
   const location = useLocation()
   const userId = Number(location.state.userId)
-  // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
     console.log(userId)
@@ -30,6 +43,34 @@ export default function UserEdit() {
 
   const [score, setScore] = useState(0)
 
+  const navigate = useNavigate()
+
+  const handleJoinStudy = (studyId, userProfileId) => () => {
+    joinStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
+  const handleRejectStudy = (studyId, userProfileId) => () => {
+    rejectStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
+
+  const handleMoveProfile = userProfileId => () => {
+    console.log('userProfileId', userProfileId)
+    navigate(`/user_edit/${userProfileId}`, {
+      state: { userId: userProfileId },
+    })
+  }
+
   let items = [
     {
       key: '1',
@@ -37,7 +78,7 @@ export default function UserEdit() {
       children: <UserInfo profile={profile} />,
     },
     {
-      key: '4',
+      key: '5',
       label: `참여 중인 스터디`,
       children: (
         <StudyList
@@ -46,12 +87,12 @@ export default function UserEdit() {
       ),
     },
     {
-      key: '5',
+      key: '6',
       label: `완료한 스터디`,
       children: <StudyList studies={profile.terminatedStudies} />,
     },
     {
-      key: '6',
+      key: '7',
       label: `북마크한 스터디`,
       children: <StudyList studies={profile.bookmarkStudies} />,
     },
@@ -61,6 +102,70 @@ export default function UserEdit() {
       ...items,
       {
         key: '2',
+        label: `신청 명단`,
+        children: (
+          <div>
+            {Object.keys(profile?.participatedUserProfiles)?.map(studyId => (
+              <div className="flex-container">
+                <StudyCard
+                  study={
+                    profile?.recruitingStudies?.find(
+                      study => study.id === Number(studyId),
+                    ) ?? false
+                  }
+                />
+                {profile.participatedUserProfiles[`${studyId}`].map(
+                  userProfile => (
+                    <Sider
+                      style={{
+                        background: 'rgb(255, 255, 255)',
+                      }}
+                      width={200}
+                    >
+                      <Card bordered={false}>
+                        <Avatar
+                          size={{
+                            sm: 100,
+                            md: 150,
+                            lg: 150,
+                            xl: 150,
+                            xxl: 150,
+                          }}
+                          onClick={handleMoveProfile(userProfile.id)}
+                          src={profileImage(userProfile.profileImgUrl)}
+                          shape="circle"
+                        />
+                        <h3 style={{ marginBottom: '0px' }}>
+                          {userProfile.nickname}
+                        </h3>
+                        <UserStarRating score={userProfile.score} />
+                        <div className="flex-container">
+                          <CreateButton
+                            color="accept"
+                            type="primary"
+                            onClick={handleJoinStudy(studyId, userProfile.id)}
+                          >
+                            수락
+                          </CreateButton>
+                          <CreateButton
+                            color="reject"
+                            type="primary"
+                            onClick={handleRejectStudy(studyId, userProfile.id)}
+                          >
+                            거절
+                          </CreateButton>
+                        </div>
+                      </Card>
+                    </Sider>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+        ),
+      },
+      {
+        key: '3',
         label: `수정 중인 스터디`,
         children: (
           <StudyList
@@ -71,7 +176,7 @@ export default function UserEdit() {
         ),
       },
       {
-        key: '3',
+        key: '4',
         label: `신청한 스터디`,
         children: (
           <StudyList
@@ -82,7 +187,7 @@ export default function UserEdit() {
         ),
       },
       {
-        key: '7',
+        key: '8',
         label: `프로필 수정`,
         children: <UserInfoModify profile={myProfile} />,
       },
@@ -144,39 +249,7 @@ export default function UserEdit() {
               언팔로우
             </Button>
           )}
-          {profile.id === myInfo.id ? (
-            <br />
-          ) : (
-            <>
-              <input
-                type="number"
-                value={score}
-                onChange={e => setScore(e.target.value)}
-              />
-              <Button
-                type="submit"
-                onClick={() => {
-                  const data = {
-                    userId: profile.id,
-                    score,
-                  }
-                  dispatch(userAction.userReview(data))
-                    .unwrap()
-                    .then(() => {
-                      alert('리뷰 등록이 완료되었습니다!')
-                      dispatch(userAction.profile(userId))
-                    })
-                    .catch(res => {
-                      if (res.response.status === 404) {
-                        alert('리뷰는 한 개만 작성 가능합니다!')
-                      }
-                    })
-                }}
-              >
-                review!
-              </Button>
-            </>
-          )}
+
           <Row>
             <Col span={12} align="middle">
               <Link to="/">{profile.follower} 팔로워</Link>
@@ -185,6 +258,40 @@ export default function UserEdit() {
               <Link to="/">{profile.following} 팔로잉</Link>
             </Col>
           </Row>
+          {profile.id === myInfo.id ? (
+            <br />
+          ) : (
+            <Space direction="horizontal" style={{ marginTop: '20px' }}>
+              <Input
+                type="number"
+                value={score}
+                onChange={e => setScore(e.target.value)}
+              />
+              <Button
+                type="default"
+                style={{ width: '70px', padding: '0' }}
+                onClick={() => {
+                  const data = {
+                    userId: profile.id,
+                    score,
+                  }
+                  dispatch(userAction.userReview(data))
+                    .unwrap()
+                    .then(() => {
+                      alert('평가 등록이 완료되었습니다!')
+                      dispatch(userAction.profile(userId))
+                    })
+                    .catch(res => {
+                      if (res.response.status === 404) {
+                        alert('평가는 한 개만 작성 가능합니다!')
+                      }
+                    })
+                }}
+              >
+                평가 등록
+              </Button>
+            </Space>
+          )}
         </Card>
       </Sider>
       <Content

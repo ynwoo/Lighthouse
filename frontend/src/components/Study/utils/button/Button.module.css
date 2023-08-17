@@ -1,11 +1,11 @@
 .button {
-  background-color: #09e0ef;
+  background-color: var(--my-pagenation-button-background-color);
   color: black;
-  border: 1px solid #080f1c;
-  /* border-radius: 20px; */
+  border: 1px solid white;
+  border-radius: 2px;
   padding: 10px;
   font-weight: bold;
-  width: 20px;
+  width: 30px;
   height: 30px;
   display: flex;
   align-content: center;
@@ -13,13 +13,29 @@
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
+  margin: 3px;
+  --my-border-radius: 10px;
+  --my-pagenation-button-border-color: gray;
+  --my-pagenation-button-color: #ffffff;
+  --my-pagenation-button-background-color: #e9f2ee;
+  --my-pagenation-button-hover-color: #1dc078;
+}
+
+.button-right {
+  border-top-right-radius: var(--my-border-radius);
+  border-bottom-right-radius: var(--my-border-radius);
+}
+
+.button-left {
+  border-top-left-radius: var(--my-border-radius);
+  border-bottom-left-radius: var(--my-border-radius);
 }
 
 .button-create {
-  background-color: #09e0ef;
+  /* background-color: rgb(0, 222, 247); */
   color: black;
-  border: 1px solid #080f1c;
-  /* border-radius: 20px; */
+  border: 1px solid var(--my-pagenation-button-border-color);
+  border-radius: 20px;
   padding: 10px;
   font-weight: bold;
   width: 100px;
@@ -30,6 +46,15 @@
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
+  margin: 5px;
+}
+
+.accept {
+  background-color: rgb(19, 209, 247);
+}
+
+.reject {
+  background-color: rgb(254, 0, 0);
 }
 
 .pagenation {
@@ -37,19 +62,25 @@
   align-content: center;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
 
   & :hover {
-    background-color: #db3518;
+    color: var(--my-pagenation-button-color);
+    background-color: var(--my-pagenation-button-hover-color);
   }
 
   .disabled {
     & :hover {
-      background-color: gray;
+      color: var(--my-pagenation-button-border-color);
+      background-color: rgb(231, 226, 226);
     }
-    background-color: gray;
+    color: var(--my-pagenation-button-border-color);
+    background-color: rgb(231, 226, 226);
   }
 }
 
 .currentPage {
-  background-color: #db3518;
+  color: var(--my-pagenation-button-color);
+  background-color: var(--my-pagenation-button-hover-color);
 }

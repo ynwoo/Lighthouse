@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip, Modal, Input } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { Row, Col, Tag, Tabs, Button, Tooltip } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBookmark as faBookmarkSolid,
@@ -10,19 +9,17 @@ import {
   faBookmark as faBookmarkRegular,
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import StudyInfo from '../components/Study/StudyInfoNew'
-import StudyQnA from '../components/Study/StudyQnA'
-import StudyEdit from '../components/Study/StudyEdit'
-import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
-import StudyMember from '../components/Study/StudyMember'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
-import { STATUS } from '../utils'
-import { updateStudyStatus } from '../api/study'
+import StudyReview from '../components/Study/StudyReview'
+import { createStudy } from '../api/study'
 
-export default function StudyDetailPage({ isLoggedIn }) {
+export default function TempDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
@@ -30,17 +27,27 @@ export default function StudyDetailPage({ isLoggedIn }) {
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
   console.log(study)
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
     dispatch(userAction.profile(sessionStorage.getItem('userId')))
     dispatch(studyAction.getLike())
   }, [])
 
+  // 스터디 복제
+  const handleCreateStudy = () => {
+    createStudy(
+      studyId,
+      ({ data }) => {
+        navigate(`/template/update/${data.id}`)
+      },
+      () => {},
+    )
+  }
+
   const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
-  const [message, setMessage] = useState('')
   console.log(myInfo)
   console.log(likeList)
   const userId = sessionStorage.getItem('userId')
@@ -49,83 +56,8 @@ export default function StudyDetailPage({ isLoggedIn }) {
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { 정보: <StudyInfo study={study} /> },
-    ...(study?.memberProfiles?.find(
-      memberProfile => memberProfile.id === Number(userId),
-    )?.id
-      ? [{ 가입했을때정보: <JoinStudyInfo study={study} /> }]
-      : [
-          { 'Q&A': <StudyQnA study={study} /> },
-          { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
-          myInfo.id === study.leaderProfile.id
-            ? { '정보 수정': <StudyEdit study={study} /> }
-            : '',
-        ]),
+    { '템플릿 리뷰': <StudyReview study={study} /> },
   ]
-  const showModal = () => {
-    setIsModalVisible(true)
-    // Body 스크롤 방지
-    document.body.style.overflow = 'hidden'
-  }
-
-  const handleOk = () => {
-    console.log('Message:', message)
-    console.log(study.id)
-    dispatch(studyAction.joinStudy(study.id)).then(res => {
-      console.log(res)
-      if (res.type !== 'study/joinStudy/rejected') {
-        setMessage('')
-        setIsModalVisible(false)
-        setIsConfirmationVisible(true)
-      }
-    })
-  }
-
-  const handleCancel = () => {
-    setIsModalVisible(false)
-    // Body 스크롤 재개
-    document.body.style.overflow = 'auto'
-  }
-
-  const handleConfirmationOk = () => {
-    setIsConfirmationVisible(false)
-    // Body 스크롤 재개
-    document.body.style.overflow = 'auto'
-  }
-
-  const handleChangeMessage = e => {
-    setMessage(e.target.value)
-  }
-
-  const handleChangeStatus = () => {
-    let { status } = study
-    if (study.status === STATUS.PREPARING) {
-      status = STATUS.RECRUITING
-    } else if (study.status === STATUS.RECRUITING) {
-      status = STATUS.PROGRESS
-    } else if (study.status === STATUS.PROGRESS) {
-      status = STATUS.TERMINATED
-    } else if (study.status === STATUS.TERMINATED) {
-      status = STATUS.SHARE
-    }
-    updateStudyStatus(
-      { studyId: study.id, status },
-      () => {
-        dispatch(studyAction.studyDetail(study.id))
-      },
-      () => {},
-    )
-  }
-
-  let buttonMessage = ''
-  if (study.status === STATUS.PREPARING) {
-    buttonMessage = '모집 시작'
-  } else if (study.status === STATUS.RECRUITING) {
-    buttonMessage = '스터디 시작'
-  } else if (study.status === STATUS.PROGRESS) {
-    buttonMessage = '스터디 종료'
-  } else if (study.status === STATUS.TERMINATED) {
-    buttonMessage = '스터디 공유'
-  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -159,16 +91,16 @@ export default function StudyDetailPage({ isLoggedIn }) {
             <p style={{ fontSize: '16px' }}>
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
-            <p style={{ marginTop: '20px' }}>
+            <p style={{ marginTop: '30px' }}>
               {study.isOnline
                 ? '온라인'
                 : study.sido && study.gugun
                 ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
                 : '오프라인'}
               <br />
+              <br />
               현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
               인원: {study.minMember}
-              <br />
               <br />
               스터디 기간: <br />
               {study.startedAt} - {study.endedAt}
@@ -226,59 +158,13 @@ export default function StudyDetailPage({ isLoggedIn }) {
                 padding: '10px',
               }}
             >
-              <p style={{ fontSize: '12px', textAlign: 'left' }}>
-                모집 기간: {study.createdAt} - {study.recruitFinishedAt}
-              </p>
-              <div style={{ paddingTop: '30px' }}>
-                {myInfo.id === study.leaderProfile.id ? (
-                  study.status !== STATUS.SHARE ? (
-                    <Button
-                      type="primary"
-                      style={{
-                        width: '100%',
-                      }}
-                      onClick={handleChangeStatus}
-                    >
-                      {buttonMessage}
-                    </Button>
-                  ) : (
-                    ''
-                  )
-                ) : (
-                  <Button
-                    type="primary"
-                    style={{
-                      width: '100%',
-                    }}
-                    onClick={showModal}
-                  >
-                    스터디 참가 신청
-                  </Button>
-                )}
-
-                <Modal
-                  title="스터디 신청"
-                  visible={isModalVisible}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
-                >
-                  <p>스터디장에게 하고 싶은 말을 남겨주세요.</p>
-                  <Input
-                    placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
-                    value={message}
-                    onChange={handleChangeMessage}
-                  />
-                </Modal>
-
-                <Modal
-                  title="신청이 완료되었습니다."
-                  visible={isConfirmationVisible}
-                  onOk={handleConfirmationOk}
-                  onCancel={handleConfirmationOk}
-                >
-                  <p>스터디 신청이 성공적으로 완료되었습니다.</p>
-                </Modal>
-              </div>
+              <Button
+                type="primary"
+                style={{ marginTop: '30px', width: '100%' }}
+                onClick={handleCreateStudy}
+              >
+                템플릿 사용하기
+              </Button>
               <Row style={{ marginTop: '10px' }}>
                 {myInfo.bookmarkStudies?.find(
                   bookmarkStudy => bookmarkStudy.id === study.id,
@@ -298,6 +184,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkSolid}
+                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -318,6 +205,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkRegular}
+                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -337,7 +225,11 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요 취소">
-                      <FontAwesomeIcon className="red" icon={faHeartSolid} />{' '}
+                      <FontAwesomeIcon
+                        className="red"
+                        icon={faHeartSolid}
+                        beat
+                      />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>
@@ -354,7 +246,11 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요">
-                      <FontAwesomeIcon className="red" icon={faHeartRegular} />{' '}
+                      <FontAwesomeIcon
+                        className="red"
+                        icon={faHeartRegular}
+                        beat
+                      />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>

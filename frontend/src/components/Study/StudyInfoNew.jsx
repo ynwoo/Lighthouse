@@ -240,26 +240,6 @@ export default function StudyInfo({ study }) {
         }}
       >
         <Card
-          title="스터디 공지"
-          bordered={false}
-          style={{ boxShadow: 'none' }}
-        >
-          <div style={{ display: 'flex', flexGrow: 1 }}>
-            <p>
-              {
-                study.studyNotices?.reduce(
-                  (res, now) =>
-                    new Date(res.createdAt).getTime() >
-                    new Date(now.createdAt).getTime()
-                      ? res
-                      : now,
-                  0,
-                ).content
-              }
-            </p>
-          </div>
-        </Card>
-        <Card
           title="스터디 정보"
           bordered={false}
           style={{ boxShadow: 'none' }}
@@ -279,7 +259,7 @@ export default function StudyInfo({ study }) {
           style={{ boxShadow: 'none' }}
         >
           <div>
-            <StudyCurriculum />
+            <StudyCurriculum study={study} />
           </div>
         </Card>
       </div>

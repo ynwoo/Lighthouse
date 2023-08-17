@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Space } from 'antd'
+import { Card, Space, Row, Col } from 'antd'
 import Piechart from '../Study/utils/chart/PieChart'
 import { image } from '../../utils/image'
 import Barchart from '../Study/utils/chart/BarChart'
@@ -27,16 +27,19 @@ export default function UserInfo({ profile }) {
       className="user-info"
       direction="vertical"
       size="middle"
-      style={{ display: 'flex' }}
+      style={{ display: 'flex', minWidth: '600px' }}
     >
       <Card title="자기소개" bordered={false}>
         <div style={{ display: 'flex', flexGrow: 1 }}>
           <p style={{ 'margin-right': 'auto' }}>{profile.description}</p>
-          <UserStarRating className="user-star-rating" score={profile.score} />
         </div>
       </Card>
       <Card title="통계" bordered={false}>
-        <p>현재 진행 예정인 스터디: {profile.recruitingStudies.length}</p>
+        <UserStarRating className="user-star-rating" score={profile.score} />
+        평균 평가 점수: {profile.score}
+        <p style={{ marginTop: '10px' }}>
+          현재 진행 예정인 스터디: {profile.recruitingStudies.length}
+        </p>
         <p>현재 진행 중인 스터디: {profile.progressStudies.length}</p>
         <p>완료한 스터디: {profile.terminatedStudies.length}</p>
         <p>북마크한 스터디: {profile.bookmarkStudies.length}</p>
@@ -65,10 +68,14 @@ export default function UserInfo({ profile }) {
         ))}
       </Card>
       <Card title="차트" bordered={false}>
-        <div style={{ display: 'flex' }}>
-          <Barchart className="chart" data={barData} />
-          <Piechart className="chart" data={chartData} />
-        </div>
+        <Row>
+          <Col>
+            <Barchart className="chart" data={barData} />
+          </Col>
+          <Col>
+            <Piechart className="chart" data={chartData} />
+          </Col>
+        </Row>
       </Card>
     </Space>
   )

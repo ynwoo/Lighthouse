@@ -27,18 +27,7 @@ public class ParticipationHistoryController {
         participationHistoryService.participateStudy(studyId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
-    // 스터디 가입
-    @PutMapping("/{study-id}")
-    public ResponseEntity<?> joinStudyByStudyId(@PathVariable(name = "study-id") Long studyId,
-                                                HttpServletRequest request) {
-        log.debug("studyId : {}", studyId);
-        // userId 가져오기
-        Long userId = (Long) request.getAttribute("userId");
-        participationHistoryService.joinStudy(studyId, userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    
+
     // 스터디 탈퇴
     @DeleteMapping("/{study-id}")
     public ResponseEntity<?> leaveStudyByStudyId(@PathVariable(name = "study-id") Long studyId,
@@ -47,6 +36,23 @@ public class ParticipationHistoryController {
         // userId 가져오기
         Long userId = (Long) request.getAttribute("userId");
         participationHistoryService.leaveStudy(studyId, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    // 스터디 가입 수락
+    @PutMapping("/{study-id}/{user-id}")
+    public ResponseEntity<?> joinStudy(@PathVariable(name = "study-id") Long studyId,
+                                                @PathVariable(name = "user-id") Long userId) {
+        participationHistoryService.joinStudy(studyId, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // 스터디 참가 거절
+    @DeleteMapping("/{study-id}/{user-id}")
+    public ResponseEntity<?> rejectStudy(@PathVariable(name = "study-id") Long studyId,
+                                                 @PathVariable(name = "user-id") Long userId) {
+        participationHistoryService.rejectStudy(studyId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

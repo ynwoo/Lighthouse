@@ -7,4 +7,7 @@ const STATUS = {
   SHARE: 5,
 }
 
+const PAGE = 8
+
 export default STATUS
+export { PAGE }

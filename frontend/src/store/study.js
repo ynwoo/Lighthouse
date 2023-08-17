@@ -12,9 +12,9 @@ const initialState = {
     page: 0,
     key: 'title',
     word: '',
-    isOnline: 0,
-    orderKey: 'like',
-    orderBy: 'desc',
+    isOnline: 1,
+    orderKey: 'createdAt',
+    orderBy: 'asc',
     tagIds: [],
     sidoId: '',
     gugunId: '',
@@ -253,13 +253,27 @@ export const studyAction = {
   }),
   addCurr: createAsyncThunk('study/addCurr', async (payload, thunkAPI) => {
     try {
-      const response = await authApi.post(`${API_URL}/session`, payload)
+      const response = await authApi.post(`${API_URL}/session`, payload, {
+        headers: { 'content-type': 'multipart/form-data' },
+      })
       console.log(response)
       return thunkAPI.fulfillWithValue(response.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error)
     }
   }),
+  deleteCurr: createAsyncThunk(
+    'study/deleteCurr',
+    async (payload, thunkAPI) => {
+      try {
+        const response = await authApi.delete(`${API_URL}/session/${payload}`)
+        console.log(response)
+        return thunkAPI.fulfillWithValue(response.data)
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error)
+      }
+    },
+  ),
 }
 
 export const studySlice = createSlice({
@@ -291,7 +305,7 @@ export const studySlice = createSlice({
         page: 0,
         key: 'title',
         word: '',
-        isOnline: 0,
+        isOnline: 1,
         orderKey: 'like',
         orderBy: 'desc',
         tagIds: [],
@@ -303,7 +317,7 @@ export const studySlice = createSlice({
   extraReducers: {
     [studyAction.studyList.fulfilled]: (state, action) => {
       state.studies = action.payload.content
-      state.totalPage = action.payload.totalPages - 1
+      state.totalPage = action.payload.totalPagess
     },
     [studyAction.studyDetail.fulfilled]: (state, action) => {
       state.studyDetail = action.payload
@@ -321,13 +335,13 @@ export const studySlice = createSlice({
       console.log(action.payload)
     },
     [studyAction.bookmark.fulfilled]: () => {
-      alert('북마크')
+      // alert('북마크')
     },
     [studyAction.disbookmark.fulfilled]: () => {
-      alert('북마크 취소')
+      // alert('북마크 취소')
     },
     [studyAction.joinStudy.rejected]: () => {
-      alert('이미 가입된 스터디입니다!')
+      alert('이미 신청 된 스터디입니다!')
     },
   },
 })

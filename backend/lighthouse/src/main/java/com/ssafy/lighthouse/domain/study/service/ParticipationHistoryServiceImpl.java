@@ -69,4 +69,11 @@ public class ParticipationHistoryServiceImpl implements ParticipationHistoryServ
         Study study = studyRepository.findById(studyId).orElseThrow(() -> new StudyNotFoundException(ERROR.FIND));
         study.removeMember();
     }
+
+    @Override
+    public void rejectStudy(Long studyId, Long userId) {
+        ParticipationHistory participationHistory = participationHistoryRepository.find(studyId, userId).orElseThrow(() -> new ParticipationHistoryException(ERROR.FIND));
+        // 스터디 거절
+        participationHistory.changeIsValid(0);
+    }
 }
