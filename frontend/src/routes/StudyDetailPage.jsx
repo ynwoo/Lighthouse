@@ -101,6 +101,8 @@ export default function StudyDetailPage() {
       status = STATUS.TERMINATED
     } else if (study.status === STATUS.TERMINATED) {
       status = STATUS.SHARE
+    } else if (study.status === STATUS.SHARE) {
+      status = STATUS.TERMINATED
     }
     updateStudyStatus(
       { studyId: study.id, status },
@@ -120,6 +122,8 @@ export default function StudyDetailPage() {
     buttonMessage = '스터디 종료'
   } else if (study.status === STATUS.TERMINATED) {
     buttonMessage = '스터디 공유'
+  } else if (study.status === STATUS.SHARE) {
+    buttonMessage = '스터디 공유 중단'
   }
 
   const handleMoveUpdatePage = () => {
@@ -229,16 +233,18 @@ export default function StudyDetailPage() {
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
               <div style={{ paddingTop: '10px' }}>
-                <Button
-                  type="primary"
-                  style={{
-                    width: '100%',
-                    backgroundColor: 'green',
-                  }}
-                  onClick={handleMoveUpdatePage}
-                >
-                  수정 하러 가기
-                </Button>
+                {myInfo.id === study.leaderProfile.id && (
+                  <Button
+                    type="primary"
+                    style={{
+                      width: '100%',
+                      backgroundColor: 'green',
+                    }}
+                    onClick={handleMoveUpdatePage}
+                  >
+                    수정 하러 가기
+                  </Button>
+                )}
                 {myInfo.id === study.leaderProfile.id ? (
                   study.status !== STATUS.SHARE ? (
                     <Button
