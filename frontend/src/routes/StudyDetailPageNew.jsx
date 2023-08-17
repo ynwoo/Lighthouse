@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Row, Col, Tag, Tabs, Button, Tooltip, Modal, Input } from 'antd'
 import {
   HeartOutlined,
   HeartFilled,
@@ -34,6 +34,9 @@ export default function StudyDetailPage({ isLoggedIn }) {
 
   const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
+  const [message, setMessage] = useState('')
   console.log(myInfo)
   console.log(likeList)
   const userId = sessionStorage.getItem('userId')
@@ -54,6 +57,40 @@ export default function StudyDetailPage({ isLoggedIn }) {
             : '',
         ]),
   ]
+  const showModal = () => {
+    setIsModalVisible(true)
+    // Body 스크롤 방지
+    document.body.style.overflow = 'hidden'
+  }
+
+  const handleOk = () => {
+    console.log('Message:', message)
+    console.log(study.id)
+    dispatch(studyAction.joinStudy(study.id)).then(res => {
+      console.log(res)
+      if (res.type !== 'study/joinStudy/rejected') {
+        setMessage('')
+        setIsModalVisible(false)
+        setIsConfirmationVisible(true)
+      }
+    })
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+    // Body 스크롤 재개
+    document.body.style.overflow = 'auto'
+  }
+
+  const handleConfirmationOk = () => {
+    setIsConfirmationVisible(false)
+    // Body 스크롤 재개
+    document.body.style.overflow = 'auto'
+  }
+
+  const handleChangeMessage = e => {
+    setMessage(e.target.value)
+  }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -156,12 +193,51 @@ export default function StudyDetailPage({ isLoggedIn }) {
               <p style={{ fontSize: '12px', textAlign: 'left' }}>
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
-              <Button
-                type="primary"
-                style={{ marginTop: '30px', width: '100%' }}
-              >
-                스터디 참가 신청
-              </Button>
+              <div>
+                <Button
+                  type="primary"
+                  style={{
+                    // backgroundColor: '#FFF1A9',
+                    // color: 'black',
+                    // border: '1px solid #FFF1A9',
+                    // borderRadius: '20px',
+                    // padding: '8px',
+                    // fontWeight: 'bold',
+                    width: '100%',
+                    // display: 'flex',
+                    // alignContent: 'center',
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                  }}
+                  onClick={showModal}
+                >
+                  JOIN
+                </Button>
+
+                <Modal
+                  title="스터디 신청"
+                  visible={isModalVisible}
+                  onOk={handleOk}
+                  onCancel={handleCancel}
+                >
+                  <p>스터디장에게 하고 싶은 말을 남겨주세요!</p>
+                  <Input
+                    placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
+                    value={message}
+                    onChange={handleChangeMessage}
+                  />
+                </Modal>
+
+                <Modal
+                  title="신청이 완료되었습니다."
+                  visible={isConfirmationVisible}
+                  onOk={handleConfirmationOk}
+                  onCancel={handleConfirmationOk}
+                >
+                  <p>스터디 신청이 성공적으로 완료되었습니다.</p>
+                  <p>Thank you for submitting your message!</p>
+                </Modal>
+              </div>
               <Row style={{ marginTop: '10px' }}>
                 {myInfo.bookmarkStudies?.find(
                   bookmarkStudy => bookmarkStudy.id === study.id,
