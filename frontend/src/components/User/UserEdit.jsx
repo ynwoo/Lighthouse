@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Layout, Card, Avatar, Button, Row, Col, Tabs } from 'antd'
+import {
+  Layout,
+  Card,
+  Avatar,
+  Button,
+  Row,
+  Col,
+  Tabs,
+  Input,
+  Space,
+} from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { userAction } from '../../store/user'
 
@@ -195,39 +205,7 @@ export default function UserEdit() {
               언팔로우
             </Button>
           )}
-          {profile.id === myInfo.id ? (
-            <br />
-          ) : (
-            <>
-              <input
-                type="number"
-                value={score}
-                onChange={e => setScore(e.target.value)}
-              />
-              <Button
-                type="submit"
-                onClick={() => {
-                  const data = {
-                    userId: profile.id,
-                    score,
-                  }
-                  dispatch(userAction.userReview(data))
-                    .unwrap()
-                    .then(() => {
-                      alert('리뷰 등록이 완료되었습니다!')
-                      dispatch(userAction.profile(userId))
-                    })
-                    .catch(res => {
-                      if (res.response.status === 404) {
-                        alert('리뷰는 한 개만 작성 가능합니다!')
-                      }
-                    })
-                }}
-              >
-                review!
-              </Button>
-            </>
-          )}
+
           <Row>
             <Col span={12} align="middle">
               <Link to="/">{profile.follower} 팔로워</Link>
@@ -236,6 +214,40 @@ export default function UserEdit() {
               <Link to="/">{profile.following} 팔로잉</Link>
             </Col>
           </Row>
+          {profile.id === myInfo.id ? (
+            <br />
+          ) : (
+            <Space direction="horizontal" style={{ marginTop: '20px' }}>
+              <Input
+                type="number"
+                value={score}
+                onChange={e => setScore(e.target.value)}
+              />
+              <Button
+                type="default"
+                style={{ width: '70px', padding: '0' }}
+                onClick={() => {
+                  const data = {
+                    userId: profile.id,
+                    score,
+                  }
+                  dispatch(userAction.userReview(data))
+                    .unwrap()
+                    .then(() => {
+                      alert('평가 등록이 완료되었습니다!')
+                      dispatch(userAction.profile(userId))
+                    })
+                    .catch(res => {
+                      if (res.response.status === 404) {
+                        alert('평가는 한 개만 작성 가능합니다!')
+                      }
+                    })
+                }}
+              >
+                평가 등록
+              </Button>
+            </Space>
+          )}
         </Card>
       </Sider>
       <Content
