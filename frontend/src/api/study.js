@@ -40,4 +40,15 @@ async function updateStudy(study, success, fail) {
   await authFormApi.put(`/study`, study).then(success).catch(fail)
 }
 
-export { getStudyAll, getDetailStudy, createStudy, updateStudy }
+// 스터디 수정
+async function updateStudyStatus({ studyId, status }, success, fail) {
+  await authApi.put(`/study/${studyId}/${status}`).then(success).catch(fail)
+}
+
+export {
+  getStudyAll,
+  getDetailStudy,
+  createStudy,
+  updateStudy,
+  updateStudyStatus,
+}
