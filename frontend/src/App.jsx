@@ -143,16 +143,28 @@ function App() {
             position: 'fixed',
             width: '400px',
             height: '520px',
-            bottom: '90px',
-            right: '70px',
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            padding: '10px',
-            borderRadius: '5px',
-            boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.3)',
+            bottom: '80px',
+            right: '20px',
+            backgroundColor: '#2e4e92',
+            // border: '1px solid #ccc',
+            padding: '10px 0px',
+            borderRadius: '10px',
+            boxShadow: '2px 2px 2px 2px rgba(0, 0, 0, 0.1)',
+            zIndex: '999',
           }}
         >
           {/* 채팅창 내용 */}
+          <div
+            style={{
+              height: '30px',
+              width: '350px',
+              zIndex: '100',
+              padding: '0 10px',
+              color: 'white',
+            }}
+          >
+            <h3>채팅</h3>
+          </div>
           <ChatList />
         </div>
       )}
