@@ -7,6 +7,7 @@ import com.ssafy.lighthouse.domain.common.dto.BadgeResponse;
 import com.ssafy.lighthouse.domain.common.dto.TagDto;
 import com.ssafy.lighthouse.domain.common.entity.Badge;
 import com.ssafy.lighthouse.domain.study.dto.SimpleStudyDto;
+import com.ssafy.lighthouse.domain.study.entity.ParticipationHistory;
 import com.ssafy.lighthouse.domain.study.entity.Study;
 import com.ssafy.lighthouse.domain.study.repository.BookmarkRepository;
 import com.ssafy.lighthouse.domain.study.repository.ParticipationHistoryRepository;
@@ -19,9 +20,7 @@ import com.ssafy.lighthouse.global.util.STATUS;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.querydsl.jpa.JPAExpressions.select;
@@ -135,7 +134,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
 //        SimpleUserResponse userInfo = findUserInfo(loginId);
 
         // participatedUserProfiles
-        List<SimpleProfileResponse> participatedUserProfiles = new ArrayList<>();
+        Map<Long, List<SimpleProfileResponse>> participatedUserProfiles = new HashMap<>();
         if(userId.equals(loginId)) {
             // 내가 리더인 스터디
             List<Long> leaderStudies = recruitingStudies.stream()
@@ -144,15 +143,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom{
                     .collect(Collectors.toList());
             
             // 내가 리더인 스터디에 참가 신청한 유저 아이디
-            List<Long> userIds = jpaQueryFactory.select(participationHistory.userId)
-                    .from(participationHistory)
+            List<ParticipationHistory> participationHistories = jpaQueryFactory.selectFrom(participationHistory)
                     .where(participationHistory.studyId.in(leaderStudies),
                             participationHistory.isValid.eq(1),
                             participationHistory.status.eq(STATUS.PREPARING),
                             participationHistory.userRole.eq(ROLE.TEAMMATE))
                     .fetch();
 
-            participatedUserProfiles = findSimpleProfileByUserIds(userIds);
+            // map에 담기
+            participationHistories.stream()
+                    .collect(Collectors.groupingBy(ParticipationHistory::getStudyId))
+                    .forEach((studyId, val) -> {
+                        List<Long> userIds = val.stream().map(ParticipationHistory::getUserId).collect(Collectors.toList());
+                        participatedUserProfiles.put(studyId, findSimpleProfileByUserIds(userIds));
+                    });
         }
 
         return ProfileResponse.builder()
