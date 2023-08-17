@@ -43,21 +43,25 @@ export default function StudyDetailPage() {
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
   const userId = sessionStorage.getItem('userId')
+
+  const tabMenu = [{ 정보: <StudyInfo study={study} /> }]
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
-  const tabMenu = [
-    { 정보: <StudyInfo study={study} /> },
-    ...(study?.memberProfiles?.find(
+  if (
+    study?.memberProfiles?.find(
       memberProfile => memberProfile.id === Number(userId),
     )?.id
-      ? []
-      : [
-          { 'Q&A': <StudyQnA study={study} /> },
-          { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
-          myInfo.id === study.leaderProfile.id
-            ? { '정보 수정': <StudyEdit study={study} /> }
-            : '',
-        ]),
-  ]
+  ) {
+    tabMenu.push(
+      { 'Q&A': <StudyQnA study={study} /> },
+      { '스터디원 정보': <StudyMember members={study?.memberProfiles} /> },
+    )
+    // 리더일 경우
+    if (myInfo.id === study.leaderProfile.id) {
+      tabMenu.push({
+        '정보 수정': <StudyEdit study={study} />,
+      })
+    }
+  }
   const showModal = () => {
     setIsModalVisible(true)
     // Body 스크롤 방지
