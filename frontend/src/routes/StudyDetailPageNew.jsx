@@ -136,6 +136,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
               현재 인원: {study.currentMember} 최대 인원: {study.maxMember} 최소
               인원: {study.minMember}
               <br />
+              <br />
               스터디 기간: <br />
               {study.startedAt} - {study.endedAt}
             </p>
@@ -195,25 +196,15 @@ export default function StudyDetailPage({ isLoggedIn }) {
               <p style={{ fontSize: '12px', textAlign: 'left' }}>
                 모집 기간: {study.createdAt} - {study.recruitFinishedAt}
               </p>
-              <div>
+              <div style={{ paddingTop: '30px' }}>
                 <Button
                   type="primary"
                   style={{
-                    // backgroundColor: '#FFF1A9',
-                    // color: 'black',
-                    // border: '1px solid #FFF1A9',
-                    // borderRadius: '20px',
-                    // padding: '8px',
-                    // fontWeight: 'bold',
                     width: '100%',
-                    // display: 'flex',
-                    // alignContent: 'center',
-                    // alignItems: 'center',
-                    // justifyContent: 'center',
                   }}
                   onClick={showModal}
                 >
-                  JOIN
+                  스터디 참가 신청
                 </Button>
 
                 <Modal
@@ -222,7 +213,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                   onOk={handleOk}
                   onCancel={handleCancel}
                 >
-                  <p>스터디장에게 하고 싶은 말을 남겨주세요!</p>
+                  <p>스터디장에게 하고 싶은 말을 남겨주세요.</p>
                   <Input
                     placeholder="스터디장에게 하고 싶은 말을 작성해주세요."
                     value={message}
@@ -237,7 +228,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                   onCancel={handleConfirmationOk}
                 >
                   <p>스터디 신청이 성공적으로 완료되었습니다.</p>
-                  <p>Thank you for submitting your message!</p>
                 </Modal>
               </div>
               <Row style={{ marginTop: '10px' }}>
@@ -259,7 +249,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkSolid}
-                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -280,7 +269,6 @@ export default function StudyDetailPage({ isLoggedIn }) {
                       <FontAwesomeIcon
                         className="blue"
                         icon={faBookmarkRegular}
-                        beat
                       />{' '}
                       {study.bookmarkCnt}
                     </Tooltip>
@@ -300,11 +288,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요 취소">
-                      <FontAwesomeIcon
-                        className="red"
-                        icon={faHeartSolid}
-                        beat
-                      />{' '}
+                      <FontAwesomeIcon className="red" icon={faHeartSolid} />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>
@@ -321,11 +305,7 @@ export default function StudyDetailPage({ isLoggedIn }) {
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     <Tooltip title="좋아요">
-                      <FontAwesomeIcon
-                        className="red"
-                        icon={faHeartRegular}
-                        beat
-                      />{' '}
+                      <FontAwesomeIcon className="red" icon={faHeartRegular} />{' '}
                       {study.likeCnt}
                     </Tooltip>
                   </Col>
