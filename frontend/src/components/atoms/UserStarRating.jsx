@@ -3,7 +3,7 @@ import './UserStarRating.css'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const UserStarRating = ({ score }) => {
-  const width = `${score}%`
+  const width = `${score ?? 0}%`
   const stars = []
   // eslint-disable-next-line no-plusplus
   for (let index = 1; index <= 5; index++) {
