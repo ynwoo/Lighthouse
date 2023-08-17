@@ -99,6 +99,18 @@ function ChattingList() {
     loadMoreData()
   }, [roomId])
 
+  const messages = useSelector(state => state.chat.messages)
+
+  function getFirstMessageContent(studyId) {
+    for (let i = messages.length - 1; i >= 0; i -= 1) {
+      // eslint-disable-next-line eqeqeq
+      if (messages[i].roomId == studyId) {
+        return messages[i].message
+      }
+    }
+    return '채팅방에 참여해보세요!'
+  }
+
   return (
     <div
       id="scrollableDiv"
@@ -163,7 +175,8 @@ function ChattingList() {
                       {item.title}
                     </button>
                   }
-                  description={item.description}
+                  // description={item.description}
+                  description={getFirstMessageContent(item.id)}
                 />
               </List.Item>
             )}
