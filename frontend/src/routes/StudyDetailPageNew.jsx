@@ -10,7 +10,7 @@ import {
   faBookmark as faBookmarkRegular,
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
-import StudyInfo from '../components/Study/StudyInfo'
+import StudyInfo from '../components/Study/StudyInfoNew'
 import StudyQnA from '../components/Study/StudyQnA'
 import StudyEdit from '../components/Study/StudyEdit'
 import JoinStudyInfo from '../components/Study/join/JoinStudyInfo'
@@ -22,12 +22,13 @@ import UserName from '../components/Study/UserName'
 import { STATUS } from '../utils'
 import { updateStudyStatus } from '../api/study'
 
-export default function StudyDetailPage() {
+export default function StudyDetailPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
 
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
+  console.log(study)
 
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
@@ -40,7 +41,11 @@ export default function StudyDetailPage() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
   const [message, setMessage] = useState('')
+  console.log(myInfo)
+  console.log(likeList)
   const userId = sessionStorage.getItem('userId')
+  console.log(study)
+  console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { 정보: <StudyInfo study={study} /> },
@@ -63,7 +68,10 @@ export default function StudyDetailPage() {
   }
 
   const handleOk = () => {
+    console.log('Message:', message)
+    console.log(study.id)
     dispatch(studyAction.joinStudy(study.id)).then(res => {
+      console.log(res)
       if (res.type !== 'study/joinStudy/rejected') {
         setMessage('')
         setIsModalVisible(false)

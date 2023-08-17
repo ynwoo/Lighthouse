@@ -10,12 +10,14 @@ import {
   faHeart as faHeartRegular,
 } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import StudyInfo from '../components/Study/StudyInfo'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
 import UserName from '../components/Study/UserName'
 import StudyReview from '../components/Study/StudyReview'
+import { createStudy } from '../api/study'
 
 export default function TempDetailPage() {
   const dispatch = useDispatch()
@@ -24,11 +26,24 @@ export default function TempDetailPage() {
 
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
     dispatch(userAction.profile(sessionStorage.getItem('userId')))
     dispatch(studyAction.getLike())
   }, [])
+
+  // 스터디 복제
+  const handleCreateStudy = () => {
+    createStudy(
+      studyId,
+      ({ data }) => {
+        navigate(`/study/${data.id}`)
+      },
+      () => {},
+    )
+  }
 
   const myInfo = useSelector(state => state.user.myProfile)
   const likeList = useSelector(state => state.study.likeList)
@@ -139,6 +154,7 @@ export default function TempDetailPage() {
               <Button
                 type="primary"
                 style={{ marginTop: '30px', width: '100%' }}
+                onClick={handleCreateStudy}
               >
                 템플릿 사용하기
               </Button>

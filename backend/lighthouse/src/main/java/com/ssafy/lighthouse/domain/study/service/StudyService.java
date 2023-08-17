@@ -17,6 +17,8 @@ public interface StudyService {
     void shareStudyByStudyId(Long studyId);
     StudyResponse updateStudyByStudyId(StudyRequest studyRequest);
 
+    void updateStudyStatusByStudyId(Long studyId, int status);
+
     // study-like
     void createStudyLike(Long studyId, Long userId);
     void removeStudyLike(Long studyId, Long userId);
