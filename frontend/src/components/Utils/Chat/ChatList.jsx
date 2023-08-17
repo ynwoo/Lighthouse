@@ -50,7 +50,6 @@ function ChattingList() {
             },
           )
         : []
-    console.log('chat list user effect')
     for (let i = 0; i < sts.length; i += 1) {
       dispatch(chatAction.getChat(sts[i].id))
     }
@@ -63,7 +62,6 @@ function ChattingList() {
     // This is needed because this will be executed after a (re)connect
 
     for (let i = 0; i < studiesToShow.length; i += 1) {
-      console.log(`connection established sid: ${studiesToShow[i].id}`)
       client.subscribe(`/sub/${studiesToShow[i].id}`, msg => {
         const messageData = JSON.parse(msg.body)
         dispatch(receiveMessage(messageData))
@@ -81,12 +79,7 @@ function ChattingList() {
     console.log(`Additional details: ${frame.body}`)
   }
 
-  console.log('to show: ', studiesToShow)
-
-  console.log('profile in chat list: ', profile)
-
   const clickHandler = id => {
-    console.log('clicked', id)
     setRoomId(id)
   }
   const loadMoreData = () => {

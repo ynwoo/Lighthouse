@@ -7,7 +7,6 @@ const dateToString = date => {
 }
 
 const startDateToString = date => {
-  console.log(date)
   return date?.getFullYear()
     ? `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} 00:00:00`
     : null
