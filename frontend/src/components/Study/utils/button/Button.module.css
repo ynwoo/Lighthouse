@@ -32,10 +32,10 @@
 }
 
 .button-create {
-  background-color: var(--my-pagenation-button-color);
+  /* background-color: rgb(0, 222, 247); */
   color: black;
   border: 1px solid var(--my-pagenation-button-border-color);
-  /* border-radius: 20px; */
+  border-radius: 20px;
   padding: 10px;
   font-weight: bold;
   width: 100px;
@@ -46,6 +46,15 @@
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
+  margin: 5px;
+}
+
+.accept {
+  background-color: rgb(19, 209, 247);
+}
+
+.reject {
+  background-color: rgb(254, 0, 0);
 }
 
 .pagenation {
