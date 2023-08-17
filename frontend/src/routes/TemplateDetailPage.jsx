@@ -40,7 +40,7 @@ export default function TempDetailPage({ isLoggedIn }) {
     createStudy(
       studyId,
       ({ data }) => {
-        navigate(`/study/${data.id}`)
+        navigate(`/template/update/${data.id}`)
       },
       () => {},
     )

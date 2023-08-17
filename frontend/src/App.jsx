@@ -17,6 +17,7 @@ import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
 import TemplateDetailPage from './routes/TemplateDetailPage'
+import TemplateUpdatePage from './routes/TemplateUpdatePage'
 import MyStudyPage from './routes/MyStudiesPage'
 import StudyInProgressPage from './routes/StudyInProgressPage'
 
@@ -96,6 +97,10 @@ function App() {
                   <Route
                     path="/template/:id"
                     element={<TemplateDetailPage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
+                    path="/template/update/:id"
+                    element={<TemplateUpdatePage isLoggedIn={isLoggedIn} />}
                   />
                   <Route
                     path="/inprogress/:id"
