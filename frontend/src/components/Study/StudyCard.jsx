@@ -4,6 +4,7 @@ import { Card, Tag, Row, Col, Tooltip } from 'antd'
 import { HeartOutlined, BookOutlined, EyeOutlined } from '@ant-design/icons'
 import { coverImage } from '../../utils/image'
 import CustomTitle from './CustomTitle'
+import { STATUS } from '../../utils'
 
 function StudyCard({ study }) {
   const [isHovered, setIsHovered] = useState(false)
@@ -74,10 +75,14 @@ function StudyCard({ study }) {
         {/* 레이어 카드 */}
         <Link
           to={
-            study.status === 5
+            study.status === STATUS.SHARE
               ? `/template/${study.id}`
-              : study.status === 2
+              : study.status === STATUS.PROGRESS
               ? `/inprogress/${study.id}`
+              : study.status === STATUS.PREPARING &&
+                study.leaderProfile.id ===
+                  Number(sessionStorage.getItem('userId'))
+              ? `/template/update/${study.id}`
               : `/study/${study.id}`
           }
           state={{ id: study.id }}
@@ -156,6 +161,7 @@ function StudyCard({ study }) {
                       style={{ fontSize: '30px', color: 'rgb(255, 76, 76)' }}
                       onClick={e => {
                         e.preventDefault()
+                        console.log('like')
                       }}
                     />
                   </Tooltip>
@@ -166,6 +172,7 @@ function StudyCard({ study }) {
                       style={{ fontSize: '30px', color: 'rgb(116, 163, 255)' }}
                       onClick={e => {
                         e.preventDefault()
+                        console.log('bookmark')
                       }}
                     />
                   </Tooltip>

@@ -3,7 +3,7 @@ import { Row, Col, Tag, Tabs } from 'antd'
 
 import { useDispatch, useSelector } from 'react-redux'
 // import SideComponent from '../components/Utils/SideComponent'
-import StudyInfo from '../components/Study/StudyInfo'
+import StudyInfo from '../components/Study/StudyInfoNew'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage } from '../utils/image'
@@ -11,12 +11,13 @@ import UserName from '../components/Study/UserName'
 import StudyCurrent from '../components/Study/StudyCurrent'
 import StudyRecord from '../components/Study/StudyRecord'
 
-export default function StudyInProgressPage() {
+export default function StudyInProgressPage({ isLoggedIn }) {
   const dispatch = useDispatch()
   const studyId = window.location.pathname?.split('/')[2]
   const study = useSelector(state => state.study.studyDetail)
 
   // eslint-disable-next-line react/no-unstable-nested-components, react/jsx-props-no-spreading
+  console.log(study)
 
   useEffect(() => {
     dispatch(studyAction.studyDetail(studyId))
@@ -24,6 +25,13 @@ export default function StudyInProgressPage() {
     dispatch(studyAction.getLike())
   }, [])
 
+  const myInfo = useSelector(state => state.user.myProfile)
+  const likeList = useSelector(state => state.study.likeList)
+  console.log(myInfo)
+  console.log(likeList)
+  const userId = sessionStorage.getItem('userId')
+  console.log(study)
+  console.log(userId, isLoggedIn)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
     { '진행 상황': <StudyCurrent study={study} /> },

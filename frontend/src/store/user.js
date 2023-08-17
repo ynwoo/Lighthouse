@@ -73,6 +73,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   profile: {
     id: 0,
@@ -91,6 +92,7 @@ const initialState = {
     following: 0,
     follower: 0,
     simpleUserResponse: {},
+    participatedUserProfiles: [],
   },
   following: null,
   userInfo: {},

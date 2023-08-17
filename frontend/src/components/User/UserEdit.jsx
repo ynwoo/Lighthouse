@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Layout,
   Card,
@@ -18,6 +18,10 @@ import StudyList from '../Study/StudyList'
 import UserInfo from './UserInfo'
 import UserInfoModify from './UserInfoModify'
 import { profileImage } from '../../utils/image'
+import UserStarRating from '../atoms/UserStarRating'
+import { joinStudy, rejectStudy } from '../../api/participation'
+import CreateButton from '../Study/utils/button/CreateButton'
+import StudyCard from '../Study/StudyCard'
 
 const { Content, Sider } = Layout
 
@@ -25,9 +29,9 @@ export default function UserEdit() {
   const dispatch = useDispatch()
   const location = useLocation()
   const userId = Number(location.state.userId)
-  // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   const loginId = Number(sessionStorage.getItem('userId'))
   useEffect(() => {
+    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
     dispatch(userAction.getFollowing())
@@ -38,6 +42,34 @@ export default function UserEdit() {
   const myProfile = { ...myInfo, ...profile }
 
   const [score, setScore] = useState(0)
+
+  const navigate = useNavigate()
+
+  const handleJoinStudy = (studyId, userProfileId) => () => {
+    joinStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
+  const handleRejectStudy = (studyId, userProfileId) => () => {
+    rejectStudy(
+      { studyId, userId: userProfileId },
+      () => {
+        dispatch(userAction.profile(userId))
+      },
+      () => {},
+    )
+  }
+
+  const handleMoveProfile = userProfileId => () => {
+    console.log('userProfileId', userProfileId)
+    navigate(`/user_edit/${userProfileId}`, {
+      state: { userId: userProfileId },
+    })
+  }
 
   let items = [
     {
@@ -74,8 +106,14 @@ export default function UserEdit() {
         children: (
           <div>
             {Object.keys(profile?.participatedUserProfiles)?.map(studyId => (
-              <div>
-                {studyId}:
+              <div className="flex-container">
+                <StudyCard
+                  study={
+                    profile?.recruitingStudies?.find(
+                      study => study.id === Number(studyId),
+                    ) ?? false
+                  }
+                />
                 {profile.participatedUserProfiles[`${studyId}`].map(
                   userProfile => (
                     <Sider
@@ -93,26 +131,37 @@ export default function UserEdit() {
                             xl: 150,
                             xxl: 150,
                           }}
+                          onClick={handleMoveProfile(userProfile.id)}
                           src={profileImage(userProfile.profileImgUrl)}
                           shape="circle"
                         />
                         <h3 style={{ marginBottom: '0px' }}>
                           {userProfile.nickname}
                         </h3>
-                        <p>님의 페이지 입니다.</p>
+                        <UserStarRating score={userProfile.score} />
+                        <div className="flex-container">
+                          <CreateButton
+                            color="accept"
+                            type="primary"
+                            onClick={handleJoinStudy(studyId, userProfile.id)}
+                          >
+                            수락
+                          </CreateButton>
+                          <CreateButton
+                            color="reject"
+                            type="primary"
+                            onClick={handleRejectStudy(studyId, userProfile.id)}
+                          >
+                            거절
+                          </CreateButton>
+                        </div>
                       </Card>
                     </Sider>
-                    // <div>{userProfile}</div>s
                   ),
                 )}
               </div>
             ))}
           </div>
-          // <StudyList
-          //   studies={profile.participatedStudies?.filter(
-          //     study => study.leaderProfile.id === userId,
-          //   )}
-          // />
         ),
       },
       {

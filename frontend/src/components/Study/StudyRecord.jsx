@@ -10,17 +10,9 @@ function StudyRecord({ study }) {
         style={{ boxShadow: 'none' }}
       >
         <ul>
-          {study.studyNotices
-            ?.filter(
-              notice =>
-                notice.id !==
-                study.studyNotices?.reduce((a, b) => {
-                  return a.id > b.id ? a : b
-                }, 0),
-            )
-            .map(notice => (
-              <li>{notice.content}</li>
-            ))}
+          {study.studyNotices?.map(notice => (
+            <li>{notice.content}</li>
+          ))}
         </ul>
       </Card>
       <Card

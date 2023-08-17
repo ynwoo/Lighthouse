@@ -4,18 +4,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CommentOutlined } from '@ant-design/icons'
 import { FloatButton, Layout } from 'antd'
 import { useSelector } from 'react-redux'
-import Navbar from './components/Utils/Navbar/Navbar'
+import Navbar from './components/Utils/Navbar/NavbarNew'
 import WaveComponent from './components/Utils/WaveComponent'
-import MainPage from './routes/MainPage'
-import StudyDetailPage from './routes/StudyDetailPage'
+import MainPage from './routes/MainPageNew'
+import StudyDetailPage from './routes/StudyDetailPageNew'
 import UserPage from './routes/UserPage'
 import ScrollToTop from './components/Utils/ScrollTop'
 import UserEditPage from './routes/UserEditPage'
-import SignUp from './routes/SignUpPage'
-import LogIn from './routes/LogInPage'
+import Chat from './components/Utils/Chat/Chat'
+import SignUp from './components/User/SignUp'
+import LogIn from './components/User/LogIn'
 import LoadingComponent from './components/Utils/LoadingComponent'
 import ChatList from './components/Utils/Chat/ChatList'
 import TemplateDetailPage from './routes/TemplateDetailPage'
+import TemplateUpdatePage from './routes/TemplateUpdatePage'
 import MyStudyPage from './routes/MyStudiesPage'
 import StudyInProgressPage from './routes/StudyInProgressPage'
 
@@ -97,6 +99,10 @@ function App() {
                     element={<TemplateDetailPage isLoggedIn={isLoggedIn} />}
                   />
                   <Route
+                    path="/template/update/:id"
+                    element={<TemplateUpdatePage isLoggedIn={isLoggedIn} />}
+                  />
+                  <Route
                     path="/inprogress/:id"
                     element={<StudyInProgressPage isLoggedIn={isLoggedIn} />}
                   />
@@ -105,6 +111,8 @@ function App() {
                   <Route path="/login" element={<LogIn />} />
                   <Route path="/signup" element={<SignUp />} />
                   <Route path="/user_edit/:id" element={<UserEditPage />} />
+                  <Route path="/chat" element={<Chat />} />
+                  {/* <Route path="/chat1" element={<ChatTest />} /> */}
                 </Routes>
               </div>
             </>

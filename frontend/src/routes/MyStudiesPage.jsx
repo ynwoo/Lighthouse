@@ -9,7 +9,9 @@ export default function MyStudiesPage() {
   const dispatch = useDispatch()
   const location = useLocation()
   const userId = Number(location.state.userId)
+  // const userId = Number(window.location.pathname.split('/user_edit/')[1])
   useEffect(() => {
+    console.log(userId)
     dispatch(userAction.profile(userId))
     dispatch(userAction.myPage())
     dispatch(userAction.getFollowing())

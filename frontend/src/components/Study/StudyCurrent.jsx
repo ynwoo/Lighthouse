@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { studyAction } from '../../store/study'
 // 현재 진행 중인 스터디의 상세 페이지
 export default function StudyCurrent({ study }) {
+  console.log('studyInfo : ', study)
   const dispatch = useDispatch()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isConfirmationVisible, setIsConfirmationVisible] = useState(false)
@@ -55,8 +56,7 @@ export default function StudyCurrent({ study }) {
           backgroundColor: 'rgb(255, 255, 255)',
         }}
       >
-        {study.leaderProfile?.id ===
-        Number(sessionStorage.getItem('userId')) ? (
+        {study.leaderProfile?.id === sessionStorage.getItem('userId') ? (
           <div>
             <Button type="primary" onClick={showModal}>
               새 공지 등록
