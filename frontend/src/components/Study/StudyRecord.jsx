@@ -23,8 +23,8 @@ function StudyRecord({ study }) {
         <List
           itemLayout="horizontal"
           dataSource={study.sessions
-            .filter(session => session.status === 0)
-            .toSorted(
+            ?.filter(session => session.status === 0)
+            ?.toSorted(
               (a, b) =>
                 new Date(a.endedAt).getTime() - new Date(b.endedAt).getTime(),
             )}

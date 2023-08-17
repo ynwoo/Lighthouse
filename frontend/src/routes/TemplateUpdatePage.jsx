@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Col, Tag, Tabs, Button, Tooltip, DatePicker, Input } from 'antd'
+import { Row, Col, Tag, Tabs, Button, Tooltip, Input, Card } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBookmark as faBookmarkSolid,
@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import StudyInfo from '../components/Study/StudyInfo'
+import TextArea from 'antd/es/input/TextArea'
 import { studyAction } from '../store/study'
 import { userAction } from '../store/user'
 import { coverImage, image } from '../utils/image'
@@ -23,6 +23,8 @@ import {
   endDateToString,
   startDateToString,
 } from '../utils'
+import DateRangePicker from '../components/Study/utils/DatePicker'
+import StudyCurriculum from '../components/Study/StudyCurriculum'
 
 export default function TemplateUpdatePage() {
   const dispatch = useDispatch()
@@ -74,7 +76,11 @@ export default function TemplateUpdatePage() {
   }, [originalStudy])
 
   const handleChangeStudy = e => {
-    setStudy({ ...study, [e.target.name]: Number(e.target.value) })
+    setStudy({ ...study, [e.target.name]: e.target.value })
+  }
+
+  const setIsOnline = isOnline => () => {
+    setStudy({ ...study, isOnline })
   }
 
   const handleImageUpload = event => {
@@ -267,7 +273,9 @@ export default function TemplateUpdatePage() {
     callStudyUpdateApi(copyStudy())
   }
   const handleRecruitStudy = () => {
-    callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+    if (study.status === STATUS.PREPARING) {
+      callStudyUpdateApi(copyStudy(STATUS.RECRUITING))
+    }
     navigate(`/study/${study.id}`)
   }
 
@@ -275,38 +283,117 @@ export default function TemplateUpdatePage() {
   const likeList = useSelector(state => state.study.likeList)
   // 해당 스터디 가입한 사람과 그렇지 않은 사람 구분
   const tabMenu = [
-    { 정보: <StudyInfo study={study} /> },
+    {
+      정보: (
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="스터디 정보"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <Input
+              className="input"
+              name="description"
+              onChange={handleChangeStudy}
+              value={study.description}
+            />
+          </Card>
+          <Card
+            className="flex-container-col"
+            title="스터디 규칙"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <TextArea
+              className="text-area"
+              name="rule"
+              onChange={handleChangeStudy}
+              value={study.rule}
+              style={{ height: `${study.rule.split('\n').length * 25}px` }}
+            />
+          </Card>
+          <Card
+            title="스터디 계획"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <div>
+              <StudyCurriculum study={study} />
+            </div>
+          </Card>
+        </div>
+      ),
+    },
     {
       '스터디 기간': (
-        <>
-          <DatePicker
-            changeStartDate={handleCreatedDateChange}
-            changeEndDate={handleRecruitFinishedDateChange}
-            initStartDate={study.createdAt}
-            initEndDate={study.recruitFinishedAt}
-          />
-          <DatePicker
-            changeStartDate={handleStartDateChange}
-            changeEndDate={handleEndDateChange}
-            initStartDate={study.startedAt}
-            initEndDate={study.endedAt}
-          />
-        </>
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="스터디 기간"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <DateRangePicker
+              changeStartDate={handleStartDateChange}
+              changeEndDate={handleEndDateChange}
+              initStartDate={study.startedAt}
+              initEndDate={study.endedAt}
+            />
+          </Card>
+          <Card
+            title="스터디 모집 기간"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <DateRangePicker
+              changeStartDate={handleCreatedDateChange}
+              changeEndDate={handleRecruitFinishedDateChange}
+              initStartDate={study.createdAt}
+              initEndDate={study.recruitFinishedAt}
+            />
+          </Card>
+        </div>
       ),
     },
     {
       '커버이미지 & 뱃지 수정': (
-        <>
-          <div className="file-upload">커버이미지 수정</div>
-          <input type="file" accept="image/*" onChange={handleImageUpload} />
-          <hr />
-          <div className="file-upload">뱃지 수정</div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleBadgeImageUpload}
-          />
-        </>
+        <div
+          style={{
+            height: '1000px',
+            width: '100%',
+            backgroundColor: 'rgb(255, 255, 255)',
+          }}
+        >
+          <Card
+            title="커버 이미지 수정"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <input type="file" accept="image/*" onChange={handleImageUpload} />
+          </Card>
+          <Card
+            title="뱃지 수정"
+            bordered={false}
+            style={{ boxShadow: 'none' }}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleBadgeImageUpload}
+            />
+          </Card>
+        </div>
       ),
     },
     { '템플릿 리뷰': <StudyReview study={study} /> },
@@ -341,7 +428,13 @@ export default function TemplateUpdatePage() {
             }}
           >
             <h1 style={{ height: '40px' }}>
-              {study.title}{' '}
+              <Input
+                style={{ width: 'auto' }}
+                className="input"
+                name="title"
+                onChange={handleChangeStudy}
+                value={study.title}
+              />
               <img
                 src={uploadedBadgeImage || image(originalStudy.badge?.imgUrl)}
                 alt={study.badge?.description}
@@ -353,11 +446,18 @@ export default function TemplateUpdatePage() {
               스터디장: <UserName user={study.leaderProfile} />{' '}
             </p>
             <p style={{ marginTop: '30px' }}>
-              {study.isOnline
-                ? '온라인'
-                : study.sido && study.gugun
-                ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
-                : '오프라인'}
+              <Button
+                style={{ width: 80 }}
+                name="isOnline"
+                onClick={setIsOnline(study.isOnline === 1 ? 0 : 1)}
+                defaultValue="title"
+              >
+                {study.isOnline
+                  ? '온라인'
+                  : study.sido && study.gugun
+                  ? `오프라인: 장소 - ${study.sido}, ${study.gugun}`
+                  : '오프라인'}
+              </Button>
               <br />
               <div className="flex-container">
                 <span className="flex-item">
@@ -440,22 +540,26 @@ export default function TemplateUpdatePage() {
                 padding: '10px',
               }}
             >
-              <Button
-                type="primary"
-                style={{ marginTop: '30px', width: '100%' }}
-                onClick={handleUpdateStudy}
-              >
-                템플릿 수정
-              </Button>
-              {study.status === STATUS.PREPARING && (
+              <div className="flex-container-col align-center">
                 <Button
                   type="primary"
-                  style={{ marginTop: '30px', width: '100%' }}
+                  style={{
+                    marginTop: '30px',
+                    width: '100%',
+                    backgroundColor: 'green',
+                  }}
+                  onClick={handleUpdateStudy}
+                >
+                  템플릿 수정
+                </Button>
+                <Button
+                  type="primary"
+                  style={{ marginTop: '10px', width: '100%' }}
                   onClick={handleRecruitStudy}
                 >
-                  모집 시작
+                  수정 완료
                 </Button>
-              )}
+              </div>
               <Row style={{ marginTop: '10px' }}>
                 {myInfo.bookmarkStudies?.find(
                   bookmarkStudy => bookmarkStudy.id === study.id,
