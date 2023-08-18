@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input, Row, Select, Space, Col, Button } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { setParams, studyAction } from '../../store/study'
@@ -7,11 +7,16 @@ import { userAction } from '../../store/user'
 // 검색창
 const { Search } = Input
 
-function SearchComponent() {
+function SearchComponent({ status }) {
   const dispatch = useDispatch()
   const params = useSelector(state => state.study.params)
   const sido = useSelector(state => state.user.sido)
   const gugun = useSelector(state => state.user.gugun)
+  const [word, setWord] = useState('')
+
+  useEffect(() => {
+    setWord('')
+  }, [status])
 
   useEffect(() => {
     dispatch(userAction.sido())
@@ -21,8 +26,8 @@ function SearchComponent() {
     dispatch(studyAction.studyList(params))
   }, [params])
 
-  const onSearch = word => {
-    const newParams = { ...params, word, page: 0 }
+  const onSearch = () => {
+    const newParams = { ...params, word }
     dispatch(setParams(newParams))
   }
 
@@ -49,6 +54,9 @@ function SearchComponent() {
       }),
     )
   }
+  const onWordChange = e => {
+    setWord(e.target.value)
+  }
 
   const setIsOnline = () => {
     dispatch(setParams({ ...params, isOnline: params.isOnline ? 0 : 1 }))
@@ -61,7 +69,9 @@ function SearchComponent() {
           name="word"
           placeholder="검색"
           onSearch={onSearch}
-          defaultValue={params.word}
+          onChange={onWordChange}
+          defaultValue=""
+          value={word}
           enterButton
           style={{ width: '500px', margin: '0 10px 10px 0' }}
         />

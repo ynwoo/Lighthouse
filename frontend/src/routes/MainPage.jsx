@@ -85,7 +85,7 @@ export default function MainPage({ isLoggedIn, status }) {
       <h2 style={{ marginBottom: '20px' }}>
         {status === STATUS.RECRUITING ? '모집 중인 스터디' : '템플릿 둘러보기'}
       </h2>
-      <SearchComponent />
+      <SearchComponent status={status} />
       <StudyList
         studies={studies}
         isLoggedIn={isLoggedIn}
