@@ -26,7 +26,11 @@ export default function Navbar({ isLoggedIn }) {
         <Col xl={6} lg={6} md={6} sm={20} xs={20}>
           <Link to="/" state={{ status: 1 }}>
             <div style={{ paddingLeft: '10px', marginRight: '-10px' }}>
-              <img src="main_logo.PNG" alt="엑박" style={{ height: '50px' }} />
+              <img
+                src={`${process.env.REACT_APP_CLOUDFRONT_DOMAIN_URL}badge/main_logo_1692330123477.PNG`}
+                alt="엑박"
+                style={{ height: '50px' }}
+              />
             </div>
           </Link>
         </Col>
