@@ -204,10 +204,10 @@ public class StudyServiceImpl implements StudyService {
     public StudyResponse updateStudyByStudyId(StudyRequest studyRequest) {
         // studyCoverImg fileUpload
         if(studyRequest.getCoverImgFile() != null) {
-            // 이전 커버 이미지 삭제
-            if(studyRequest.getCoverImgUrl() != null) {
-                S3Utils.deleteFile(studyRequest.getCoverImgUrl());
-            }
+//            // 이전 커버 이미지 삭제
+//            if(studyRequest.getCoverImgUrl() != null) {
+//                S3Utils.deleteFile(studyRequest.getCoverImgUrl());
+//            }
             
             // 새로운 커버 이미지 등록
             studyRequest.setCoverImgUrl(S3Utils.uploadFile(CATEGORY, studyRequest.getCoverImgFile()));
