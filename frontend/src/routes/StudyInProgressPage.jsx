@@ -175,7 +175,7 @@ export default function StudyInProgressPage() {
               }}
             >
               <p style={{ fontSize: '12px', textAlign: 'left' }}>
-                모집 기간: {study.createdAt} - {study.recruitFinishedAt}
+                진행 중인 스터디 입니다.
               </p>
               <div style={{ paddingTop: '30px' }}>
                 {myInfo.id === study.leaderProfile.id ? (

@@ -295,15 +295,19 @@ export default function TemplateUpdatePage() {
             bordered={false}
             style={{ boxShadow: 'none' }}
           >
-            <Input
-              className="input"
+            <TextArea
+              className="text-area"
               name="description"
               onChange={handleChangeStudy}
               value={study.description}
+              style={{
+                height:
+                  study.description &&
+                  `${study.description.split('\n').length * 25}px`,
+              }}
             />
           </Card>
           <Card
-            className="flex-container-col"
             title="스터디 규칙"
             bordered={false}
             style={{ boxShadow: 'none' }}
