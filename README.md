@@ -68,14 +68,19 @@ Lighthouse에서는 이전의 노하우와 성공경험이 담긴 템플릿을 �
 - QueryDSL
 - JWT
 - WebSocket
+- STOMP
+- KAFKA & ZooKeeper
 - Swagger 3.0.0
 - MariaDB
+- NoSQL (MongoDB)
 
 ### Frontend
 
 - Visual Studio Code IDE
 - React 18.2.0
 - Redux 4.2.1
+- React Router 6.14.2
+- Sockjs 1.6.1
 - ant design 5.7.2
 - Figma
 
